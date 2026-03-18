@@ -1,0 +1,120 @@
+- id: L1
+  name: 會用工具
+  days: 2
+  icon: "🧰"
+  color: "cyan"
+  tag: "入門"
+  tagline: "把重複工作打包成 AI 助手，不再每次重寫 prompt"
+  desc: "建立正確的 AI 使用觀念，理解工具邊界，打造個人化 AI 助手（Custom GPTs / Gemini Gems），將工作流打包成可重用的「任務包」。"
+  days_content:
+    - label: "Day 1"
+      title: "AI 應用素養"
+      bullets:
+        - "AI 的三大能力邊界：能做什麼、不能做什麼"
+        - "任務包思維：把重複工作變成可複用 AI 流程"
+        - "動手打包：建立你的第一個任務包"
+    - label: "Day 2"
+      title: "AI 個人助手與自動化"
+      bullets:
+        - "Custom GPTs：打造有記憶、有角色的個人 AI 助手"
+        - "Gemini Gems：整合 Google Workspace 的 AI 助手"
+        - "產出：完成一個可立即使用的 AI 助手"
+  outcomes:
+    - "個人任務包（5 個可立即使用）"
+    - "Custom GPT 設定檔"
+    - "AI 助手使用清單"
+  who: "所有職場人員、想入門 AI 的同事"
+
+- id: L2
+  name: 選工具
+  days: 2
+  icon: "⚖️"
+  color: "teal"
+  tag: "進階"
+  tagline: "知道什麼任務配什麼工具，第一次用嘴巴寫程式"
+  desc: "建立 AI 工具決策矩陣，用三刀流測試法找出最適合你的工具組合，並以 Codex 完成人生第一支 AI 生成程式碼。"
+  days_content:
+    - label: "Day 1"
+      title: "工具選擇與 Agent 入門"
+      bullets:
+        - "ChatGPT / Claude / Gemini 三刀流比較"
+        - "任務 × 工具決策矩陣：快速配對"
+        - "動手：三刀流測試同一個任務，找出差異"
+    - label: "Day 2"
+      title: "Coding AI 與 API 入門"
+      bullets:
+        - "Codex 實戰：用中文描述需求，AI 寫程式"
+        - "30 分鐘手工 → 2 分鐘 AI 自動化"
+        - "API 基礎：打通 AI 與工作流的橋樑"
+  outcomes:
+    - "個人「任務 → 工具」對照表"
+    - "三刀流測試記錄"
+    - "第一支 AI 生成的自動化程式"
+  who: "已使用過 AI 工具、想提升應用深度的職場人員"
+
+- id: L3
+  name: 創工具
+  days: 3
+  icon: "🔨"
+  color: "purple"
+  tag: "高階"
+  tagline: "從一句話需求到可交付的 App，讓 AI 當你的開發夥伴"
+  desc: "掌握 Code Agent 開發流程，用 Happy Code 方法從 idea 到可運作原型，透過 PoCoClawd / OpenClawd 框架加速，站在巨人的肩膀上開發。"
+  days_content:
+    - label: "Day 1"
+      title: "Code Agent 與 MCP"
+      bullets:
+        - "Code Agent vs Copilot：從補全到自主執行"
+        - "CLAUDE.md：給 Agent 的指令手冊"
+        - "ITTO 框架：輸入 → 任務 → 工具 → 輸出"
+    - label: "Day 2"
+      title: "Happy Code 創作"
+      bullets:
+        - "一句話變 App：30 字以內描述，10 分鐘出原型"
+        - "快速迭代四心法：先跑再優化"
+        - "從原型到正式開發的里程碑設計"
+    - label: "Day 3"
+      title: "OpenClawd 深度實戰"
+      bullets:
+        - "PoCoClawd：20 分鐘驗證概念，不從零開始"
+        - "OpenClawd：正式生產應用框架"
+        - "框架 Trade-off 分析：什麼情況用框架？"
+  outcomes:
+    - "CLAUDE.md 指令手冊"
+    - "Happy Code 原型 + 正式版"
+    - "PoCoClawd 快速驗證 Demo"
+  who: "技術主管、想開發內部工具的工程師、產品開發人員"
+
+- id: L4
+  name: 設計系統
+  days: "6 週 PBL"
+  icon: "🏗️"
+  color: "gold"
+  tag: "企業級"
+  tagline: "用系統思維解決真實流程問題，產出可交付文件"
+  desc: "以問題導向學習（PBL）方式，用冰山模型挖掘企業流程根因，設計 AI 能力矩陣，完成 AS-IS → TO-BE 流程再造，產出完整的 AI 系統設計文件。"
+  days_content:
+    - label: "Week 1"
+      title: "系統思維與問題定義"
+      bullets:
+        - "冰山模型：四層問題分析法"
+        - "AS-IS 流程繪製：現狀地圖"
+        - "利害關係人訪談 + 問題定義文件"
+    - label: "Week 2"
+      title: "AI 系統設計"
+      bullets:
+        - "AI 能力矩陣：哪些步驟最值得 AI 介入？"
+        - "80/20 原則：找出最高 ROI 的 AI 插入點"
+        - "TO-BE 流程設計 + AI 整合規格書"
+    - label: "Week 3-6"
+      title: "實作、測試、交付"
+      bullets:
+        - "系統原型實作 + 壓力測試"
+        - "使用者培訓 + 變革管理"
+        - "完整交付文件 + 維運計畫"
+  outcomes:
+    - "問題定義文件"
+    - "AS-IS + TO-BE 流程圖"
+    - "AI 系統設計規格書"
+    - "完整交付文件"
+  who: "部門主管、流程改善負責人、企業內部 AI 推動者"

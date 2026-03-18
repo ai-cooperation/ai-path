@@ -1,0 +1,144 @@
+---
+layout: default
+---
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">AI 企業培訓體系</div>
+  <h1 class="hero-title">三階段能力升級</h1>
+  <p class="hero-quote">「大家瘋的是<strong>終點畫面</strong>，缺的是<strong>到達終點的地圖</strong>」</p>
+  <p class="hero-tagline">不教你追工具，教你建立不會過時的 AI 判斷力</p>
+  <div class="hero-cta-group">
+    <a href="#path" class="btn-primary">看學習路徑</a>
+    <a href="{{ '/enterprise' | relative_url }}" class="btn-outline">企業內訓洽詢</a>
+  </div>
+</section>
+
+<!-- Pain Points -->
+<section class="pain-section">
+  <div class="pain-grid">
+    <div class="pain-card">
+      <span class="pain-num">40%</span>
+      <p>的 AI Agent 專案<br>因架構差、成本失控被放棄</p>
+    </div>
+    <div class="pain-card">
+      <span class="pain-num">90%</span>
+      <p>企業有用 AI<br>但只有 9% 真正達成 AI 成熟</p>
+    </div>
+    <div class="pain-card">
+      <span class="pain-num">42%</span>
+      <p>員工預期角色因 AI 改變<br>卻被要求「自己學」</p>
+    </div>
+  </div>
+  <p class="pain-insight">差距不在工具，在方法論。你的團隊需要的不是更多 demo，是一條可以走完的路。</p>
+</section>
+
+<!-- Learning Path Map -->
+<section class="path-section" id="path">
+  <h2 class="section-title">會用 → 選工具 → 創工具</h2>
+  <p class="section-desc">三個能力階段，四個學習等級，從素養到系統設計的完整升級路線</p>
+
+  <div class="path-arrow-row">
+    {% for level in site.data.levels %}
+    <div class="path-node level-{{ level.id | downcase }}">
+      <div class="path-node-icon">{{ level.icon }}</div>
+      <div class="path-node-label">{{ level.id }}</div>
+      <div class="path-node-name">{{ level.name }}</div>
+    </div>
+    {% unless forloop.last %}
+    <div class="path-arrow">→</div>
+    {% endunless %}
+    {% endfor %}
+  </div>
+
+  <!-- Level Cards -->
+  <div class="levels-grid">
+    {% for level in site.data.levels %}
+    <div class="level-card level-{{ level.id | downcase }}">
+      <div class="level-card-header">
+        <span class="level-tag">{{ level.tag }}</span>
+        <span class="level-days">{{ level.days }}{% if level.days == 2 or level.days == 3 %} 天{% endif %}</span>
+      </div>
+      <div class="level-card-title">
+        <span class="level-icon">{{ level.icon }}</span>
+        <div>
+          <div class="level-id">{{ level.id }}</div>
+          <div class="level-name">{{ level.name }}</div>
+        </div>
+      </div>
+      <p class="level-tagline">{{ level.tagline }}</p>
+      <p class="level-desc">{{ level.desc }}</p>
+
+      <div class="level-days-list">
+        {% for day in level.days_content %}
+        <div class="day-item">
+          <span class="day-label">{{ day.label }}</span>
+          <div class="day-content">
+            <strong>{{ day.title }}</strong>
+            <ul>
+              {% for bullet in day.bullets %}
+              <li>{{ bullet }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="level-outcomes">
+        <div class="outcomes-label">📦 帶走什麼</div>
+        {% for item in level.outcomes %}
+        <span class="outcome-tag">{{ item }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="level-who">
+        <span class="who-label">👥 適合</span> {{ level.who }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Supplements -->
+<section class="supplements-section">
+  <h2 class="section-title">免費補充單元</h2>
+  <p class="section-desc">深入主題，先讀先學，了解我們的教學風格</p>
+  <div class="supplements-grid">
+    {% for s in site.data.supplements %}
+    <a href="{{ '/supplements/' | append: s.id | relative_url }}" class="supplement-card">
+      <span class="supplement-icon">{{ s.icon }}</span>
+      <div class="supplement-info">
+        <span class="supplement-tag">{{ s.tag }}</span>
+        <h3>{{ s.name }}</h3>
+        <p>{{ s.tagline }}</p>
+      </div>
+      <span class="supplement-arrow">→</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-box">
+    <h2>想把這套學習路徑帶進你的團隊？</h2>
+    <p>我們提供企業客製化內訓，依照團隊現有程度設計 L1–L4 組合方案。</p>
+    <a href="{{ '/enterprise' | relative_url }}" class="btn-primary btn-large">企業內訓洽詢 →</a>
+  </div>
+</section>
+
+<!-- Link to AI100 -->
+<section class="ai100-section">
+  <div class="ai100-box">
+    <span class="ai100-icon">📚</span>
+    <div>
+      <strong>想先打好基礎觀念？</strong>
+      <p>AI 100 講 — 免費的 iPAS AI 應用規劃師基礎知識庫，100 堂白話課程，完全免費。</p>
+    </div>
+    <a href="{{ site.ai100_url }}" target="_blank" rel="noopener" class="btn-outline-sm">前往 AI 100 講 ↗</a>
+  </div>
+</section>
+
+{{ content }}

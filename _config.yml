@@ -1,0 +1,24 @@
+title: "AI 能力升級"
+description: "三階段能力養成 — 會用工具 → 選工具 → 創工具，企業 AI 內訓體系"
+url: "https://ai-cooperation.github.io"
+baseurl: "/ai-path"
+lang: "zh-TW"
+
+contact_email: "aicooperation.tw@gmail.com"
+ai100_url: "https://ai-cooperation.github.io/ai100/"
+
+collections:
+  supplements:
+    output: true
+    permalink: /supplements/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "supplements"
+    values:
+      layout: "supplement"
+
+markdown: kramdown
+kramdown:
+  input: GFM

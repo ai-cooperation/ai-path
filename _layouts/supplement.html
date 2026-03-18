@@ -1,0 +1,28 @@
+---
+layout: default
+---
+
+<article class="supplement-page">
+  <div class="supplement-hero">
+    <div class="supplement-hero-meta">
+      <span class="back-link"><a href="{{ '/supplements/' | relative_url }}">← 補充單元</a></span>
+      {% if page.related_level %}
+      <span class="related-badge">相關等級：{{ page.related_level }}</span>
+      {% endif %}
+    </div>
+    <div class="supplement-hero-icon">{{ page.icon }}</div>
+    <span class="supplement-hero-tag">{{ page.tag }}</span>
+    <h1 class="supplement-hero-title">{{ page.title }}</h1>
+    <p class="supplement-hero-tagline">{{ page.tagline }}</p>
+  </div>
+
+  <div class="supplement-body">
+    {{ content }}
+  </div>
+
+  <div class="supplement-footer-cta">
+    <p>這個主題在課程中會深度實戰練習</p>
+    <a href="{{ '/enterprise' | relative_url }}" class="btn-primary">了解企業內訓方案 →</a>
+    <a href="{{ '/supplements/' | relative_url }}" class="btn-outline-sm">看更多補充單元</a>
+  </div>
+</article>

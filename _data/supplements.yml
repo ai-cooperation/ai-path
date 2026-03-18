@@ -1,0 +1,31 @@
+- id: three-tools
+  name: 三刀流測試法
+  icon: "⚔️"
+  tag: "概念 · 通用"
+  tagline: "同一個任務，三個工具測試，找出你的最佳 AI 組合"
+  desc: "不知道選哪個 AI 工具？三刀流教你用實測取代猜測。"
+  related_level: L2
+
+- id: presentation-ai
+  name: "AI 簡報生成：6 種路線比較"
+  icon: "📊"
+  tag: "工具 · 生產力"
+  tagline: "從 Gamma 到 Claude Code，哪種路線最適合你的場景？"
+  desc: "6 種 AI 簡報生成方式全景，6 個維度評估，一張決策地圖選對工具。"
+  related_level: L2
+
+- id: gemini-image
+  name: "Gemini 圖片生成實戰"
+  icon: "🎨"
+  tag: "工具 · 圖像"
+  tagline: "用文字描述，讓 AI 生成你需要的圖片"
+  desc: "從 prompt 設計到批量生成，掌握 Gemini 圖片生成的完整工作流。"
+  related_level: L2
+
+- id: agent-gstack
+  name: "Agent 方案解析：gstack 模組"
+  icon: "🤖"
+  tag: "架構 · 進階"
+  tagline: "一個完整 Agent 方案的模組化解析"
+  desc: "用 gstack 模組架構拆解一個可落地的 AI Agent 系統，理解每個模組的角色與邊界。"
+  related_level: L3

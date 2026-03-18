@@ -59,7 +59,7 @@
   color: "purple"
   tag: "高階"
   tagline: "從一句話需求到可交付的 App，讓 AI 當你的開發夥伴"
-  desc: "掌握 Code Agent 開發流程，用 Happy Code 方法從 idea 到可運作原型，透過 PoCoClawd / OpenClawd 框架加速，站在巨人的肩膀上開發。"
+  desc: "掌握 Code Agent 開發流程，用 Happy Code 方法從 idea 到可運作原型，透過 Agent 框架加速，站在巨人的肩膀上開發。"
   days_content:
     - label: "Day 1"
       title: "Code Agent 與 MCP"
@@ -74,15 +74,15 @@
         - "快速迭代四心法：先跑再優化"
         - "從原型到正式開發的里程碑設計"
     - label: "Day 3"
-      title: "OpenClawd 深度實戰"
+      title: "Agent 框架深度實戰"
       bullets:
-        - "PoCoClawd：20 分鐘驗證概念，不從零開始"
-        - "OpenClawd：正式生產應用框架"
+        - "快速驗證：20 分鐘從概念到可運行 Agent"
+        - "正式部署：Agent 生產環境架構"
         - "框架 Trade-off 分析：什麼情況用框架？"
   outcomes:
     - "CLAUDE.md 指令手冊"
     - "Happy Code 原型 + 正式版"
-    - "PoCoClawd 快速驗證 Demo"
+    - "Agent 快速驗證 Demo"
   who: "技術主管、想開發內部工具的工程師、產品開發人員"
 
 - id: L4

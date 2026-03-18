@@ -25,7 +25,7 @@ related_level: L3
 
 ## 什麼是 gstack？
 
-**gstack**（Governance Stack）是一個用來描述 AI Agent 系統架構的模組化框架。
+**gstack**（Governance Stack）是一個用來描述 AI Agent 系統架構的模組化框架，由課程設計團隊基於 Agentic AI 系統實作經驗提煉整理，參考 Deloitte Tech Trends 2026 的治理框架分類與 IBM AI Agents 2025 的生產部署架構研究。
 
 它把一個完整的 Agent 系統拆解成 5 個層次，每個層次有清楚的職責邊界：
 
@@ -157,4 +157,4 @@ related_level: L3
 2. **設計**自己的 Agent 系統（每層用什麼？）
 3. **診斷**現有系統的問題（哪一層出了問題？）
 
-> L3「OpenClawd 深度實戰」課程中，我們會用 gstack 框架設計並實作一個完整的 Agent 方案，包含 MCP 工具整合、CLAUDE.md 設計、以及 OpenClawd 框架的 G4/G5 層實作。
+> L3「Agent 框架深度實戰」課程中，我們會用 gstack 框架設計並實作一個完整的 Agent 方案，包含 MCP 工具整合、CLAUDE.md 設計、以及 Agent 框架的 G4/G5 層實作。

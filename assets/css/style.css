@@ -197,10 +197,11 @@ a:hover { color: var(--teal); }
 .pain-source {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.58rem;
   color: var(--text-dim);
   margin-top: 0.7rem;
   letter-spacing: 0.02em;
+  opacity: 0.6;
 }
 .pain-insight {
   text-align: center;

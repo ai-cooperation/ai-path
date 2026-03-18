@@ -1,5 +1,5 @@
 - id: L1
-  name: 會用工具
+  name: 用工具
   days: 2
   icon: "🧰"
   color: "cyan"
@@ -86,7 +86,7 @@
   who: "技術主管、想開發內部工具的工程師、產品開發人員"
 
 - id: L4
-  name: 設計系統
+  name: 流程改造
   days: "6 週 PBL"
   icon: "🏗️"
   color: "gold"

@@ -52,7 +52,7 @@ description: "客製化 AI 能力升級企業培訓，依照團隊現況設計 L
         </thead>
         <tbody>
           <tr>
-            <td><strong>L1</strong> 會用工具</td>
+            <td><strong>L1</strong> 用工具</td>
             <td>建立任務包，打造個人 AI 助手</td>
             <td>2 天</td>
             <td>所有員工</td>
@@ -70,7 +70,7 @@ description: "客製化 AI 能力升級企業培訓，依照團隊現況設計 L
             <td>技術主管、工程師</td>
           </tr>
           <tr>
-            <td><strong>L4</strong> 設計系統</td>
+            <td><strong>L4</strong> 流程改造</td>
             <td>企業流程 AI 再造，完整交付文件</td>
             <td>6 週 PBL</td>
             <td>部門主管、AI 推動者</td>

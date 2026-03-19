@@ -16,6 +16,7 @@ related_level: L2
 .img-gallery.cols-4 { grid-template-columns: repeat(4, 1fr); }
 .img-caption { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim); margin-top: 0.3rem; text-align: center; }
 .img-label { background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem; }
+.img-label img { width: 100%; display: block; border-radius: 6px; }
 .img-label .img-label-tag { font-family: var(--font-mono); font-size: 0.65rem; color: var(--cyan); display: block; margin-bottom: 0.3rem; }
 .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0 2rem; }
 @media (max-width: 600px) { .compare-row, .img-gallery.cols-3, .img-gallery.cols-4 { grid-template-columns: 1fr 1fr; } }

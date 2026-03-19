@@ -33,6 +33,9 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* reading-glasses: 18px base — 40-70 歲友善最低門檻 */
+html { font-size: 18px; }
+
 body {
   font-family: var(--font-sans);
   color: var(--text);
@@ -67,7 +70,7 @@ a:hover { color: var(--teal); }
 .site-header nav a {
   color: var(--text-muted);
   margin-left: 1.8rem;
-  font-size: 0.88rem;
+  font-size: 1rem;
   font-weight: 500;
   transition: color 0.2s;
 }
@@ -89,14 +92,14 @@ a:hover { color: var(--teal); }
 }
 .hero-eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--cyan);
   margin-bottom: 1rem;
 }
 .hero-title {
-  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 900;
   background: linear-gradient(135deg, var(--cyan), var(--purple));
   -webkit-background-clip: text;
@@ -106,7 +109,7 @@ a:hover { color: var(--teal); }
   letter-spacing: 0.02em;
 }
 .hero-quote {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
   color: var(--text-muted);
   margin-bottom: 0.75rem;
   max-width: 640px;
@@ -126,9 +129,13 @@ a:hover { color: var(--teal); }
   background: var(--cyan);
   color: #0a0f1a;
   padding: 0.75rem 2rem;
+  min-height: 48px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s;
 }
 .btn-primary:hover {
@@ -142,9 +149,13 @@ a:hover { color: var(--teal); }
   border: 1px solid var(--border-glow);
   color: var(--cyan);
   padding: 0.75rem 2rem;
+  min-height: 48px;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s;
 }
 .btn-outline:hover {
@@ -186,14 +197,14 @@ a:hover { color: var(--teal); }
 }
 .pain-num {
   display: block;
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   font-weight: 900;
   color: var(--cyan);
   font-family: var(--font-mono);
   line-height: 1;
   margin-bottom: 0.6rem;
 }
-.pain-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+.pain-card p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
 .pain-source {
   display: block;
   font-family: var(--font-mono);
@@ -206,7 +217,7 @@ a:hover { color: var(--teal); }
 .pain-insight {
   text-align: center;
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1rem;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -222,7 +233,7 @@ a:hover { color: var(--teal); }
 .section-desc {
   text-align: center;
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 1rem;
   margin-bottom: 2.5rem;
 }
 
@@ -321,16 +332,16 @@ a:hover { color: var(--teal); }
 }
 
 .level-tagline {
-  font-size: 0.92rem;
+  font-size: 1rem;
   color: var(--teal);
   border-left: 3px solid var(--teal);
   padding-left: 0.8rem;
 }
 
 .level-desc {
-  font-size: 0.88rem;
+  font-size: 1rem;
   color: var(--text-muted);
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 /* === Day Items === */
@@ -354,7 +365,7 @@ a:hover { color: var(--teal); }
 .level-card.level-l4 .day-label { color: var(--gold); background: var(--gold-dim); }
 .day-content strong {
   display: block;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   color: var(--text);
   margin-bottom: 0.3rem;
 }
@@ -366,7 +377,7 @@ a:hover { color: var(--teal); }
   gap: 0.2rem;
 }
 .day-content ul li {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
   padding-left: 1rem;
   position: relative;
@@ -442,8 +453,8 @@ a:hover { color: var(--teal); }
   display: block;
   margin-bottom: 0.2rem;
 }
-.supplement-info h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
-.supplement-info p { font-size: 0.85rem; color: var(--text-muted); }
+.supplement-info h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+.supplement-info p { font-size: 0.95rem; color: var(--text-muted); }
 .supplement-arrow { font-size: 1.2rem; color: var(--text-dim); flex-shrink: 0; }
 
 /* === CTA Section === */
@@ -529,13 +540,14 @@ a:hover { color: var(--teal); }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 2rem 2.5rem;
+  font-size: 1.05rem;
   line-height: 1.9;
 }
-.supplement-body h2 { font-size: 1.3rem; font-weight: 700; color: var(--cyan); margin: 2rem 0 0.8rem; }
-.supplement-body h3 { font-size: 1.05rem; font-weight: 700; color: var(--teal); margin: 1.5rem 0 0.6rem; }
+.supplement-body h2 { font-size: 1.4rem; font-weight: 700; color: var(--cyan); margin: 2rem 0 0.8rem; }
+.supplement-body h3 { font-size: 1.15rem; font-weight: 700; color: var(--teal); margin: 1.5rem 0 0.6rem; }
 .supplement-body p { color: var(--text-muted); margin-bottom: 1rem; }
 .supplement-body ul, .supplement-body ol { padding-left: 1.5rem; color: var(--text-muted); margin-bottom: 1rem; }
-.supplement-body li { margin-bottom: 0.4rem; }
+.supplement-body li { margin-bottom: 0.5rem; }
 .supplement-body strong { color: var(--text); }
 .supplement-body code {
   font-family: var(--font-mono);
@@ -549,17 +561,17 @@ a:hover { color: var(--teal); }
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
 }
 .supplement-body th {
   background: var(--bg-deep);
   color: var(--cyan);
-  padding: 0.6rem 0.9rem;
+  padding: 0.7rem 1rem;
   text-align: left;
   border-bottom: 1px solid var(--border);
 }
 .supplement-body td {
-  padding: 0.6rem 0.9rem;
+  padding: 0.7rem 1rem;
   border-bottom: 1px solid var(--border);
   color: var(--text-muted);
 }

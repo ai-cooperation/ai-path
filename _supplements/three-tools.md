@@ -1,92 +1,155 @@
 ---
 layout: supplement
-title: "三刀流測試法"
-icon: "⚔️"
-tag: "概念 · 通用"
-tagline: "同一個任務，三個工具測試，找出你的最佳 AI 組合"
-description: "不知道選哪個 AI 工具？三刀流教你用實測取代猜測。10 分鐘建立你的個人工具決策矩陣。"
-related_level: L2
+title: "開發工作流三層架構"
+icon: "🏗️"
+tag: "架構 · 進階"
+tagline: "Skills + Agents + Commands — 日常對話自動觸發，不用記指令"
+description: "14 個 Agent、10 個 Command、16 條自動觸發規則，開發與研究雙軌統一工作流架構解析。"
+related_level: L3
 ---
 
-## 為什麼要「三刀流」？
+## 為什麼需要三層架構？
 
-大部分人選 AI 工具的方式是：**聽別人說哪個好，就用哪個。**
+多數人用 AI 的方式是：**想到什麼問什麼，每次都要重新描述脈絡。**
 
-問題是：別人的工作情境跟你不一樣。ChatGPT 適合 A，不代表適合你的任務 B。
+三層架構解決的是另一個問題：**讓 AI 系統知道你在做什麼，在對的時機自動呼叫對的專家。**
 
-三刀流的精神很簡單：**用同一個真實任務，測試三個工具，用結果說話。**
-
-> 「不要問哪個 AI 最強，要問哪個 AI 最適合你這個任務。」
-
----
-
-## 四大主力工具定位
-
-在測試之前，先了解每個工具的強項：
-
-| 工具 | 強項 | 適合任務 |
-|------|------|---------|
-| **ChatGPT** | 創意生成、多模態（圖片/語音）、GPT 生態 | 寫作、圖片分析、廣度探索 |
-| **Claude** | 長文理解、精確性、Project 工作區 | 文件分析、複雜推理、需要上下文累積 |
-| **Gemini** | Google Workspace 整合、即時資訊 | 試算表、Gmail、搜尋結合生成 |
-| **Codex** | 程式碼生成、資料處理自動化 | Excel 自動化、腳本、報表生成 |
+> 日常對話 → 自動觸發對應 Agent（不用打指令）
+> `/指令` → 串接多個 Agent 的完整工作流
+> `agents.md` → 一個檔案控制所有觸發規則
 
 ---
 
-## 三刀流測試步驟
+## 三層全景
 
-### Step 1：選一個真實任務（2 分鐘）
+```
+Layer 1 — Skills
+  └ 可被呼叫的能力單元（如 pptx-design、code-reviewer 技能包）
 
-選你**本週真的要做**的一件事，寫成一句話描述：
+Layer 2 — Agents（14 個專家）
+  ├ 開發面：6 個 Agent（dev-orchestrator、code-reviewer、security-auditor...）
+  └ 研究面：8 個 Agent（research-orchestrator、literature-researcher、paper-writer...）
 
-- ✅ 「把這份 30 頁報告整理成 5 個重點摘要」
-- ✅ 「幫我寫一封婉拒廠商的 email」
-- ✅ 「把這份 Excel 銷售資料自動生成每週圖表」
-- ❌ 「測試 AI 能力」（太模糊）
-
----
-
-### Step 2：三個工具，同一個 prompt（各 5-10 分鐘）
-
-用**完全相同的描述**，丟給 ChatGPT、Claude、Gemini 三個工具。
-
-記錄：
-- 回答的**速度**
-- 回答的**格式**（結構清不清楚？）
-- 回答的**準確度**（有沒有亂說？）
-- 你自己**用起來的感覺**
+Layer 3 — Commands（10 個一鍵指令）
+  ├ 開發面：/dev-review、/ship-release、/qa-check、/security-scan、/plan-feature
+  └ 研究面：/review-paper、/analyze-literature、/analyze-experiment、/prepare-submission、/respond-reviewers
+```
 
 ---
 
-### Step 3：建立你的任務 × 工具對照表
+## Layer 2：14 個專家 Agent
 
-| 任務類型 | 最佳工具 | 備選 | 理由 |
-|---------|---------|------|------|
-| 長文摘要 | Claude | ChatGPT | 更精確，上下文保持好 |
-| 創意寫作 | ChatGPT | Claude | 文字更有活力 |
-| Google Sheets | Gemini | - | 直接整合，不用複製貼上 |
-| 資料自動化 | Codex | - | 直接出可執行程式碼 |
-| 會議記錄整理 | Claude | Gemini | 上下文追蹤 |
+### 開發面（6 個）
+
+| Agent | 職責 |
+|-------|------|
+| `dev-orchestrator` | 總協調員：分析任務，選擇工作流模式 |
+| `code-reviewer` | 兩階段審查：CRITICAL + INFORMATIONAL |
+| `security-auditor` | 安全掃描、漏洞偵測、secret 偵測 |
+| `qa-tester` | QA 測試、健康度評分（8 維度） |
+| `release-engineer` | 發布流程、版本管理、PR 建立 |
+| `planner` | 功能規劃、實作分解、依賴分析 |
+
+### 研究面（8 個）
+
+| Agent | 職責 |
+|-------|------|
+| `research-orchestrator` | 協調研究任務，分配研究專家 |
+| `literature-researcher` | 文獻分析、Research Gap 識別 |
+| `paper-writer` | 論文撰寫、潤稿、學術英文 |
+| `citation-checker` | 引用驗證、BibTeX 健檢 |
+| `paper-reviewer` | 論文審查、七維度評分 |
+| `data-validator` | 數據品質、結果一致性驗證 |
+| `stats-validator` | 統計檢驗、p-value、效果量 |
+| `submission-helper` | 投稿準備、Cover Letter、審稿回覆 |
 
 ---
 
-## 常見誤區
+## 自動觸發規則（16 條）
 
-**誤區 1：用最貴的就是最好**
-Claude Pro / ChatGPT Plus / Gemini Advanced 各有所長，不是花最多就最強。
+不需要打指令，系統根據你說的話自動比對觸發：
 
-**誤區 2：prompt 要寫很複雜**
-好的 prompt 只需要三件事：**任務是什麼、給什麼背景、要什麼格式**。
+### 開發情境
 
-**誤區 3：測試一次就定論**
-不同任務類型要分開測，行銷文案跟資料分析需要的工具可能不一樣。
+| 你說了什麼 | 自動呼叫 | 執行動作 |
+|-----------|---------|---------|
+| 寫完或修改程式碼 | `code-reviewer` | 兩階段審查（CRITICAL + INFO） |
+| 複雜功能需求 | `planner` | 規劃實作方案 |
+| 架構決策 | `architect` | 系統設計分析 |
+| 新功能或 bug fix | `tdd-guide` | TDD 流程引導 |
+| 提到「發布」「push」「PR」 | `release-engineer` | 發布流程 |
+| 提到「安全」「掃描」 | `security-auditor` | 安全掃描 |
+| 提到「測試」「品質」 | `qa-tester` | 品質檢查 |
+| 提到「回顧」「這週做了什麼」 | `retro-analyst` | Git 歷史分析 |
+
+### 研究情境
+
+| 你說了什麼 | 自動呼叫 | 執行動作 |
+|-----------|---------|---------|
+| 提到「論文」「審查」「review」 | `paper-reviewer` | 七維度評分 + 問題分級 |
+| 提到「文獻」「research gap」 | `literature-researcher` | 文獻分析 + Gap 識別 |
+| 提到「寫論文」「潤稿」 | `paper-writer` | 撰寫、潤稿、英文改寫 |
+| 提到「引用」「bib」 | `citation-checker` | 引用驗證、BibTeX 健檢 |
+| 提到「數據」「結果驗證」 | `data-validator` | 數據品質 + 一致性 |
+| 提到「統計」「p-value」 | `stats-validator` | 統計分析 + 顯著性 |
+| 提到「投稿」「cover letter」 | `submission-helper` | 投稿準備 + 回覆審稿 |
+| 複雜研究任務（多步驟） | `research-orchestrator` | 協調多個研究 Agent |
 
 ---
 
-## 你的第一次三刀流
+## Layer 3：10 個一鍵 Command
 
-現在選一個今天**真的要做**的任務，打開三個分頁，開始測試。
+Command 是**串接多個 Agent 的完整工作流**，一個指令觸發一整條流水線：
 
-10 分鐘後，你就會有自己的第一筆工具決策紀錄。
+### 開發 Commands
 
-> 這個方法在 L2「工具選擇與 Agent 入門」課程中會深度實戰，包含 25 分鐘實做練習與個人工具對照表建立。
+| Command | 串接流程 | 說明 |
+|---------|---------|------|
+| `/dev-review` | security-auditor → code-reviewer → qa-tester | 全面審查：安全 → 品質 → 測試 |
+| `/ship-release` | qa-tester → code-reviewer → security-auditor → release-engineer | 一鍵發布，含人工確認 |
+| `/qa-check` | qa-tester | 自動偵測專案類型，健康度評分 |
+| `/security-scan` | security-auditor | 安全掃描 + 漏洞報告 |
+| `/plan-feature` | architect → planner → tdd-guide | 功能規劃：設計 → 分解 → TDD |
+
+### 研究 Commands
+
+| Command | 串接流程 | 說明 |
+|---------|---------|------|
+| `/review-paper` | citation-checker → data-validator → paper-reviewer | 全面審查：引用 → 數據 → 七維度評分 |
+| `/analyze-literature` | literature-researcher | 文獻分類 + Gap 識別 + Related Work |
+| `/analyze-experiment` | data-validator → stats-validator | 數據品質 → 統計分析 |
+| `/prepare-submission` | paper-reviewer → submission-helper | 投稿準備：審查 → Cover Letter |
+| `/respond-reviewers` | submission-helper | 審稿回覆信撰寫 |
+
+---
+
+## 如何運作
+
+```
+使用者輸入：「幫我審查這篇論文」
+    ↓
+Claude 讀取 agents.md
+    ↓
+比對 16 條自動觸發規則
+    ↓
+自動呼叫：citation-checker → data-validator → paper-reviewer
+    ↓
+產出：引用驗證報告 + 數據一致性 + 七維度評分
+```
+
+觸發規則全部定義在 `agents.md` 這一個檔案中，修改規則、新增 Agent，只需要改這一個地方。
+
+---
+
+## 安裝方式
+
+```bash
+cd ~/Desktop/dev-workflow-package
+./install.sh
+```
+
+自動複製到：
+- `~/.claude/agents/`（14 個 Agent）
+- `~/.claude/commands/`（10 個 Command）
+
+> L3「Agent 框架深度實戰」課程中，我們會實際安裝這套工作流，並從零開始設計屬於你的自動觸發規則，理解三層架構的設計邏輯。

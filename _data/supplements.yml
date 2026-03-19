@@ -1,10 +1,10 @@
 - id: three-tools
-  name: 三刀流測試法
-  icon: "⚔️"
-  tag: "概念 · 通用"
-  tagline: "同一個任務，三個工具測試，找出你的最佳 AI 組合"
-  desc: "不知道選哪個 AI 工具？三刀流教你用實測取代猜測。"
-  related_level: L2
+  name: "開發工作流三層架構"
+  icon: "🏗️"
+  tag: "架構 · 進階"
+  tagline: "Skills + Agents + Commands — 日常對話自動觸發，不用記指令"
+  desc: "14 個 Agent、10 個 Command、16 條自動觸發規則，開發與研究雙軌統一工作流架構解析。"
+  related_level: L3
 
 - id: presentation-ai
   name: "AI 簡報生成：6 種路線比較"

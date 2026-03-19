@@ -8,13 +8,7 @@ description: "AI 能力升級 L1–L4 課程時間表，含開課日期、上課
 
   <div class="schedule-hero">
     <h1 class="schedule-title">開課時間表</h1>
-    <p class="schedule-subtitle">L1–L4 全年度規劃，依程度選擇入口，企業可客製組合</p>
-  </div>
-
-  <div class="schedule-notice">
-    <span class="notice-icon">📌</span>
-    所有課程目前為<strong>規劃中</strong>，確切日期與細節以來信確認為準。
-    歡迎<a href="mailto:{{ site.contact_email }}">來信諮詢</a>，提前登記優先通知。
+    <p class="schedule-subtitle">L1–L4 全路徑規劃<br>每個人依程度選擇課程<br>企業可客製化設計組合內容</p>
   </div>
 
   <div class="schedule-grid">

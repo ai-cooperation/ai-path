@@ -106,7 +106,7 @@ a:hover { color: var(--teal); }
   margin-bottom: 1rem;
 }
 .hero-title {
-  font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+  font-size: clamp(2.2rem, 5.5vw, 3.5rem);
   font-weight: 900;
   background: linear-gradient(135deg, var(--cyan), var(--purple));
   -webkit-background-clip: text;
@@ -116,8 +116,8 @@ a:hover { color: var(--teal); }
   letter-spacing: 0.02em;
 }
 .hero-quote {
-  font-size: clamp(1.05rem, 2.5vw, 1.3rem);
-  color: var(--text-muted);
+  font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+  color: var(--text);
   margin-bottom: 0.75rem;
   max-width: 640px;
   margin-left: auto;
@@ -125,8 +125,8 @@ a:hover { color: var(--teal); }
 }
 .hero-quote strong { color: var(--cyan); font-style: normal; }
 .hero-tagline {
-  font-size: 1rem;
-  color: var(--text-dim);
+  font-size: 1.05rem;
+  color: var(--text-muted);
   margin-bottom: 2.5rem;
 }
 .hero-cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }

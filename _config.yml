@@ -19,6 +19,9 @@ defaults:
     values:
       layout: "supplement"
 
+plugins:
+  - jekyll-sitemap
+
 markdown: kramdown
 kramdown:
   input: GFM

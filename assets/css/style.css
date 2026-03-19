@@ -33,8 +33,15 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* reading-glasses: 18px base — 40-70 歲友善最低門檻 */
-html { font-size: 18px; }
+/* reading-glasses skill: 22px base — 正文 22px，最小字級 16px */
+html { font-size: 22px; }
+/* 全站最小字級保底：caption/label ≥ 16px */
+small, .caption, .label, .img-caption, .img-label-tag,
+.hero-eyebrow, .level-tag, .level-days, .day-label,
+.supplement-tag, .supplement-hero-tag, .related-badge,
+.outcomes-label, .outcome-tag, .path-node-label, .pain-source {
+  font-size: max(16px, 0.72rem);
+}
 
 body {
   font-family: var(--font-sans);
@@ -99,7 +106,7 @@ a:hover { color: var(--teal); }
   margin-bottom: 1rem;
 }
 .hero-title {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.7rem, 4.5vw, 2.6rem);
   font-weight: 900;
   background: linear-gradient(135deg, var(--cyan), var(--purple));
   -webkit-background-clip: text;
@@ -132,7 +139,7 @@ a:hover { color: var(--teal); }
   min-height: 48px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +159,7 @@ a:hover { color: var(--teal); }
   min-height: 48px;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -197,7 +204,7 @@ a:hover { color: var(--teal); }
 }
 .pain-num {
   display: block;
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 900;
   color: var(--cyan);
   font-family: var(--font-mono);
@@ -502,7 +509,7 @@ a:hover { color: var(--teal); }
 .footer-contact:hover, .footer-link:hover { color: var(--cyan); }
 
 /* === Supplement Page === */
-.supplement-page { padding: 2rem 0 4rem; max-width: 800px; margin: 0 auto; }
+.supplement-page { padding: 2rem 0 4rem; max-width: 720px; margin: 0 auto; }
 .supplement-hero {
   text-align: center;
   padding: 3rem 1rem 2.5rem;
@@ -600,7 +607,7 @@ a:hover { color: var(--teal); }
 .supplement-footer-cta p { color: var(--text-muted); font-size: 0.9rem; }
 
 /* === Enterprise Page === */
-.enterprise-page { max-width: 800px; margin: 0 auto; padding: 3rem 0 5rem; }
+.enterprise-page { max-width: 720px; margin: 0 auto; padding: 3rem 0 5rem; }
 .enterprise-hero { margin-bottom: 3rem; }
 .enterprise-hero h1 { font-size: 2.2rem; font-weight: 900; margin-bottom: 0.8rem; }
 .enterprise-hero p { color: var(--text-muted); font-size: 1rem; max-width: 580px; }
@@ -647,7 +654,7 @@ a:hover { color: var(--teal); }
 }
 
 /* === Supplements Index === */
-.supplements-index { max-width: 800px; margin: 0 auto; padding: 3rem 0 5rem; }
+.supplements-index { max-width: 720px; margin: 0 auto; padding: 3rem 0 5rem; }
 .supplements-index-hero { margin-bottom: 2.5rem; }
 .supplements-index-hero h1 { font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
 .supplements-index-hero p { color: var(--text-muted); }

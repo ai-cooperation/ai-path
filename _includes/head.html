@@ -1,8 +1,141 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
-<meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+<meta name="description" content="{{ page.description | default: page.tagline | default: site.description | truncate: 160 }}">
+<meta name="keywords" content="AI企業培訓,AI內訓,AI能力升級,Claude Code,Coding AI,Agent工作流,自動化,生成式AI,企業AI導入,{{ page.tag }}">
+<link rel="canonical" href="{{ site.url }}{{ page.url }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="{% if page.layout == 'supplement' %}article{% else %}website{% endif %}">
+<meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+<meta property="og:description" content="{{ page.description | default: page.tagline | default: site.description | truncate: 200 }}">
+<meta property="og:url" content="{{ site.url }}{{ page.url }}">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:locale" content="zh_TW">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+<meta name="twitter:description" content="{{ page.description | default: page.tagline | default: site.description | truncate: 200 }}">
+
+<!-- JSON-LD: 首頁 — 企業培訓課程體系 -->
+{% if page.url == "/" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOccupationalProgram",
+  "name": "AI 能力升級 — 企業 AI 內訓體系",
+  "description": "三階段能力養成：L1 用工具、L2 選工具、L3 創工具、L4 流程改造。從 AI 應用素養到企業流程再造的完整升級路線。",
+  "url": "{{ site.url }}/",
+  "inLanguage": "zh-TW",
+  "provider": {
+    "@type": "Organization",
+    "name": "AI Cooperation",
+    "url": "{{ site.url }}/",
+    "email": "{{ site.contact_email }}"
+  },
+  "occupationalCategory": "AI 應用、數位轉型、企業自動化",
+  "educationalProgramMode": "blended",
+  "hasCourse": [
+    {
+      "@type": "Course",
+      "name": "L1 用工具",
+      "description": "建立正確 AI 使用觀念，打造個人化 AI 助手（Custom GPTs / Gemini Gems），將工作流打包成可重用任務包。",
+      "timeRequired": "P2D",
+      "educationalLevel": "入門"
+    },
+    {
+      "@type": "Course",
+      "name": "L2 選工具",
+      "description": "建立四大 AI 工具判斷力，深入 Claude 工作空間與 Agent 工作流設計，進入 Coding AI 開發。",
+      "timeRequired": "P2D",
+      "educationalLevel": "進階"
+    },
+    {
+      "@type": "Course",
+      "name": "L3 創工具",
+      "description": "掌握 Code Agent 開發流程，用 Happy Code 方法從 idea 到可運作原型，透過 Agent 框架加速開發。",
+      "timeRequired": "P3D",
+      "educationalLevel": "高階"
+    },
+    {
+      "@type": "Course",
+      "name": "L4 流程改造",
+      "description": "以 PBL 方式用冰山模型挖掘企業流程根因，設計 AI 能力矩陣，完成 AS-IS → TO-BE 流程再造。",
+      "timeRequired": "P6W",
+      "educationalLevel": "企業級"
+    }
+  ],
+  "teaches": [
+    "AI 工具應用與選型判斷",
+    "Custom GPTs / Gemini Gems 個人 AI 助手建置",
+    "GAS 自動化與 AI API 串接",
+    "Claude Code 操作與 Agent 工作流設計",
+    "Coding AI 與程式生成",
+    "企業流程 AI 改造與系統設計"
+  ]
+}
+</script>
+{% endif %}
+
+<!-- JSON-LD: 補充單元 — LearningResource -->
+{% if page.layout == "supplement" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  "name": "{{ page.title }}",
+  "description": "{{ page.description | default: page.tagline }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "inLanguage": "zh-TW",
+  "learningResourceType": "supplemental material",
+  "educationalLevel": "{% if page.related_level == 'L1' %}入門{% elsif page.related_level == 'L2' %}進階{% elsif page.related_level == 'L3' %}高階{% else %}企業級{% endif %}",
+  "isPartOf": {
+    "@type": "EducationalOccupationalProgram",
+    "name": "AI 能力升級企業內訓體系",
+    "url": "{{ site.url }}/"
+  },
+  "keywords": "{{ page.tag }}",
+  "provider": {
+    "@type": "Organization",
+    "name": "AI Cooperation",
+    "url": "{{ site.url }}/"
+  }
+}
+</script>
+{% endif %}
+
+<!-- JSON-LD: 企業諮詢頁 — Service -->
+{% if page.url contains "enterprise" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "AI 企業客製化內訓",
+  "description": "依照團隊現有程度設計 L1–L4 組合方案，從 AI 應用素養到流程改造的完整企業培訓服務。",
+  "url": "{{ site.url }}/enterprise/",
+  "inLanguage": "zh-TW",
+  "provider": {
+    "@type": "Organization",
+    "name": "AI Cooperation",
+    "url": "{{ site.url }}/",
+    "email": "{{ site.contact_email }}"
+  },
+  "serviceType": "企業 AI 培訓",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Taiwan"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "{{ site.contact_email }}",
+    "contactType": "sales",
+    "availableLanguage": "zh-TW"
+  }
+}
+</script>
+{% endif %}

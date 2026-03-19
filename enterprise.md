@@ -59,7 +59,7 @@ description: "客製化 AI 能力升級企業培訓，依照團隊現況設計 L
           </tr>
           <tr>
             <td><strong>L2</strong> 選工具</td>
-            <td>三刀流實測：親身體驗工具差異，第一次寫 AI 程式</td>
+            <td>工具判斷力 + Claude深度 + Agent工作流 + Coding AI入門</td>
             <td>2 天</td>
             <td>進階使用者、主管</td>
           </tr>

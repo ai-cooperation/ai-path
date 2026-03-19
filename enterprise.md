@@ -59,7 +59,7 @@ description: "客製化 AI 能力升級企業培訓，依照團隊現況設計 L
           </tr>
           <tr>
             <td><strong>L2</strong> 選工具</td>
-            <td>工具決策矩陣，第一次寫 AI 程式</td>
+            <td>三刀流實測：親身體驗工具差異，第一次寫 AI 程式</td>
             <td>2 天</td>
             <td>進階使用者、主管</td>
           </tr>
@@ -106,7 +106,7 @@ description: "客製化 AI 能力升級企業培訓，依照團隊現況設計 L
     <h2>開始規劃你的團隊培訓</h2>
     <p>歡迎來信說明公司背景、團隊規模、期望學習方向，<br>我們會回覆適合的方案建議。</p>
     <a href="mailto:aicooperation.tw@gmail.com" class="contact-email">✉ aicooperation.tw@gmail.com</a>
-    <a href="mailto:aicooperation.tw@gmail.com?subject=企業內訓詢問&body=公司名稱：%0A團隊規模：%0A感興趣的等級：%0A期望時間：%0A其他說明：" class="btn-primary btn-large">寄送詢問信 →</a>
+    <a href="mailto:aicooperation.tw@gmail.com?subject=企業內訓詢問&body=公司名稱：%0A團隊規模：%0A感興趣的等級：%0A期望時間：%0A其他說明：" class="btn-primary btn-large">免費諮詢 →</a>
   </div>
 
 </div>

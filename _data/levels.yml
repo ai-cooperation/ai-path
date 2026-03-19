@@ -16,9 +16,9 @@
     - label: "Day 2"
       title: "AI 個人助手與自動化"
       bullets:
-        - "Custom GPTs：打造有記憶、有角色的個人 AI 助手"
-        - "Gemini Gems：整合 Google Workspace 的 AI 助手"
-        - "產出：完成一個可立即使用的 AI 助手"
+        - "Custom GPTs / Gemini Gems：打造有記憶、有角色的個人 AI 助手"
+        - "GAS（Google Apps Script）自動化：讓 AI 幫你處理試算表與重複流程"
+        - "產出：AI 助手設定檔 + 第一條自動化工作流"
   outcomes:
     - "個人任務包（5 個可立即使用）"
     - "Custom GPT 設定檔"
@@ -32,14 +32,14 @@
   color: "teal"
   tag: "進階"
   tagline: "知道什麼任務配什麼工具，第一次用嘴巴寫程式"
-  desc: "建立 AI 工具決策矩陣，用三刀流測試法找出最適合你的工具組合，並以 Codex 完成人生第一支 AI 生成程式碼。"
+  desc: "同一個任務用三種工具各跑一次，親身體驗差異，找出你的最適組合。Day 2 用 Codex 完成第一支 AI 生成的自動化程式。"
   days_content:
     - label: "Day 1"
-      title: "工具選擇與 Agent 入門"
+      title: "三刀流工具實測"
       bullets:
-        - "ChatGPT / Claude / Gemini 三刀流比較"
-        - "任務 × 工具決策矩陣：快速配對"
-        - "動手：三刀流測試同一個任務，找出差異"
+        - "動手：同一個任務，ChatGPT / Claude / Gemini 各跑一次"
+        - "對比輸出品質、速度、使用習慣，找出差異"
+        - "建立你的個人工具選用原則"
     - label: "Day 2"
       title: "Coding AI 與 API 入門"
       bullets:
@@ -47,8 +47,8 @@
         - "30 分鐘手工 → 2 分鐘 AI 自動化"
         - "API 基礎：打通 AI 與工作流的橋樑"
   outcomes:
-    - "個人「任務 → 工具」對照表"
-    - "三刀流測試記錄"
+    - "三刀流測試紀錄（三種工具對比表）"
+    - "個人工具選用原則"
     - "第一支 AI 生成的自動化程式"
   who: "已使用過 AI 工具、想提升應用深度的職場人員"
 

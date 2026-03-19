@@ -39,7 +39,7 @@ html { font-size: 22px; }
 small, .caption, .label, .img-caption, .img-label-tag,
 .hero-eyebrow, .level-tag, .level-days, .day-label,
 .supplement-tag, .supplement-hero-tag, .related-badge,
-.outcomes-label, .outcome-tag, .path-node-label, .pain-source {
+.outcomes-label, .outcome-tag, .pain-source {
   font-size: max(16px, 0.72rem);
 }
 
@@ -223,8 +223,9 @@ a:hover { color: var(--teal); }
 }
 .pain-insight {
   text-align: center;
-  color: var(--text-muted);
-  font-size: 1rem;
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 500;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -239,8 +240,8 @@ a:hover { color: var(--teal); }
 }
 .section-desc {
   text-align: center;
-  color: var(--text-muted);
-  font-size: 1rem;
+  color: var(--text);
+  font-size: 1.05rem;
   margin-bottom: 2.5rem;
 }
 
@@ -250,7 +251,7 @@ a:hover { color: var(--teal); }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   margin-bottom: 3rem;
   flex-wrap: wrap;
 }
@@ -258,20 +259,20 @@ a:hover { color: var(--teal); }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.8rem 1.2rem;
+  gap: 0.4rem;
+  padding: 1.1rem 1.6rem;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  min-width: 100px;
+  border-radius: 12px;
+  min-width: 130px;
   transition: all 0.2s;
 }
 .path-node:hover { border-color: var(--cyan); transform: translateY(-2px); }
-.path-node-icon { font-size: 1.6rem; }
-.path-node-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--cyan); font-weight: 600; }
-.path-node-name { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+.path-node-icon { font-size: 2rem; }
+.path-node-label { font-family: var(--font-mono); font-size: 1rem; color: var(--cyan); font-weight: 700; }
+.path-node-name { font-size: 1.1rem; font-weight: 800; color: var(--text); }
 .level-l4 .path-node-label { color: var(--gold); }
-.path-arrow { font-size: 1.4rem; color: var(--text-dim); }
+.path-arrow { font-size: 1.6rem; color: var(--text-dim); }
 
 /* === Level Cards === */
 .levels-grid {

@@ -1,0 +1,670 @@
+---
+layout: null
+title: "Vibe Coding 學習路徑"
+description: "從「只會聊天」變成「會造東西」— 3 階段 × 4 模組，不需要程式基礎，每堂課都有作品帶走"
+---
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding 學習路徑 — 課程簡章</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --navy:#0B3C5D;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:22px;}
+body{font-family:'Noto Sans TC',sans-serif;color:var(--g900);line-height:1.7;background:var(--white);font-weight:400;}
+
+/* ── Reading Glasses: 老花眼友善 ── */
+/* 正文 22px, 最小 16px, CJK 行高 1.7, 內容寬 720px, 按鈕 48px+ */
+
+/* ── Layout ── */
+.container{max-width:720px;margin:0 auto;padding:2.5rem 1.5rem;}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#0B3C5D 0%,#0F9D8A 100%);color:#fff;padding:4rem 2rem;text-align:center;}
+.hero h1{font-size:2.2rem;font-weight:900;line-height:1.3;margin-bottom:.8rem;}
+.hero .tagline{font-size:1.1rem;font-weight:400;opacity:.85;margin-bottom:1.5rem;}
+.hero .badges{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;}
+.hero .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:.4rem 1.2rem;font-size:.82rem;font-weight:500;}
+
+/* ── Section ── */
+section{padding:3rem 0;border-bottom:1px solid var(--g100);}
+section:last-of-type{border:none;}
+.section-label{font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:.4rem;}
+h2{font-size:1.45rem;font-weight:900;margin-bottom:1rem;line-height:1.3;}
+h3{font-size:1.05rem;font-weight:700;margin-bottom:.4rem;}
+
+/* ── Target ── */
+.target-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.2rem;}
+.target-card{background:var(--offwhite);border-radius:12px;padding:1.4rem;border-left:4px solid var(--green);}
+.target-card p{font-size:.9rem;color:var(--g600);line-height:1.7;}
+@media(max-width:600px){.target-grid{grid-template-columns:1fr;}}
+
+/* ── Stage Card ── */
+.stage-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;margin-top:1.5rem;}
+.stage-num{flex-shrink:0;width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;color:#fff;}
+.stage-num.s1{background:var(--green);}
+.stage-num.s2{background:var(--blue);}
+.stage-num.s3{background:var(--navy);}
+.stage-title{font-size:1.25rem;font-weight:900;}
+.stage-subtitle{font-size:.85rem;color:var(--g600);font-weight:400;margin-top:.15rem;}
+
+/* ── Module List ── */
+.module-list{display:flex;flex-direction:column;gap:1rem;}
+.module{background:var(--white);border:1.5px solid var(--g100);border-radius:14px;padding:1.4rem 1.5rem;transition:border-color .2s;}
+.module:hover{border-color:var(--green);}
+.module .mod-head{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:.5rem;}
+.module .mod-id{flex-shrink:0;font-size:.75rem;font-weight:700;color:#fff;border-radius:6px;padding:.2rem .6rem;margin-top:.2rem;}
+.module .mod-id.s1{background:var(--green);}
+.module .mod-id.s2{background:var(--blue);}
+.module .mod-id.s3{background:var(--navy);}
+.module .mod-name{font-size:1.05rem;font-weight:700;line-height:1.4;}
+.module .mod-desc{font-size:.9rem;color:var(--g600);line-height:1.7;margin-left:3.4rem;}
+.module .mod-learn{font-size:.9rem;color:var(--g800);line-height:1.7;margin-left:3.4rem;margin-top:.5rem;}
+.module .mod-learn strong{color:var(--green);font-weight:700;}
+.module .mod-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.7rem;margin-left:3.4rem;}
+.module .tag{font-size:.73rem;padding:.2rem .65rem;border-radius:100px;font-weight:500;border:1px solid var(--g200);color:var(--g600);background:var(--offwhite);}
+.module .tag.highlight{border-color:var(--green);color:var(--green);background:var(--green-lt);}
+
+/* ── Info Grid ── */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem;}
+.info-box{text-align:center;background:var(--offwhite);border-radius:12px;padding:1.3rem 1rem;}
+.info-box .val{font-size:1.8rem;font-weight:900;color:var(--green);line-height:1.1;}
+.info-box .label{font-size:.82rem;color:var(--g600);margin-top:.3rem;}
+@media(max-width:600px){.info-grid{grid-template-columns:1fr;}}
+
+/* ── Upgrade Path (3-column Stage view) ── */
+.upgrade-path{margin:1.5rem 0;padding:1.4rem;background:var(--offwhite);border-radius:12px;}
+.upgrade-path .path-label{font-size:.73rem;font-weight:700;color:var(--green);letter-spacing:.1em;margin-bottom:.8rem;}
+.stage-path{display:flex;align-items:stretch;gap:0;justify-content:center;}
+.sp-col{flex:1;text-align:center;padding:.8rem .6rem;background:var(--white);border-radius:10px;border:1.5px solid var(--g200);}
+.sp-label{font-size:.75rem;font-weight:700;color:#fff;padding:.25rem .8rem;border-radius:100px;display:inline-block;margin-bottom:.5rem;}
+.sp-label.s1-bg{background:var(--green);}
+.sp-label.s2-bg{background:var(--blue);}
+.sp-label.s3-bg{background:var(--navy);}
+.sp-item{font-size:.85rem;font-weight:500;color:var(--g800);line-height:1.8;}
+.sp-arrow{display:flex;align-items:center;padding:0 .5rem;color:var(--green);font-weight:900;font-size:1.1rem;}
+
+/* ─�� CTA / Registration Form ── */
+.cta-section{background:var(--navy);color:#fff;padding:3rem 2rem;text-align:center;border-radius:16px;margin:2.5rem 0;}
+.cta-section h2{color:#fff;font-size:1.35rem;margin-bottom:.5rem;}
+.cta-section p{opacity:.8;margin-bottom:1.5rem;font-size:.95rem;}
+
+/* ── Form ── */
+.reg-form{max-width:520px;margin:0 auto;text-align:left;}
+.form-row{margin-bottom:1rem;}
+.form-row label{display:block;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:.3rem;}
+.form-row .required{color:var(--gold);}
+.form-row input,.form-row select,.form-row textarea{
+  width:100%;font-family:inherit;font-size:.9rem;padding:.65rem .9rem;
+  border:1.5px solid rgba(255,255,255,.2);border-radius:10px;
+  background:rgba(255,255,255,.08);color:#fff;outline:none;transition:border-color .2s;
+}
+.form-row input::placeholder,.form-row textarea::placeholder{color:rgba(255,255,255,.35);}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--green);}
+.form-row select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239AA0A6' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;}
+.form-row select option{background:var(--navy);color:#fff;}
+.form-row textarea{resize:vertical;min-height:60px;}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:600px){.form-2col{grid-template-columns:1fr;}}
+.submit-btn{
+  display:block;width:100%;background:var(--green);color:#fff;
+  font-size:1rem;font-weight:700;padding:.85rem 2rem;
+  border:none;border-radius:100px;cursor:pointer;
+  min-height:48px;margin-top:1.2rem;
+  transition:transform .15s,box-shadow .15s;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,157,138,.4);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.form-msg{text-align:center;margin-top:1rem;font-size:.9rem;padding:.8rem;border-radius:10px;display:none;}
+.form-msg.success{display:block;background:var(--green-lt);color:var(--green);}
+.form-msg.error{display:block;background:var(--red-lt);color:var(--red);}
+
+/* ── Feature Grid ── */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem;}
+.feature-card{background:var(--offwhite);border-radius:12px;padding:1.4rem;border-top:3px solid var(--green);}
+.feature-card h3{font-size:.95rem;margin-bottom:.4rem;}
+.feature-card p{font-size:.85rem;color:var(--g600);line-height:1.7;}
+@media(max-width:600px){.feature-grid{grid-template-columns:1fr;}}
+
+/* ── App Grid ── */
+.app-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.2rem;max-width:100%;}
+.app-grid .target-card{min-width:0;padding:1.4rem 1.2rem;}
+.app-grid h3{white-space:nowrap;}
+.app-id{font-size:.75rem;font-weight:700;color:var(--g400);margin-bottom:.3rem;}
+@media(max-width:600px){.app-grid{grid-template-columns:1fr;}}
+
+/* ── Schedule ── */
+.schedule-card{background:var(--offwhite);border-radius:12px;padding:1.4rem 1.6rem;border-left:4px solid var(--green);margin-top:1rem;}
+.sch-row{display:flex;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--g100);align-items:baseline;}
+.sch-row:last-child{border:none;}
+.sch-label{flex-shrink:0;width:3.5rem;font-size:.82rem;font-weight:700;color:var(--g400);}
+.sch-val{font-size:.95rem;font-weight:500;color:var(--g900);}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:2.5rem 1rem;font-size:.82rem;color:var(--g400);}
+.footer a{color:var(--green);text-decoration:none;}
+
+/* ── Mobile RWD ── */
+@media(max-width:600px){
+  html{font-size:19px;}
+  .hero{padding:2.5rem 1.2rem;}
+  .hero h1{font-size:1.8rem;}
+  .hero .tagline{font-size:1rem;}
+  .hero .badges{gap:.4rem;}
+  .hero .badge{font-size:.75rem;padding:.3rem .8rem;}
+  .container{padding:1.5rem 1rem;}
+  section{padding:2rem 0;}
+  h2{font-size:1.25rem;}
+  h3{font-size:1rem;}
+  /* Stage header */
+  .stage-header{gap:.6rem;}
+  .stage-num{width:42px;height:42px;font-size:.9rem;}
+  .stage-title{font-size:1.1rem;}
+  .stage-subtitle{font-size:.8rem;}
+  /* Module cards */
+  .module{padding:1.1rem 1rem;}
+  .module .mod-desc,.module .mod-learn{margin-left:0;margin-top:.4rem;}
+  .module .mod-tags{margin-left:0;}
+  .module .mod-name{font-size:1rem;}
+  .module .mod-head{gap:.6rem;}
+  /* Upgrade path: stack vertically */
+  .stage-path{flex-direction:column;gap:.5rem;}
+  .sp-arrow{transform:rotate(90deg);padding:.2rem 0;justify-content:center;}
+  .sp-col{padding:.7rem .8rem;}
+  /* Info grid */
+  .info-grid{grid-template-columns:repeat(3,1fr);gap:.6rem;}
+  .info-box{padding:.8rem .5rem;}
+  .info-box .val{font-size:1.5rem;}
+  .info-box .label{font-size:.75rem;}
+  /* Feature */
+  .feature-card{padding:1.1rem;}
+  .feature-card h3{font-size:.9rem;}
+  .feature-card p{font-size:.82rem;}
+  /* App grid */
+  .app-grid h3{white-space:normal;}
+  /* CTA */
+  .cta-section{padding:2rem 1.2rem;margin:1.5rem 0;border-radius:12px;}
+  .cta-section h2{font-size:1.15rem;}
+  .cta-section p{font-size:.85rem;}
+  .cta-btn{font-size:.95rem;padding:.7rem 2rem;}
+}
+
+/* ── Print ── */
+@media print{
+  .hero{padding:2rem 1rem;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .cta-section{display:none;}
+  html{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ Hero ══ -->
+<div class="hero">
+  <h1>Vibe Coding 學習路徑</h1>
+  <p class="tagline">從「只會聊天」變成「會造東西」</p>
+  <div class="badges">
+    <span class="badge">3 階段 × 4 模組</span>
+    <span class="badge">不需要程式基礎</span>
+    <span class="badge">每堂課都有作品帶走</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ 適合對象 ══ -->
+<section>
+  <div class="section-label">適合對象</div>
+  <h2>你不需要會寫程式，你需要會跟 AI 協作</h2>
+  <div class="target-grid">
+    <div class="target-card">
+      <h3>想用 AI 提升工作效率的上班族</h3>
+      <p>自動化報表、表單處理、通知推送<br>讓 AI 幫你做重複的事</p>
+    </div>
+    <div class="target-card">
+      <h3>想做出自己的 AI 工具的創業者</h3>
+      <p>從想法到上線<br>用 AI 對話就能做出網頁和自動化系統</p>
+    </div>
+    <div class="target-card">
+      <h3>想理解 AI 工具全貌的管理者</h3>
+      <p>不需要寫程式碼<br>但要知道 AI 能做什麼、怎麼安全地用</p>
+    </div>
+    <div class="target-card">
+      <h3>想從「會用 ChatGPT」往上走一步</h3>
+      <p>你已經會聊天了<br>接下來學把聊天技巧變成可重複使用的工具</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 課程概覽 ══ -->
+<section>
+  <div class="section-label">課程概覽</div>
+  <h2>三次跳躍，逐步進化</h2>
+  <div class="info-grid">
+    <div class="info-box">
+      <div class="val">36</div>
+      <div class="label">小時（3 階段）</div>
+    </div>
+    <div class="info-box">
+      <div class="val">12</div>
+      <div class="label">個模組</div>
+    </div>
+    <div class="info-box">
+      <div class="val">20+</div>
+      <div class="label">個作品帶走</div>
+    </div>
+  </div>
+  <div class="upgrade-path">
+    <div class="path-label">學習升級路徑</div>
+    <div class="stage-path">
+      <div class="sp-col">
+        <div class="sp-label s1-bg">Stage 1</div>
+        <div class="sp-item">用 AI 工作</div>
+        <div class="sp-item">打包 AI 助手</div>
+      </div>
+      <div class="sp-arrow">→</div>
+      <div class="sp-col">
+        <div class="sp-label s2-bg">Stage 2</div>
+        <div class="sp-item">GAS 自動化</div>
+        <div class="sp-item">GitHub 上線</div>
+      </div>
+      <div class="sp-arrow">→</div>
+      <div class="sp-col">
+        <div class="sp-label s3-bg">Stage 3</div>
+        <div class="sp-item">IDE 串接</div>
+        <div class="sp-item">CLI 建系統</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- Stage 1 -->
+<!-- ══════════════════════════════════════════ -->
+<section>
+  <div class="stage-header">
+    <div class="stage-num s1">S1</div>
+    <div>
+      <div class="stage-title">Stage 1 — 用 AI</div>
+      <div class="stage-subtitle">跨越第一跳：從「用 AI 聊天」到「用 AI 工作」</div>
+    </div>
+  </div>
+
+  <div class="module-list">
+
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s1">M1-1</span>
+        <span class="mod-name">AI 聊天做作品</span>
+      </div>
+      <p class="mod-desc">第一堂課就做出東西<br>— 用 AI 對話做出網頁和遊戲，直接分享</p>
+      <p class="mod-learn"><strong>你會學到：</strong>Prompt 四要素讓產出品質翻倍、UI/UX 五個判斷點讓作品好看好用、辨識三大 AI 平台各自的強項</p>
+      <p class="mod-learn"><strong>帶走：</strong>2 個以上的 AI 作品（網頁 + 遊戲）</p>
+      <div class="mod-tags">
+        <span class="tag highlight">Prompt 四要素</span>
+        <span class="tag highlight">UI/UX 判斷力</span>
+        <span class="tag">三平台比較</span>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s1">M1-2</span>
+        <span class="mod-name">封裝 AI 助手 + Gemini 圖文生成</span>
+      </div>
+      <p class="mod-desc">把聊天技巧封裝成可重複使用的 AI 助手，再用 Gemini 一次產出文案和配圖</p>
+      <p class="mod-learn"><strong>你會學到：</strong>建立自己的 GPT 和 Gem 助手、用 Gemini 圖文同時生成做行銷素材、上傳平面圖讓 AI 生成室內裝潢 3D 示意圖</p>
+      <p class="mod-learn"><strong>帶走：</strong>2 個以上客製化 AI 助手 + 行銷圖文和裝潢示意圖</p>
+      <div class="mod-tags">
+        <span class="tag highlight">GPT / Gem 封裝</span>
+        <span class="tag highlight">圖文同時生成</span>
+        <span class="tag">行銷應用</span>
+        <span class="tag">室內設計應用</span>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s1">M1-3</span>
+        <span class="mod-name">Google 自動化入門</span>
+      </div>
+      <p class="mod-desc">拍一張菜單，AI 辨識內容並自動建立訂餐表單<br>— 你的第一個自動化工具</p>
+      <p class="mod-learn"><strong>你會學到：</strong>用 Google Apps Script 讓 Google 服務自動跑、AI 幫你寫腳本你只需要說需求、遇到錯誤怎麼跟 AI 一起修</p>
+      <p class="mod-learn"><strong>帶走：</strong>1 個實用的自動化工具（團購表單系統）</p>
+      <div class="mod-tags">
+        <span class="tag highlight">Google Apps Script</span>
+        <span class="tag highlight">OCR 數位化</span>
+        <span class="tag">自動化觸發器</span>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s1">M1-4</span>
+        <span class="mod-name">串接 AI + 做網頁 + 手機通知</span>
+      </div>
+      <p class="mod-desc">做出你的第一個完整服務<br>— 有網頁、有 AI 智慧分析、有手機即時通知</p>
+      <p class="mod-learn"><strong>你會學到：</strong>用 GAS 做出有公開網址的網頁、串接 Google 生態系（Sheet / Form / Gmail）、串上免費 AI API 做智慧分析、串接 Telegram Bot 即時推送</p>
+      <p class="mod-learn"><strong>帶走：</strong>1 個完整的服務（網頁 + AI 分析 + 資料庫 + 手機通知）</p>
+      <div class="mod-tags">
+        <span class="tag highlight">GAS 網頁部署</span>
+        <span class="tag highlight">AI API 串接</span>
+        <span class="tag">Google 生態系</span>
+        <span class="tag">Telegram Bot</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- Stage 2 -->
+<!-- ══════════════════════════════════════════ -->
+<section>
+  <div class="stage-header">
+    <div class="stage-num s2">S2</div>
+    <div>
+      <div class="stage-title">Stage 2 — 串 AI</div>
+      <div class="stage-subtitle">跨越第二跳：從「用現成工具」到「讓 AI 幫你串流程」</div>
+    </div>
+  </div>
+
+  <div class="module-list">
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s2">M2-1</span>
+        <span class="mod-name">用 AI 做網頁 + GitHub Pages 上線</span>
+      </div>
+      <p class="mod-desc">你的網站有短網址、有版本紀錄、你完全掌控<br>— 完成網頁三階段升級</p>
+      <p class="mod-learn"><strong>你會學到：</strong>把作品部署到 GitHub Pages、認識版本控制（commit）、分辨 Public 和 Private 的差異</p>
+      <p class="mod-learn"><strong>帶走：</strong>1 個上線的個人網站</p>
+    </div>
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s2">M2-2</span>
+        <span class="mod-name">GitHub 安全管理 + 密碼保護</span>
+      </div>
+      <p class="mod-desc">學會在 GitHub 上安全管理密碼和 API Key<br>— 用真實案例理解為什麼這很重要</p>
+      <p class="mod-learn"><strong>你會學到：</strong>用 Secrets 安全存放密碼、建立自己的安全 Checklist、分辨什麼該公開什麼該保密</p>
+      <p class="mod-learn"><strong>帶走：</strong>一套可持續使用的安全管理流程</p>
+    </div>
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s2">M2-3</span>
+        <span class="mod-name">IDE 入門 + AI 幫你操作開發工具</span>
+      </div>
+      <p class="mod-desc">進入 IDE 開發環境<br>— AI 幫你下指令、設定 SSH、串接 API，你只負責判斷和決策</p>
+      <p class="mod-learn"><strong>你會學到：</strong>用 IDE 做開發、讓 AI 在終端機幫你操作 Git、設定 SSH Key、管理密碼和權限分級</p>
+      <p class="mod-learn"><strong>帶走：</strong>一套 IDE 安全開發的標準流程</p>
+    </div>
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s2">M2-4</span>
+        <span class="mod-name">免費 AI API 全攻略 + 期末成品</span>
+      </div>
+      <p class="mod-desc">認識 5 個以上免費 AI API，了解各自的額度和限制，做出你的 Stage 2 期末作品</p>
+      <p class="mod-learn"><strong>你會學到：</strong>選對 API 工具、了解用量限制和成本、做一個完整的 AI 應用並部署上線</p>
+      <p class="mod-learn"><strong>帶走：</strong>1 個部署上線的 AI 應用作品</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- Stage 3 -->
+<!-- ══════════════════════════════════════════ -->
+<section>
+  <div class="stage-header">
+    <div class="stage-num s3">S3</div>
+    <div>
+      <div class="stage-title">Stage 3 — 造系統</div>
+      <div class="stage-subtitle">跨越第三跳：從「做一個工具」到「建一套系統」</div>
+    </div>
+  </div>
+
+  <div class="module-list">
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s3">M3-1</span>
+        <span class="mod-name">擴展 AI 的能力<br>— MCP 工具 + Skills 技能</span>
+      </div>
+      <p class="mod-desc">讓 AI 接上外部工具、學會你教的技能<br>— 從通用助手變成你的專屬系統</p>
+      <p class="mod-learn"><strong>你會學到：</strong>用 CLI 命令列操作 AI、用 MCP 接上 GitHub 等外部工具、寫 Skills 教 AI 學會你的工作方法</p>
+      <p class="mod-learn"><strong>帶走：</strong>你專屬的 AI 環境設定 + 3 個以上安裝的 Skills</p>
+    </div>
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s3">M3-2</span>
+        <span class="mod-name">善用開源專案 + 安全辨識</span>
+      </div>
+      <p class="mod-desc">學會找到好的開源專案、用 AI 檢查安全性、快速改造成你自己的作品</p>
+      <p class="mod-learn"><strong>你會學到：</strong>從 GitHub 找到優質開源專案、用 AI 掃描程式碼安全性、Fork 後快速改造並部署</p>
+      <p class="mod-learn"><strong>帶走：</strong>1 個改造自開源專案的作品 + 安全檢查清單</p>
+    </div>
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s3">M3-3</span>
+        <span class="mod-name">系統架構思維<br>— 用規格書引導 AI</span>
+      </div>
+      <p class="mod-desc">學會寫 spec.md 規格書<br>— 同一個系統，有藍圖和沒藍圖的結果天差地別</p>
+      <p class="mod-learn"><strong>你會學到：</strong>為什麼需要先規劃再動手、怎麼寫 spec.md 跟 AI 溝通系統架構、感受有無藍圖的巨大差異</p>
+      <p class="mod-learn"><strong>帶走：</strong>1 個 spec.md 模板 + 「先規劃再動手」的工作習慣</p>
+    </div>
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s3">M3-4</span>
+        <span class="mod-name">自動化排程 + 雲端部署</span>
+      </div>
+      <p class="mod-desc">讓你的系統 24 小時自動運轉<br>— 學會 GitHub Actions 和 Cloudflare Worker</p>
+      <p class="mod-learn"><strong>你會學到：</strong>用 GitHub Actions 設定定時任務、用 Cloudflare Worker 部署 API、讓系統自動跑完後推送通知到你的手機</p>
+      <p class="mod-learn"><strong>帶走：</strong>1 個 24/7 自動運轉的系統 + 完整的自動化藍圖</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 應用模組 ══ -->
+<section>
+  <div class="section-label">選修延伸</div>
+  <h2>應用模組<br>— 獨立一日工作坊</h2>
+  <p style="color:var(--g600);margin-bottom:1.2rem;">完成三階段基礎後，依興趣選修深入方向</p>
+  <div class="app-grid">
+    <div class="target-card" style="border-left-color:var(--blue);">
+      <div class="app-id">A-1</div>
+      <h3>個人知識系統</h3>
+      <p>從筆記到知識編譯<br>建立自動化的個人知識庫</p>
+    </div>
+    <div class="target-card" style="border-left-color:var(--purple);">
+      <div class="app-id">A-2</div>
+      <h3>學術研究助手</h3>
+      <p>自動化論文追蹤<br>AI 文獻分析與整理</p>
+    </div>
+    <div class="target-card" style="border-left-color:var(--orange);">
+      <div class="app-id">A-3</div>
+      <h3>AI Agent 部署</h3>
+      <p>24/7 運行的 AI 助手<br>接上通訊通道，自主工作</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 課程特色 ══ -->
+<section>
+  <div class="section-label">課程特色</div>
+  <h2>每堂課都在做，不只是在聽</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h3>40% 講解 / 60% 實作</h3>
+      <p>每堂課實際操作<br>每一輪都有明確的體感與收穫</p>
+    </div>
+    <div class="feature-card">
+      <h3>覆蓋三大平台</h3>
+      <p>Claude、ChatGPT、Gemini<br>學會判斷什麼場景用什麼工具</p>
+    </div>
+    <div class="feature-card">
+      <h3>資安觀念</h3>
+      <p>密碼管理、權限設定、安全 Checklist<br>做出來的東西上得了線</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Schedule ══ -->
+<section>
+  <div class="section-label">開課時間</div>
+  <h2>Stage 1 第一期</h2>
+  <div class="schedule-card">
+    <div class="sch-row">
+      <div class="sch-label">日期</div>
+      <div class="sch-val">2026 / 5 / 16（六）、5 / 17（日）</div>
+    </div>
+    <div class="sch-row">
+      <div class="sch-label">時間</div>
+      <div class="sch-val">10:00 — 17:00（含午休）</div>
+    </div>
+    <div class="sch-row">
+      <div class="sch-label">地點</div>
+      <div class="sch-val">台北市（詳細地址報名後通知）</div>
+    </div>
+    <div class="sch-row">
+      <div class="sch-label">內容</div>
+      <div class="sch-val">M1-1 ~ M1-4，共 4 模組 12 小時</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Registration Form ══ -->
+<div class="cta-section" id="register">
+  <h2>報名 Stage 1 第一期</h2>
+  <p>5/16 — 5/17 台北市<br>12 小時從 AI 聊天升級到完整的自動化服務</p>
+
+  <form class="reg-form" id="regForm" onsubmit="return submitForm(event)">
+    <div class="form-2col">
+      <div class="form-row">
+        <label>姓名 <span class="required">*</span></label>
+        <input type="text" name="name" required placeholder="你的姓名">
+      </div>
+      <div class="form-row">
+        <label>Email <span class="required">*</span></label>
+        <input type="email" name="email" required placeholder="name@example.com">
+      </div>
+    </div>
+    <div class="form-2col">
+      <div class="form-row">
+        <label>電話</label>
+        <input type="tel" name="phone" placeholder="0912-345-678">
+      </div>
+      <div class="form-row">
+        <label>報名階段 <span class="required">*</span></label>
+        <select name="stage" required>
+          <option value="" disabled selected>請選擇</option>
+          <option value="Stage 1">Stage 1 — 用 AI（12hr）</option>
+          <option value="Stage 1+2">Stage 1 + 2（24hr）</option>
+          <option value="Stage 1+2+3">Stage 1 + 2 + 3（36hr）</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>目前身分</label>
+      <select name="role">
+        <option value="" disabled selected>請選擇</option>
+        <option value="上班族">上班族</option>
+        <option value="管理者">管理者</option>
+        <option value="創業者">創業者</option>
+        <option value="學生">學生</option>
+        <option value="自由工作者">自由工作者</option>
+        <option value="其他">其他</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>你最想學到什麼</label>
+      <textarea name="goal" placeholder="例如：想用 AI 自動處理每月報表、想做一個客服機器人..."></textarea>
+    </div>
+    <div class="form-row">
+      <label>優惠碼</label>
+      <input type="text" name="promo" placeholder="如有優惠碼請輸入">
+    </div>
+    <div class="form-row">
+      <label>備註</label>
+      <textarea name="note" placeholder="任何想跟講師說的話"></textarea>
+    </div>
+    <button type="submit" class="submit-btn" id="submitBtn">送出報名</button>
+  </form>
+
+  <div class="form-msg" id="formMsg"></div>
+</div>
+
+<script>
+// ⚠️ 部署 GAS 後，把下面這行換成你的部署網址
+const FORM_ACTION = 'https://script.google.com/macros/s/AKfycbxK5PN3J-nyFFF1hMz8uzP6ZhYCZlBu4jSEctwD9tJzrgLvC3g48St5FlfAxfXxa5sK/exec';
+
+async function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('formMsg');
+  const form = document.getElementById('regForm');
+
+  // 清除之前的訊息
+  msg.className = 'form-msg';
+  msg.style.display = 'none';
+
+  // 檢查 FORM_ACTION
+  if (!FORM_ACTION) {
+    msg.textContent = '表單尚未設定後端網址，請先部署 GAS 並填入 FORM_ACTION';
+    msg.className = 'form-msg error';
+    msg.style.display = 'block';
+    return false;
+  }
+
+  // 收集表單資料
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+
+  // 送出
+  btn.disabled = true;
+  btn.textContent = '送出中...';
+
+  try {
+    // GAS web app 會 302 redirect，用 no-cors 確保 POST 送達
+    await fetch(FORM_ACTION, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    // no-cors 無法讀取回應，但只要沒 throw 就代表送達
+    msg.textContent = '報名成功，我們會盡快與你聯繫';
+    msg.className = 'form-msg success';
+    msg.style.display = 'block';
+    form.reset();
+  } catch (err) {
+    msg.textContent = '送出時發生錯誤，請稍後再試';
+    msg.className = 'form-msg error';
+    msg.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '送出報名';
+  }
+
+  return false;
+}
+</script>
+
+<!-- ══ Footer ══ -->
+<div class="footer">
+  <p>Vibe Coding 學習路徑<br>— 陳重光 老師</p>
+  <p style="margin-top:.3rem;">課程諮詢：<a href="#">聯絡我們</a></p>
+</div>
+
+</div>
+</body>
+</html>

@@ -50,7 +50,7 @@ description: "AI 能力升級 L1–L4 課程時間表，含開課日期、上課
           <span class="stopic">AI API 串接</span>
           <span class="stopic">Telegram Bot</span>
         </div>
-        <a href="#register" class="scard-cta scard-cta--open">立即報名 →</a>
+        <a href="{{ '/vibe-coding/' | relative_url }}" class="scard-cta scard-cta--open">立即報名 →</a>
       </div>
     </div>
 
@@ -175,85 +175,6 @@ description: "AI 能力升級 L1–L4 課程時間表，含開課日期、上課
     </div>
 
   </div>
-
-  <!-- Registration Form -->
-  <div class="reg-section" id="register">
-    <h2>報名 L1 用工具<br><span class="reg-date">5/16 — 5/17 台北市</span></h2>
-
-    <form class="reg-form" id="regForm" onsubmit="return submitForm(event)">
-      <div class="reg-2col">
-        <div class="reg-row">
-          <label>姓名 <span class="reg-req">*</span></label>
-          <input type="text" name="name" required placeholder="你的姓名">
-        </div>
-        <div class="reg-row">
-          <label>Email <span class="reg-req">*</span></label>
-          <input type="email" name="email" required placeholder="name@example.com">
-        </div>
-      </div>
-      <div class="reg-2col">
-        <div class="reg-row">
-          <label>電話</label>
-          <input type="tel" name="phone" placeholder="0912-345-678">
-        </div>
-        <div class="reg-row">
-          <label>報名階段 <span class="reg-req">*</span></label>
-          <select name="stage" required>
-            <option value="" disabled selected>請選擇</option>
-            <option value="Stage 1">Stage 1 — 用 AI（12hr）</option>
-            <option value="Stage 1+2">Stage 1 + 2（24hr）</option>
-            <option value="Stage 1+2+3">Stage 1 + 2 + 3（36hr）</option>
-          </select>
-        </div>
-      </div>
-      <div class="reg-row">
-        <label>目前身分</label>
-        <select name="role">
-          <option value="" disabled selected>請選擇</option>
-          <option value="上班族">上班族</option>
-          <option value="管理者">管理者</option>
-          <option value="創業者">創業者</option>
-          <option value="學生">學生</option>
-          <option value="自由工作者">自由工作者</option>
-          <option value="其他">其他</option>
-        </select>
-      </div>
-      <div class="reg-row">
-        <label>你最想學到什麼</label>
-        <textarea name="goal" placeholder="例如：想用 AI 自動處理每月報表、想做一個客服機器人..."></textarea>
-      </div>
-      <div class="reg-row">
-        <label>優惠碼</label>
-        <input type="text" name="promo" placeholder="如有優惠碼請輸入">
-      </div>
-      <div class="reg-row">
-        <label>備註</label>
-        <textarea name="note" placeholder="任何想跟講師說的話"></textarea>
-      </div>
-      <button type="submit" class="reg-submit" id="submitBtn">送出報名</button>
-    </form>
-
-    <div class="reg-msg" id="formMsg"></div>
-  </div>
-
-  <script>
-  const FORM_ACTION='https://script.google.com/macros/s/AKfycbxK5PN3J-nyFFF1hMz8uzP6ZhYCZlBu4jSEctwD9tJzrgLvC3g48St5FlfAxfXxa5sK/exec';
-  async function submitForm(e){
-    e.preventDefault();
-    const btn=document.getElementById('submitBtn'),msg=document.getElementById('formMsg'),form=document.getElementById('regForm');
-    msg.className='reg-msg';msg.style.display='none';
-    if(!FORM_ACTION){msg.textContent='表單尚未設定';msg.className='reg-msg reg-msg--err';msg.style.display='block';return false;}
-    const fd=new FormData(form),data=Object.fromEntries(fd.entries());
-    btn.disabled=true;btn.textContent='送出中...';
-    try{
-      await fetch(FORM_ACTION,{method:'POST',mode:'no-cors',body:JSON.stringify(data),headers:{'Content-Type':'text/plain'}});
-      msg.textContent='報名成功，確認信已寄到你的 Email';msg.className='reg-msg reg-msg--ok';msg.style.display='block';form.reset();
-    }catch(err){
-      msg.textContent='送出時發生錯誤，請稍後再試';msg.className='reg-msg reg-msg--err';msg.style.display='block';
-    }finally{btn.disabled=false;btn.textContent='送出報名';}
-    return false;
-  }
-  </script>
 
   <div class="schedule-faq">
     <h2>常見問題</h2>

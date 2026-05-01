@@ -2,55 +2,254 @@
 layout: default
 ---
 
-<!-- Hero -->
+<!-- ===== Hero — 終點畫面 vs 抵達路徑 ===== -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <h1 class="hero-title">三階段能力升級</h1>
-  <p class="hero-quote">大家瘋的是<strong>終點畫面</strong><br>缺的是<strong>到達終點的指引</strong></p>
-  <p class="hero-tagline">不教你追工具，教你建立不會過時的 AI 判斷力</p>
-</section>
+  <div class="hero-kicker">
+    <span class="kicker-line"></span>
+    <span class="kicker-text">AI 能力升級路線圖 · 2026</span>
+  </div>
+  <h1 class="hero-title">
+    大家瘋的是<em class="hero-em-soft">終點畫面</em>
+    <br>缺的是<em class="hero-em-accent">抵達終點的路徑</em>
+  </h1>
+  <p class="hero-lede">
+    不教你追工具，教你建立<strong>不會過時的 AI 判斷力</strong>。<br>
+    四個學習等級、三段能力轉折，從個人素養走到組織流程改造的完整路線。
+  </p>
 
-<!-- Pain Points -->
-<section class="pain-section">
-  <div class="pain-grid">
-    <div class="pain-card">
-      <span class="pain-num">40%</span>
-      <p>的 Agentic AI 專案<br>因架構差、成本失控被放棄</p>
-      <span class="pain-source">Deloitte Tech Trends 2026</span>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="stat-big">40%</div>
+      <div class="stat-label">Agentic AI 專案因架構差、成本失控被放棄</div>
+      <div class="stat-source">Deloitte Tech Trends 2026</div>
     </div>
-    <div class="pain-card">
-      <span class="pain-num">90%</span>
-      <p>企業有用 AI<br>但只有 9% 真正達成 AI 成熟</p>
-      <span class="pain-source">Gloat AI Skills Demand 2026</span>
+    <div class="hero-stat">
+      <div class="stat-big">9%</div>
+      <div class="stat-label">企業 90% 用 AI，僅 9% 真正達到 AI 成熟</div>
+      <div class="stat-source">Gloat AI Skills Demand 2026</div>
     </div>
-    <div class="pain-card">
-      <span class="pain-num">42%</span>
-      <p>員工預期角色因 AI 改變<br>卻被要求「自己學」</p>
-      <span class="pain-source">Bright Horizons Workforce Outlook 2026</span>
+    <div class="hero-stat">
+      <div class="stat-big">42%</div>
+      <div class="stat-label">員工預期角色因 AI 改變，卻被要求「自己學」</div>
+      <div class="stat-source">Bright Horizons Workforce Outlook 2026</div>
     </div>
   </div>
-  <p class="pain-insight">差距不在工具，在方法論<br>團隊需要的不是更多 demo<br>是一條可以走通的路</p>
+
+  <div class="hero-gap-strip">
+    <span class="gap-label">差距不在工具，在方法論</span>
+    <span class="gap-divider">—</span>
+    <span class="gap-text">團隊需要的不是更多 demo，是一條走得通的路。</span>
+  </div>
 </section>
 
-<!-- Learning Path Map -->
+<!-- ===== Path Diagram — 身份遞變（核心觀點） ===== -->
 <section class="path-section" id="path">
-  <h2 class="section-title">用工具 → 選工具 → 創工具</h2>
-  <p class="section-desc">三個能力階段，四個學習等級，從素養到流程改造的完整升級路線</p>
+  <div class="section-eyebrow">
+    <span class="eyebrow-line"></span>
+    <span class="eyebrow-text">THE PATH</span>
+  </div>
+  <h2 class="section-title">
+    用工具 <span class="arrow-glyph">→</span> 選工具 <span class="arrow-glyph">→</span> 創工具 <span class="arrow-glyph">→</span> 改流程
+  </h2>
+  <p class="section-desc">
+    三段能力轉折，四個學習等級。每一層的差異不在「學更多工具」<br>
+    而是 <strong>角色的轉變</strong> — 從使用者，到評估者，到創造者，到改革者。
+  </p>
 
-  <div class="path-arrow-row">
+  <div class="path-diagram">
+    <div class="path-spine"></div>
     {% for level in site.data.levels %}
-    <div class="path-node level-{{ level.id | downcase }}">
-      <div class="path-node-icon">{{ level.icon }}</div>
-      <div class="path-node-label">{{ level.id }}</div>
-      <div class="path-node-name">{{ level.name }}</div>
+    <div class="path-row level-{{ level.id | downcase }}">
+      <div class="path-badge-col">
+        <div class="path-badge level-{{ level.id | downcase }}-bg">
+          <div class="badge-label">LEVEL</div>
+          <div class="badge-num">{{ forloop.index }}</div>
+        </div>
+        <div class="badge-meta">
+          <div class="badge-tier">{{ level.tag }}</div>
+          <div class="badge-duration">{{ level.days }}{% if level.days == 2 or level.days == 3 %} 天{% endif %}</div>
+        </div>
+      </div>
+      <div class="path-content-col">
+        <div class="identity-row">
+          <span class="identity-label">你成為</span>
+          <span class="identity level-{{ level.id | downcase }}-color">
+            {{ level.identity }}
+            <span class="identity-en">· {{ level.identity_en }}</span>
+          </span>
+        </div>
+        <h3 class="level-heading">
+          <span class="level-id-tag level-{{ level.id | downcase }}-color">{{ level.id }}</span>
+          <span class="level-action">{{ level.name }}</span>
+        </h3>
+        <p class="level-promise">{{ level.promise }}</p>
+        <div class="key-shift-box level-{{ level.id | downcase }}-border">
+          <div class="shift-label">關鍵轉變</div>
+          <div class="shift-text">{{ level.key_shift }}</div>
+        </div>
+      </div>
+      {% unless forloop.last %}
+      <div class="path-connector">
+        <div class="connector-then">然後</div>
+        <div class="connector-arrow">↓</div>
+      </div>
+      {% endunless %}
     </div>
-    {% unless forloop.last %}
-    <div class="path-arrow">→</div>
-    {% endunless %}
     {% endfor %}
   </div>
 
-  <!-- Level Cards -->
+  <div class="path-legend">
+    <div class="legend-item"><span class="legend-dot level-l1-bg"></span><strong>L1-L2</strong> 個人能力</div>
+    <div class="legend-divider">·</div>
+    <div class="legend-item"><span class="legend-dot level-l3-bg"></span><strong>L3</strong> 開發能力</div>
+    <div class="legend-divider">·</div>
+    <div class="legend-item"><span class="legend-dot level-l4-bg"></span><strong>L4</strong> 組織能力</div>
+    <div class="legend-divider">·</div>
+    <div class="legend-note">建議依序學習，但可依背景從 L2 / L3 起跳</div>
+  </div>
+</section>
+
+<!-- ===== Comparison — 七維度橫向比對 ===== -->
+<section class="comparison-section">
+  <div class="section-eyebrow">
+    <span class="eyebrow-line"></span>
+    <span class="eyebrow-text">AT A GLANCE</span>
+  </div>
+  <h2 class="section-title">四層一覽</h2>
+  <p class="section-desc">橫向比對各層差異，找出最適合你的起點。</p>
+
+  <!-- Desktop: table -->
+  <div class="comparison-table-wrap">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th></th>
+          {% for level in site.data.levels %}
+          <th class="cmp-th">
+            <div class="cmp-th-badge level-{{ level.id | downcase }}-bg">{{ level.id }}</div>
+            <div class="cmp-th-title">{{ level.name }}</div>
+          </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th class="cmp-row-label">你的角色</th>
+          {% for level in site.data.levels %}<td class="cmp-td">{{ level.identity }}</td>{% endfor %}
+        </tr>
+        <tr>
+          <th class="cmp-row-label">一句話</th>
+          {% for level in site.data.levels %}<td class="cmp-td">{{ level.promise }}</td>{% endfor %}
+        </tr>
+        <tr>
+          <th class="cmp-row-label">關鍵轉變</th>
+          {% for level in site.data.levels %}<td class="cmp-td">{{ level.key_shift }}</td>{% endfor %}
+        </tr>
+        <tr>
+          <th class="cmp-row-label">時長</th>
+          {% for level in site.data.levels %}<td class="cmp-td cmp-td-mono">{{ level.tag }} · {{ level.days }}{% if level.days == 2 or level.days == 3 %} 天{% endif %}</td>{% endfor %}
+        </tr>
+        <tr>
+          <th class="cmp-row-label">先備條件</th>
+          {% for level in site.data.levels %}<td class="cmp-td">{{ level.prereq }}</td>{% endfor %}
+        </tr>
+        <tr>
+          <th class="cmp-row-label">主要產出</th>
+          {% for level in site.data.levels %}<td class="cmp-td">{{ level.outcomes | first }}</td>{% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile: stacked cards -->
+  <div class="comparison-cards-mobile">
+    {% for level in site.data.levels %}
+    <div class="cmp-card level-{{ level.id | downcase }}">
+      <div class="cmp-card-head">
+        <span class="cmp-card-id level-{{ level.id | downcase }}-bg">{{ level.id }}</span>
+        <span class="cmp-card-title">{{ level.name }}</span>
+      </div>
+      <dl class="cmp-card-list">
+        <dt>角色</dt><dd>{{ level.identity }}</dd>
+        <dt>一句話</dt><dd>{{ level.promise }}</dd>
+        <dt>關鍵轉變</dt><dd>{{ level.key_shift }}</dd>
+        <dt>時長</dt><dd>{{ level.tag }} · {{ level.days }}{% if level.days == 2 or level.days == 3 %} 天{% endif %}</dd>
+        <dt>先備條件</dt><dd>{{ level.prereq }}</dd>
+        <dt>主要產出</dt><dd>{{ level.outcomes | first }}</dd>
+      </dl>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ===== Decision Helper — 三題定位測驗 ===== -->
+<section class="decision-section" id="start">
+  <div class="section-eyebrow">
+    <span class="eyebrow-line"></span>
+    <span class="eyebrow-text">FIND YOUR START</span>
+  </div>
+  <h2 class="section-title">你該從哪裡起跳？</h2>
+  <p class="section-desc">三題定位你的起點。建議依序學習，但可依角色 / 經驗 / 目標從 L2 / L3 起跳。</p>
+
+  <div class="decision-app" id="decision-app">
+    <div class="decision-questions">
+      <div class="decision-q" data-step="0">
+        <div class="dq-label">QUESTION 1 / 3</div>
+        <div class="dq-question">你目前的角色是？</div>
+        <div class="dq-options">
+          <button class="dq-opt" data-q="role" data-v="user">一般職場使用者 / 內容工作者</button>
+          <button class="dq-opt" data-q="role" data-v="lead">團隊主管 / PM</button>
+          <button class="dq-opt" data-q="role" data-v="dev">工程師 / 技術背景</button>
+          <button class="dq-opt" data-q="role" data-v="exec">部門主管 / 流程負責人</button>
+        </div>
+      </div>
+      <div class="decision-q" data-step="1" hidden>
+        <div class="dq-label">QUESTION 2 / 3</div>
+        <div class="dq-question">你目前用 AI 的程度？</div>
+        <div class="dq-options">
+          <button class="dq-opt" data-q="exp" data-v="none">偶爾用 ChatGPT，多半重寫 prompt</button>
+          <button class="dq-opt" data-q="exp" data-v="regular">天天用，但只用一兩個工具</button>
+          <button class="dq-opt" data-q="exp" data-v="deep">已經串 API、寫過小工具</button>
+          <button class="dq-opt" data-q="exp" data-v="team">想推進整個部門 / 流程的 AI 化</button>
+        </div>
+      </div>
+      <div class="decision-q" data-step="2" hidden>
+        <div class="dq-label">QUESTION 3 / 3</div>
+        <div class="dq-question">你最想解決的事？</div>
+        <div class="dq-options">
+          <button class="dq-opt" data-q="goal" data-v="personal">把我自己的重複工作自動化</button>
+          <button class="dq-opt" data-q="goal" data-v="choose">搞懂工具差異、選對工具</button>
+          <button class="dq-opt" data-q="goal" data-v="build">做出可交付的 AI 工具或產品</button>
+          <button class="dq-opt" data-q="goal" data-v="transform">改造團隊流程，產出規格文件</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="decision-result" id="decision-result" hidden>
+      <div class="dr-eyebrow">RECOMMENDED</div>
+      <div class="dr-content">
+        <div class="dr-badge" id="dr-badge"></div>
+        <div class="dr-body">
+          <h3 class="dr-title" id="dr-title"></h3>
+          <p class="dr-promise" id="dr-promise"></p>
+          <p class="dr-shift" id="dr-shift"></p>
+          <a href="#path" class="dr-cta">看 <span id="dr-id"></span> 的完整內容 →</a>
+          <button class="dr-reset" id="dr-reset">重新測驗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Level Cards — 詳細課綱（既有區塊保留） ===== -->
+<section class="levels-detail-section">
+  <div class="section-eyebrow">
+    <span class="eyebrow-line"></span>
+    <span class="eyebrow-text">CURRICULUM</span>
+  </div>
+  <h2 class="section-title">每一層的實際內容</h2>
+  <p class="section-desc">day-by-day 課綱、帶得走的產出、適合對象</p>
+
   <div class="levels-grid">
     {% for level in site.data.levels %}
     <div class="level-card level-{{ level.id | downcase }}">
@@ -99,7 +298,7 @@ layout: default
   </div>
 </section>
 
-<!-- Supplements -->
+<!-- ===== Supplements ===== -->
 <section class="supplements-section">
   <h2 class="section-title">補充單元</h2>
   <p class="section-desc">深入主題，先讀先學，了解我們的教學風格</p>
@@ -118,7 +317,7 @@ layout: default
   </div>
 </section>
 
-<!-- CTA -->
+<!-- ===== CTA ===== -->
 <section class="cta-section">
   <div class="cta-box">
     <h2>想把這套學習路徑帶進你的團隊？</h2>
@@ -127,7 +326,7 @@ layout: default
   </div>
 </section>
 
-<!-- Link to AI100 -->
+<!-- ===== Link to AI100 ===== -->
 <section class="ai100-section">
   <div class="ai100-box">
     <span class="ai100-icon">📚</span>
@@ -138,5 +337,23 @@ layout: default
     <a href="{{ site.ai100_url }}" target="_blank" rel="noopener" class="btn-outline-sm">前往 AI 100 講 ↗</a>
   </div>
 </section>
+
+<!-- DecisionHelper data for JS -->
+<script id="levels-data" type="application/json">
+[
+  {% for level in site.data.levels %}
+  {
+    "id": "{{ level.id }}",
+    "name": "{{ level.name }}",
+    "identity": "{{ level.identity }}",
+    "identity_en": "{{ level.identity_en }}",
+    "promise": "{{ level.promise }}",
+    "key_shift": "{{ level.key_shift }}",
+    "tag": "{{ level.tag }}",
+    "days": "{{ level.days }}{% if level.days == 2 or level.days == 3 %} 天{% endif %}"
+  }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+]
+</script>
 
 {{ content }}

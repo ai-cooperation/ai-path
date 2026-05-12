@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-4 — 免費 AI API 全攻略 | Vibe Coding Stage 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   M2-4: 免費 AI API 全攻略
+   Design System: WHITE BACKGROUND
+   Accent: --orange (#E8710A)
+   ═══════════════════════════════════════ */
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --navy:#0B3C5D;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --accent:var(--orange);
+  --accent-lt:var(--orange-lt);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;font-weight:400;background:var(--white);}
+
+/* ── Slides Core ── */
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 4rem 1.5rem;overflow:hidden;}
+.slide.active{display:flex;}
+
+/* ── DataViz: white bg content page ── */
+.slide.dataviz{background:var(--white);color:var(--g900);padding-top:3.5rem;overflow-y:auto;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.dataviz h2{color:var(--g900);}
+
+/* ── Poster: colored gradient chapter dividers ── */
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster::before{content:'';position:absolute;inset:0;z-index:1;}
+.slide.poster>*{position:relative;z-index:2;}
+.slide.poster.overlay-heavy::before{background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.7) 100%);}
+.slide.poster h2{color:#fff;}
+
+/* ── Typography ── */
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+.slide.poster h1{color:#fff;}
+h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;}
+h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
+p,li{font-size:1.1rem;line-height:1.8;}
+.subtitle{font-size:1.15rem;font-weight:500;}
+.dim{opacity:.6;}
+
+/* ── Fragment ── */
+.fragment{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.fragment.visible{opacity:1;transform:none;}
+
+/* ── Step List ── */
+.step-list{text-align:left;max-width:800px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;}
+
+/* ── Stat Grid (white mode) ── */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
+.stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
+.stat-box .val{font-size:2.4rem;font-weight:900;color:var(--accent);line-height:1.1;}
+.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Card Grid (white mode) ── */
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:960px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.5rem;min-width:200px;max-width:280px;flex:1;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.card:hover{border-color:var(--accent);}
+.card .icon{font-size:2.2rem;margin-bottom:.5rem;}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.6;}
+.card.accent-top{border-top:4px solid var(--accent);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+.card.accent-top-purple{border-top:4px solid var(--purple);}
+.card.accent-top-green{border-top:4px solid var(--green);}
+
+/* ── Flow (white mode) ── */
+.flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box.accent{border-color:var(--accent);background:var(--accent-lt);color:var(--accent);}
+.flow-arrow{color:var(--accent);font-size:1.5rem;font-weight:900;}
+
+/* ── Info Boxes (white mode) ── */
+.info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.success p{color:var(--g800);}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:var(--g800);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip p{color:var(--g800);}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note p{color:var(--g800);}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue p{color:var(--g800);}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning p{color:var(--g800);}
+
+/* ── Warn Box (429 Error highlight) ── */
+.warn-box{background:var(--red-lt);border:2px solid var(--red);border-radius:16px;padding:1.5rem 2rem;max-width:800px;width:100%;text-align:center;margin-top:1rem;}
+.warn-box .warn-code{font-family:'Fira Code',monospace;font-size:2.4rem;font-weight:900;color:var(--red);line-height:1.1;}
+.warn-box .warn-msg{font-size:1.1rem;color:var(--g800);margin-top:.4rem;}
+
+/* ── Quote Box (white mode) ── */
+.quote-box{max-width:800px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.5rem 2rem;margin:.8rem 0;text-align:left;}
+.quote-box .quote-text{font-size:1.3rem;font-weight:700;line-height:1.6;color:var(--g900);}
+.quote-box .quote-src{font-size:.9rem;color:var(--g400);margin-top:.5rem;}
+
+/* ── Code Block (white mode) ── */
+.code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1.2rem 1.5rem;max-width:800px;width:100%;text-align:left;margin:.8rem 0;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:.9rem;color:var(--g900);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--accent);letter-spacing:.05em;margin-bottom:.5rem;}
+
+/* ── Two-Column Compare ── */
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:860px;width:100%;margin-top:.8rem;}
+.compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
+.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--green);}
+.compare-col p,
+.compare-col li{font-size:1rem;line-height:1.7;color:var(--g800);}
+.compare-col ul{padding-left:1.2rem;}
+
+/* ── Compare Table ── */
+.compare-table{width:100%;max-width:880px;border-collapse:separate;border-spacing:0;margin-top:1rem;border-radius:12px;overflow:hidden;border:2px solid var(--g100);}
+.compare-table th{background:var(--accent);color:#fff;padding:.7rem 1rem;font-size:.9rem;font-weight:700;text-align:left;letter-spacing:.03em;}
+.compare-table td{padding:.65rem 1rem;font-size:.9rem;color:var(--g800);border-bottom:1px solid var(--g100);}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table tr:nth-child(even) td{background:var(--offwhite);}
+.compare-table .platform{font-weight:700;color:var(--g900);}
+
+/* ── Checklist ── */
+.checklist{max-width:800px;width:100%;}
+.check-item{display:flex;align-items:flex-start;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--g100);}
+.check-item:last-child{border:none;}
+.check-icon{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.check-icon.done{background:var(--green-lt);color:var(--green);}
+.check-icon.todo{background:var(--offwhite);color:var(--g400);border:2px solid var(--g200);}
+.check-text strong{font-size:1.05rem;color:var(--g900);}
+.check-text p{font-size:.95rem;color:var(--g600);}
+
+/* ── Big Number Highlight ── */
+.big-stat{text-align:center;margin:1rem 0;}
+.big-stat .num{font-size:4rem;font-weight:900;color:var(--accent);line-height:1;}
+.big-stat .unit{font-size:1.2rem;font-weight:700;color:var(--g600);}
+.big-stat .caption{font-size:1rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Highlight Text ── */
+.hl-green{color:var(--green);font-weight:700;}
+.hl-blue{color:var(--blue);font-weight:700;}
+.hl-gold{color:var(--gold);font-weight:700;}
+.hl-orange{color:var(--orange);font-weight:700;}
+.hl-red{color:var(--red);font-weight:700;}
+
+/* ── Bottom Line Summary ── */
+.bottom-line{max-width:800px;width:100%;background:var(--accent-lt);border:2px solid rgba(232,113,10,.3);border-radius:16px;padding:2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.5rem;color:var(--accent);margin-bottom:.6rem;}
+.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:640px;margin:0 auto;line-height:1.7;}
+
+/* ── Poster text helpers ── */
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.9rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin-top:.8rem;}
+
+/* ── Cycle Ring (6-round diagram) ── */
+.cycle-ring{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;max-width:860px;width:100%;margin:1rem 0;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.6rem 1rem;font-size:.95rem;font-weight:700;text-align:center;min-width:120px;color:var(--g800);position:relative;}
+.cycle-step.active-step{border-color:var(--accent);background:var(--accent-lt);color:var(--accent);}
+.cycle-step .cycle-label{font-size:.75rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step.active-step .cycle-label{color:var(--accent);}
+
+/* ── Takeaway Table ── */
+.takeaway-table{width:100%;max-width:800px;border-collapse:separate;border-spacing:0;margin-top:1rem;border-radius:12px;overflow:hidden;border:2px solid var(--g100);}
+.takeaway-table th{background:var(--accent);color:#fff;padding:.6rem 1rem;font-size:.9rem;font-weight:700;text-align:left;}
+.takeaway-table td{padding:.55rem 1rem;font-size:.9rem;color:var(--g800);border-bottom:1px solid var(--g100);}
+.takeaway-table tr:last-child td{border-bottom:none;}
+.takeaway-table tr:nth-child(even) td{background:var(--offwhite);}
+.takeaway-table td:first-child{font-weight:700;color:var(--accent);}
+
+/* ── Controls (light themed) ── */
+.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--accent);transition:width .4s;z-index:100;}
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+.controls button:disabled{opacity:.25;cursor:default;}
+.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--accent-lt);color:var(--accent);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(232,113,10,.2);}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+
+/* ── Chapter Menu (light themed) ── */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--accent);}
+.chapter-icon{color:var(--accent);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:200px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--accent);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--accent);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  html,body{font-size:16px;}
+  .slide{padding:1rem 1.2rem 1rem;}
+  .slide.dataviz{padding-top:3rem;}
+  h1{font-size:1.9rem;}
+  h2{font-size:1.4rem;margin-bottom:.6rem;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:.8rem;}
+  .stat-box .val{font-size:1.8rem;}
+  .card-grid{flex-direction:column;align-items:center;}
+  .card{max-width:100%;min-width:0;}
+  .compare-two{grid-template-columns:1fr;}
+  .compare-table{font-size:.8rem;}
+  .compare-table th,.compare-table td{padding:.5rem .6rem;}
+  .controls button{width:40px;height:40px;font-size:1rem;}
+  .module-title{font-size:.7rem;left:.8rem;top:.6rem;}
+  .module-badge{font-size:.65rem;top:.6rem;right:.6rem;padding:.2rem .6rem;}
+  .quote-box .quote-text{font-size:1.05rem;}
+  .code-block pre{font-size:.8rem;}
+  .cycle-ring{gap:.4rem;}
+  .cycle-step{min-width:100px;font-size:.85rem;padding:.5rem .6rem;}
+  .takeaway-table{font-size:.8rem;}
+  .takeaway-table th,.takeaway-table td{padding:.4rem .6rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — Stage 2 · 串 AI</div>
+<div class="module-badge">M2-4</div>
+<div class="slides">
+
+<!-- ══════════════════════════════════════
+     開場 (slides 0-3)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 0: COVER ══ -->
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#7C3200 40%,#E8710A 100%);">
+  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 串 AI</p>
+  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">免費 AI API<br><span style="color:#FFB86C;">全攻略</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">三大免費平台 + 用量限制 + 做出你的 AI 工具</p>
+  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M2-4</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走成品</span>
+  </div>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1: 六輪循環 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="1">
+  <h2>六輪循環，逐層遞進</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+      <div style="font-weight:700;">三大 API 導覽</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+      <div style="font-weight:700;">申請第二個 API</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+      <div style="font-weight:700;">IDE 串接做工具</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+      <div style="font-weight:700;">RPM 撞牆</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+      <div style="font-weight:700;">期末成品</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+      <div style="font-weight:700;">Stage 2 回顧</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>這一堂的主線</strong><br>認識免費 API 生態系 → 親手申請 → 串接工具 → 撞 RPM → 完成期末成品</p>
+  </div>
+</div>
+
+<!-- ══ 2: Stage 2 進度定位 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="2">
+  <h2>Stage 2 進度定位</h2>
+  <div class="cycle-ring">
+    <div class="cycle-step"><span class="cycle-label">M2-1</span>GitHub Pages</div>
+    <div class="cycle-step"><span class="cycle-label">M2-2</span>搬家 + Secrets</div>
+    <div class="cycle-step"><span class="cycle-label">M2-3</span>IDE + Git</div>
+    <div class="cycle-step active-step"><span class="cycle-label">M2-4</span>免費 API</div>
+  </div>
+  <div class="info-box tip fragment" data-order="0">
+    <div class="label">今天的目標</div>
+    <p>拿到 API Key → 用 IDE 串接成工具 → 理解 RPM 限制 → Stage 2 期末成品上線</p>
+  </div>
+</div>
+
+<!-- ══ 3: 回顧 M1-4 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="3">
+  <h2>回顧：M1-4 已經做過什麼</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>申請了 Groq API Key</strong>
+        <p>第一個免費 API，LPU 極速推論</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>用 GAS 串接 Groq</strong>
+        <p>Google Apps Script 呼叫 API，做出第一個 AI 工具</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>今天的延伸</strong>
+        <p>從一家餐廳 → 認識整個美食街</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 1：三大免費 API 平台導覽 (slides 4-12)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 4: Chapter poster — Round 1 ══ -->
+<div class="slide poster overlay-heavy" data-act="R1：三大 API 導覽" data-index="4"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#7C3200 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
+  <h1 style="color:#fff;font-size:2.8rem;">三大免費<br><span style="color:#FFB86C;">API 平台</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">不是只有一家餐廳，每家的菜色和份量不同</p>
+</div>
+
+<!-- ══ 5: API 生態系概念 ══ -->
+<div class="slide dataviz" data-act="R1：三大 API 導覽" data-index="5">
+  <h2>API 生態系</h2>
+  <div class="quote-box fragment" data-order="0">
+    <div class="quote-text">不是只有一家餐廳<br>每家的菜色和份量不同</div>
+    <div class="quote-src">核心原則：主力 + 專長 + 備援</div>
+  </div>
+  <div class="flow fragment" data-order="1">
+    <div class="flow-box accent">Groq<br><span style="font-size:.8rem;font-weight:400;">主力日常</span></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box accent">Google AI Studio<br><span style="font-size:.8rem;font-weight:400;">長文本專家</span></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box accent">OpenRouter<br><span style="font-size:.8rem;font-weight:400;">備援多模型</span></div>
+  </div>
+</div>
+
+<!-- ══ 6: Groq 介紹 ══ -->
+<div class="slide dataviz" data-act="R1：三大 API 導覽" data-index="6">
+  <h2>Groq — 主力日常用</h2>
+  <div class="card-grid">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>LPU 極速推論</h3>
+      <p>自研硬體，回應速度遠快於 GPU 方案<br>M1-4 已經用過</p>
+    </div>
+    <div class="card accent-top fragment" data-order="1">
+      <h3>OpenAI 兼容格式</h3>
+      <p>換 endpoint 就能切換<br>學一套用到底</p>
+    </div>
+    <div class="card accent-top fragment" data-order="2">
+      <h3>不需信用卡</h3>
+      <p>註冊即用<br>免費額度充足</p>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="3" style="padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>主力模型</strong>：llama-3.3-70b（日常）/ qwen3-32b（寫程式）/ llama-3.1-8b（大量任務）</p>
+  </div>
+</div>
+
+<!-- ══ 7: Google AI Studio 介紹 ══ -->
+<div class="slide dataviz" data-act="R1：三大 API 導覽" data-index="7">
+  <h2>Google AI Studio — 長文本專家</h2>
+  <div class="card-grid">
+    <div class="card accent-top-blue fragment" data-order="0">
+      <h3>1M Context Window</h3>
+      <p>能一次吃進整本書<br>適合長文件分析</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>Gemini 2.5 系列</h3>
+      <p>Flash 快速 / Pro 最強推理<br>兩種模型自由切換</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="2">
+      <h3>Google 帳號即用</h3>
+      <p>不需另外註冊<br>不需綁信用卡</p>
+    </div>
+  </div>
+  <div class="info-box tip fragment" data-order="3" style="padding:.8rem 1.2rem;">
+    <div class="label">GAS 注意事項</div>
+    <p>直接呼叫走 GCP 需 Billing → 用 UrlFetchApp 呼叫 AI Studio endpoint 就免費</p>
+  </div>
+</div>
+
+<!-- ══ 8: OpenRouter 介紹 ══ -->
+<div class="slide dataviz" data-act="R1：三大 API 導覽" data-index="8">
+  <h2>OpenRouter — 備援多模型</h2>
+  <div class="card-grid">
+    <div class="card accent-top-purple fragment" data-order="0">
+      <h3>28 個免費模型</h3>
+      <p>一個帳號<br>用遍所有模型</p>
+    </div>
+    <div class="card accent-top-purple fragment" data-order="1">
+      <h3>統一 API 格式</h3>
+      <p>換 model name 就能切<br>不用學不同 SDK</p>
+    </div>
+    <div class="card accent-top-purple fragment" data-order="2">
+      <h3>備援角色</h3>
+      <p>Groq 撞額度時<br>切到 OpenRouter 繼續</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 9: 免費額度比較表 ══ -->
+<div class="slide dataviz" data-act="R1：三大 API 導覽" data-index="9">
+  <h2>2026 免費 API 額度表</h2>
+  <table class="compare-table fragment" data-order="0">
+    <thead>
+      <tr><th>平台</th><th>主力模型</th><th>RPM</th><th>RPD</th><th>最佳場景</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="platform">Groq</td><td>llama-3.3-70b</td><td>30</td><td>1,000</td><td>日常聊天、快速回應</td></tr>
+      <tr><td class="platform">Groq</td><td>qwen3-32b / kimi-k2</td><td>60</td><td>1,000</td><td>寫程式、強推理</td></tr>
+      <tr><td class="platform">Groq</td><td>llama-3.1-8b</td><td>30</td><td>14,400</td><td>大量簡單任務</td></tr>
+      <tr><td class="platform">AI Studio</td><td>gemini-2.5-flash</td><td>10</td><td>250</td><td>長文本分析 (1M ctx)</td></tr>
+      <tr><td class="platform">AI Studio</td><td>gemini-2.5-pro</td><td>5</td><td>100</td><td>最強推理</td></tr>
+      <tr><td class="platform">OpenRouter</td><td>28 個免費模型</td><td>20</td><td>50</td><td>備援、多模型測試</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box warning fragment" data-order="1" style="padding:.7rem 1.2rem;">
+    <div class="label">注意</div>
+    <p>開課前 1 週重新查驗 — Groq 額度每天太平洋午夜重置</p>
+  </div>
+</div>
+
+<!-- ══ 10: 三平台策略 ══ -->
+<div class="slide dataviz" data-act="R1：三大 API 導覽" data-index="10">
+  <h2>核心策略：主力 + 專長 + 備援</h2>
+  <div class="stat-grid fragment" data-order="0">
+    <div class="stat-box" style="border-top:4px solid var(--orange);">
+      <div class="val">Groq</div>
+      <div class="label">主力日常<br>最快最多</div>
+    </div>
+    <div class="stat-box" style="border-top:4px solid var(--blue);">
+      <div class="val">Gemini</div>
+      <div class="label">長文本專家<br>1M context</div>
+    </div>
+    <div class="stat-box" style="border-top:4px solid var(--purple);">
+      <div class="val">OR</div>
+      <div class="label">備援多模型<br>28 個免費</div>
+    </div>
+  </div>
+  <div class="bottom-line fragment" data-order="1">
+    <h3>不要把雞蛋放在同一個籃子裡</h3>
+    <p>免費 API 隨時可能調整額度<br>有備援才不會被卡住</p>
+  </div>
+</div>
+
+<!-- ══ 11: 即時比較展示 ══ -->
+<div class="slide dataviz" data-act="R1：三大 API 導覽" data-index="11">
+  <h2>即時展示：同一個問題問三個 API</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>送出同一段 prompt</strong>
+        <p>觀察回應速度差異</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>比較回應內容</strong>
+        <p>模型不同，風格與深度不同</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>記下你的觀察</strong>
+        <p>哪個最快、哪個最詳細、哪個格式最好</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 12: R1 小結 ══ -->
+<div class="slide dataviz" data-act="R1：三大 API 導覽" data-index="12">
+  <h2>Round 1 小結</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>API 生態系</h3>
+    <p>三大平台各有專長<br>Groq 主力 / Gemini 長文本 / OpenRouter 備援<br>都不需要信用卡</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 2：申請第二個 API (slides 13-20)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 13: Chapter poster — Round 2 ══ -->
+<div class="slide poster overlay-heavy" data-act="R2：申請第二個 API" data-index="13"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#7C3200 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:45</p>
+  <h1 style="color:#fff;font-size:2.8rem;">申請<br><span style="color:#FFB86C;">第二個 API</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">主力 + 備援，不要只靠一家</p>
+</div>
+
+<!-- ══ 14: 操作指令 — AI Studio ══ -->
+<div class="slide dataviz" data-act="R2：申請第二個 API" data-index="14">
+  <h2>路線 A：Google AI Studio</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>前往 aistudio.google.com</strong>
+        <p>登入你的 Google 帳號</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>建立 API Key</strong>
+        <p>左側選單 → Get API Key → Create</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>複製並保存</strong>
+        <p>存到 .env 檔案 → 同時存到 GitHub Secrets</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="padding:.8rem 1.2rem;">
+    <div class="label">完成條件</div>
+    <p>拿到 GEMINI_API_KEY 且存入 .env 和 GitHub Secrets</p>
+  </div>
+</div>
+
+<!-- ══ 15: 路線 B — OpenRouter ══ -->
+<div class="slide dataviz" data-act="R2：申請第二個 API" data-index="15">
+  <h2>路線 B：OpenRouter</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>前往 openrouter.ai</strong>
+        <p>註冊帳號（可用 Google / GitHub 登入）</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>取得 API Key</strong>
+        <p>Keys 頁面 → Create Key</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>選一個免費模型測試</strong>
+        <p>Playground 裡篩選 Free 模型 → 測試對話</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 16: Key 安全提醒 ══ -->
+<div class="slide dataviz" data-act="R2：申請第二個 API" data-index="16">
+  <h2>API Key 安全提醒</h2>
+  <div class="compare-two">
+    <div class="compare-col bad fragment" data-order="0">
+      <div class="col-label">WRONG</div>
+      <p style="font-weight:700;">直接貼在程式碼裡</p>
+      <div class="code-block" style="margin-top:.5rem;border:none;padding:.6rem .8rem;">
+        <pre style="font-size:.8rem;">const key = "AIza..."</pre>
+      </div>
+      <p style="font-size:.9rem;margin-top:.4rem;">push 到 GitHub → 全世界都看得到</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">CORRECT</div>
+      <p style="font-weight:700;">放在 .env + .gitignore</p>
+      <div class="code-block" style="margin-top:.5rem;border:none;padding:.6rem .8rem;">
+        <pre style="font-size:.8rem;">GEMINI_KEY=AIza...   ← .env
+.env                 ← .gitignore</pre>
+      </div>
+      <p style="font-size:.9rem;margin-top:.4rem;">回扣 M2-2 安全 Checklist</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 17: .env 設定示範 ══ -->
+<div class="slide dataviz" data-act="R2：申請第二個 API" data-index="17">
+  <h2>.env 檔案管理你的 API Keys</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">.env</div>
+    <pre># M1-4 已申請
+GROQ_API_KEY=gsk_xxxxxxxxxx
+
+# 今天新申請
+GEMINI_API_KEY=AIzaxxxxxxxxxx
+OPENROUTER_API_KEY=sk-or-xxxxxxxxxx</pre>
+  </div>
+  <div class="code-block fragment" data-order="1">
+    <div class="code-label">.gitignore</div>
+    <pre>.env
+.env.*</pre>
+  </div>
+  <div class="info-box note fragment" data-order="2" style="padding:.7rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>同步到 GitHub Secrets</strong> — M3-4 的 GitHub Actions 會直接從 Secrets 讀取</p>
+  </div>
+</div>
+
+<!-- ══ 18: 格式差異 ══ -->
+<div class="slide dataviz" data-act="R2：申請第二個 API" data-index="18">
+  <h2>API 格式差異</h2>
+  <div class="card-grid">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>Groq / OpenRouter</h3>
+      <p>OpenAI 兼容格式<br>換 endpoint 就能切<br><span class="hl-orange">學一套用到底</span></p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>Gemini AI Studio</h3>
+      <p>Google 自有格式<br>不同但不難<br><span class="hl-blue">AI 幫你處理轉換</span></p>
+    </div>
+  </div>
+  <div class="info-box tip fragment" data-order="2" style="padding:.8rem 1.2rem;">
+    <div class="label">實際操作</div>
+    <p>告訴 AI「用 Gemini API 格式呼叫」→ AI 自動產生正確的 fetch 程式碼</p>
+  </div>
+</div>
+
+<!-- ══ 19: 操作確認 ══ -->
+<div class="slide dataviz" data-act="R2：申請第二個 API" data-index="19">
+  <h2>操作確認</h2>
+  <div class="checklist">
+    <div class="check-item fragment" data-order="0">
+      <div class="check-icon done">&#10003;</div>
+      <div class="check-text">
+        <strong>Groq API Key</strong>
+        <p>M1-4 已申請，存在 .env 中</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="1">
+      <div class="check-icon todo">2</div>
+      <div class="check-text">
+        <strong>第二個 API Key</strong>
+        <p>AI Studio 或 OpenRouter，存到 .env + GitHub Secrets</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="2">
+      <div class="check-icon todo">3</div>
+      <div class="check-text">
+        <strong>.gitignore 有 .env</strong>
+        <p>確認 Key 不會被 push 到 GitHub</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 20: R2 小結 ══ -->
+<div class="slide dataviz" data-act="R2：申請第二個 API" data-index="20">
+  <h2>Round 2 小結</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>主力 + 備援</h3>
+    <p>你現在有兩個（或三個）免費 API Key<br>都不需信用卡<br>Key 安全存放在 .env + GitHub Secrets</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 3：用 IDE 串接做工具 (slides 21-30)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 21: Chapter poster — Round 3 ══ -->
+<div class="slide poster overlay-heavy" data-act="R3：IDE 串接做工具" data-index="21"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#7C3200 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:10</p>
+  <h1 style="color:#fff;font-size:2.8rem;">用 IDE<br><span style="color:#FFB86C;">串接做工具</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">跟 AI 說你要什麼，API 串接它來處理</p>
+</div>
+
+<!-- ══ 22: 工具選擇 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="22">
+  <h2>選一個你想做的 AI 工具</h2>
+  <div class="card-grid">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>AI 摘要器</h3>
+      <p>貼入長文<br>自動產出重點摘要</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>多語翻譯</h3>
+      <p>一鍵翻譯多國語言<br>保留格式</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2">
+      <h3>文件分析</h3>
+      <p>上傳文件<br>AI 幫你找重點</p>
+    </div>
+    <div class="card accent-top-purple fragment" data-order="3">
+      <h3>每日金句</h3>
+      <p>每天生成勵志句<br>搭配精美排版</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 23: Prompt 範例 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="23">
+  <h2>跟 AI 下指令</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">PROMPT</div>
+    <pre>幫我做一個 AI 摘要器
+用 Gemini API
+Key 從 .env 讀取
+前端用 HTML + CSS
+後端用 JavaScript fetch
+使用者貼入文字 → 按按鈕 → 顯示摘要</pre>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>AI 會幫你做</strong>：建前端介面 + 寫 API 呼叫邏輯 + 錯誤處理</p>
+  </div>
+</div>
+
+<!-- ══ 24: IDE 工作流 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="24">
+  <h2>IDE 串接工作流</h2>
+  <div class="flow fragment" data-order="0">
+    <div class="flow-box">描述需求</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">AI 產生程式碼</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">測試</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">修正</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">完成</div>
+  </div>
+  <div class="compare-two fragment" data-order="1">
+    <div class="compare-col" style="background:var(--offwhite);border:2px solid var(--g200);">
+      <div class="col-label" style="color:var(--g600);">M1-4 GAS 串 Groq</div>
+      <p>在 Google Apps Script 裡寫</p>
+      <p>要手動處理格式</p>
+      <p>部署步驟多</p>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">M2-4 IDE 串 API</div>
+      <p>在 IDE 裡跟 AI 協作</p>
+      <p>AI 幫你處理一切</p>
+      <p>更快、更靈活</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 25: API 呼叫結構 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="25">
+  <h2>API 呼叫的基本結構</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">FETCH 呼叫</div>
+    <pre>const response = await fetch(ENDPOINT, {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${API_KEY}`,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    model: "模型名稱",
+    messages: [{ role: "user", content: "你的問題" }]
+  })
+})</pre>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="padding:.7rem 1.2rem;">
+    <p style="font-size:.95rem;">你不需要背 — AI 會幫你寫<br>但你要看得懂 endpoint / model / messages 三個關鍵</p>
+  </div>
+</div>
+
+<!-- ══ 26: Endpoint 對照 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="26">
+  <h2>三大平台 Endpoint 對照</h2>
+  <table class="compare-table fragment" data-order="0">
+    <thead>
+      <tr><th>平台</th><th>Endpoint</th><th>格式</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="platform">Groq</td><td style="font-family:'Fira Code',monospace;font-size:.8rem;">api.groq.com/openai/v1/chat/completions</td><td>OpenAI</td></tr>
+      <tr><td class="platform">AI Studio</td><td style="font-family:'Fira Code',monospace;font-size:.8rem;">generativelanguage.googleapis.com/v1beta</td><td>Google</td></tr>
+      <tr><td class="platform">OpenRouter</td><td style="font-family:'Fira Code',monospace;font-size:.8rem;">openrouter.ai/api/v1/chat/completions</td><td>OpenAI</td></tr>
+    </tbody>
+  </table>
+  <div class="info-box tip fragment" data-order="1" style="padding:.7rem 1.2rem;">
+    <div class="label">快速切換</div>
+    <p>Groq 和 OpenRouter 格式相同 — 換 endpoint + model name 就能切</p>
+  </div>
+</div>
+
+<!-- ══ 27: 操作時間 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="27">
+  <h2>操作時間</h2>
+  <div class="big-stat">
+    <div class="num">25</div>
+    <div class="unit">分鐘</div>
+    <div class="caption">用 IDE + AI 做出你的第一個 AI 工具</div>
+  </div>
+  <div class="step-list fragment" data-order="0" style="margin-top:.8rem;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>選一個工具主題</strong>
+        <p>摘要器 / 翻譯 / 文件分析 / 每日金句</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>跟 AI 描述需求</strong>
+        <p>指定用哪個 API + Key 從 .env 讀取</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>測試、修正、確認可用</strong>
+        <p>至少成功呼叫一次 API 拿到回應</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 28: 觀察 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="28">
+  <h2>觀察：IDE 串接 vs GAS 串接</h2>
+  <div class="quote-box fragment" data-order="0">
+    <div class="quote-text">跟 M1-4 用 GAS 串 Groq 相比<br>IDE 裡做更快、更靈活</div>
+  </div>
+  <div class="stat-grid fragment" data-order="1" style="grid-template-columns:1fr 1fr;max-width:600px;">
+    <div class="stat-box">
+      <div class="val" style="font-size:1.5rem;">M1-4</div>
+      <div class="label">GAS + Groq<br>手動處理格式</div>
+    </div>
+    <div class="stat-box" style="border-top:4px solid var(--orange);">
+      <div class="val" style="font-size:1.5rem;">M2-4</div>
+      <div class="label">IDE + 任意 API<br>AI 幫你處理一切</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 29: 常見問題 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="29">
+  <h2>串接常見問題</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num" style="background:var(--red);">!</div>
+      <div class="step-content">
+        <strong>CORS 錯誤</strong>
+        <p>瀏覽器直接呼叫 API 被擋 → 用後端 proxy 或 serverless function</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num" style="background:var(--red);">!</div>
+      <div class="step-content">
+        <strong>401 Unauthorized</strong>
+        <p>Key 錯誤或過期 → 重新檢查 .env 裡的值</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num" style="background:var(--red);">!</div>
+      <div class="step-content">
+        <strong>回應格式不對</strong>
+        <p>不同 API 回傳結構不同 → 用 console.log 看完整回應</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 30: R3 小結 ══ -->
+<div class="slide dataviz" data-act="R3：IDE 串接做工具" data-index="30">
+  <h2>Round 3 小結</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>你的第一個 AI 工具</h3>
+    <p>用 IDE + AI 完成了一個真正能用的工具<br>前端 + API 串接 + 錯誤處理<br>這就是 Vibe Coding 的核心流程</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 4：RPM 撞牆 (slides 31-40)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 31: Chapter poster — Round 4 ══ -->
+<div class="slide poster overlay-heavy" data-act="R4：RPM 撞牆" data-index="31"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#7C3200 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:10–1:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">RPM<br><span style="color:#FFB86C;">撞牆體驗</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">免費不是無限 — 做 API 專案前先算用量</p>
+</div>
+
+<!-- ══ 32: 撞牆任務 ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="32">
+  <h2>設計會撞牆的任務</h2>
+  <div class="quote-box fragment" data-order="0">
+    <div class="quote-text">用你的 AI 工具<br>批量處理 30 段文字</div>
+    <div class="quote-src">迴圈連續呼叫 → 前幾次成功 → 然後...</div>
+  </div>
+  <div class="flow fragment" data-order="1">
+    <div class="flow-box">呼叫 1</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">呼叫 2</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">...</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="border-color:var(--red);color:var(--red);background:var(--red-lt);">呼叫 15</div>
+    <div class="flow-arrow" style="color:var(--red);">✕</div>
+    <div class="flow-box" style="border-color:var(--red);color:var(--red);background:var(--red-lt);">被擋</div>
+  </div>
+</div>
+
+<!-- ══ 33: 429 Error ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="33">
+  <h2>撞牆了</h2>
+  <div class="warn-box fragment" data-order="0">
+    <div class="warn-code">429</div>
+    <div class="warn-msg">Too Many Requests</div>
+  </div>
+  <div class="quote-box fragment" data-order="1" style="margin-top:1rem;">
+    <div class="quote-text">被擋了<br>只做了 15 個就停了</div>
+    <div class="quote-src">這就是 Rate Limiting — 每分鐘有上限</div>
+  </div>
+</div>
+
+<!-- ══ 34: Rate Limiting 三個維度 ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="34">
+  <h2>Rate Limiting 三個維度</h2>
+  <div class="stat-grid fragment" data-order="0">
+    <div class="stat-box" style="border-top:4px solid var(--orange);">
+      <div class="val" style="font-size:2rem;">RPM</div>
+      <div class="label">Requests Per Minute<br>每分鐘最多幾次</div>
+    </div>
+    <div class="stat-box" style="border-top:4px solid var(--blue);">
+      <div class="val" style="font-size:2rem;">RPD</div>
+      <div class="label">Requests Per Day<br>每天總額度</div>
+    </div>
+    <div class="stat-box" style="border-top:4px solid var(--gold);">
+      <div class="val" style="font-size:2rem;">Token</div>
+      <div class="label">Token Limit<br>每次份量上限</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>RPM 是最容易撞到的牆</strong> — Groq 30 RPM = 每 2 秒才能呼叫一次</p>
+  </div>
+</div>
+
+<!-- ══ 35: 各平台 RPM 比較 ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="35">
+  <h2>各平台 RPM 比較</h2>
+  <div class="flow fragment" data-order="0">
+    <div class="flow-box accent" style="min-width:150px;">Groq<br><span style="font-size:1.5rem;font-weight:900;">30</span> RPM</div>
+    <div class="flow-box" style="min-width:150px;border-color:var(--blue);background:var(--blue-lt);color:var(--blue);">Gemini<br><span style="font-size:1.5rem;font-weight:900;">10</span> RPM</div>
+    <div class="flow-box" style="min-width:150px;border-color:var(--purple);background:var(--purple-lt);color:var(--purple);">OpenRouter<br><span style="font-size:1.5rem;font-weight:900;">20</span> RPM</div>
+  </div>
+  <div class="info-box warning fragment" data-order="1" style="padding:.8rem 1.2rem;">
+    <div class="label">現實</div>
+    <p>Gemini Pro 最強但 RPM 最少（5 RPM）→ 不適合批量任務</p>
+  </div>
+</div>
+
+<!-- ══ 36: 升級策略 — 加延遲 ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="36">
+  <h2>升級：加上延遲</h2>
+  <div class="compare-two">
+    <div class="compare-col bad fragment" data-order="0">
+      <div class="col-label">沒延遲</div>
+      <p style="font-weight:700;">連續呼叫 → 429 被擋</p>
+      <p style="font-size:.9rem;margin-top:.3rem;">30 個任務只完成 15 個</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">加延遲（每次 2 秒）</div>
+      <p style="font-weight:700;">慢但穩 → 全部完成</p>
+      <p style="font-size:.9rem;margin-top:.3rem;">30 個任務 × 2 秒 = 1 分鐘搞定</p>
+    </div>
+  </div>
+  <div class="code-block fragment" data-order="2" style="margin-top:.8rem;">
+    <div class="code-label">延遲策略</div>
+    <pre>for (const item of items) {
+  await callAPI(item)
+  await sleep(2000)  // 等 2 秒再呼叫下一個
+}</pre>
+  </div>
+</div>
+
+<!-- ══ 37: 經典範例 — 真實帳單 ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="37">
+  <h2>經典案例：沒設限額的後果</h2>
+  <div class="warn-box fragment" data-order="0">
+    <div class="warn-code">$200</div>
+    <div class="warn-msg">某人一個月的 API 帳單</div>
+  </div>
+  <div class="step-list fragment" data-order="1" style="margin-top:1rem;">
+    <div class="step">
+      <div class="step-num" style="background:var(--red);">1</div>
+      <div class="step-content">
+        <strong>沒設每月限額</strong>
+        <p>付費 API 沒有設 budget cap</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--red);">2</div>
+      <div class="step-content">
+        <strong>寫了一個無限迴圈</strong>
+        <p>bug 導致程式不斷呼叫 API</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:var(--red);">3</div>
+      <div class="step-content">
+        <strong>月底收到帳單</strong>
+        <p>免費 API 撞 RPM 只是被擋，付費 API 撞的是錢包</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 38: 用量規劃 ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="38">
+  <h2>做 API 專案前先算用量</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>估計每日呼叫次數</strong>
+        <p>你的工具一天會被用幾次</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>對照 RPD 額度</strong>
+        <p>Groq 1,000 RPD / AI Studio 250 RPD / OpenRouter 50 RPD</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>需要更多 → 組合多平台</strong>
+        <p>Groq 用完切 OpenRouter → 再切 AI Studio</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 39: 概念引出 ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="39">
+  <h2>Rate Limiting = 限速</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>免費 ≠ 無限</h3>
+    <p>每個 API 都有看不見的天花板<br>做 API 專案前先算用量<br>撞牆不可怕 — 可怕的是不知道牆在哪裡</p>
+  </div>
+</div>
+
+<!-- ══ 40: R4 小結 ══ -->
+<div class="slide dataviz" data-act="R4：RPM 撞牆" data-index="40">
+  <h2>Round 4 小結</h2>
+  <div class="stat-grid fragment" data-order="0" style="grid-template-columns:1fr 1fr;max-width:600px;">
+    <div class="stat-box" style="border-top:4px solid var(--red);">
+      <div class="val" style="font-size:2rem;">429</div>
+      <div class="label">撞牆體驗<br>每分鐘有上限</div>
+    </div>
+    <div class="stat-box" style="border-top:4px solid var(--green);">
+      <div class="val" style="font-size:2rem;">2s</div>
+      <div class="label">延遲策略<br>慢但穩</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>帶走</strong>：RPM / RPD / Token Limit 三個維度 + 延遲策略 + 用量規劃意識</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 5：期末成品 (slides 41-48)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 41: Chapter poster — Round 5 ══ -->
+<div class="slide poster overlay-heavy" data-act="R5：期末成品" data-index="41"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#7C3200 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:30–1:55</p>
+  <h1 style="color:#fff;font-size:2.8rem;">Stage 2<br><span style="color:#FFB86C;">期末成品</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">完善工具 + 部署上線 + 互測回饋</p>
+</div>
+
+<!-- ══ 42: 期末成品要求 ══ -->
+<div class="slide dataviz" data-act="R5：期末成品" data-index="42">
+  <h2>期末成品要求</h2>
+  <div class="checklist">
+    <div class="check-item fragment" data-order="0">
+      <div class="check-icon todo">1</div>
+      <div class="check-text">
+        <strong>功能完整</strong>
+        <p>Round 3 的工具能正常運作，不會 crash</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="1">
+      <div class="check-icon todo">2</div>
+      <div class="check-text">
+        <strong>安全合格</strong>
+        <p>.env 存 Key + .gitignore 排除 → M2-2 安全 Checklist</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="2">
+      <div class="check-icon todo">3</div>
+      <div class="check-text">
+        <strong>部署上線</strong>
+        <p>push 到 GitHub → GitHub Pages 部署</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="3">
+      <div class="check-icon todo">4</div>
+      <div class="check-text">
+        <strong>用量提示 + 錯誤處理</strong>
+        <p>429 時顯示友善訊息、不要整個頁面爆掉</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 43: 完善工具 ══ -->
+<div class="slide dataviz" data-act="R5：期末成品" data-index="43">
+  <h2>完善你的 AI 工具</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>加上 Loading 狀態</strong>
+        <p>呼叫 API 時顯示「處理中...」</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>加上錯誤處理</strong>
+        <p>429 → 「請稍後再試」/ 401 → 「API Key 有誤」</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>優化介面</strong>
+        <p>排版美化、手機版適配、操作說明</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 44: 部署流程 ══ -->
+<div class="slide dataviz" data-act="R5：期末成品" data-index="44">
+  <h2>部署到 GitHub Pages</h2>
+  <div class="flow fragment" data-order="0">
+    <div class="flow-box">git add .</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">git commit</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">git push</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Pages 部署</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">上線</div>
+  </div>
+  <div class="info-box warning fragment" data-order="1" style="padding:.8rem 1.2rem;">
+    <div class="label">注意</div>
+    <p>前端直接呼叫 API → Key 會暴露在瀏覽器裡<br>進階做法：用 Cloudflare Worker / Vercel Serverless 做 proxy</p>
+  </div>
+</div>
+
+<!-- ══ 45: 前端 Key 安全 ══ -->
+<div class="slide dataviz" data-act="R5：期末成品" data-index="45">
+  <h2>前端 API Key 的現實</h2>
+  <div class="compare-two">
+    <div class="compare-col" style="background:var(--offwhite);border:2px solid var(--g200);">
+      <div class="col-label" style="color:var(--g600);">課堂練習</div>
+      <p>免費 Key + 個人使用</p>
+      <p>前端直接呼叫可以接受</p>
+      <p>被盜用也不會花錢</p>
+    </div>
+    <div class="compare-col" style="background:var(--blue-lt);border:2px solid var(--blue);">
+      <div class="col-label" style="color:var(--blue);">正式專案</div>
+      <p>付費 Key + 公開使用</p>
+      <p>必須走後端 proxy</p>
+      <p>Stage 3 會教進階做法</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 46: 互測 ══ -->
+<div class="slide dataviz" data-act="R5：期末成品" data-index="46">
+  <h2>交換網址，互相測試</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>分享你的 GitHub Pages 網址</strong>
+        <p>貼到群組讓大家看到</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>測試三位同學的工具</strong>
+        <p>實際使用、找 bug、觀察差異</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>給回饋</strong>
+        <p>什麼好用、什麼卡住、什麼可以改</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 47: 互測觀察 ══ -->
+<div class="slide dataviz" data-act="R5：期末成品" data-index="47">
+  <h2>互測觀察重點</h2>
+  <div class="card-grid">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>功能性</h3>
+      <p>API 有回應嗎<br>結果正確嗎<br>錯誤有處理嗎</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>使用體驗</h3>
+      <p>操作直覺嗎<br>有 Loading 提示嗎<br>手機能用嗎</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2">
+      <h3>安全性</h3>
+      <p>打開 DevTools<br>看得到 Key 嗎<br>.gitignore 有設嗎</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 48: R5 小結 ══ -->
+<div class="slide dataviz" data-act="R5：期末成品" data-index="48">
+  <h2>Round 5 小結</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>Stage 2 期末成品上線</h3>
+    <p>一個真正能用的 AI 工具<br>部署在 GitHub Pages 上<br>任何人都能打開使用</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 6：Stage 2 回顧 + Stage 3 預告 (slides 49-57)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 49: Chapter poster — Round 6 ══ -->
+<div class="slide poster overlay-heavy" data-act="R6：Stage 2 回顧" data-index="49"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#7C3200 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:55–2:05</p>
+  <h1 style="color:#fff;font-size:2.8rem;">Stage 2<br><span style="color:#FFB86C;">回顧</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">四個模組、四層能力</p>
+</div>
+
+<!-- ══ 50: 六維度反思 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 2 回顧" data-index="50">
+  <h2>六維度反思</h2>
+  <div class="card-grid">
+    <div class="card accent-top fragment" data-order="0" style="min-width:160px;max-width:220px;">
+      <h3>學到什麼</h3>
+      <p>新概念、新工具</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1" style="min-width:160px;max-width:220px;">
+      <h3>做到什麼</h3>
+      <p>實際完成的成品</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2" style="min-width:160px;max-width:220px;">
+      <h3>卡在哪裡</h3>
+      <p>遇到的困難</p>
+    </div>
+    <div class="card accent-top-purple fragment" data-order="3" style="min-width:160px;max-width:220px;">
+      <h3>怎麼解決的</h3>
+      <p>解題策略</p>
+    </div>
+    <div class="card accent-top-green fragment" data-order="4" style="min-width:160px;max-width:220px;">
+      <h3>想做但還沒做</h3>
+      <p>延伸想法</p>
+    </div>
+    <div class="card" style="min-width:160px;max-width:220px;border-top:4px solid var(--red);" >
+      <h3 class="fragment" data-order="5">下一步是什麼</h3>
+      <p class="fragment" data-order="5">Stage 3 目標</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 51: Stage 2 帶走清單 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 2 回顧" data-index="51">
+  <h2>Stage 2 帶走清單</h2>
+  <table class="takeaway-table fragment" data-order="0">
+    <thead>
+      <tr><th>模組</th><th>帶走</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>M2-1</td><td>GitHub Pages + commit + Public vs Private</td></tr>
+      <tr><td>M2-2</td><td>搬家實作 + Secrets + .gitignore + 安全 Checklist</td></tr>
+      <tr><td>M2-3</td><td>IDE + AI 下 Git 指令 + SSH + 權限分級</td></tr>
+      <tr><td>M2-4</td><td>三大免費 API + RPM 意識 + 期末成品</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ 52: Stage 2 能力升級 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 2 回顧" data-index="52">
+  <h2>Stage 2 能力升級</h2>
+  <div class="flow fragment" data-order="0">
+    <div class="flow-box">Stage 1<br><span style="font-size:.8rem;font-weight:400;">用 AI 做作品</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">Stage 2<br><span style="font-size:.8rem;font-weight:400;">串 AI 做工具</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box" style="border-color:var(--purple);background:var(--purple-lt);color:var(--purple);">Stage 3<br><span style="font-size:.8rem;font-weight:400;">造 AI 做系統</span></div>
+  </div>
+  <div class="info-box success fragment" data-order="1" style="padding:.8rem 1.2rem;">
+    <div class="label">你的進度</div>
+    <p>從「跟 AI 聊天產出作品」到「用 API 串接做出自己的 AI 工具」<br>這是從使用者到開發者的關鍵跨越</p>
+  </div>
+</div>
+
+<!-- ══ 53: M2-4 注意事項總覽 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 2 回顧" data-index="53">
+  <h2>M2-4 注意事項總覽</h2>
+  <table class="compare-table fragment" data-order="0">
+    <thead>
+      <tr><th>#</th><th>常見問題</th><th>學到什麼</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>API Key 直接貼程式碼</td><td>安全 Checklist 復用</td></tr>
+      <tr><td>2</td><td>GAS 呼叫 AI Studio 需 Billing</td><td>用 UrlFetchApp 繞過</td></tr>
+      <tr><td>3</td><td>撞 RPM 429</td><td>Rate Limiting</td></tr>
+      <tr><td>4</td><td>免費 ≠ 無限</td><td>用量規劃</td></tr>
+      <tr><td>5</td><td>批量任務超時</td><td>延遲策略</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ 54: Stage 3 預告 — 標題 ══ -->
+<div class="slide poster overlay-heavy" data-act="R6：Stage 2 回顧" data-index="54"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 50%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">NEXT STAGE</p>
+  <h1 style="color:#fff;font-size:2.8rem;">Stage 3<br><span style="color:#C4B5FD;">造 AI</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">IDE Extension → CLI → MCP → Skills</p>
+</div>
+
+<!-- ══ 55: Stage 3 預告內容 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 2 回顧" data-index="55">
+  <h2>Stage 3 預告</h2>
+  <div class="card-grid">
+    <div class="card accent-top-purple fragment" data-order="0">
+      <h3>CLI 模式</h3>
+      <p>從 Extension 升級到 CLI<br>更快更強更自動</p>
+    </div>
+    <div class="card accent-top-purple fragment" data-order="1">
+      <h3>MCP 工具</h3>
+      <p>AI 接上更多工具<br>能力無限擴展</p>
+    </div>
+    <div class="card accent-top-purple fragment" data-order="2">
+      <h3>Skills 記憶</h3>
+      <p>AI 永遠記住你教的技能<br>不用每次重說</p>
+    </div>
+  </div>
+  <div class="info-box blue fragment" data-order="3" style="padding:.8rem 1.2rem;">
+    <div class="label">下一堂銜接</div>
+    <p>你今天申請的 API Key 已存在 GitHub Secrets 裡<br>M3-4 的 GitHub Actions 會直接用</p>
+  </div>
+</div>
+
+<!-- ══ 56: 課前單元 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 2 回顧" data-index="56">
+  <h2>Stage 3 課前準備</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num" style="background:var(--purple);">P1</div>
+      <div class="step-content">
+        <strong>P3-1 課前單元</strong>
+        <p>安裝 CLI 環境</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num" style="background:var(--purple);">P2</div>
+      <div class="step-content">
+        <strong>P3-2 ~ P3-3</strong>
+        <p>MCP 基礎概念 + Skills 初探</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num" style="background:var(--purple);">P3</div>
+      <div class="step-content">
+        <strong>P3-4 ~ P3-5</strong>
+        <p>CLI 操作練習 + 進階設定</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box tip fragment" data-order="3" style="padding:.7rem 1.2rem;">
+    <div class="label">重要</div>
+    <p>Stage 3 課前準備必須完成 → 上課才能直接動手</p>
+  </div>
+</div>
+
+<!-- ══ 57: END ══ -->
+<div class="slide poster overlay-heavy" data-act="R6：Stage 2 回顧" data-index="57"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#7C3200 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">M2-4 完成</p>
+  <h1 style="color:#fff;font-size:2.8rem;">三大免費 API<br><span style="color:#FFB86C;">+ 你的 AI 工具</span></h1>
+  <p class="poster-subtitle" style="margin-top:1rem;">從使用者到開發者的關鍵跨越</p>
+  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Groq + Gemini + OpenRouter</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">RPM 意識</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">期末成品</span>
+  </div>
+  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">Stage 2 完成 — Stage 3 見</p>
+</div>
+
+</div><!-- end .slides -->
+
+<!-- ── Controls ── -->
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter">1 / 58</div>
+<div class="controls">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
+  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+</div>
+
+<!-- ── Chapter Menu ── -->
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">&#9672;</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">&#9650;</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+  let fragmentIdx = 0;
+
+  // Build chapter data
+  const chapters = [];
+  let lastAct = '';
+  slides.forEach((s, i) => {
+    const act = s.dataset.act || '';
+    if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+  });
+
+  // Build chapter menu
+  const list = document.getElementById('chapterList');
+  chapters.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = c.idx;
+    item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+    item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+    list.appendChild(item);
+  });
+
+  function getFragments(slide){
+    return Array.from(slide.querySelectorAll('.fragment'))
+      .sort((a,b) => (+a.dataset.order||0) - (+b.dataset.order||0));
+  }
+
+  function showSlide(n, showAllFragments){
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total-1, n));
+    const s = slides[cur];
+    s.classList.add('active');
+    const frags = getFragments(s);
+    if(showAllFragments){
+      frags.forEach(f => f.classList.add('visible'));
+      fragmentIdx = frags.length;
+    } else {
+      frags.forEach(f => f.classList.remove('visible'));
+      fragmentIdx = 0;
+    }
+    updateUI();
+  }
+
+  function goTo(n){ showSlide(n, false); }
+
+  function navigate(dir){
+    const s = slides[cur];
+    const frags = getFragments(s);
+    if(dir > 0){
+      if(fragmentIdx < frags.length){
+        frags[fragmentIdx].classList.add('visible');
+        fragmentIdx++;
+        updateUI();
+        return;
+      }
+      showSlide(cur + 1, false);
+    } else {
+      if(fragmentIdx > 0){
+        fragmentIdx--;
+        frags[fragmentIdx].classList.remove('visible');
+        updateUI();
+        return;
+      }
+      showSlide(cur - 1, true);
+    }
+  }
+
+  function updateUI(){
+    document.getElementById('progress').style.width = ((cur/(total-1))*100)+'%';
+    document.getElementById('counter').textContent = (cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = cur === 0 && fragmentIdx === 0;
+    document.getElementById('nextBtn').disabled = cur === total-1 && fragmentIdx >= getFragments(slides[cur]).length;
+
+    // Chapter label
+    let act = '';
+    for(let i = chapters.length-1; i >= 0; i--){
+      if(cur >= chapters[i].idx){ act = chapters[i].act; break; }
+    }
+    document.getElementById('chapterLabel').textContent = act || '章節';
+
+    // Update chapter items
+    document.querySelectorAll('.chapter-item').forEach(item => {
+      const idx = +item.dataset.idx;
+      let end = total;
+      for(let c of chapters){ if(c.idx > idx){ end = c.idx; break; } }
+      item.classList.toggle('active', cur >= idx && cur < end);
+    });
+  }
+
+  function toggleChapterMenu(){
+    document.getElementById('chapterMenu').classList.toggle('open');
+  }
+  function closeChapterMenu(){
+    document.getElementById('chapterMenu').classList.remove('open');
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){ e.preventDefault(); navigate(1); }
+    else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); navigate(-1); }
+    else if(e.key==='Home'){ e.preventDefault(); showSlide(0, false); }
+    else if(e.key==='End'){ e.preventDefault(); showSlide(total-1, true); }
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if(e.key==='Escape'){ closeChapterMenu(); }
+  });
+
+  // Click (not on controls/menu)
+  document.querySelector('.slides').addEventListener('click', e => {
+    if(e.target.closest('.controls')||e.target.closest('.chapter-menu')) return;
+    navigate(1);
+  });
+
+  // Touch swipe
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ navigate(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+
+  // Init
+  updateUI();
+  window.navigate = navigate;
+  window.toggleChapterMenu = toggleChapterMenu;
+})();
+</script>
+</body>
+</html>

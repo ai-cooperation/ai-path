@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-2 — 把 GAS 工具搬上 GitHub + 安全管理 | Vibe Coding Stage 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   M2-2: 把 GAS 工具搬上 GitHub + 安全管理
+   Design System: WHITE BACKGROUND
+   Accent: --red (#D93025)
+   ═══════════════════════════════════════ */
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --navy:#0B3C5D;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --accent:#D93025;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;font-weight:400;background:var(--white);}
+
+/* ── Slides Core ── */
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 4rem 1.5rem;overflow:hidden;}
+.slide.active{display:flex;}
+
+/* ── DataViz: white bg content page ── */
+.slide.dataviz{background:var(--white);color:var(--g900);padding-top:3.5rem;overflow-y:auto;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.dataviz h2{color:var(--g900);}
+
+/* ── Poster: colored gradient chapter dividers ── */
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster::before{content:'';position:absolute;inset:0;z-index:1;}
+.slide.poster>*{position:relative;z-index:2;}
+.slide.poster.overlay-heavy::before{background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.7) 100%);}
+.slide.poster h2{color:#fff;}
+
+/* ── Typography ── */
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+.slide.poster h1{color:#fff;}
+h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;}
+h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
+p,li{font-size:1.1rem;line-height:1.8;}
+.subtitle{font-size:1.15rem;font-weight:500;}
+.dim{opacity:.6;}
+
+/* ── Fragment ── */
+.fragment{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.fragment.visible{opacity:1;transform:none;}
+
+/* ── Step List ── */
+.step-list{text-align:left;max-width:800px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;}
+
+/* ── Stat Grid (white mode) ── */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
+.stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
+.stat-box .val{font-size:2.4rem;font-weight:900;color:var(--red);line-height:1.1;}
+.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Card Grid (white mode) ── */
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:960px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.5rem;min-width:200px;max-width:280px;flex:1;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.card:hover{border-color:var(--red);}
+.card .icon{font-size:2.2rem;margin-bottom:.5rem;}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.6;}
+.card.accent-top{border-top:4px solid var(--red);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+.card.accent-top-purple{border-top:4px solid var(--purple);}
+.card.accent-top-green{border-top:4px solid var(--green);}
+
+/* ── Flow (white mode) ── */
+.flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box.accent{border-color:var(--red);background:var(--red-lt);color:var(--red);}
+.flow-arrow{color:var(--red);font-size:1.5rem;font-weight:900;}
+
+/* ── Info Boxes (white mode) ── */
+.info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.success p{color:var(--g800);}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:var(--g800);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip p{color:var(--g800);}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note p{color:var(--g800);}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue p{color:var(--g800);}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning p{color:var(--g800);}
+
+/* ── Quote Box (white mode) ── */
+.quote-box{max-width:800px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.5rem 2rem;margin:.8rem 0;text-align:left;}
+.quote-box .quote-text{font-size:1.3rem;font-weight:700;line-height:1.6;color:var(--g900);}
+.quote-box .quote-src{font-size:.9rem;color:var(--g400);margin-top:.5rem;}
+
+/* ── Code Block (white mode) ── */
+.code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1.2rem 1.5rem;max-width:800px;width:100%;text-align:left;margin:.8rem 0;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:.9rem;color:var(--g900);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--red);letter-spacing:.05em;margin-bottom:.5rem;}
+
+/* ── Two-Column Compare ── */
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:860px;width:100%;margin-top:.8rem;}
+.compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
+.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--green);}
+.compare-col p,
+.compare-col li{font-size:1rem;line-height:1.7;color:var(--g800);}
+.compare-col ul{padding-left:1.2rem;}
+
+/* ── Checklist ── */
+.checklist{max-width:800px;width:100%;}
+.check-item{display:flex;align-items:flex-start;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--g100);}
+.check-item:last-child{border:none;}
+.check-icon{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.check-icon.done{background:var(--green-lt);color:var(--green);}
+.check-icon.todo{background:var(--offwhite);color:var(--g400);border:2px solid var(--g200);}
+.check-text strong{font-size:1.05rem;color:var(--g900);}
+.check-text p{font-size:.95rem;color:var(--g600);}
+
+/* ── Big Number Highlight ── */
+.big-stat{text-align:center;margin:1rem 0;}
+.big-stat .num{font-size:4rem;font-weight:900;color:var(--red);line-height:1;}
+.big-stat .unit{font-size:1.2rem;font-weight:700;color:var(--g600);}
+.big-stat .caption{font-size:1rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Highlight Text ── */
+.hl-red{color:var(--red);font-weight:700;}
+.hl-blue{color:var(--blue);font-weight:700;}
+.hl-gold{color:var(--gold);font-weight:700;}
+.hl-green{color:var(--green);font-weight:700;}
+.hl-orange{color:var(--orange);font-weight:700;}
+
+/* ── Bottom Line Summary ── */
+.bottom-line{max-width:800px;width:100%;background:var(--red-lt);border:2px solid rgba(217,48,37,.3);border-radius:16px;padding:2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.5rem;color:var(--red);margin-bottom:.6rem;}
+.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:640px;margin:0 auto;line-height:1.7;}
+
+/* ── Poster text helpers ── */
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.9rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin-top:.8rem;}
+
+/* ── Controls (light themed) ── */
+.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--red);transition:width .4s;z-index:100;}
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--red);border-color:var(--red);color:#fff;}
+.controls button:disabled{opacity:.25;cursor:default;}
+.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--red-lt);color:var(--red);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(217,48,37,.2);}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+
+/* ── Chapter Menu (light themed) ── */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--red);}
+.chapter-icon{color:var(--red);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:200px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--red);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--red);}
+
+/* ── Cycle Ring (6-round diagram) ── */
+.cycle-ring{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;max-width:860px;width:100%;margin:1rem 0;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.6rem 1rem;font-size:.95rem;font-weight:700;text-align:center;min-width:120px;color:var(--g800);position:relative;}
+.cycle-step.active-step{border-color:var(--red);background:var(--red-lt);color:var(--red);}
+.cycle-step .cycle-label{font-size:.75rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step.active-step .cycle-label{color:var(--red);}
+
+/* ── Table (white mode) ── */
+.data-table{max-width:860px;width:100%;border-collapse:collapse;margin:.8rem 0;}
+.data-table th{background:var(--g50);font-size:.85rem;font-weight:700;color:var(--g800);padding:.7rem 1rem;text-align:left;border-bottom:2px solid var(--g200);}
+.data-table td{font-size:.9rem;color:var(--g800);padding:.7rem 1rem;border-bottom:1px solid var(--g100);}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table .danger{color:var(--red);font-weight:700;}
+.data-table .safe{color:var(--green);font-weight:700;}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  html,body{font-size:16px;}
+  .slide{padding:1rem 1.2rem 1rem;}
+  .slide.dataviz{padding-top:3rem;}
+  h1{font-size:1.9rem;}
+  h2{font-size:1.4rem;margin-bottom:.6rem;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:.8rem;}
+  .stat-box .val{font-size:1.8rem;}
+  .card-grid{flex-direction:column;align-items:center;}
+  .card{max-width:100%;min-width:0;}
+  .compare-two{grid-template-columns:1fr;}
+  .controls button{width:40px;height:40px;font-size:1rem;}
+  .module-title{font-size:.7rem;left:.8rem;top:.6rem;}
+  .module-badge{font-size:.65rem;top:.6rem;right:.6rem;padding:.2rem .6rem;}
+  .quote-box .quote-text{font-size:1.05rem;}
+  .code-block pre{font-size:.8rem;}
+  .cycle-ring{gap:.4rem;}
+  .cycle-step{min-width:100px;font-size:.85rem;padding:.5rem .6rem;}
+  .data-table{font-size:.8rem;}
+  .data-table th,.data-table td{padding:.5rem .6rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — Stage 2 · 串 AI</div>
+<div class="module-badge">M2-2</div>
+<div class="slides">
+
+<!-- ══════════════════════════════════════
+     開場 (slides 0-2)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 0: COVER ══ -->
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
+     style="background:linear-gradient(135deg,#4A0E0E 0%,#8B1A1A 40%,#D93025 100%);">
+  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 串 AI</p>
+  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">把 GAS 工具<br><span style="color:#FCA5A5;">搬上 GitHub</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">搬家的過程就是學安全的最好時機</p>
+  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M2-2</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">安全 + 搬家</span>
+  </div>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1: 上堂回顧 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="1">
+  <h2>上堂回顧：M1-4 做了什麼</h2>
+  <div class="flow" style="margin:.8rem 0;">
+    <div class="flow-box fragment" data-order="0">GAS 後端</div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box fragment" data-order="1">Groq API</div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box fragment" data-order="2">TG Bot</div>
+    <div class="flow-arrow">=</div>
+    <div class="flow-box accent fragment" data-order="3">AI 分析工具</div>
+  </div>
+  <div class="info-box note fragment" data-order="4">
+    <div class="label">現況</div>
+    <p>工具能用，但 API Key 存在 GAS Script Properties 裡<br>只有你自己能用，沒有短網址，沒有版本紀錄</p>
+  </div>
+  <div class="info-box warning fragment" data-order="5" style="margin-top:.5rem;">
+    <div class="label">GAS 的天花板</div>
+    <p>每次執行上限 <strong>6 分鐘</strong> — 如果任務要跑更久，GAS 撐不住<br>以後要搬到 GitHub Actions（M3-4 會教），所以先學會在 GitHub 上管密碼</p>
+  </div>
+</div>
+
+<!-- ══ 2: 六輪循環 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="2">
+  <h2>六輪循環，任務驅動學安全</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+      <div style="font-weight:700;">案例 + 搬家動機</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+      <div style="font-weight:700;">.gitignore + Secrets</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+      <div style="font-weight:700;">搬家實作</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+      <div style="font-weight:700;">Commit 深化</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+      <div style="font-weight:700;">GitHub 協作</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+      <div style="font-weight:700;">安全 Checklist</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>核心任務</strong><br>把 M1-4 的 GAS AI 分析工具搬到 GitHub Pages 上線<br>過程中學會 .gitignore、Secrets、commit、協作</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 1：案例開場 + 為什麼搬家 (slides 3-10)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 3: Chapter poster — Round 1 ══ -->
+<div class="slide poster overlay-heavy" data-act="R1：為什麼搬家" data-index="3"
+     style="background:linear-gradient(135deg,#4A0E0E 0%,#8B1A1A 40%,#D93025 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:15</p>
+  <h1 style="color:#fff;font-size:2.8rem;">搬家前<br><span style="color:#FCA5A5;">先把門鎖好</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">GitHub 是公開的，密碼管理是第一步</p>
+</div>
+
+<!-- ══ 4: 真實案例一 ══ -->
+<div class="slide dataviz" data-act="R1：為什麼搬家" data-index="4">
+  <h2>真實案例：AWS Key 外洩</h2>
+  <div class="big-stat fragment" data-order="0" style="margin:.5rem 0;">
+    <div class="num">$12,000</div>
+    <div class="unit">帳單</div>
+    <div class="caption">某開發者把 AWS Key 推到 Public repo</div>
+  </div>
+  <div class="step-list">
+    <div class="step fragment" data-order="1">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>推了一個含 AWS Key 的 commit</strong>
+        <p>以為是 private repo，其實是 public</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>機器人 15 分鐘內就掃到</strong>
+        <p>自動化爬蟲 24 小時掃 GitHub 新 commit</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>被拿去開 EC2 挖礦</strong>
+        <p>一覺醒來帳單 $12,000</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 5: 真實案例二 ══ -->
+<div class="slide dataviz" data-act="R1：為什麼搬家" data-index="5">
+  <h2>GitHub 搜尋：API_KEY</h2>
+  <div class="info-box warning fragment" data-order="0">
+    <div class="label">現場示範</div>
+    <p>打開 GitHub → 搜尋「API_KEY」→ 看看搜尋結果<br>真的一堆外洩的 Key，有些還在活躍使用中</p>
+  </div>
+  <div class="stat-grid fragment" data-order="1" style="margin-top:1rem;">
+    <div class="stat-box">
+      <div class="val" style="font-size:1.8rem;">13%</div>
+      <div class="label">GitHub 專案含硬編碼密碼<br>(GitGuardian 2024)</div>
+    </div>
+    <div class="stat-box">
+      <div class="val" style="font-size:1.8rem;">12.8M</div>
+      <div class="label">2023 年 GitHub<br>偵測到的外洩 secret</div>
+    </div>
+    <div class="stat-box">
+      <div class="val" style="font-size:1.8rem;">15 min</div>
+      <div class="label">從 push 到被<br>機器人掃到的時間</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="2" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;">這不是理論 — 這是每天都在發生的事</p>
+  </div>
+</div>
+
+<!-- ══ 6: 問題引出 ══ -->
+<div class="slide dataviz" data-act="R1：為什麼搬家" data-index="6">
+  <h2>你的 M1-4 工具有 API Key</h2>
+  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+    <div class="quote-text">如果要放到 GitHub 上<br>怎麼不讓 Key 外洩？</div>
+  </div>
+  <div class="card-grid fragment" data-order="1" style="margin-top:1.5rem;">
+    <div class="card accent-top" style="min-width:180px;">
+      <h3>Groq API Key</h3>
+      <p>呼叫 AI 模型用<br>外洩 = 別人用你的額度</p>
+    </div>
+    <div class="card accent-top-blue" style="min-width:180px;">
+      <h3>TG Bot Token</h3>
+      <p>操控你的 Bot 用<br>外洩 = 別人控制你的 Bot</p>
+    </div>
+    <div class="card accent-top-gold" style="min-width:180px;">
+      <h3>GAS URL</h3>
+      <p>後端入口<br>外洩 = 被大量呼叫</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 7: GAS 限制 ══ -->
+<div class="slide dataviz" data-act="R1：為什麼搬家" data-index="7">
+  <h2>為什麼要搬家</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0">
+      <div class="col-label">GAS 的限制</div>
+      <ul>
+        <li>每次執行上限 <strong>6 分鐘</strong></li>
+        <li>長時間 AI 分析會超時</li>
+        <li>沒有版本控制</li>
+        <li>沒有短網址可分享</li>
+      </ul>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">GitHub 的優勢</div>
+      <ul>
+        <li>GitHub Pages 免費託管</li>
+        <li>Git 版本控制</li>
+        <li>Secrets 密碼管理</li>
+        <li>以後接 Actions 做自動化</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box tip fragment" data-order="2" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <div class="label">搬家路線</div>
+    <p>前端 HTML → GitHub Pages<br>後端 API Proxy → 暫時留在 GAS（Key 不外露）<br>以後 M3-4 學 GitHub Actions 再搬後端</p>
+  </div>
+</div>
+
+<!-- ══ 8: Round 1 小結 ══ -->
+<div class="slide dataviz" data-act="R1：為什麼搬家" data-index="8">
+  <h2>Round 1 小結</h2>
+  <div class="quote-box fragment" data-order="0" style="margin-top:1.5rem;">
+    <div class="quote-text">密碼外洩是真的會出事的<br>搬家前先把門鎖好，再把東西搬進去</div>
+  </div>
+  <div class="flow fragment" data-order="1" style="margin-top:1.5rem;">
+    <div class="flow-box accent">先建防線</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">再放東西</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">最後上線</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 2：建 repo + .gitignore + Secrets (slides 9-18)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 9: Chapter poster — Round 2 ══ -->
+<div class="slide poster overlay-heavy" data-act="R2：.gitignore + Secrets" data-index="9"
+     style="background:linear-gradient(135deg,#4A0E0E 0%,#8B1A1A 40%,#D93025 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:15–0:40</p>
+  <h1 style="color:#fff;font-size:2.8rem;">.gitignore<br><span style="color:#FCA5A5;">+ Secrets</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">防線先建好，再放東西</p>
+</div>
+
+<!-- ══ 10: 操作步驟一：建 repo ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="10">
+  <h2>Step 1：建新 repo</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>GitHub → New repository</strong>
+        <p>名稱：vibe-coding-tool</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>選 Public + Add README</strong>
+        <p>Public 才能用 GitHub Pages 免費託管</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>建好之後先不要上傳任何程式碼</strong>
+        <p>防線還沒建好，不要急著放東西</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box warning fragment" data-order="3" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+    <div class="label">重點</div>
+    <p>Public repo = 全世界看得到<br>所以接下來的每一步都跟「保護密碼」有關</p>
+  </div>
+</div>
+
+<!-- ══ 11: 操作步驟二：建 .gitignore ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="11">
+  <h2>Step 2：第一步就建 .gitignore</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">.gitignore</div>
+    <pre># 敏感檔案
+.env
+.env.*
+*.key
+*.pem
+
+# 系統檔
+.DS_Store
+Thumbs.db</pre>
+  </div>
+  <div class="info-box success fragment" data-order="1" style="margin-top:.5rem;">
+    <div class="label">.gitignore = 守門員</div>
+    <p>列在這裡的檔案，Git 會自動忽略，不會被上傳<br>第一步就建好，確保敏感檔案永遠不進 repo</p>
+  </div>
+</div>
+
+<!-- ══ 12: 順序很重要 ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="12">
+  <h2>順序很重要</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0">
+      <div class="col-label">錯誤順序</div>
+      <p style="font-weight:700;">先上傳 .env<br>再加 .gitignore</p>
+      <p style="margin-top:.6rem;color:var(--red);">.env 已經在 repo 裡了<br>.gitignore 擋不住已追蹤的檔案</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">正確順序</div>
+      <p style="font-weight:700;">先建 .gitignore<br>再建 .env</p>
+      <p style="margin-top:.6rem;color:var(--green);">.env 從一開始就被忽略<br>永遠不會進 repo</p>
+    </div>
+  </div>
+  <div class="info-box warning fragment" data-order="2" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <div class="label">注意事項</div>
+    <p>一旦檔案被 commit 過，就算後來加到 .gitignore 也沒用<br>歷史紀錄裡永遠有那個檔案</p>
+  </div>
+</div>
+
+<!-- ══ 13: 建 .env ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="13">
+  <h2>Step 3：建 .env（本機用）</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">.env — 存在你的電腦裡，不會被上傳</div>
+    <pre>GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxx
+TG_BOT_TOKEN=123456:ABCdefGHIjklMNO</pre>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="label">用途</div>
+    <p>本機開發時讀取<br>因為 .gitignore 已經排除，所以不會被上傳到 GitHub</p>
+  </div>
+  <div class="info-box tip fragment" data-order="2" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+    <div class="label">驗證方法</div>
+    <p>git status 看看 .env 有沒有出現<br>如果沒出現 = .gitignore 生效了</p>
+  </div>
+</div>
+
+<!-- ══ 14: GitHub Secrets ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="14">
+  <h2>Step 4：設定 GitHub Secrets</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>repo → Settings → Secrets and variables → Actions</strong>
+        <p>這裡是 GitHub 的雲端保險箱</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>New repository secret</strong>
+        <p>名稱：GROQ_API_KEY / 值：你的 Key</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>再加一個 TG_BOT_TOKEN</strong>
+        <p>存好之後，值會被遮蔽，看不到原文</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box blue fragment" data-order="3" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+    <div class="label">Secrets = 雲端保險箱</div>
+    <p>GitHub Actions 執行時才讀取，人看不到值<br>M3-4 會用到，現在先存好</p>
+  </div>
+</div>
+
+<!-- ══ 15: 確認防線 ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="15">
+  <h2>確認防線到位</h2>
+  <div class="checklist">
+    <div class="check-item fragment" data-order="0">
+      <div class="check-icon done">V</div>
+      <div class="check-text">
+        <strong>.gitignore 已建好</strong>
+        <p>包含 .env / .env.* / *.key</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="1">
+      <div class="check-icon done">V</div>
+      <div class="check-text">
+        <strong>.env 不在 repo 裡</strong>
+        <p>git status 看不到 .env</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="2">
+      <div class="check-icon done">V</div>
+      <div class="check-text">
+        <strong>Secrets 已存好</strong>
+        <p>GROQ_API_KEY + TG_BOT_TOKEN 都看不到值</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="3">
+      <div class="check-icon done">V</div>
+      <div class="check-text">
+        <strong>程式碼裡沒有任何密碼</strong>
+        <p>Ctrl+F 搜尋 gsk_ / key / token，確認沒有硬編碼</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 16: 三層密碼管理 ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="16">
+  <h2>三層密碼管理</h2>
+  <table class="data-table fragment" data-order="0">
+    <thead>
+      <tr>
+        <th>存放方式</th>
+        <th>位置</th>
+        <th>用途</th>
+        <th>安全性</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Script Properties</strong></td>
+        <td>GAS 內</td>
+        <td>GAS 專用</td>
+        <td class="safe">中</td>
+      </tr>
+      <tr>
+        <td><strong>.env</strong></td>
+        <td>本機</td>
+        <td>IDE 開發用</td>
+        <td class="safe">高（不上傳）</td>
+      </tr>
+      <tr>
+        <td><strong>GitHub Secrets</strong></td>
+        <td>repo Settings</td>
+        <td>Actions 用</td>
+        <td class="safe">高</td>
+      </tr>
+      <tr>
+        <td><strong>程式碼裡</strong></td>
+        <td>任何 .js / .html</td>
+        <td>—</td>
+        <td class="danger">零（絕對不行）</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;">不同場景用不同存放方式<br>唯一的共同規則：<span class="hl-red">程式碼裡絕對不放密碼</span></p>
+  </div>
+</div>
+
+<!-- ══ 17: 注意：Secret 名稱 ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="17">
+  <h2>注意：Secret 名稱打錯</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0">
+      <div class="col-label">名稱不一致</div>
+      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">Secrets 存：groq_api_key<br>程式讀：GROQ_API_KEY</p>
+      <p style="margin-top:.5rem;color:var(--red);">大小寫不同 → 讀不到 → 功能壞掉<br>但錯誤訊息不會告訴你「名稱打錯了」</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">名稱一致</div>
+      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">Secrets 存：GROQ_API_KEY<br>程式讀：GROQ_API_KEY</p>
+      <p style="margin-top:.5rem;color:var(--green);">全大寫 + 底線分隔 = 業界慣例<br>存和讀永遠用同一個名稱</p>
+    </div>
+  </div>
+  <div class="info-box tip fragment" data-order="2" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <div class="label">慣例</div>
+    <p>環境變數一律全大寫、底線分隔<br>GROQ_API_KEY、TG_BOT_TOKEN、DATABASE_URL</p>
+  </div>
+</div>
+
+<!-- ══ 18: Round 2 小結 ══ -->
+<div class="slide dataviz" data-act="R2：.gitignore + Secrets" data-index="18">
+  <h2>Round 2 小結</h2>
+  <div class="flow fragment" data-order="0" style="margin:1rem 0;">
+    <div class="flow-box accent">.gitignore</div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box accent">.env</div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-box accent">Secrets</div>
+    <div class="flow-arrow">=</div>
+    <div class="flow-box" style="border-color:var(--green);background:var(--green-lt);color:var(--green);">防線完成</div>
+  </div>
+  <div class="bottom-line fragment" data-order="1" style="padding:1.2rem;">
+    <h3 style="font-size:1.3rem;">防線建好了，可以開始搬家</h3>
+    <p style="font-size:.95rem;">.gitignore 守本機、Secrets 守雲端、程式碼裡零密碼</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 3：搬家實作 (slides 19-27)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 19: Chapter poster — Round 3 ══ -->
+<div class="slide poster overlay-heavy" data-act="R3：搬家實作" data-index="19"
+     style="background:linear-gradient(135deg,#4A0E0E 0%,#8B1A1A 40%,#D93025 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:40–1:05</p>
+  <h1 style="color:#fff;font-size:2.8rem;">搬家實作<br><span style="color:#FCA5A5;">M1-4 上 GitHub Pages</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">功能不變，基礎設施升級</p>
+</div>
+
+<!-- ══ 20: 搬家架構圖 ══ -->
+<div class="slide dataviz" data-act="R3：搬家實作" data-index="20">
+  <h2>搬家後的架構</h2>
+  <div style="max-width:800px;width:100%;margin:.8rem 0;">
+    <div class="flow fragment" data-order="0">
+      <div class="flow-box" style="min-width:150px;border-color:var(--blue);background:var(--blue-lt);color:var(--blue);">使用者瀏覽器</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box accent" style="min-width:180px;">GitHub Pages<br><span style="font-size:.8rem;font-weight:400;">前端 HTML</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="min-width:150px;border-color:var(--gold);background:var(--gold-lt);color:#b07d00;">GAS 後端<br><span style="font-size:.8rem;font-weight:400;">API Proxy</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box" style="min-width:120px;border-color:var(--green);background:var(--green-lt);color:var(--green);">Groq API</div>
+    </div>
+  </div>
+  <div class="info-box blue fragment" data-order="1" style="margin-top:1rem;">
+    <div class="label">架構說明</div>
+    <p>前端搬到 GitHub Pages — 有短網址，任何人能用<br>後端仍用 GAS — Key 在 GAS 裡，前端看不到<br>GAS 當 API Proxy：前端呼叫 GAS → GAS 帶 Key 呼叫 Groq</p>
+  </div>
+</div>
+
+<!-- ══ 21: 搬家步驟 ══ -->
+<div class="slide dataviz" data-act="R3：搬家實作" data-index="21">
+  <h2>搬家步驟</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>把 M1-4 的前端 HTML 複製到 repo</strong>
+        <p>上傳 index.html 到 vibe-coding-tool repo</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>確認 HTML 裡呼叫的是 GAS 端點</strong>
+        <p>前端 fetch GAS URL → GAS 帶 Key 呼叫 Groq</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Settings → Pages → Deploy from main branch</strong>
+        <p>等 1-2 分鐘，拿到 https://你的帳號.github.io/vibe-coding-tool/</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>打開網頁測試 AI 分析功能</strong>
+        <p>功能跟 M1-4 一樣，但現在有短網址了</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 22: 搬家前逐行檢查 ══ -->
+<div class="slide dataviz" data-act="R3：搬家實作" data-index="22">
+  <h2>搬家前逐行檢查</h2>
+  <div class="info-box warning fragment" data-order="0">
+    <div class="label">注意事項</div>
+    <p>M1-4 的 HTML 裡可能殘留 GAS URL 或 API Key<br>搬家前用 Ctrl+F 搜尋以下關鍵字</p>
+  </div>
+  <div class="code-block fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="code-label">搜尋這些關鍵字，確認沒有殘留</div>
+    <pre>gsk_          → Groq API Key 前綴
+sk-           → OpenAI Key 前綴
+AIza          → Google Key 前綴
+Bot           → TG Bot Token
+api_key       → 任何 key 變數
+password      → 密碼
+secret        → 密鑰</pre>
+  </div>
+  <div class="info-box success fragment" data-order="2" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+    <div class="label">原則</div>
+    <p>搬家 = 不只是複製貼上，要逐行檢查有沒有帶走不該帶的東西</p>
+  </div>
+</div>
+
+<!-- ══ 23: DevTools 互查 ══ -->
+<div class="slide dataviz" data-act="R3：搬家實作" data-index="23">
+  <h2>互相用 DevTools 檢查</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打開同學的 GitHub Pages 網頁</strong>
+        <p>按 F12 開啟 DevTools</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Sources 頁籤 → 看 HTML / JS 原始碼</strong>
+        <p>搜尋 gsk_ / key / token</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Network 頁籤 → 觸發 AI 分析</strong>
+        <p>看 request 是送到 GAS URL，不是直接呼叫 Groq</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+    <div class="label">驗證結果</div>
+    <p>在網頁原始碼裡看不到 API Key = 架構正確<br>Key 安全地待在 GAS 後端</p>
+  </div>
+</div>
+
+<!-- ══ 24: 搬家前後對比 ══ -->
+<div class="slide dataviz" data-act="R3：搬家實作" data-index="24">
+  <h2>搬家前後對比</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0">
+      <div class="col-label">搬家前（M1-4）</div>
+      <ul>
+        <li>只有自己能用</li>
+        <li>沒有短網址</li>
+        <li>沒有版本紀錄</li>
+        <li>密碼管理 = 靠記憶</li>
+      </ul>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">搬家後（M2-2）</div>
+      <ul>
+        <li>任何人能用（有短網址）</li>
+        <li>GitHub Pages 託管</li>
+        <li>Git 版本控制</li>
+        <li>密碼三層管理</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="2" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;">功能完全一樣，但基礎設施升級了<br>搬家 = 不只是換地方放，是升級整個運作方式</p>
+  </div>
+</div>
+
+<!-- ══ 25: Round 3 小結 ══ -->
+<div class="slide dataviz" data-act="R3：搬家實作" data-index="25">
+  <h2>Round 3 小結</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3 style="font-size:1.3rem;">搬家 = 升級基礎設施</h3>
+    <p style="font-size:.95rem;">前端上 GitHub Pages，後端留 GAS 當 Proxy<br>密碼安全、版本控制、短網址 — 一次到位</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 4：Commit 深化 (slides 26-33)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 26: Chapter poster — Round 4 ══ -->
+<div class="slide poster overlay-heavy" data-act="R4：Commit 深化" data-index="26"
+     style="background:linear-gradient(135deg,#4A0E0E 0%,#8B1A1A 40%,#D93025 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:05–1:25</p>
+  <h1 style="color:#fff;font-size:2.8rem;">Commit<br><span style="color:#FCA5A5;">是給未來的自己留紀錄</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">從 M2-1 的基礎再深一層</p>
+</div>
+
+<!-- ══ 27: 操作指令 ══ -->
+<div class="slide dataviz" data-act="R4：Commit 深化" data-index="27">
+  <h2>累積有意義的 Commit</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>修改網頁 → 上傳新版</strong>
+        <p>例如加一個深色模式按鈕</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>寫有意義的 commit message</strong>
+        <p>不要寫「update」，要寫「加上深色模式切換按鈕」</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>再修改 → 再上傳 → 累積 3-4 個 commit</strong>
+        <p>每次改一個功能，寫一個 commit</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>點 Commits 歷史 → 看到每次改了什麼</strong>
+        <p>這就是版本紀錄的價值</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 28: Commit message 對比 ══ -->
+<div class="slide dataviz" data-act="R4：Commit 深化" data-index="28">
+  <h2>Commit message 怎麼寫</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0">
+      <div class="col-label">沒用的 message</div>
+      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">update<br>fix<br>test<br>aaa</p>
+      <p style="margin-top:.5rem;color:var(--red);">一個月後回來看<br>完全不知道改了什麼</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">有用的 message</div>
+      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">加上深色模式切換按鈕<br>修正手機版排版溢出<br>移除殘留的測試 API Key<br>更新 GAS 端點網址</p>
+      <p style="margin-top:.5rem;color:var(--green);">一個月後回來<br>每一筆改了什麼一目瞭然</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 29: 時光機 ══ -->
+<div class="slide dataviz" data-act="R4：Commit 深化" data-index="29">
+  <h2>時光機：版本回溯</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>故意把網頁改壞</strong>
+        <p>刪掉一段重要的 HTML，上傳</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>打開 Commits 歷史 → 找到上一個版本</strong>
+        <p>點進去看那個版本的檔案內容</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>把正確的版本內容複製回來</strong>
+        <p>上傳 → 網頁恢復正常</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+    <div class="label">時光機救了我</div>
+    <p>改壞了不用怕 — 歷史紀錄永遠在<br>有版本控制 = 永遠能回到過去的任何一個時間點</p>
+  </div>
+</div>
+
+<!-- ══ 30: Commit 練習計時 ══ -->
+<div class="slide dataviz" data-act="R4：Commit 深化" data-index="30">
+  <h2>操作時間</h2>
+  <div class="big-stat fragment" data-order="0" style="margin:.5rem 0;">
+    <div class="num">15</div>
+    <div class="unit">分鐘</div>
+    <div class="caption">修改 3 次 → 寫 3 個有意義的 commit → 試一次回溯</div>
+  </div>
+  <div class="info-box tip fragment" data-order="1">
+    <div class="label">修改建議</div>
+    <p>1. 改標題文字<br>2. 加一個新區塊<br>3. 調整配色或字級</p>
+  </div>
+</div>
+
+<!-- ══ 31: Round 4 小結 ══ -->
+<div class="slide dataviz" data-act="R4：Commit 深化" data-index="31">
+  <h2>Round 4 小結</h2>
+  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+    <div class="quote-text">commit message = 給未來的自己留紀錄<br>不是寫「update」，要寫「改了什麼」</div>
+  </div>
+  <div class="card-grid fragment" data-order="1" style="margin-top:1.5rem;">
+    <div class="card accent-top" style="min-width:200px;">
+      <h3>版本紀錄</h3>
+      <p>每次改了什麼<br>一目瞭然</p>
+    </div>
+    <div class="card accent-top-blue" style="min-width:200px;">
+      <h3>版本回溯</h3>
+      <p>改壞了不用怕<br>隨時回到過去</p>
+    </div>
+    <div class="card accent-top-gold" style="min-width:200px;">
+      <h3>協作基礎</h3>
+      <p>其他人看你的 commit<br>就知道你做了什麼</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 5：GitHub 協作功能巡禮 (slides 32-38)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 32: Chapter poster — Round 5 ══ -->
+<div class="slide poster overlay-heavy" data-act="R5：GitHub 協作" data-index="32"
+     style="background:linear-gradient(135deg,#4A0E0E 0%,#8B1A1A 40%,#D93025 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:25–1:45</p>
+  <h1 style="color:#fff;font-size:2.8rem;">GitHub<br><span style="color:#FCA5A5;">不只是放程式碼</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">快速巡覽協作功能，建立認知地圖</p>
+</div>
+
+<!-- ══ 33: Issues ══ -->
+<div class="slide dataviz" data-act="R5：GitHub 協作" data-index="33">
+  <h2>Issues：你的便利貼牆</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打開你的 repo → Issues → New issue</strong>
+        <p>標題寫一個你想加的功能，例如「加上資料匯出功能」</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>可以加標籤（Labels）</strong>
+        <p>enhancement / bug / documentation</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="2" style="margin-top:.8rem;">
+    <div class="label">Issues 的用途</div>
+    <p>像便利貼 — 記錄要做的事、發現的問題、想到的點子<br>公開的 Issues 讓協作者知道專案的方向</p>
+  </div>
+</div>
+
+<!-- ══ 34: Fork ══ -->
+<div class="slide dataviz" data-act="R5：GitHub 協作" data-index="34">
+  <h2>Fork：複製別人的專案</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打開講師的示範 repo → 點 Fork</strong>
+        <p>你的帳號下多了一個完整副本</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>改一個字 → Commit</strong>
+        <p>你改的是你的副本，不影響原始 repo</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box blue fragment" data-order="2" style="margin-top:.8rem;">
+    <div class="label">Fork 的意義</div>
+    <p>開源世界的運作方式：看到好東西 → Fork → 改 → 提交回去<br>所有大型開源專案都是這樣協作的</p>
+  </div>
+</div>
+
+<!-- ══ 35: Star + Profile ══ -->
+<div class="slide dataviz" data-act="R5：GitHub 協作" data-index="35">
+  <h2>Star + GitHub Profile</h2>
+  <div class="card-grid" style="margin-top:.8rem;">
+    <div class="card accent-top fragment" data-order="0" style="min-width:220px;">
+      <h3>Star = 書籤</h3>
+      <p>Star 幾個推薦 repo<br>以後從 Your stars 快速找回<br>也是對作者的鼓勵</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1" style="min-width:220px;">
+      <h3>GitHub Profile = 技術名片</h3>
+      <p>打開你的 GitHub 首頁<br>別人看到你的 repo、commit 紀錄<br>這就是你的技術履歷</p>
+    </div>
+  </div>
+  <div class="info-box tip fragment" data-order="2" style="margin-top:1rem;padding:.8rem 1.2rem;">
+    <div class="label">做得好的 GitHub Profile</div>
+    <p>README 有自我介紹 + 技術標籤 + 代表作品<br>contribution graph 有持續的綠色方塊 = 持續在寫程式</p>
+  </div>
+</div>
+
+<!-- ══ 36: 經典 Profile 範例 ══ -->
+<div class="slide dataviz" data-act="R5：GitHub 協作" data-index="36">
+  <h2>GitHub Profile 範例</h2>
+  <div style="max-width:800px;width:100%;background:var(--offwhite);border:2px solid var(--g100);border-radius:12px;overflow:hidden;margin:.8rem 0;">
+    <div style="background:var(--g50);padding:.4rem 1rem;display:flex;gap:.4rem;align-items:center;">
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--red);"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--gold);"></div>
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--green);"></div>
+      <span style="font-size:.7rem;color:var(--g400);margin-left:.5rem;">github.com/你的帳號</span>
+    </div>
+    <div style="padding:1.5rem;display:flex;gap:1.5rem;align-items:flex-start;">
+      <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--orange));flex-shrink:0;"></div>
+      <div style="flex:1;">
+        <div style="font-size:1.3rem;font-weight:900;color:var(--g900);">你的名字</div>
+        <p style="color:var(--g600);font-size:.9rem;margin-top:.3rem;">AI 工具開發者 | Vibe Coding 學員</p>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem;">
+          <span style="background:var(--blue-lt);color:var(--blue);padding:.2rem .6rem;border-radius:100px;font-size:.75rem;">JavaScript</span>
+          <span style="background:var(--green-lt);color:var(--green);padding:.2rem .6rem;border-radius:100px;font-size:.75rem;">Google Apps Script</span>
+          <span style="background:var(--red-lt);color:var(--red);padding:.2rem .6rem;border-radius:100px;font-size:.75rem;">AI Tools</span>
+        </div>
+        <div style="margin-top:.8rem;display:flex;gap:1.5rem;font-size:.8rem;color:var(--g400);">
+          <span>3 repositories</span>
+          <span>12 contributions</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note" style="padding:.7rem 1.2rem;">
+    <p style="font-size:.85rem;">你的 GitHub Profile 從現在開始建立<br>每一堂課的作品都是你技術名片上的一筆紀錄</p>
+  </div>
+</div>
+
+<!-- ══ 37: GitHub 功能地圖 ══ -->
+<div class="slide dataviz" data-act="R5：GitHub 協作" data-index="37">
+  <h2>GitHub 功能地圖</h2>
+  <div class="card-grid" style="margin-top:.8rem;">
+    <div class="card accent-top fragment" data-order="0" style="min-width:180px;">
+      <h3>Issues</h3>
+      <p>便利貼<br>記錄待辦</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1" style="min-width:180px;">
+      <h3>Fork</h3>
+      <p>複製副本<br>安全修改</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2" style="min-width:180px;">
+      <h3>Star</h3>
+      <p>書籤收藏<br>快速找回</p>
+    </div>
+    <div class="card accent-top-green fragment" data-order="3" style="min-width:180px;">
+      <h3>Pages</h3>
+      <p>免費託管<br>短網址上線</p>
+    </div>
+  </div>
+  <div style="margin-top:1rem;">
+    <div class="card-grid">
+      <div class="card accent-top-purple fragment" data-order="4" style="min-width:180px;">
+        <h3>Secrets</h3>
+        <p>雲端保險箱<br>密碼安全</p>
+      </div>
+      <div class="card accent-top-orange fragment" data-order="5" style="min-width:180px;">
+        <h3>Actions</h3>
+        <p>自動化流水線<br>M3-4 會教</p>
+      </div>
+      <div class="card accent-top fragment" data-order="6" style="min-width:180px;">
+        <h3>Pull Request</h3>
+        <p>提交修改請求<br>以後學</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 38: Round 5 小結 ══ -->
+<div class="slide dataviz" data-act="R5：GitHub 協作" data-index="38">
+  <h2>Round 5 小結</h2>
+  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+    <div class="quote-text">GitHub 不只是放程式碼的地方<br>它是協作平台 + 技術名片 + 部署工具</div>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
+    <div class="label">今天用到的</div>
+    <p>Pages（託管）+ Secrets（密碼）+ Issues（便利貼）+ Fork（複製）+ Star（書籤）<br>這五個就覆蓋了日常開發 80% 的 GitHub 操作</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 6：安全 Checklist + 回顧 (slides 39-49)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 39: Chapter poster — Round 6 ══ -->
+<div class="slide poster overlay-heavy" data-act="R6：安全 Checklist" data-index="39"
+     style="background:linear-gradient(135deg,#4A0E0E 0%,#8B1A1A 40%,#D93025 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:45–1:55</p>
+  <h1 style="color:#fff;font-size:2.8rem;">安全 Checklist<br><span style="color:#FCA5A5;">每次上傳前必查</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">養成習慣比記住知識更重要</p>
+</div>
+
+<!-- ══ 40: 安全 Checklist ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="40">
+  <h2>安全 Checklist（每次上傳前必查）</h2>
+  <div class="checklist">
+    <div class="check-item fragment" data-order="0">
+      <div class="check-icon todo">1</div>
+      <div class="check-text">
+        <strong>.gitignore 先建好，包含 .env</strong>
+        <p>防線在東西進來之前就要到位</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="1">
+      <div class="check-icon todo">2</div>
+      <div class="check-text">
+        <strong>程式碼裡沒有密碼 / Token / Key</strong>
+        <p>Ctrl+F 搜尋 gsk_ / sk- / token / key / password</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="2">
+      <div class="check-icon todo">3</div>
+      <div class="check-text">
+        <strong>需要密碼的地方用 Secrets 或 .env</strong>
+        <p>程式裡用環境變數讀取，不硬編碼</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="3">
+      <div class="check-icon todo">4</div>
+      <div class="check-text">
+        <strong>搬家前逐行檢查殘留的 Key</strong>
+        <p>從別的專案複製過來的程式碼最容易殘留</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="4">
+      <div class="check-icon todo">5</div>
+      <div class="check-text">
+        <strong>上傳前確認一次所有檔案內容</strong>
+        <p>最後一道防線 — 看一眼再按 commit</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 41: Checklist 視覺化 ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="41">
+  <h2>五道防線的時間軸</h2>
+  <div class="flow fragment" data-order="0" style="margin:1rem 0;">
+    <div class="flow-box accent" style="min-width:120px;font-size:.9rem;">建 repo</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent" style="min-width:120px;font-size:.9rem;">建 .gitignore</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent" style="min-width:120px;font-size:.9rem;">建 .env</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent" style="min-width:120px;font-size:.9rem;">寫程式</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent" style="min-width:120px;font-size:.9rem;">檢查 + Commit</div>
+  </div>
+  <div class="info-box warning fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="label">錯誤順序 = 破口</div>
+    <p>「建 repo → 寫程式 → 上傳 → 才想到要建 .gitignore」<br>這時候 .env 可能已經被 commit 了，歷史裡永遠有</p>
+  </div>
+  <div class="info-box success fragment" data-order="2" style="margin-top:.5rem;">
+    <div class="label">正確順序 = 零破口</div>
+    <p>防線在第一步就建好<br>之後所有操作都在防線保護範圍內</p>
+  </div>
+</div>
+
+<!-- ══ 42: 記憶機制更新 ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="42">
+  <h2>記憶機制更新</h2>
+  <table class="data-table fragment" data-order="0">
+    <thead>
+      <tr>
+        <th>存放方式</th>
+        <th>位置</th>
+        <th>用途</th>
+        <th>安全性</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Script Properties</strong></td>
+        <td>GAS 內</td>
+        <td>GAS 專用</td>
+        <td class="safe">中</td>
+      </tr>
+      <tr>
+        <td><strong>.env</strong></td>
+        <td>本機</td>
+        <td>IDE 開發用</td>
+        <td class="safe">高（不上傳）</td>
+      </tr>
+      <tr>
+        <td><strong>GitHub Secrets</strong></td>
+        <td>repo Settings</td>
+        <td>Actions 用</td>
+        <td class="safe">高</td>
+      </tr>
+      <tr style="background:var(--red-lt);">
+        <td><strong>程式碼裡</strong></td>
+        <td>任何 .js / .html</td>
+        <td>—</td>
+        <td class="danger">零（絕對不行）</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;">從 M1-4（只有 Script Properties）到 M2-2（三層管理）<br>密碼管理能力升級了</p>
+  </div>
+</div>
+
+<!-- ══ 43: 六輪回顧 ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="43">
+  <h2>六輪回顧</h2>
+  <div class="cycle-ring">
+    <div class="cycle-step fragment" data-order="0">
+      <span class="cycle-label">R1</span>
+      案例 + 搬家動機
+    </div>
+    <div class="cycle-step fragment" data-order="1">
+      <span class="cycle-label">R2</span>
+      .gitignore + Secrets
+    </div>
+    <div class="cycle-step fragment" data-order="2">
+      <span class="cycle-label">R3</span>
+      搬家實作
+    </div>
+    <div class="cycle-step fragment" data-order="3">
+      <span class="cycle-label">R4</span>
+      Commit 深化
+    </div>
+    <div class="cycle-step fragment" data-order="4">
+      <span class="cycle-label">R5</span>
+      GitHub 協作
+    </div>
+    <div class="cycle-step active-step fragment" data-order="5">
+      <span class="cycle-label">R6</span>
+      安全 Checklist
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="6" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;">每一輪解決一個問題，疊加一層能力<br>安全意識不是額外負擔，是搬家過程中自然學到的</p>
+  </div>
+</div>
+
+<!-- ══ 44: 注意事項總覽 ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="44">
+  <h2>M2-2 注意事項總覽</h2>
+  <table class="data-table fragment" data-order="0">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>常見問題</th>
+        <th>學到什麼</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>API Key 外洩真實案例</td>
+        <td class="danger">資安是真的會出事</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>先上傳 .env 再加 .gitignore</td>
+        <td class="danger">順序重要，防線先建</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Secret 名稱打錯</td>
+        <td>命名一致性</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>M1-4 搬家時殘留 Key</td>
+        <td>搬家要逐行檢查</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>commit message 寫「update」</td>
+        <td>寫有意義的紀錄</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ 45: 帶走清單 ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="45">
+  <h2>今天帶走什麼</h2>
+  <div class="card-grid" style="margin-top:.8rem;">
+    <div class="card accent-top fragment" data-order="0" style="min-width:180px;">
+      <h3>GitHub Pages 上線</h3>
+      <p>M1-4 工具有了短網址<br>任何人都能用</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1" style="min-width:180px;">
+      <h3>密碼三層管理</h3>
+      <p>.gitignore + .env<br>+ Secrets</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2" style="min-width:180px;">
+      <h3>Commit 深化</h3>
+      <p>有意義的 message<br>+ 版本回溯</p>
+    </div>
+  </div>
+  <div class="card-grid" style="margin-top:.8rem;">
+    <div class="card accent-top-green fragment" data-order="3" style="min-width:180px;">
+      <h3>安全 Checklist</h3>
+      <p>每次上傳前<br>五項必查</p>
+    </div>
+    <div class="card accent-top-purple fragment" data-order="4" style="min-width:180px;">
+      <h3>GitHub 協作認知</h3>
+      <p>Issues / Fork / Star<br>/ Profile</p>
+    </div>
+    <div class="card accent-top-orange fragment" data-order="5" style="min-width:180px;">
+      <h3>搬家方法論</h3>
+      <p>不只換地方放<br>是升級基礎設施</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 46: 能力累積圖 ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="46">
+  <h2>能力累積：M1-4 → M2-2</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);border-top-color:var(--g400);">
+      <div class="col-label" style="color:var(--g600);">M1-4 結束時</div>
+      <ul>
+        <li>GAS + Groq + TG Bot</li>
+        <li>Key 在 Script Properties</li>
+        <li>沒有版本控制</li>
+        <li>只有自己能用</li>
+      </ul>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">M2-2 結束時</div>
+      <ul>
+        <li>GitHub Pages 上線</li>
+        <li>密碼三層管理</li>
+        <li>Git 版本控制 + 回溯</li>
+        <li>有短網址分享</li>
+        <li>安全意識 + Checklist</li>
+        <li>GitHub 協作認知</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 47: 底線 ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="47">
+  <h2>M2-2 的一句話</h2>
+  <div class="bottom-line fragment" data-order="0" style="margin-top:1.5rem;">
+    <h3 style="font-size:1.5rem;">搬家的過程就是學安全的最好時機</h3>
+    <p style="font-size:1.05rem;">不是先學安全再搬家<br>而是在搬家的每一步自然地學會安全</p>
+  </div>
+</div>
+
+<!-- ══ 48: 下一堂預告 ══ -->
+<div class="slide dataviz" data-act="R6：安全 Checklist" data-index="48">
+  <h2>下一堂：M2-3</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.8rem;font-weight:900;color:var(--green);line-height:1.4;">IDE 入門 + SSH<br>+ 權限管理</p>
+    <p style="font-size:1.1rem;color:var(--g600);margin-top:.8rem;">用更強的工具開發<br>AI 幫你操作，你負責判斷</p>
+  </div>
+  <div class="card-grid fragment" data-order="0" style="margin-top:1rem;">
+    <div class="card accent-top-green" style="min-width:200px;">
+      <h3>VS Code + Claude</h3>
+      <p>從網頁 AI 升級到<br>IDE 內建 AI</p>
+    </div>
+    <div class="card accent-top-blue" style="min-width:200px;">
+      <h3>終端機 + Git</h3>
+      <p>用指令操作 Git<br>AI 幫你下指令</p>
+    </div>
+    <div class="card accent-top-gold" style="min-width:200px;">
+      <h3>SSH + 權限</h3>
+      <p>安全連線遠端<br>公鑰私鑰原理</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 49: 結尾 ══ -->
+<div class="slide poster overlay-heavy" data-act="R6：安全 Checklist" data-index="49"
+     style="background:linear-gradient(135deg,#4A0E0E 0%,#8B1A1A 40%,#D93025 100%);">
+  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1rem;letter-spacing:.12em;">M2-2 完</p>
+  <h1 style="color:#fff;font-size:2.8rem;">搬家完成<br><span style="color:#FCA5A5;">安全到位</span></h1>
+  <p class="poster-subtitle" style="margin-top:1rem;">你的 AI 工具已經在 GitHub 上線了</p>
+  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">GitHub Pages</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Secrets</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">.gitignore</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Commit</span>
+  </div>
+</div>
+
+</div><!-- /.slides -->
+
+<!-- ── UI Controls ── -->
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter"></div>
+<div class="controls">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
+  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+</div>
+
+<!-- ── Chapter Menu ── -->
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">&#9672;</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">&#9650;</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+  let fragmentIdx = 0;
+
+  // Build chapter data
+  const chapters = [];
+  let lastAct = '';
+  slides.forEach((s, i) => {
+    const act = s.dataset.act || '';
+    if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+  });
+
+  // Build chapter menu
+  const list = document.getElementById('chapterList');
+  chapters.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = c.idx;
+    item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+    item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+    list.appendChild(item);
+  });
+
+  function getFragments(slide){
+    return Array.from(slide.querySelectorAll('.fragment'))
+      .sort((a,b) => (+a.dataset.order||0) - (+b.dataset.order||0));
+  }
+
+  function showSlide(n, showAllFragments){
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total-1, n));
+    const s = slides[cur];
+    s.classList.add('active');
+    const frags = getFragments(s);
+    if(showAllFragments){
+      frags.forEach(f => f.classList.add('visible'));
+      fragmentIdx = frags.length;
+    } else {
+      frags.forEach(f => f.classList.remove('visible'));
+      fragmentIdx = 0;
+    }
+    updateUI();
+  }
+
+  function goTo(n){ showSlide(n, false); }
+
+  function navigate(dir){
+    const s = slides[cur];
+    const frags = getFragments(s);
+    if(dir > 0){
+      if(fragmentIdx < frags.length){
+        frags[fragmentIdx].classList.add('visible');
+        fragmentIdx++;
+        updateUI();
+        return;
+      }
+      showSlide(cur + 1, false);
+    } else {
+      if(fragmentIdx > 0){
+        fragmentIdx--;
+        frags[fragmentIdx].classList.remove('visible');
+        updateUI();
+        return;
+      }
+      showSlide(cur - 1, true);
+    }
+  }
+
+  function updateUI(){
+    document.getElementById('progress').style.width = ((cur/(total-1))*100)+'%';
+    document.getElementById('counter').textContent = (cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = cur === 0 && fragmentIdx === 0;
+    document.getElementById('nextBtn').disabled = cur === total-1 && fragmentIdx >= getFragments(slides[cur]).length;
+
+    let act = '';
+    for(let i = chapters.length-1; i >= 0; i--){
+      if(cur >= chapters[i].idx){ act = chapters[i].act; break; }
+    }
+    document.getElementById('chapterLabel').textContent = act || '章節';
+
+    document.querySelectorAll('.chapter-item').forEach(item => {
+      const idx = +item.dataset.idx;
+      let end = total;
+      for(let c of chapters){ if(c.idx > idx){ end = c.idx; break; } }
+      item.classList.toggle('active', cur >= idx && cur < end);
+    });
+  }
+
+  function toggleChapterMenu(){
+    document.getElementById('chapterMenu').classList.toggle('open');
+  }
+  function closeChapterMenu(){
+    document.getElementById('chapterMenu').classList.remove('open');
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){ e.preventDefault(); navigate(1); }
+    else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); navigate(-1); }
+    else if(e.key==='Home'){ e.preventDefault(); showSlide(0, false); }
+    else if(e.key==='End'){ e.preventDefault(); showSlide(total-1, true); }
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if(e.key==='Escape'){ closeChapterMenu(); }
+  });
+
+  // Click
+  document.querySelector('.slides').addEventListener('click', e => {
+    if(e.target.closest('.controls')||e.target.closest('.chapter-menu')) return;
+    navigate(1);
+  });
+
+  // Touch swipe
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ navigate(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+
+  // Init
+  updateUI();
+  window.navigate = navigate;
+  window.toggleChapterMenu = toggleChapterMenu;
+})();
+</script>
+</body>
+</html>

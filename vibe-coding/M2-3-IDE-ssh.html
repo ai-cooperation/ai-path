@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-3 — IDE + SSH + 權限管理 | Vibe Coding Stage 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   M2-3: IDE + SSH + 權限管理
+   Design System: WHITE BACKGROUND
+   Accent: --green (#0F9D8A)
+   ═══════════════════════════════════════ */
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --navy:#0B3C5D;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --accent:#0F9D8A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;font-weight:400;background:var(--white);}
+
+/* ── Slides Core ── */
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 4rem 1.5rem;overflow:hidden;}
+.slide.active{display:flex;}
+
+/* ── DataViz: white bg content page ── */
+.slide.dataviz{background:var(--white);color:var(--g900);padding-top:3.5rem;overflow-y:auto;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.dataviz h2{color:var(--g900);}
+
+/* ── Poster: colored gradient chapter dividers ── */
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster::before{content:'';position:absolute;inset:0;z-index:1;}
+.slide.poster>*{position:relative;z-index:2;}
+.slide.poster.overlay-heavy::before{background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.7) 100%);}
+.slide.poster h2{color:#fff;}
+
+/* ── Typography ── */
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+.slide.poster h1{color:#fff;}
+h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;}
+h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
+p,li{font-size:1.1rem;line-height:1.8;}
+.subtitle{font-size:1.15rem;font-weight:500;}
+.dim{opacity:.6;}
+
+/* ── Fragment ── */
+.fragment{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.fragment.visible{opacity:1;transform:none;}
+
+/* ── Step List ── */
+.step-list{text-align:left;max-width:800px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;}
+
+/* ── Stat Grid (white mode) ── */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
+.stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
+.stat-box .val{font-size:2.4rem;font-weight:900;color:var(--green);line-height:1.1;}
+.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Card Grid (white mode) ── */
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:960px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.5rem;min-width:200px;max-width:280px;flex:1;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.card:hover{border-color:var(--green);}
+.card .icon{font-size:2.2rem;margin-bottom:.5rem;}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.6;}
+.card.accent-top{border-top:4px solid var(--green);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+.card.accent-top-purple{border-top:4px solid var(--purple);}
+.card.accent-top-red{border-top:4px solid var(--red);}
+
+/* ── Flow (white mode) ── */
+.flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
+
+/* ── Info Boxes (white mode) ── */
+.info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.success p{color:var(--g800);}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:var(--g800);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip p{color:var(--g800);}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note p{color:var(--g800);}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue p{color:var(--g800);}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning p{color:var(--g800);}
+
+/* ── Quote Box (white mode) ── */
+.quote-box{max-width:800px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.5rem 2rem;margin:.8rem 0;text-align:left;}
+.quote-box .quote-text{font-size:1.3rem;font-weight:700;line-height:1.6;color:var(--g900);}
+.quote-box .quote-src{font-size:.9rem;color:var(--g400);margin-top:.5rem;}
+
+/* ── Code Block (white mode) ── */
+.code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1.2rem 1.5rem;max-width:800px;width:100%;text-align:left;margin:.8rem 0;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:.9rem;color:var(--g900);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.5rem;}
+
+/* ── Two-Column Compare ── */
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:860px;width:100%;margin-top:.8rem;}
+.compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
+.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--green);}
+.compare-col p,
+.compare-col li{font-size:1rem;line-height:1.7;color:var(--g800);}
+.compare-col ul{padding-left:1.2rem;}
+
+/* ── Checklist ── */
+.checklist{max-width:800px;width:100%;}
+.check-item{display:flex;align-items:flex-start;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--g100);}
+.check-item:last-child{border:none;}
+.check-icon{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.check-icon.done{background:var(--green-lt);color:var(--green);}
+.check-icon.todo{background:var(--offwhite);color:var(--g400);border:2px solid var(--g200);}
+.check-text strong{font-size:1.05rem;color:var(--g900);}
+.check-text p{font-size:.95rem;color:var(--g600);}
+
+/* ── Big Number Highlight ── */
+.big-stat{text-align:center;margin:1rem 0;}
+.big-stat .num{font-size:4rem;font-weight:900;color:var(--green);line-height:1;}
+.big-stat .unit{font-size:1.2rem;font-weight:700;color:var(--g600);}
+.big-stat .caption{font-size:1rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Highlight Text ── */
+.hl-green{color:var(--green);font-weight:700;}
+.hl-blue{color:var(--blue);font-weight:700;}
+.hl-gold{color:var(--gold);font-weight:700;}
+.hl-orange{color:var(--orange);font-weight:700;}
+.hl-red{color:var(--red);font-weight:700;}
+
+/* ── Bottom Line Summary ── */
+.bottom-line{max-width:800px;width:100%;background:var(--green-lt);border:2px solid rgba(15,157,138,.3);border-radius:16px;padding:2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.5rem;color:var(--green);margin-bottom:.6rem;}
+.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:640px;margin:0 auto;line-height:1.7;}
+
+/* ── Poster text helpers ── */
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.9rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin-top:.8rem;}
+
+/* ── Traffic Light ── */
+.traffic-light{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;max-width:900px;width:100%;margin:1rem 0;}
+.tl-card{flex:1;min-width:220px;max-width:280px;border-radius:16px;padding:1.5rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.tl-card.tl-green{background:var(--green-lt);border:2px solid var(--green);border-top:6px solid var(--green);}
+.tl-card.tl-gold{background:var(--gold-lt);border:2px solid var(--gold);border-top:6px solid var(--gold);}
+.tl-card.tl-red{background:var(--red-lt);border:2px solid var(--red);border-top:6px solid var(--red);}
+.tl-dot{width:48px;height:48px;border-radius:50%;margin:0 auto .8rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#fff;}
+.tl-card.tl-green .tl-dot{background:var(--green);}
+.tl-card.tl-gold .tl-dot{background:var(--gold);}
+.tl-card.tl-red .tl-dot{background:var(--red);}
+.tl-card h3{font-size:1.1rem;margin-bottom:.3rem;}
+.tl-card p{font-size:.9rem;color:var(--g600);line-height:1.6;}
+.tl-card.tl-green h3{color:var(--green);}
+.tl-card.tl-gold h3{color:#b07d00;}
+.tl-card.tl-red h3{color:var(--red);}
+
+/* ── Controls (light themed) ── */
+.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--green);transition:width .4s;z-index:100;}
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--green);border-color:var(--green);color:#fff;}
+.controls button:disabled{opacity:.25;cursor:default;}
+.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--green-lt);color:var(--green);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(15,157,138,.2);}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+
+/* ── Chapter Menu (light themed) ── */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--green);}
+.chapter-icon{color:var(--green);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:200px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--green);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--green);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  html,body{font-size:16px;}
+  .slide{padding:1rem 1.2rem 1rem;}
+  .slide.dataviz{padding-top:3rem;}
+  h1{font-size:1.9rem;}
+  h2{font-size:1.4rem;margin-bottom:.6rem;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:.8rem;}
+  .stat-box .val{font-size:1.8rem;}
+  .card-grid{flex-direction:column;align-items:center;}
+  .card{max-width:100%;min-width:0;}
+  .compare-two{grid-template-columns:1fr;}
+  .controls button{width:40px;height:40px;font-size:1rem;}
+  .module-title{font-size:.7rem;left:.8rem;top:.6rem;}
+  .module-badge{font-size:.65rem;top:.6rem;right:.6rem;padding:.2rem .6rem;}
+  .quote-box .quote-text{font-size:1.05rem;}
+  .code-block pre{font-size:.8rem;}
+  .traffic-light{flex-direction:column;align-items:center;}
+  .tl-card{max-width:100%;min-width:0;}
+}
+
+/* ── Cycle Ring (6-round diagram) ── */
+.cycle-ring{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;max-width:860px;width:100%;margin:1rem 0;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.6rem 1rem;font-size:.95rem;font-weight:700;text-align:center;min-width:120px;color:var(--g800);position:relative;}
+.cycle-step.active-step{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.cycle-step .cycle-label{font-size:.75rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step.active-step .cycle-label{color:var(--green);}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — Stage 2 · 串 AI</div>
+<div class="module-badge">M2-3</div>
+<div class="slides">
+
+<!-- ══════════════════════════════════════
+     開場 (slides 0-2)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 0: COVER ══ -->
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 串 AI</p>
+  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">IDE + SSH<br><span style="color:#6ee7d4;">權限管理</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">用更強的工具開發 — AI 幫你操作，你負責判斷</p>
+  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M2-3</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">2 小時</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">IDE 標準流程</span>
+  </div>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1: 本堂定位 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="1">
+  <h2>從網頁聊天到專業開發工具</h2>
+  <div class="compare-two" style="margin-top:.5rem;">
+    <div class="compare-col bad fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);">
+      <div class="col-label" style="color:var(--g600);">之前的做法</div>
+      <ul style="color:var(--g600);">
+        <li>在 ChatGPT / Claude 網頁對話</li>
+        <li>AI 給程式碼，你複製貼上</li>
+        <li>手動上傳到 GitHub</li>
+        <li>每次操作都要切換視窗</li>
+      </ul>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">今天的升級</div>
+      <ul>
+        <li>在 IDE 裡直接跟 AI 對話</li>
+        <li>AI 直接修改你的檔案</li>
+        <li>AI 幫你下 Git 指令 push</li>
+        <li>所有操作在同一個視窗完成</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="2" style="margin-top:.6rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;">核心升級：從「你複製貼上」到「AI 直接操作專案」</p>
+  </div>
+</div>
+
+<!-- ══ 2: 六輪結構 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="2">
+  <h2>六輪循環，逐層建構 IDE 工作流</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+      <div style="font-weight:700;">IDE 初體驗</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+      <div style="font-weight:700;">AI 幫下 Git</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+      <div style="font-weight:700;">SSH Key</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+      <div style="font-weight:700;">權限管理</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+      <div style="font-weight:700;">完整練習</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+      <div style="font-weight:700;">標準流程</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>設計原則</strong><br>CLI 在 IDE 終端機操作，你不需要記指令<br>AI 幫你執行，你負責判斷該不該讓它做</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 1：IDE 初體驗 (slides 3-9)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 3: Chapter poster — Round 1 ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 1：IDE 初體驗" data-index="3"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
+  <h1 style="color:#fff;font-size:2.8rem;">IDE 初體驗<br><span style="color:#6ee7d4;">你的 AI 工作室</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">從網頁聊天升級到 AI 直接操作你的專案</p>
+</div>
+
+<!-- ══ 4: VS Code 三區域 ══ -->
+<div class="slide dataviz" data-act="Round 1：IDE 初體驗" data-index="4">
+  <h2>認識 VS Code 三個區域</h2>
+  <div class="card-grid" style="margin-top:.8rem;">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>左邊：檔案樹</h3>
+      <p>專案所有檔案的目錄結構<br>index.html / .gitignore / .env</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>中間：編輯區</h3>
+      <p>程式碼的顯示和修改<br>AI 修改的內容會即時出現在這裡</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2">
+      <h3>下面：終端機</h3>
+      <p>指令執行的地方<br>AI 會在這裡幫你跑 Git 指令</p>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="3" style="margin-top:.6rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.9rem;">這三個區域就是你整個開發的工作空間<br>不需要切到其他軟體</p>
+  </div>
+</div>
+
+<!-- ══ 5: 操作步驟 ══ -->
+<div class="slide dataviz" data-act="Round 1：IDE 初體驗" data-index="5">
+  <h2>操作：打開專案 + 安裝 AI 擴充</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打開 VS Code</strong>
+        <p>File → Open Folder → 選擇 M2-2 搬家後的專案資料夾</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>確認專案結構</strong>
+        <p>左邊檔案樹應該看到 index.html + .gitignore + .env</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>安裝 Claude Extension</strong>
+        <p>左邊 Extensions → 搜尋「Claude」→ Install</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>在 Chat 面板對話</strong>
+        <p>「幫我把這個網頁加一個深色模式切換按鈕」</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 6: AI 直接改檔案 ══ -->
+<div class="slide dataviz" data-act="Round 1：IDE 初體驗" data-index="6">
+  <h2>觀察：AI 直接改你的檔案</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);">
+      <div class="col-label" style="color:var(--g600);">之前（網頁聊天）</div>
+      <p>AI 給你一段程式碼</p>
+      <p>你手動複製</p>
+      <p>貼到正確的位置</p>
+      <p>貼錯了整個壞掉</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">現在（IDE）</div>
+      <p>AI 直接修改 index.html</p>
+      <p>你看中間編輯區即時變化</p>
+      <p>瀏覽器重新整理看結果</p>
+      <p>不對就 Ctrl+Z 還原</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 7: 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 1：IDE 初體驗" data-index="7">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat">
+      <div class="num">10</div>
+      <div class="unit">分鐘</div>
+      <div class="caption">用 AI 在 IDE 裡改一個功能，瀏覽器確認結果</div>
+    </div>
+  </div>
+  <div class="info-box tip fragment" data-order="0">
+    <div class="label">操作要點</div>
+    <p>確認你開的是正確的資料夾<br>AI 看不到不在工作目錄裡的檔案</p>
+  </div>
+</div>
+
+<!-- ══ 8: 注意事項 ══ -->
+<div class="slide dataviz" data-act="Round 1：IDE 初體驗" data-index="8">
+  <h2>注意：工作目錄</h2>
+  <div class="info-box warning fragment" data-order="0">
+    <div class="label">常見問題</div>
+    <p>沒開正確資料夾 → AI 看不到你的專案檔案<br>AI 的回應會變成通用答案，而不是針對你的程式碼</p>
+  </div>
+  <div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="label">解法</div>
+    <p>File → Open Folder → 選到包含 index.html 的那個資料夾<br>左邊檔案樹有看到你的檔案才是對的</p>
+  </div>
+  <div class="quote-box fragment" data-order="2" style="margin-top:.8rem;">
+    <div class="quote-text">工作目錄 = AI 的視野範圍<br>開錯資料夾，AI 就是瞎的</div>
+  </div>
+</div>
+
+<!-- ══ 9: Round 1 概念 ══ -->
+<div class="slide dataviz" data-act="Round 1：IDE 初體驗" data-index="9">
+  <h2>Round 1 概念</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>IDE = AI 的工作台</h3>
+    <p>從「你複製貼上」升級到「AI 直接操作專案」<br>你的角色從搬運工變成監督者</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 2：AI 幫下 Git 指令 (slides 10-16)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 10: Chapter poster — Round 2 ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 2：AI 幫下 Git" data-index="10"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:45</p>
+  <h1 style="color:#fff;font-size:2.8rem;">AI 幫你<br><span style="color:#6ee7d4;">下 Git 指令</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">你不需要記指令，但要會判斷 AI 在做什麼</p>
+</div>
+
+<!-- ══ 11: 操作步驟 ══ -->
+<div class="slide dataviz" data-act="Round 2：AI 幫下 Git" data-index="11">
+  <h2>操作：一句話讓 AI 幫你 push</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>對 AI 說</strong>
+        <p>「幫我把這個專案的修改 commit 並 push 到 GitHub」</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>觀察終端機</strong>
+        <p>AI 自動執行 git add → git commit → git push</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>授權確認</strong>
+        <p>AI 執行指令前會問你，點同意才執行</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>去 GitHub 確認</strong>
+        <p>打開 repo 頁面，確認修改已經上去</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 12: AI 自動執行的流程 ══ -->
+<div class="slide dataviz" data-act="Round 2：AI 幫下 Git" data-index="12">
+  <h2>AI 在終端機做了什麼</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">AI 自動執行的三個指令</div>
+    <pre>git add .              # 把所有修改加入暫存區
+git commit -m "新增深色模式切換按鈕"   # 記錄這次修改
+git push               # 推到 GitHub</pre>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="label">你不需要記這些</div>
+    <p>指令跑在終端機裡，但你不需要自己打<br>你需要的能力是：<span class="hl-green">看懂 AI 做了什麼 + 判斷該不該讓它做</span></p>
+  </div>
+</div>
+
+<!-- ══ 13: 對比效率 ══ -->
+<div class="slide dataviz" data-act="Round 2：AI 幫下 Git" data-index="13">
+  <h2>效率對比</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);">
+      <div class="col-label" style="color:var(--g600);">M2-1 / M2-2 的做法</div>
+      <ul style="color:var(--g600);">
+        <li>打開 GitHub 網站</li>
+        <li>手動上傳檔案</li>
+        <li>填寫 commit message</li>
+        <li>等待處理完成</li>
+      </ul>
+      <p style="margin-top:.5rem;font-size:.9rem;color:var(--g400);">步驟多，容易出錯</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">現在的做法</div>
+      <ul>
+        <li>對 AI 說一句話</li>
+        <li>AI 自動執行三個指令</li>
+        <li>你只需要點同意</li>
+        <li>30 秒完成</li>
+      </ul>
+      <p style="margin-top:.5rem;font-size:.9rem;color:var(--green);">一句話搞定</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 14: 注意事項 — force push ══ -->
+<div class="slide dataviz" data-act="Round 2：AI 幫下 Git" data-index="14">
+  <h2>注意：AI 想 force push</h2>
+  <div class="code-block fragment" data-order="0" style="padding:.8rem 1.2rem;">
+    <div class="code-label">AI 可能會下這個指令</div>
+    <pre>git push --force</pre>
+  </div>
+  <div class="info-box warning fragment" data-order="1" style="margin-top:.6rem;">
+    <div class="label">危險</div>
+    <p>force push 會覆蓋遠端的所有記錄<br>如果其他人也在改，他們的修改會消失</p>
+  </div>
+  <div class="info-box success fragment" data-order="2" style="margin-top:.6rem;">
+    <div class="label">正確做法</div>
+    <p>看到 --force 就按「拒絕」<br>問 AI：「不要用 force，改用一般的 push」</p>
+  </div>
+</div>
+
+<!-- ══ 15: 判斷能力 ══ -->
+<div class="slide dataviz" data-act="Round 2：AI 幫下 Git" data-index="15">
+  <h2>你的判斷能力比指令能力重要</h2>
+  <div class="card-grid" style="margin-top:1rem;">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>不需要記指令</h3>
+      <p>git add / commit / push<br>AI 幫你打就好</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>需要判斷對錯</h3>
+      <p>AI 要做什麼操作<br>你看得懂才能決定同不同意</p>
+    </div>
+    <div class="card accent-top-red fragment" data-order="2">
+      <h3>紅旗關鍵字</h3>
+      <p>--force / delete / rm -rf<br>看到這些字要先暫停</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 16: Round 2 概念 ══ -->
+<div class="slide dataviz" data-act="Round 2：AI 幫下 Git" data-index="16">
+  <h2>Round 2 概念</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>你是決策者，AI 是執行者</h3>
+    <p>不需要會打指令，但要會判斷<br>每次 AI 要執行操作時，你就是最後一道防線</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 3：SSH Key (slides 17-24)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 17: Chapter poster — Round 3 ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 3：SSH Key" data-index="17"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:10</p>
+  <h1 style="color:#fff;font-size:2.8rem;">SSH Key<br><span style="color:#6ee7d4;">一次搞定永久用</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">解決 push 失敗的根本問題</p>
+</div>
+
+<!-- ══ 18: 為什麼需要 SSH ══ -->
+<div class="slide dataviz" data-act="Round 3：SSH Key" data-index="18">
+  <h2>為什麼 push 會失敗</h2>
+  <div class="info-box warning fragment" data-order="0">
+    <div class="label">Round 2 可能遇到的錯誤</div>
+    <p>AI 幫你 push → 終端機顯示 Permission denied<br>GitHub 不認識你的電腦，拒絕存取</p>
+  </div>
+  <div class="quote-box fragment" data-order="1" style="margin-top:1rem;">
+    <div class="quote-text">你的電腦需要一把「鑰匙」<br>GitHub 才知道是你本人在操作</div>
+  </div>
+</div>
+
+<!-- ══ 19: SSH 操作步驟 ══ -->
+<div class="slide dataviz" data-act="Round 3：SSH Key" data-index="19">
+  <h2>操作：讓 AI 幫你設定 SSH Key</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>對 AI 說</strong>
+        <p>「幫我設定 GitHub 的 SSH Key」</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>AI 自動生成 Key</strong>
+        <p>在終端機執行 ssh-keygen → 產生一對公鑰和私鑰</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>你做一件事</strong>
+        <p>到 GitHub → Settings → SSH Keys → 貼上公鑰 → 儲存</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>AI 測試連線</strong>
+        <p>ssh -T git@github.com → 出現歡迎訊息 = 成功</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 20: 公鑰 vs 私鑰 ══ -->
+<div class="slide dataviz" data-act="Round 3：SSH Key" data-index="20">
+  <h2>公鑰和私鑰的關係</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col good fragment" data-order="0" style="background:var(--blue-lt);border-color:var(--blue);">
+      <div class="col-label" style="color:var(--blue);">公鑰（Public Key）</div>
+      <p style="font-size:1.05rem;font-weight:700;margin-bottom:.5rem;">門鈴 — 誰都能按</p>
+      <ul>
+        <li>貼到 GitHub 上</li>
+        <li>給別人看沒關係</li>
+        <li>可以放在多個平台</li>
+      </ul>
+    </div>
+    <div class="compare-col good fragment" data-order="1" style="background:var(--red-lt);border-color:var(--red);border-top-color:var(--red);">
+      <div class="col-label" style="color:var(--red);">私鑰（Private Key）</div>
+      <p style="font-size:1.05rem;font-weight:700;margin-bottom:.5rem;">鑰匙 — 只有你有</p>
+      <ul>
+        <li>永遠留在你的電腦</li>
+        <li>絕對不能給任何人</li>
+        <li>洩漏 = 別人能冒充你</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 21: 注意事項 — 搞混公私鑰 ══ -->
+<div class="slide dataviz" data-act="Round 3：SSH Key" data-index="21">
+  <h2>注意：公鑰和私鑰搞混</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">兩個檔案長這樣</div>
+    <pre>~/.ssh/id_ed25519       ← 私鑰（沒有副檔名）
+~/.ssh/id_ed25519.pub   ← 公鑰（.pub 結尾）</pre>
+  </div>
+  <div class="info-box warning fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="label">要貼到 GitHub 的是 .pub 檔案</div>
+    <p>AI 通常會自動複製正確的那個<br>但你要確認結尾是 .pub</p>
+  </div>
+  <div class="info-box success fragment" data-order="2" style="margin-top:.6rem;">
+    <div class="label">記憶口訣</div>
+    <p><strong>pub = public = 可以公開的那一把</strong><br>沒有 .pub 的那個絕對不能外流</p>
+  </div>
+</div>
+
+<!-- ══ 22: SSH vs Token ══ -->
+<div class="slide dataviz" data-act="Round 3：SSH Key" data-index="22">
+  <h2>SSH Key vs Token</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col good fragment" data-order="0">
+      <div class="col-label">SSH Key（指紋鎖）</div>
+      <ul>
+        <li>一次設定，永久使用</li>
+        <li>不會過期</li>
+        <li>CLI 自動化不會中斷</li>
+        <li>用的是今天設好的</li>
+      </ul>
+    </div>
+    <div class="compare-col bad fragment" data-order="1" style="background:var(--offwhite);border-color:var(--g200);">
+      <div class="col-label" style="color:var(--g600);">Token（臨時通行證）</div>
+      <ul style="color:var(--g600);">
+        <li>有期限，會過期</li>
+        <li>過期要重新申請</li>
+        <li>自動化可能中斷</li>
+        <li>管理成本比較高</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="2" style="margin-top:.6rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.9rem;">用 SSH Key，push 永遠不會因為「憑證過期」而失敗</p>
+  </div>
+</div>
+
+<!-- ══ 23: 再次 push ══ -->
+<div class="slide dataviz" data-act="Round 3：SSH Key" data-index="23">
+  <h2>驗證：再次 push</h2>
+  <div class="flow" style="margin:1.5rem 0;">
+    <div class="flow-box accent fragment" data-order="0">SSH Key 設好</div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box accent fragment" data-order="2">對 AI 說 push</div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box accent fragment" data-order="4">順利完成</div>
+    <div class="flow-arrow fragment" data-order="5">→</div>
+    <div class="flow-box accent fragment" data-order="6">GitHub 確認</div>
+  </div>
+  <div class="info-box success fragment" data-order="7">
+    <div class="label">成功標誌</div>
+    <p>終端機顯示 push 成功，沒有 Permission denied<br>GitHub 上看到最新的 commit</p>
+  </div>
+</div>
+
+<!-- ══ 24: Round 3 概念 ══ -->
+<div class="slide dataviz" data-act="Round 3：SSH Key" data-index="24">
+  <h2>Round 3 概念</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>公私鑰機制</h3>
+    <p>公鑰 = 門鈴（誰都能按）<br>私鑰 = 鑰匙（只有你有）<br>一次設定，永久使用</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 4：權限管理 (slides 25-33)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 25: Chapter poster — Round 4 ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 4：權限管理" data-index="25"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:10–1:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">權限管理<br><span style="color:#6ee7d4;">給 AI 裝安全帶</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">信任但要驗證 — 控制 AI 能做什麼</p>
+</div>
+
+<!-- ══ 26: 為什麼需要權限 ══ -->
+<div class="slide dataviz" data-act="Round 4：權限管理" data-index="26">
+  <h2>AI 能力很強，但不代表什麼都讓它做</h2>
+  <div class="info-box warning fragment" data-order="0">
+    <div class="label">真實案例</div>
+    <p>AI 不小心執行 rm -rf（刪除全部檔案）<br>沒有權限設定 → 直接刪光 → 專案消失<br>有權限設定 → 跳出確認 → 你可以攔住</p>
+  </div>
+  <div class="quote-box fragment" data-order="1" style="margin-top:1rem;">
+    <div class="quote-text">權限分級不是不信任 AI<br>而是替你自己加一層保險</div>
+  </div>
+</div>
+
+<!-- ══ 27: settings.json ══ -->
+<div class="slide dataviz" data-act="Round 4：權限管理" data-index="27">
+  <h2>操作：設定 Claude Extension 權限</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打開 Claude Extension 設定</strong>
+        <p>VS Code Settings → 搜尋「Claude permissions」</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>設定規則</strong>
+        <p>執行終端機指令 → 需要確認<br>修改檔案 → 可以自動</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>測試攔截</strong>
+        <p>請 AI 刪一個檔案 → 跳出確認視窗 → 選擇同意或拒絕</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 28: 紅黃綠燈 ══ -->
+<div class="slide dataviz" data-act="Round 4：權限管理" data-index="28">
+  <h2>權限分級：紅燈 / 黃燈 / 綠燈</h2>
+  <div class="traffic-light">
+    <div class="tl-card tl-green fragment" data-order="0">
+      <div class="tl-dot">G</div>
+      <h3>綠燈 — 自動執行</h3>
+      <p>讀取檔案<br>搜尋程式碼<br>查看目錄結構</p>
+      <p style="margin-top:.5rem;font-weight:700;color:var(--green);">只看不改，放心讓它做</p>
+    </div>
+    <div class="tl-card tl-gold fragment" data-order="1">
+      <div class="tl-dot">Y</div>
+      <h3>黃燈 — 可自動</h3>
+      <p>修改檔案內容<br>新增檔案<br>改名/搬移檔案</p>
+      <p style="margin-top:.5rem;font-weight:700;color:#b07d00;">可設自動，但改壞可 Ctrl+Z</p>
+    </div>
+    <div class="tl-card tl-red fragment" data-order="2">
+      <div class="tl-dot">R</div>
+      <h3>紅燈 — 必須確認</h3>
+      <p>刪除檔案<br>執行終端機指令<br>安裝/移除套件</p>
+      <p style="margin-top:.5rem;font-weight:700;color:var(--red);">不可逆操作，一定要你點同意</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 29: 紅燈關鍵字 ══ -->
+<div class="slide dataviz" data-act="Round 4：權限管理" data-index="29">
+  <h2>紅燈關鍵字清單</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.6rem;">在終端機看到這些字，先暫停再判斷</p>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">看到就要停下來想</div>
+    <pre>rm -rf          # 刪除整個資料夾（不可逆）
+--force         # 強制覆蓋（可能覆蓋別人的修改）
+drop            # 刪除資料庫資料
+sudo            # 系統管理員權限
+chmod 777       # 開放所有權限（安全風險）</pre>
+  </div>
+  <div class="info-box tip fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="label">判斷方法</div>
+    <p>不確定的時候，問 AI：「這個指令會做什麼？有什麼風險？」<br>AI 會解釋，你再決定要不要執行</p>
+  </div>
+</div>
+
+<!-- ══ 30: 設定建議 ══ -->
+<div class="slide dataviz" data-act="Round 4：權限管理" data-index="30">
+  <h2>新手建議的權限設定</h2>
+  <div class="card-grid" style="margin-top:1rem;">
+    <div class="card accent-top fragment" data-order="0" style="text-align:center;">
+      <h3 style="color:var(--green);">讀取檔案</h3>
+      <p style="font-size:1.3rem;font-weight:900;color:var(--green);margin:.5rem 0;">自動</p>
+      <p>AI 需要讀懂你的專案才能幫你</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="1" style="text-align:center;">
+      <h3 style="color:#b07d00;">修改檔案</h3>
+      <p style="font-size:1.3rem;font-weight:900;color:var(--gold);margin:.5rem 0;">自動</p>
+      <p>改壞了可以 Ctrl+Z 還原</p>
+    </div>
+    <div class="card accent-top-red fragment" data-order="2" style="text-align:center;">
+      <h3 style="color:var(--red);">終端機指令</h3>
+      <p style="font-size:1.3rem;font-weight:900;color:var(--red);margin:.5rem 0;">需確認</p>
+      <p>指令一旦跑了就不能 Ctrl+Z</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 31: 操作測試 ══ -->
+<div class="slide dataviz" data-act="Round 4：權限管理" data-index="31">
+  <h2>操作：測試權限攔截</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat">
+      <div class="num">5</div>
+      <div class="unit">分鐘</div>
+      <div class="caption">請 AI 做一個需要確認的操作，體驗攔截機制</div>
+    </div>
+  </div>
+  <div class="info-box blue fragment" data-order="0">
+    <div class="label">測試指令</div>
+    <p>「幫我在終端機列出這個資料夾的所有檔案」→ 跳出確認<br>「幫我刪掉 test.txt」→ 跳出確認<br>觀察哪些操作需要確認，哪些直接執行</p>
+  </div>
+</div>
+
+<!-- ══ 32: 觀察 ══ -->
+<div class="slide dataviz" data-act="Round 4：權限管理" data-index="32">
+  <h2>觀察：原來可以控制 AI 能做什麼</h2>
+  <div class="card-grid" style="margin-top:1rem;">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>不是全放</h3>
+      <p>讓 AI 什麼都能做<br>等於沒有安全帶</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>不是全擋</h3>
+      <p>每個操作都要確認<br>效率跟手動沒差別</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2">
+      <h3>分級剛好</h3>
+      <p>低風險自動 + 高風險確認<br>效率和安全的平衡點</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 33: Round 4 概念 ══ -->
+<div class="slide dataviz" data-act="Round 4：權限管理" data-index="33">
+  <h2>Round 4 概念</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>權限分級 = 給 AI 裝安全帶</h3>
+    <p>信任但要驗證<br>綠燈自動 / 黃燈可自動 / 紅燈必須確認</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 5：完整練習 (slides 34-39)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 34: Chapter poster — Round 5 ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 5：完整練習" data-index="34"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:30–1:50</p>
+  <h1 style="color:#fff;font-size:2.8rem;">完整練習<br><span style="color:#6ee7d4;">修改 + push + 驗證安全</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">把前四輪學到的串起來，做一輪完整流程</p>
+</div>
+
+<!-- ══ 35: 完整流程步驟 ══ -->
+<div class="slide dataviz" data-act="Round 5：完整練習" data-index="35">
+  <h2>每人做一輪完整流程</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>用 AI 修改網頁</strong>
+        <p>在 IDE 裡請 AI 加功能或改樣式</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>AI 幫你 push</strong>
+        <p>「幫我 commit 並 push」→ 確認終端機指令 → 同意</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>GitHub 確認</strong>
+        <p>打開 repo，修改已經上去</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>安全確認</strong>
+        <p>確認 .env 沒有被 push 上去（應該被 .gitignore 排除）</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 36: 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 5：完整練習" data-index="36">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat">
+      <div class="num">15</div>
+      <div class="unit">分鐘</div>
+      <div class="caption">完整流程：修改 → push → 確認 → 安全檢查</div>
+    </div>
+  </div>
+  <div class="flow fragment" data-order="0" style="margin:1rem 0;">
+    <div class="flow-box accent">AI 改檔案</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">AI push</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">GitHub 確認</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">.env 安全</div>
+  </div>
+</div>
+
+<!-- ══ 37: 互相檢查 ══ -->
+<div class="slide dataviz" data-act="Round 5：完整練習" data-index="37">
+  <h2>互相檢查</h2>
+  <div class="checklist">
+    <div class="check-item fragment" data-order="0">
+      <div class="check-icon done">V</div>
+      <div class="check-text">
+        <strong>修改是否上到 GitHub</strong>
+        <p>打開對方的 repo，確認最新 commit</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="1">
+      <div class="check-icon done">V</div>
+      <div class="check-text">
+        <strong>.env 是否在 repo 裡</strong>
+        <p>搜尋對方的 repo，不應該看到 .env 檔案</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="2">
+      <div class="check-icon done">V</div>
+      <div class="check-text">
+        <strong>commit message 是否有意義</strong>
+        <p>不是亂碼或空白，描述了修改內容</p>
+      </div>
+    </div>
+    <div class="check-item fragment" data-order="3">
+      <div class="check-icon done">V</div>
+      <div class="check-text">
+        <strong>網頁是否正常運作</strong>
+        <p>GitHub Pages 上的頁面有更新且功能正常</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 38: 效率對比 ══ -->
+<div class="slide dataviz" data-act="Round 5：完整練習" data-index="38">
+  <h2>效率對比：M2-1 到 M2-3</h2>
+  <div class="stat-grid" style="margin-top:1rem;">
+    <div class="stat-box fragment" data-order="0">
+      <div class="val" style="font-size:1.5rem;">M2-1</div>
+      <div class="label">手動上傳 GitHub<br>5 分鐘 / 次</div>
+    </div>
+    <div class="stat-box fragment" data-order="1">
+      <div class="val" style="font-size:1.5rem;">M2-2</div>
+      <div class="label">CLI 上傳 + 安全設定<br>2 分鐘 / 次</div>
+    </div>
+    <div class="stat-box fragment" data-order="2">
+      <div class="val" style="font-size:1.5rem;color:var(--green);">M2-3</div>
+      <div class="label">AI 一句話搞定<br>30 秒 / 次</div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:1rem;padding:1rem 1.5rem;">
+    <p style="font-size:.95rem;">工具在升級，你的角色也在升級<br>從操作者 → 監督者 → 決策者</p>
+  </div>
+</div>
+
+<!-- ══ 39: Round 5 小結 ══ -->
+<div class="slide dataviz" data-act="Round 5：完整練習" data-index="39">
+  <h2>Round 5 小結</h2>
+  <div class="bottom-line fragment" data-order="0">
+    <h3>完整工作流已經跑通</h3>
+    <p>IDE 修改 → AI 幫你 push → GitHub 確認 → 安全檢查<br>這就是日常開發的基本節奏</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 6：回顧 + IDE 標準流程 (slides 40-49)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 40: Chapter poster — Round 6 ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 標準流程" data-index="40"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:50–2:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">IDE 開發<br><span style="color:#6ee7d4;">標準流程</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">把今天學到的固化成可重複的工作流</p>
+</div>
+
+<!-- ══ 41: 六輪回顧 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧 + 標準流程" data-index="41">
+  <h2>六輪回顧</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;max-width:650px;width:100%;margin:.6rem 0;">
+    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+      <div style="font-size:.7rem;color:var(--g400);">R1</div>
+      <div style="font-weight:700;font-size:.9rem;">IDE 初體驗</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+      <div style="font-size:.7rem;color:var(--g400);">R2</div>
+      <div style="font-weight:700;font-size:.9rem;">AI 幫下 Git</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+      <div style="font-size:.7rem;color:var(--g400);">R3</div>
+      <div style="font-weight:700;font-size:.9rem;">SSH Key</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+      <div style="font-size:.7rem;color:var(--g400);">R4</div>
+      <div style="font-weight:700;font-size:.9rem;">權限管理</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+      <div style="font-size:.7rem;color:var(--g400);">R5</div>
+      <div style="font-weight:700;font-size:.9rem;">完整練習</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+      <div style="font-size:.7rem;color:var(--g400);">R6</div>
+      <div style="font-weight:700;font-size:.9rem;">標準流程</div>
+    </div>
+  </div>
+  <div class="stat-grid" style="margin-top:.6rem;">
+    <div class="stat-box">
+      <div class="val">0</div>
+      <div class="label">行指令自己打</div>
+    </div>
+    <div class="stat-box">
+      <div class="val">1</div>
+      <div class="label">完整的工作流</div>
+    </div>
+    <div class="stat-box">
+      <div class="val">3</div>
+      <div class="label">安全機制到位</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 42: IDE 標準流程 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧 + 標準流程" data-index="42">
+  <h2>IDE 開發標準流程</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打開 IDE → 打開專案資料夾</strong>
+        <p>確認左邊檔案樹看到你的檔案</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>確認 .gitignore 有 .env</strong>
+        <p>確保密碼檔不會被上傳</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>密碼放 .env</strong>
+        <p>API Key 和密碼只存在 .env，不寫在程式碼裡</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>跟 AI 對話開發</strong>
+        <p>AI 直接修改檔案，你監督品質</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="4">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <strong>AI 幫你 git add / commit / push</strong>
+        <p>確認指令內容後點同意</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="5">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <strong>確認 GitHub 上沒有密碼</strong>
+        <p>最後一步安全檢查</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 43: 記憶機制總覽 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧 + 標準流程" data-index="43">
+  <h2>四個記憶機制</h2>
+  <div class="card-grid" style="margin-top:.8rem;">
+    <div class="card accent-top fragment" data-order="0" style="min-width:180px;">
+      <h3>.env</h3>
+      <p>專案根目錄<br>存 API Key（不上傳）</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1" style="min-width:180px;">
+      <h3>.gitignore</h3>
+      <p>專案根目錄<br>排除敏感檔案</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2" style="min-width:180px;">
+      <h3>settings.json</h3>
+      <p>IDE 設定<br>AI 權限分級</p>
+    </div>
+    <div class="card accent-top-purple fragment" data-order="3" style="min-width:180px;">
+      <h3>GitHub Secrets</h3>
+      <p>repo Settings<br>雲端密碼（M3-4 用）</p>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.9rem;">四道防線，確保密碼不會出現在公開的程式碼裡</p>
+  </div>
+</div>
+
+<!-- ══ 44: 注意事項總覽 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧 + 標準流程" data-index="44">
+  <h2>五個注意事項回顧</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num" style="background:var(--red);font-size:.8rem;">1</div>
+      <div class="step-content">
+        <strong>沒開正確資料夾</strong>
+        <p>引出概念：工作目錄 = AI 的視野範圍</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num" style="background:var(--red);font-size:.8rem;">2</div>
+      <div class="step-content">
+        <strong>AI push --force</strong>
+        <p>引出概念：判斷 AI 操作的能力比指令能力重要</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num" style="background:var(--red);font-size:.8rem;">3</div>
+      <div class="step-content">
+        <strong>公私鑰搞混</strong>
+        <p>引出概念：.pub 才能公開，沒有 .pub 的永遠不給</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="3">
+      <div class="step-num" style="background:var(--red);font-size:.8rem;">4</div>
+      <div class="step-content">
+        <strong>AI 要刪檔沒確認</strong>
+        <p>引出概念：紅燈/黃燈/綠燈權限分級</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="4">
+      <div class="step-num" style="background:var(--red);font-size:.8rem;">5</div>
+      <div class="step-content">
+        <strong>手動上傳 vs AI push</strong>
+        <p>引出概念：IDE 的價值在於讓 AI 直接操作</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 45: 帶走清單 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧 + 標準流程" data-index="45">
+  <h2>帶走清單</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:800px;width:100%;margin:.6rem 0;">
+    <div class="card accent-top" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">IDE 操作</h3>
+      <p style="font-size:.85rem;">VS Code 三區域<br>AI 直接改檔案</p>
+    </div>
+    <div class="card accent-top-blue" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">AI 幫下 Git</h3>
+      <p style="font-size:.85rem;">一句話 push<br>判斷 AI 操作</p>
+    </div>
+    <div class="card accent-top-gold" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">SSH Key</h3>
+      <p style="font-size:.85rem;">公鑰 vs 私鑰<br>一次設定永久用</p>
+    </div>
+    <div class="card accent-top-red" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">權限分級</h3>
+      <p style="font-size:.85rem;">紅燈/黃燈/綠燈<br>信任但要驗證</p>
+    </div>
+    <div class="card accent-top-purple" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">IDE 標準流程</h3>
+      <p style="font-size:.85rem;">六步驟固化<br>每次開發都用</p>
+    </div>
+    <div class="card accent-top-orange" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">四道安全防線</h3>
+      <p style="font-size:.85rem;">.env / .gitignore<br>settings / Secrets</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 46: 課後操作 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧 + 標準流程" data-index="46">
+  <h2>課後操作</h2>
+  <div class="info-box blue fragment" data-order="0">
+    <div class="label">實踐任務</div>
+    <p>用 IDE 標準流程完成一次完整的修改 + push<br>確認 GitHub 上的修改正確，.env 沒有被上傳</p>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="label">準備下一堂</div>
+    <p>M2-4 會用到你今天設好的 SSH Key 和 IDE 環境<br>確保 push 流程正常運作</p>
+  </div>
+</div>
+
+<!-- ══ 47: 預告 M2-4 ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 標準流程" data-index="47"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M2-4</p>
+  <h1 style="color:#fff;font-size:2.8rem;">IDE 準備好了<br><span style="color:#6ee7d4;">接下來串接免費 AI API</span></h1>
+  <p class="poster-subtitle" style="margin-top:1rem;">三大免費平台 + 用量限制 + 做出你的 AI 工具</p>
+  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Groq</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Google AI Studio</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">OpenRouter</span>
+  </div>
+  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M2-3 完成</p>
+</div>
+
+</div><!-- end .slides -->
+
+<!-- ── Controls ── -->
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter">1 / 48</div>
+<div class="controls">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
+  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+</div>
+
+<!-- ── Chapter Menu ── -->
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">&#9670;</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">&#9650;</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+  let fragmentIdx = 0;
+
+  // Build chapter data
+  const chapters = [];
+  let lastAct = '';
+  slides.forEach((s, i) => {
+    const act = s.dataset.act || '';
+    if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+  });
+
+  // Build chapter menu
+  const list = document.getElementById('chapterList');
+  chapters.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = c.idx;
+    item.innerHTML = '<span class="chapter-dot"></span>' + c.act;
+    item.onclick = function(){ goTo(c.idx); closeChapterMenu(); };
+    list.appendChild(item);
+  });
+
+  function getFragments(slide){
+    return Array.from(slide.querySelectorAll('.fragment'))
+      .sort(function(a,b){ return (+a.dataset.order||0) - (+b.dataset.order||0); });
+  }
+
+  function showSlide(n, showAllFragments){
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total-1, n));
+    var s = slides[cur];
+    s.classList.add('active');
+    var frags = getFragments(s);
+    if(showAllFragments){
+      frags.forEach(function(f){ f.classList.add('visible'); });
+      fragmentIdx = frags.length;
+    } else {
+      frags.forEach(function(f){ f.classList.remove('visible'); });
+      fragmentIdx = 0;
+    }
+    updateUI();
+  }
+
+  function goTo(n){ showSlide(n, false); }
+
+  function navigate(dir){
+    var s = slides[cur];
+    var frags = getFragments(s);
+    if(dir > 0){
+      if(fragmentIdx < frags.length){
+        frags[fragmentIdx].classList.add('visible');
+        fragmentIdx++;
+        updateUI();
+        return;
+      }
+      showSlide(cur + 1, false);
+    } else {
+      if(fragmentIdx > 0){
+        fragmentIdx--;
+        frags[fragmentIdx].classList.remove('visible');
+        updateUI();
+        return;
+      }
+      showSlide(cur - 1, true);
+    }
+  }
+
+  function updateUI(){
+    document.getElementById('progress').style.width = ((cur/(total-1))*100)+'%';
+    document.getElementById('counter').textContent = (cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = cur === 0 && fragmentIdx === 0;
+    document.getElementById('nextBtn').disabled = cur === total-1 && fragmentIdx >= getFragments(slides[cur]).length;
+
+    var act = '';
+    for(var i = chapters.length-1; i >= 0; i--){
+      if(cur >= chapters[i].idx){ act = chapters[i].act; break; }
+    }
+    document.getElementById('chapterLabel').textContent = act || '章節';
+
+    document.querySelectorAll('.chapter-item').forEach(function(item){
+      var idx = +item.dataset.idx;
+      var end = total;
+      for(var j = 0; j < chapters.length; j++){ if(chapters[j].idx > idx){ end = chapters[j].idx; break; } }
+      item.classList.toggle('active', cur >= idx && cur < end);
+    });
+  }
+
+  function toggleChapterMenu(){
+    document.getElementById('chapterMenu').classList.toggle('open');
+  }
+  function closeChapterMenu(){
+    document.getElementById('chapterMenu').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(['ArrowRight',' ','PageDown'].indexOf(e.key) !== -1){ e.preventDefault(); navigate(1); }
+    else if(['ArrowLeft','PageUp'].indexOf(e.key) !== -1){ e.preventDefault(); navigate(-1); }
+    else if(e.key==='Home'){ e.preventDefault(); showSlide(0, false); }
+    else if(e.key==='End'){ e.preventDefault(); showSlide(total-1, true); }
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if(e.key==='Escape'){ closeChapterMenu(); }
+  });
+
+  document.querySelector('.slides').addEventListener('click', function(e){
+    if(e.target.closest('.controls')||e.target.closest('.chapter-menu')) return;
+    navigate(1);
+  });
+
+  var tx = 0;
+  document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ navigate(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+
+  updateUI();
+  window.navigate = navigate;
+  window.toggleChapterMenu = toggleChapterMenu;
+})();
+</script>
+</body>
+</html>

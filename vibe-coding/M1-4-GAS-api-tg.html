@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-4 — GAS 串接 API + TG Bot | Vibe Coding Stage 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   M1-4: GAS 串接 API + 做網頁 + TG Bot
+   Design System: WHITE BACKGROUND
+   Accent: --purple (#7C3AED)
+   ═══════════════════════════════════════ */
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --navy:#0B3C5D;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --accent:#7C3AED;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;font-weight:400;background:var(--white);}
+
+/* ── Slides Core ── */
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 4rem 1.5rem;overflow:hidden;}
+.slide.active{display:flex;}
+
+/* ── DataViz: white bg content page ── */
+.slide.dataviz{background:var(--white);color:var(--g900);padding-top:3.5rem;overflow-y:auto;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.dataviz h2{color:var(--g900);}
+
+/* ── Poster: colored gradient chapter dividers ── */
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster::before{content:'';position:absolute;inset:0;z-index:1;}
+.slide.poster>*{position:relative;z-index:2;}
+.slide.poster.overlay-heavy::before{background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.7) 100%);}
+.slide.poster h2{color:#fff;}
+
+/* ── Typography ── */
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+.slide.poster h1{color:#fff;}
+h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;}
+h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
+p,li{font-size:1.1rem;line-height:1.8;}
+.subtitle{font-size:1.15rem;font-weight:500;}
+.dim{opacity:.6;}
+
+/* ── Fragment ── */
+.fragment{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.fragment.visible{opacity:1;transform:none;}
+
+/* ── Step List ── */
+.step-list{text-align:left;max-width:800px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;}
+
+/* ── Stat Grid (white mode) ── */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
+.stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
+.stat-box .val{font-size:2.4rem;font-weight:900;color:var(--purple);line-height:1.1;}
+.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Card Grid (white mode) ── */
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:960px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.5rem;min-width:200px;max-width:280px;flex:1;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.card:hover{border-color:var(--purple);}
+.card .icon{font-size:2.2rem;margin-bottom:.5rem;}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.6;}
+.card.accent-top{border-top:4px solid var(--purple);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+.card.accent-top-green{border-top:4px solid var(--green);}
+
+/* ── Flow (white mode) ── */
+.flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box.accent{border-color:var(--purple);background:var(--purple-lt);color:var(--purple);}
+.flow-arrow{color:var(--purple);font-size:1.5rem;font-weight:900;}
+
+/* ── Info Boxes (white mode) ── */
+.info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--purple-lt);border-left:4px solid var(--purple);}
+.info-box.success .label{color:var(--purple);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.success p{color:var(--g800);}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:var(--g800);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip p{color:var(--g800);}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note p{color:var(--g800);}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue p{color:var(--g800);}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning p{color:var(--g800);}
+
+/* ── Quote Box (white mode) ── */
+.quote-box{max-width:800px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.5rem 2rem;margin:.8rem 0;text-align:left;}
+.quote-box .quote-text{font-size:1.3rem;font-weight:700;line-height:1.6;color:var(--g900);}
+.quote-box .quote-src{font-size:.9rem;color:var(--g400);margin-top:.5rem;}
+
+/* ── Code Block (white mode) ── */
+.code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1.2rem 1.5rem;max-width:800px;width:100%;text-align:left;margin:.8rem 0;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:.9rem;color:var(--g900);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--purple);letter-spacing:.05em;margin-bottom:.5rem;}
+
+/* ── Two-Column Compare ── */
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:860px;width:100%;margin-top:.8rem;}
+.compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--purple-lt);border:2px solid var(--purple);border-top:4px solid var(--purple);}
+.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--purple);}
+.compare-col p,
+.compare-col li{font-size:1rem;line-height:1.7;color:var(--g800);}
+.compare-col ul{padding-left:1.2rem;}
+
+/* ── Checklist ── */
+.checklist{max-width:800px;width:100%;}
+.check-item{display:flex;align-items:flex-start;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--g100);}
+.check-item:last-child{border:none;}
+.check-icon{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.check-icon.done{background:var(--purple-lt);color:var(--purple);}
+.check-icon.todo{background:var(--offwhite);color:var(--g400);border:2px solid var(--g200);}
+.check-text strong{font-size:1.05rem;color:var(--g900);}
+.check-text p{font-size:.95rem;color:var(--g600);}
+
+/* ── Big Number Highlight ── */
+.big-stat{text-align:center;margin:1rem 0;}
+.big-stat .num{font-size:4rem;font-weight:900;color:var(--purple);line-height:1;}
+.big-stat .unit{font-size:1.2rem;font-weight:700;color:var(--g600);}
+.big-stat .caption{font-size:1rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Highlight Text ── */
+.hl-purple{color:var(--purple);font-weight:700;}
+.hl-blue{color:var(--blue);font-weight:700;}
+.hl-gold{color:var(--gold);font-weight:700;}
+.hl-orange{color:var(--orange);font-weight:700;}
+.hl-green{color:var(--green);font-weight:700;}
+
+/* ── Bottom Line Summary ── */
+.bottom-line{max-width:800px;width:100%;background:var(--purple-lt);border:2px solid rgba(124,58,237,.3);border-radius:16px;padding:2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.5rem;color:var(--purple);margin-bottom:.6rem;}
+.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:640px;margin:0 auto;line-height:1.7;}
+
+/* ── Poster text helpers ── */
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.9rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin-top:.8rem;}
+
+/* ── Controls (light themed) ── */
+.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--purple);transition:width .4s;z-index:100;}
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--purple);border-color:var(--purple);color:#fff;}
+.controls button:disabled{opacity:.25;cursor:default;}
+.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--purple-lt);color:var(--purple);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(124,58,237,.2);}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+
+/* ── Chapter Menu (light themed) ── */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--purple);}
+.chapter-icon{color:var(--purple);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:200px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--purple);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--purple);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  html,body{font-size:16px;}
+  .slide{padding:1rem 1.2rem 1rem;}
+  .slide.dataviz{padding-top:3rem;}
+  h1{font-size:1.9rem;}
+  h2{font-size:1.4rem;margin-bottom:.6rem;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:.8rem;}
+  .stat-box .val{font-size:1.8rem;}
+  .card-grid{flex-direction:column;align-items:center;}
+  .card{max-width:100%;min-width:0;}
+  .compare-two{grid-template-columns:1fr;}
+  .controls button{width:40px;height:40px;font-size:1rem;}
+  .module-title{font-size:.7rem;left:.8rem;top:.6rem;}
+  .module-badge{font-size:.65rem;top:.6rem;right:.6rem;padding:.2rem .6rem;}
+  .quote-box .quote-text{font-size:1.05rem;}
+  .code-block pre{font-size:.8rem;}
+}
+
+/* ── Cycle Ring ── */
+.cycle-ring{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;max-width:860px;width:100%;margin:1rem 0;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.6rem 1rem;font-size:.95rem;font-weight:700;text-align:center;min-width:120px;color:var(--g800);position:relative;}
+.cycle-step.active-step{border-color:var(--purple);background:var(--purple-lt);color:var(--purple);}
+.cycle-step .cycle-label{font-size:.75rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step.active-step .cycle-label{color:var(--purple);}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — Stage 1 · 用 AI</div>
+<div class="module-badge">M1-4</div>
+<div class="slides">
+
+<!-- ══════════════════════════════════════
+     開場 (slides 0-2)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 0: COVER ══ -->
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 40%,#7C3AED 100%);">
+  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 1 · 用 AI</p>
+  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">GAS 串接 API<br><span style="color:#c4b5fd;">+ TG Bot</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">你的第一個對外服務 — 有網頁、有 AI、有通知</p>
+  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M1-4</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走服務</span>
+  </div>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1: 課程六輪循環 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="1">
+  <h2>六輪循環，逐層遞進</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+      <div style="font-weight:700;">GAS 網頁 doGet</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+      <div style="font-weight:700;">Sheet 讀寫</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+      <div style="font-weight:700;">串 Groq API</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+      <div style="font-weight:700;">串 TG Bot</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+      <div style="font-weight:700;">Demo 互測</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+      <div style="font-weight:700;">Stage 1 回顧</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+    <p style="font-size:.95rem;"><strong>故事線</strong><br>一張飲料菜單（M1-3）→ 團購表單 → 自動統計 → AI 分析 → TG 通知老闆去買<br>今天做完，就是一條完整服務</p>
+  </div>
+</div>
+
+<!-- ══ 2: 前情提要 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="2">
+  <h2>前情提要：Stage 1 到目前為止</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box fragment" data-order="0" style="min-width:140px;">
+      <div style="font-size:.75rem;color:var(--g400);">M1-1</div>
+      AI 聊天做 HTML
+    </div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box fragment" data-order="2" style="min-width:140px;">
+      <div style="font-size:.75rem;color:var(--g400);">M1-2</div>
+      封裝 GPT/Gem
+    </div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box fragment" data-order="4" style="min-width:140px;">
+      <div style="font-size:.75rem;color:var(--g400);">M1-3</div>
+      GAS 自動化
+    </div>
+    <div class="flow-arrow fragment" data-order="5">→</div>
+    <div class="flow-box accent fragment" data-order="6" style="min-width:140px;">
+      <div style="font-size:.75rem;color:var(--purple);">M1-4</div>
+      對外服務
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="7">
+    <p style="font-size:.95rem;">M1-1 只能自己看 → M1-3 背景自動跑 → <span class="hl-purple">今天：任何人都能用的服務</span></p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 1：GAS 做網頁 doGet (slides 3-11)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 3: Chapter poster — Round 1 ══ -->
+<div class="slide poster overlay-heavy" data-act="R1：GAS 網頁" data-index="3"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 40%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:25</p>
+  <h1 style="color:#fff;font-size:2.8rem;">GAS 做網頁<br><span style="color:#c4b5fd;">doGet + HtmlService</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">從「自己電腦看得到」到「全世界看得到」</p>
+</div>
+
+<!-- ══ 4: Step 1 第一版需求 — 獨立任務 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="4">
+  <h2>Step 1 — 開新對話、獨立任務</h2>
+  <div class="info-box note fragment" data-order="0" style="margin-bottom:.6rem;">
+    <div class="label">為什麼開新對話</div>
+    <p>M1-3 的對話可能在不同視窗或斷掉了<br>新任務從零開始，順便複習怎麼跟 AI 講清楚</p>
+  </div>
+  <div class="code-block fragment" data-order="1">
+    <div class="code-label">跟 AI 說（獨立完整版）</div>
+    <pre>幫我寫一個 Google Apps Script
+做一個網頁，顯示 Google Sheet 裡的飲料訂購資料
+
+我的 Sheet 裡有這些欄位（自己貼上 Sheet 的欄位）
+[姓名 / 飲料 / 冰塊 / 甜度 / 數量]
+
+請用 doGet 和 HtmlService 寫
+做成讓任何人都能打開的公開網址</pre>
+  </div>
+  <div class="info-box tip fragment" data-order="2" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">關鍵：把你 Sheet 的欄位貼給 AI<br>AI 才知道要讀哪些資料</p>
+  </div>
+</div>
+
+<!-- ══ 5: Step 2 部署需求 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="5">
+  <h2>Step 2 — 加上「部署」這個需求</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">繼續跟 AI 說</div>
+    <pre>程式碼貼好了
+請告訴我怎麼部署成網頁
+讓任何人都能打開
+存取權限要設成所有人</pre>
+  </div>
+  <div class="info-box tip fragment" data-order="1" style="margin-top:.6rem;">
+    <div class="label">回 GAS 看什麼</div>
+    <p>AI 會教你「部署 → 新增部署 → 網頁應用程式」<br>你照做，拿到一個 https 網址</p>
+  </div>
+  <div class="info-box success fragment" data-order="2" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">完成這一步的同學請舉手，等大家都到位再繼續</p>
+  </div>
+</div>
+
+<!-- ══ 5b: Step 3 驗證 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="5">
+  <h2>Step 3 — 驗證</h2>
+  <div class="flow fragment" data-order="0">
+    <div class="flow-box">手機打開你的網址</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">看到團購統計</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">傳給隔壁同學打開</div>
+  </div>
+  <div class="quote-box fragment" data-order="1" style="margin-top:1rem;">
+    <div class="quote-text">這是你做的第一個「上線的服務」<br>不是檔案，是公開網址</div>
+  </div>
+</div>
+
+<!-- ══ 6: 觀察 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="6">
+  <h2>觀察：跟 M1-1 有什麼不同</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);border-top-color:var(--g400);">
+      <div class="col-label" style="color:var(--g600);">M1-1 的 HTML</div>
+      <p>只能在自己電腦看</p>
+      <p>分享要傳檔案</p>
+      <p>沒有公開網址</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">GAS 網頁</div>
+      <p>有公開網址</p>
+      <p>任何人都能打開</p>
+      <p>手機也能看</p>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="2">
+    <p style="font-size:.95rem;">關鍵差異：<span class="hl-purple">部署（Deploy）= 上架</span><br>從「本機檔案」跳到「公開服務」</p>
+  </div>
+</div>
+
+<!-- ══ 7: 分析 — 部署 = 上架 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="7">
+  <h2>部署 = 上架</h2>
+  <div class="flow" style="margin:1.5rem 0;">
+    <div class="flow-box fragment" data-order="0">自己電腦</div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box accent fragment" data-order="2">部署 Deploy</div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box fragment" data-order="4">全世界看得到</div>
+  </div>
+  <div class="quote-box fragment" data-order="5">
+    <div class="quote-text">GAS 網頁 = 免費伺服器 + 免費網址<br>你的第一個「上線的服務」</div>
+  </div>
+</div>
+
+<!-- ══ 8a: 細節 1 — 專案命名 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="8">
+  <h2>細節 1 — 專案要改名字</h2>
+  <p style="color:var(--g600);margin-bottom:.5rem;font-size:.95rem;">新建專案預設叫「無標題的專案」<br>累積幾個之後完全分不出哪個是哪個</p>
+  <div style="max-width:760px;width:100%;background:#fff;border:1px solid var(--g200);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.08);overflow:hidden;margin-top:.4rem;">
+    <div style="background:var(--offwhite);padding:.5rem .9rem;border-bottom:1px solid var(--g200);font-size:.78rem;color:var(--g600);">
+      Apps Script 編輯器左上角
+    </div>
+    <div style="padding:1rem 1.2rem;">
+      <div class="fragment" data-order="0" style="display:flex;align-items:center;gap:.6rem;padding:.5rem .8rem;background:var(--g50);border-radius:6px;margin-bottom:.6rem;">
+        <span style="color:var(--purple);">▼</span>
+        <span style="text-decoration:line-through;color:var(--g400);font-size:.9rem;">無標題的專案</span>
+        <span style="color:var(--red);font-size:.78rem;">← 不要留這個</span>
+      </div>
+      <div class="fragment" data-order="1" style="display:flex;align-items:center;gap:.6rem;padding:.5rem .8rem;background:var(--purple-lt);border-radius:6px;border:1px solid var(--purple);">
+        <span style="color:var(--purple);">▼</span>
+        <span style="color:var(--purple);font-weight:700;font-size:.95rem;">飲料團購系統 v1</span>
+        <span style="color:var(--green);font-size:.78rem;">← 點專案名稱直接改</span>
+      </div>
+    </div>
+  </div>
+  <div class="info-box tip fragment" data-order="2" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">幾個月後在 Apps Script 列表還認得出來</p>
+  </div>
+</div>
+
+<!-- ══ 8b: 細節 2 — 部署權限 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="8">
+  <h2>細節 2 — 部署權限選「所有人」</h2>
+  <div style="max-width:760px;width:100%;background:#fff;border:1px solid var(--g200);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.08);overflow:hidden;margin-top:.4rem;">
+    <div style="background:var(--offwhite);padding:.5rem .9rem;border-bottom:1px solid var(--g200);font-size:.78rem;color:var(--g600);">
+      部署 → 新增部署 → 設定彈窗
+    </div>
+    <div style="padding:1rem 1.2rem;font-size:.85rem;">
+      <div class="fragment" data-order="0" style="display:grid;grid-template-columns:120px 1fr;gap:.5rem;padding:.5rem 0;border-bottom:1px solid var(--g100);">
+        <span style="color:var(--g600);">執行身分</span>
+        <span style="font-weight:700;">我</span>
+      </div>
+      <div class="fragment" data-order="1" style="display:grid;grid-template-columns:120px 1fr;gap:.5rem;padding:.5rem 0;background:var(--purple-lt);margin:0 -.5rem;padding:.5rem;border-radius:6px;">
+        <span style="color:var(--purple);font-weight:700;">存取權限</span>
+        <span style="color:var(--purple);font-weight:700;">所有人 ← 一定要選這個</span>
+      </div>
+    </div>
+  </div>
+  <div class="compare-two fragment" data-order="2" style="margin-top:.5rem;">
+    <div class="compare-col bad" style="padding:.7rem 1rem;">
+      <div class="col-label" style="margin-bottom:.2rem;">選錯</div>
+      <p style="font-size:.85rem;">別人打開看到「需要登入」或「沒有權限」</p>
+    </div>
+    <div class="compare-col good" style="padding:.7rem 1rem;">
+      <div class="col-label" style="margin-bottom:.2rem;">選對</div>
+      <p style="font-size:.85rem;">任何人都能直接打開，不需要 Google 帳號</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 8c: 細節 3 — 網址在哪裡 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="8">
+  <h2>細節 3 — 網址在哪裡找</h2>
+  <p style="color:var(--g600);margin-bottom:.5rem;font-size:.95rem;">部署完跳出的網址沒複製到，回頭找的方法</p>
+  <div style="max-width:760px;width:100%;background:#fff;border:1px solid var(--g200);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.08);overflow:hidden;margin-top:.4rem;">
+    <div style="background:var(--offwhite);padding:.5rem .9rem;border-bottom:1px solid var(--g200);font-size:.78rem;color:var(--g600);">
+      右上角「部署 ▼」→ 管理部署
+    </div>
+    <div style="padding:1rem 1.2rem;">
+      <div class="fragment" data-order="0" style="border:1px solid var(--g200);border-radius:8px;padding:.8rem 1rem;">
+        <div style="font-size:.78rem;color:var(--g400);margin-bottom:.3rem;">活動 - 版本 1</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--g800);margin-bottom:.4rem;">飲料團購系統</div>
+        <div style="display:flex;align-items:center;gap:.5rem;background:var(--g50);padding:.5rem .8rem;border-radius:6px;">
+          <span style="color:var(--g400);font-size:.7rem;">網址</span>
+          <span style="font-family:monospace;font-size:.75rem;color:var(--g800);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">https://script.google.com/macros/s/AKfy...exec</span>
+          <span class="fragment" data-order="1" style="background:var(--purple);color:#fff;padding:.3rem .6rem;border-radius:4px;font-size:.7rem;font-weight:700;">複製</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="2" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">每次都能回來找 — 不用怕網址不見</p>
+  </div>
+</div>
+
+<!-- ══ 9: 分享與觀察 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="9">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>把 GAS 網頁連結貼到群組</strong>
+        <p>互相打開同學的網頁</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>觀察差異</strong>
+        <p>版面設計、資料呈現方式、手機版面是否正常</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>思考一個問題</strong>
+        <p>這個網頁只能「看」— 訪客能不能「填資料」進來</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 10: Round 1 小結 ══ -->
+<div class="slide dataviz" data-act="R1：GAS 網頁" data-index="10">
+  <h2>Round 1 小結</h2>
+  <div class="quote-box fragment" data-order="0" style="margin-top:1.5rem;">
+    <div class="quote-text">GAS + doGet + HtmlService<br>= 免費的公開網頁伺服器<br>但現在只能「看」，不能「寫」</div>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
+    <p style="font-size:.95rem;">下一輪：讓訪客可以填資料進來，存到 Google Sheet</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 2：Sheet 讀寫 (slides 11-19)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 11: Chapter poster — Round 2 ══ -->
+<div class="slide poster overlay-heavy" data-act="R2：Sheet 讀寫" data-index="11"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 40%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:25–0:50</p>
+  <h1 style="color:#fff;font-size:2.8rem;">GAS 網頁<br><span style="color:#c4b5fd;">+ Sheet 讀寫</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">讓訪客不只能看，還能填資料進來</p>
+</div>
+
+<!-- ══ 12: 操作指令 ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="12">
+  <h2>Step 1 — 加上「能填資料」這個需求</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">繼續跟 AI 說</div>
+    <pre>把這個網頁升級成意見收集頁
+訪客可以填姓名和意見
+送出後寫入 Google Sheet
+網頁下方顯示已提交的意見列表</pre>
+  </div>
+  <div class="info-box tip fragment" data-order="1" style="margin-top:.6rem;">
+    <div class="label">回 GAS 看什麼</div>
+    <p>AI 會在原本的 doGet 加 doPost<br>觀察 doPost 怎麼接收表單、怎麼 appendRow 寫入 Sheet</p>
+  </div>
+</div>
+
+<!-- ══ 13: Step 2 重新部署 — 陷阱 ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="13">
+  <h2>Step 2 — 重新部署的陷阱</h2>
+  <div class="info-box warning fragment" data-order="0">
+    <div class="label">改了程式碼 ≠ 立刻生效</div>
+    <p>GAS 部署是「快照」概念 — 改完要重新部署，網址才會跑新邏輯</p>
+  </div>
+  <div class="compare-two fragment" data-order="1" style="margin-top:.6rem;">
+    <div class="compare-col bad">
+      <div class="col-label">不要選「新增部署」</div>
+      <p>會產生<strong>另一組新網址</strong></p>
+      <p>之前分享出去的舊網址跑舊程式</p>
+      <p>同一個 Bot 被你拆成兩個</p>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">要選「管理部署 → 編輯」</div>
+      <p>版本選「新版本」</p>
+      <p>網址不變，程式碼更新</p>
+      <p>之前分享的網址也跟著更新</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 13b: 重新部署 mockup ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="13">
+  <h2>Step 2 — 怎麼點「管理部署」</h2>
+  <div style="max-width:840px;width:100%;background:#fff;border:1px solid var(--g200);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.08);overflow:hidden;margin-top:.4rem;">
+    <div style="background:var(--offwhite);padding:.5rem .9rem;border-bottom:1px solid var(--g200);font-size:.78rem;color:var(--g600);">
+      Apps Script 編輯器右上角
+    </div>
+    <div style="padding:1rem 1.2rem;">
+      <div class="fragment" data-order="0" style="display:flex;justify-content:flex-end;gap:.5rem;margin-bottom:.8rem;">
+        <span style="background:var(--purple);color:#fff;padding:.4rem 1rem;border-radius:6px;font-size:.85rem;font-weight:700;">部署 ▼</span>
+      </div>
+      <div class="fragment" data-order="1" style="background:#fff;border:1px solid var(--g200);border-radius:6px;width:240px;float:right;font-size:.82rem;box-shadow:0 4px 12px rgba(0,0,0,.1);">
+        <div style="padding:.6rem .9rem;color:var(--g400);border-bottom:1px solid var(--g100);text-decoration:line-through;">新增部署（會產生新網址）</div>
+        <div style="padding:.6rem .9rem;color:var(--purple);background:var(--purple-lt);font-weight:700;">✓ 管理部署</div>
+        <div style="padding:.6rem .9rem;color:var(--g600);">測試部署</div>
+      </div>
+      <div style="clear:both;height:.6rem;"></div>
+      <div class="fragment" data-order="2" style="background:var(--purple-lt);padding:.6rem .9rem;border-radius:6px;color:var(--purple);font-size:.85rem;font-weight:700;margin-top:.6rem;">
+        進入後 → 點鉛筆編輯 → 版本選「新版本」→ 部署 → 網址不變
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">完成這一步的同學請舉手，等大家都到位再繼續</p>
+  </div>
+</div>
+
+<!-- ══ 14: 觀察 ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="14">
+  <h2>觀察：資料是共用的</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">A</div>
+      <div class="step-content">
+        <strong>A 同學填了一筆資料</strong>
+        <p>在自己手機上填寫表單，送出</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">B</div>
+      <div class="step-content">
+        <strong>B 同學重新整理頁面</strong>
+        <p>看到 A 的意見出現在列表中</p>
+      </div>
+    </div>
+  </div>
+  <div class="quote-box fragment" data-order="2" style="margin-top:1rem;">
+    <div class="quote-text">「資料是共用的！不同的人看到同一份資料！」</div>
+  </div>
+</div>
+
+<!-- ══ 15: 分析 — 前端 vs 後端 ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="15">
+  <h2>前端 vs 後端</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);border-top-color:var(--g400);">
+      <div class="col-label" style="color:var(--g600);">M1-1 的 HTML</div>
+      <p>只有前端（用餐區）</p>
+      <p>資料存在瀏覽器裡</p>
+      <p>關掉就沒了</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">GAS + Sheet</div>
+      <p>前端（網頁）+ 後端（GAS + Sheet）</p>
+      <p>資料存在雲端</p>
+      <p>不同裝置都能存取</p>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="2">
+    <p style="font-size:.95rem;"><span class="hl-purple">前端 = 用餐區</span>（訪客看到的畫面）<br><span class="hl-purple">後端 = 廚房 + 倉庫</span>（GAS 處理邏輯 + Sheet 存資料）</p>
+  </div>
+</div>
+
+<!-- ══ 16: 餐廳比喻圖 ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="16">
+  <h2>餐廳比喻</h2>
+  <div class="flow" style="margin:1.5rem 0;">
+    <div class="flow-box fragment" data-order="0" style="min-width:130px;">
+      <div style="font-size:.75rem;color:var(--g400);">前端</div>
+      網頁畫面<br><span style="font-size:.85rem;color:var(--g600);">用餐區</span>
+    </div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box accent fragment" data-order="2" style="min-width:130px;">
+      <div style="font-size:.75rem;color:var(--purple);">後端</div>
+      GAS 程式碼<br><span style="font-size:.85rem;color:var(--g600);">廚房</span>
+    </div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box fragment" data-order="4" style="min-width:130px;">
+      <div style="font-size:.75rem;color:var(--g400);">資料庫</div>
+      Google Sheet<br><span style="font-size:.85rem;color:var(--g600);">倉庫</span>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="5">
+    <p style="font-size:.95rem;">客人（訪客）在用餐區（網頁）點菜（填表單）<br>廚房（GAS）接單處理 → 存進倉庫（Sheet）</p>
+  </div>
+</div>
+
+<!-- ══ 17: 注意事項 — 沒驗證 ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="17">
+  <h2>Step 3 — 加上「防呆驗證」這個需求</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">繼續跟 AI 說</div>
+    <pre>加上輸入驗證
+姓名和意見都不能空白
+送出後顯示「已提交」確認訊息
+按鈕送出後變灰避免重複送</pre>
+  </div>
+  <div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;">
+    <div class="label">為什麼要防呆</div>
+    <p>對外服務一定會遇到空白提交和重複送，會留下垃圾資料</p>
+  </div>
+</div>
+
+<!-- ══ 18: 升級後的效果 ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="18">
+  <h2>升級後的效果</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box accent fragment" data-order="0">訪客填表</div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box accent fragment" data-order="2">前端驗證</div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box accent fragment" data-order="4">寫入 Sheet</div>
+    <div class="flow-arrow fragment" data-order="5">→</div>
+    <div class="flow-box accent fragment" data-order="6">顯示確認</div>
+  </div>
+  <div class="info-box success fragment" data-order="7">
+    <p style="font-size:.95rem;">現在的網頁：能看、能填、能存、有驗證<br>但資料進來之後，要靠人去看 — <span class="hl-purple">能不能讓 AI 自動分析</span></p>
+  </div>
+</div>
+
+<!-- ══ 19: Round 2 小結 ══ -->
+<div class="slide dataviz" data-act="R2：Sheet 讀寫" data-index="19">
+  <h2>Round 2 小結</h2>
+  <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);max-width:550px;">
+    <div class="stat-box fragment" data-order="0">
+      <div class="val" style="font-size:1.8rem;">Round 1</div>
+      <div class="label">只能看（展示頁）</div>
+    </div>
+    <div class="stat-box fragment" data-order="1">
+      <div class="val" style="font-size:1.8rem;">Round 2</div>
+      <div class="label">能看 + 能填 + 能存</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="2" style="margin-top:1rem;">
+    <p style="font-size:.95rem;">下一輪：串接 AI API，讓收到的意見自動被分析</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 3：串 Groq API (slides 20-30)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 20: Chapter poster — Round 3 ══ -->
+<div class="slide poster overlay-heavy" data-act="R3：串 Groq API" data-index="20"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 40%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:50–1:15</p>
+  <h1 style="color:#fff;font-size:2.8rem;">串免費 AI API<br><span style="color:#c4b5fd;">讓表單有 AI 分析</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">Groq + Llama — 免費、不需信用卡、速度快</p>
+</div>
+
+<!-- ══ 21: 申請 Groq 不用信用卡 ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="21">
+  <h2>申請 Groq 不用信用卡</h2>
+  <div class="card-grid" style="margin-top:.8rem;max-width:760px;">
+    <div class="card accent-top fragment" data-order="0" style="border-top-color:var(--purple);min-width:0;flex:1;">
+      <h3>免費註冊</h3>
+      <p>用 Google 帳號登入<br>不用綁卡 / 不用付費</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1" style="min-width:0;flex:1;">
+      <h3>速度極快</h3>
+      <p>專門做推理的硬體<br>回應比一般 API 快數倍</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2" style="min-width:0;flex:1;">
+      <h3>額度夠用</h3>
+      <p>30 RPM / 14,400 RPD<br>個人專案綽綽有餘</p>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.8rem;">
+    <div class="label">立即申請</div>
+    <p><a href="https://console.groq.com" target="_blank" style="color:var(--purple);text-decoration:underline;font-weight:700;">console.groq.com</a> → 用 Google 登入 → API Keys → Create Key</p>
+  </div>
+</div>
+
+<!-- ══ 22: GAS 為什麼不能用 Gemini 免費額度 ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="22">
+  <h2>順便講：GAS 為什麼不能用 Gemini 免費額度</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col good fragment" data-order="0">
+      <div class="col-label">Gemini API 在外部使用</div>
+      <p>用 Python / Node.js / 自己的伺服器</p>
+      <p>免費額度可用</p>
+      <p>不用綁卡也能跑</p>
+    </div>
+    <div class="compare-col bad fragment" data-order="1">
+      <div class="col-label">在 GAS 裡呼叫 Gemini API</div>
+      <p>GAS 屬於 Google Workspace 服務</p>
+      <p>從 Workspace 呼叫外部 API</p>
+      <p>必須啟用 GCP Billing 才能跑</p>
+    </div>
+  </div>
+  <div class="info-box warning fragment" data-order="2" style="margin-top:.6rem;padding:.7rem 1.2rem;">
+    <div class="label">注意這個坑</div>
+    <p>Google 給「綁卡送 $300 試用額度」聽起來划算<br>但 $300 用完會自動扣款，新手很容易忘了關掉<br>課堂用 Groq 完全免費不用綁卡，沒有這個風險</p>
+  </div>
+</div>
+
+<!-- ══ 23: Step 1 拿 Key ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="23">
+  <h2>Step 1 — 拿到 Groq API Key</h2>
+  <div class="step-list" style="max-width:700px;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打開 Groq Console</strong>
+        <p><a href="https://console.groq.com" target="_blank" style="color:var(--purple);text-decoration:underline;">console.groq.com</a> → 用 Google 帳號登入</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>左側選單 → API Keys → Create API Key</strong>
+        <p>取個名字（例如 vibe-coding-class）</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>複製這串 Key（gsk_ 開頭）</strong>
+        <p>視窗關掉就看不到了，先存到記事本</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">完成這一步的同學請舉手，等大家都到位再繼續</p>
+  </div>
+</div>
+
+<!-- ══ 24: Step 2 加 AI 分析需求 ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="24">
+  <h2>Step 2 — 加上「AI 分析」這個需求</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">繼續跟 AI 說</div>
+    <pre>升級系統：新意見送出時呼叫 Groq API（Llama 3.3-70B）
+讓 AI 自動分類成正面 / 中性 / 負面
+分類結果寫回 Sheet 同一列的下一欄</pre>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="margin-top:.6rem;padding:.7rem 1.2rem;">
+    <div class="label">機會教育 — 觀察 AI 把 Key 放哪裡</div>
+    <p>有主動提醒「放 Script Properties」= 好 AI<br>直接寫死在程式碼 = 你要會自己看出問題</p>
+  </div>
+</div>
+
+<!-- ══ 25: 觀察 ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="25">
+  <h2>觀察：AI 自動分析了</h2>
+  <div class="flow" style="margin:1.5rem 0;">
+    <div class="flow-box accent fragment" data-order="0">填意見</div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box accent fragment" data-order="2">AI 分析情緒</div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box accent fragment" data-order="4">標籤寫回 Sheet</div>
+  </div>
+  <div class="quote-box fragment" data-order="5" style="margin-top:1rem;">
+    <div class="quote-text">「AI 自動分析了！不用我自己判斷！」</div>
+  </div>
+  <div class="info-box note fragment" data-order="6" style="padding:.8rem 1.2rem;">
+    <p style="font-size:.9rem;">觸發 → 處理 → 儲存 → 展示<br>四元素已經到齊三個，只差「通知」</p>
+  </div>
+</div>
+
+<!-- ══ 26: 分析 — 四元素到齊 ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="26">
+  <h2>四元素進度</h2>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;max-width:800px;width:100%;margin:1rem 0;">
+    <div class="flow-box accent fragment" data-order="0" style="padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--purple);margin-bottom:.2rem;">觸發</div>
+      <div style="font-weight:700;font-size:.95rem;">表單送出</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="1" style="padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--purple);margin-bottom:.2rem;">處理</div>
+      <div style="font-weight:700;font-size:.95rem;">AI 分析</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="2" style="padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--purple);margin-bottom:.2rem;">儲存</div>
+      <div style="font-weight:700;font-size:.95rem;">寫入 Sheet</div>
+    </div>
+    <div class="flow-box fragment" data-order="3" style="padding:.8rem .5rem;border:2px dashed var(--g200);">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">通知</div>
+      <div style="font-weight:700;font-size:.95rem;color:var(--g400);">Round 4</div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="4">
+    <p style="font-size:.95rem;">三個元素到齊 — 最後一個「通知」在下一輪補上</p>
+  </div>
+</div>
+
+<!-- ══ 27: 注意事項 — API Key 安全 ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="27">
+  <h2>注意：API Key 安全</h2>
+  <div class="compare-two" style="margin-top:.8rem;">
+    <div class="compare-col bad fragment" data-order="0">
+      <div class="col-label">危險做法</div>
+      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">const KEY = "gsk_abc123..."</p>
+      <p style="margin-top:.5rem;">Key 寫在程式碼裡<br>任何能看到程式碼的人<br>都能拿走你的 Key</p>
+    </div>
+    <div class="compare-col good fragment" data-order="1">
+      <div class="col-label">正確做法</div>
+      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">PropertiesService
+  .getScriptProperties()
+  .getProperty('GROQ_KEY')</p>
+      <p style="margin-top:.5rem;">Key 存在 Script Properties<br>程式碼裡只有取用邏輯</p>
+    </div>
+  </div>
+  <div class="info-box warning fragment" data-order="2" style="padding:.8rem 1.2rem;">
+    <div class="label">核心原則</div>
+    <p>密碼不能寫在程式碼裡 — 這個概念到 Stage 2 會變成 .env / Secrets</p>
+  </div>
+</div>
+
+<!-- ══ 28: Script Properties Mockup ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="28">
+  <h2>Step 3 — 把 Key 存到 Script Properties</h2>
+  <div style="max-width:840px;width:100%;background:#fff;border:1px solid var(--g200);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.08);overflow:hidden;margin-top:.5rem;">
+    <div style="background:var(--offwhite);padding:.5rem .9rem;border-bottom:1px solid var(--g200);font-size:.78rem;color:var(--g600);">
+      Apps Script — 專案設定
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;min-height:260px;">
+      <div style="background:var(--g50);padding:.6rem 0;border-right:1px solid var(--g200);font-size:.78rem;">
+        <div style="padding:.4rem .8rem;color:var(--g600);">編輯器</div>
+        <div style="padding:.4rem .8rem;color:var(--g600);">觸發器</div>
+        <div style="padding:.4rem .8rem;color:var(--g600);">執行項目</div>
+        <div class="fragment" data-order="0" style="padding:.4rem .8rem;color:var(--purple);background:var(--purple-lt);border-left:3px solid var(--purple);font-weight:700;">
+          ① 點專案設定
+        </div>
+      </div>
+      <div style="padding:.9rem 1.1rem;font-size:.78rem;">
+        <div class="fragment" data-order="1" style="color:var(--g600);margin-bottom:.6rem;">▼ 指令碼屬性</div>
+        <div class="fragment" data-order="2" style="border:1px solid var(--g200);border-radius:6px;overflow:hidden;">
+          <div style="background:var(--g50);padding:.4rem .8rem;display:grid;grid-template-columns:1fr 1fr 60px;gap:.5rem;font-weight:700;color:var(--g600);font-size:.75rem;">
+            <span>屬性</span><span>值</span><span></span>
+          </div>
+          <div style="padding:.5rem .8rem;display:grid;grid-template-columns:1fr 1fr 60px;gap:.5rem;align-items:center;font-family:monospace;">
+            <span style="color:var(--purple);">GROQ_KEY</span>
+            <span style="color:var(--g800);">gsk_xxxx...</span>
+            <span style="color:var(--red);font-size:.7rem;">移除</span>
+          </div>
+        </div>
+        <div class="fragment" data-order="3" style="margin-top:.8rem;padding:.5rem .9rem;background:var(--purple-lt);border-radius:6px;color:var(--purple);font-family:'Noto Sans TC';font-size:.85rem;font-weight:700;">
+          ② 點「新增指令碼屬性」→ 填 GROQ_KEY → 貼你的 Key → 儲存
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 29: 經典範例 ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="29">
+  <h2>Groq + GAS 的應用範例</h2>
+  <div class="card-grid" style="margin-top:1rem;">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>自動客服分類</h3>
+      <p>客戶留言進來<br>→ AI 自動分類：<br>退款 / 技術問題 / 建議<br>→ 分到不同 Sheet 頁籤</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>自動翻譯回覆</h3>
+      <p>外國客戶留言<br>→ AI 自動翻譯成中文<br>→ 翻譯結果寫回 Sheet<br>→ 中文團隊即時處理</p>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="2" style="padding:.8rem 1.2rem;">
+    <p style="font-size:.9rem;">同樣的架構（表單 + AI + Sheet），套到不同場景<br>差異只在 AI 的指令和 Sheet 的欄位設計</p>
+  </div>
+</div>
+
+<!-- ══ 30: Round 3 小結 ══ -->
+<div class="slide dataviz" data-act="R3：串 Groq API" data-index="30">
+  <h2>Round 3 小結</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box fragment" data-order="0" style="min-width:100px;">
+      <div style="font-size:.7rem;color:var(--g400);">R1</div>
+      能看
+    </div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box fragment" data-order="2" style="min-width:100px;">
+      <div style="font-size:.7rem;color:var(--g400);">R2</div>
+      能填能存
+    </div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box accent fragment" data-order="4" style="min-width:100px;">
+      <div style="font-size:.7rem;color:var(--purple);">R3</div>
+      AI 自動分析
+    </div>
+  </div>
+  <div class="quote-box fragment" data-order="5" style="margin-top:.8rem;">
+    <div class="quote-text">現在缺一件事：有新資料進來的時候<br>你得自己去看 Sheet 才知道<br>能不能自動通知你</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 4：串 TG Bot (slides 31-39)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 31: Chapter poster — Round 4 ══ -->
+<div class="slide poster overlay-heavy" data-act="R4：串 TG Bot" data-index="31"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 40%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:15–1:35</p>
+  <h1 style="color:#fff;font-size:2.8rem;">串接 Telegram Bot<br><span style="color:#c4b5fd;">自動通知</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">四元素最後一塊拼圖 — 推播通知</p>
+</div>
+
+<!-- ══ 32: Step 1 BotFather Mockup ══ -->
+<div class="slide dataviz" data-act="R4：串 TG Bot" data-index="32">
+  <h2>Step 1 — 跟 @BotFather 建 Bot</h2>
+  <div style="max-width:560px;width:100%;background:#fff;border:1px solid var(--g200);border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.08);overflow:hidden;margin-top:.4rem;">
+    <div style="background:#0088cc;padding:.6rem 1rem;color:#fff;font-size:.85rem;display:flex;align-items:center;gap:.5rem;">
+      <span style="display:inline-block;width:30px;height:30px;border-radius:50%;background:#fff;color:#0088cc;text-align:center;line-height:30px;font-weight:700;">B</span>
+      <span style="font-weight:700;">@BotFather</span>
+    </div>
+    <div style="padding:.8rem 1rem;background:#e7f3f7;font-size:.8rem;line-height:1.7;">
+      <div class="fragment" data-order="0" style="background:#fff;padding:.5rem .8rem;border-radius:10px;margin-bottom:.5rem;display:inline-block;max-width:80%;">
+        歡迎！我可以幫你管理 Telegram Bots
+      </div>
+      <div class="fragment" data-order="1" style="background:var(--purple);color:#fff;padding:.5rem .8rem;border-radius:10px;margin-bottom:.5rem;display:inline-block;max-width:80%;float:right;clear:both;">
+        /newbot
+      </div>
+      <div class="fragment" data-order="2" style="clear:both;background:#fff;padding:.5rem .8rem;border-radius:10px;margin-bottom:.5rem;display:inline-block;max-width:80%;">
+        你的 Bot 叫什麼名字？
+      </div>
+      <div class="fragment" data-order="3" style="background:var(--purple);color:#fff;padding:.5rem .8rem;border-radius:10px;margin-bottom:.5rem;display:inline-block;max-width:80%;float:right;clear:both;">
+        我的意見收集 Bot
+      </div>
+      <div class="fragment" data-order="4" style="clear:both;background:#fff;padding:.5rem .8rem;border-radius:10px;display:inline-block;max-width:90%;">
+        建立成功！這是你的 Token：<br><span style="font-family:monospace;color:var(--red);font-size:.75rem;">8434xxx:AAH...（複製這串）</span>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="5" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.85rem;">在 Telegram 搜尋 <strong>@BotFather</strong> → 對話按 /newbot → 取得 Token<br>完成這一步的同學請舉手，等大家都到位再繼續</p>
+  </div>
+</div>
+
+<!-- ══ 33: Step 2 加通知需求 ══ -->
+<div class="slide dataviz" data-act="R4：串 TG Bot" data-index="33">
+  <h2>Step 2 — 加上「TG 通知」這個需求</h2>
+  <div class="code-block fragment" data-order="0">
+    <div class="code-label">繼續跟 AI 說（把常見坑都寫進 prompt）</div>
+    <pre>升級系統：有人提交意見時自動推 Telegram 給我
+通知內容：意見原文 + AI 情緒標籤
+
+Bot Token 和 Chat ID 我會放 Script Properties
+（叫 TG_TOKEN 和 TG_CHAT_ID）
+
+如果我還不知道 Chat ID，請教我怎麼取得
+也請提醒我第一次要先對 Bot 按 /start</pre>
+  </div>
+  <div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">把常見坑寫進 prompt → AI 會主動引導你，不用事後修</p>
+  </div>
+</div>
+
+<!-- ══ 34: 測試驗證 ══ -->
+<div class="slide dataviz" data-act="R4：串 TG Bot" data-index="34">
+  <h2>測試：完整流程跑一遍</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box accent fragment" data-order="0">填表單</div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box accent fragment" data-order="2">AI 分析</div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box accent fragment" data-order="4">存 Sheet</div>
+    <div class="flow-arrow fragment" data-order="5">→</div>
+    <div class="flow-box accent fragment" data-order="6">TG 通知</div>
+  </div>
+  <div class="info-box success fragment" data-order="7" style="margin-top:.8rem;">
+    <p style="font-size:.95rem;">填一個意見 → 手機收到 TG 推播<br>推播內容包含：意見內容 + AI 分析結果<br><span class="hl-purple">全自動，零人工介入</span></p>
+  </div>
+</div>
+
+<!-- ══ 35: 四元素完整版 ══ -->
+<div class="slide dataviz" data-act="R4：串 TG Bot" data-index="35">
+  <h2>四元素完整版</h2>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;max-width:800px;width:100%;margin:1rem 0;">
+    <div class="flow-box accent fragment" data-order="0" style="padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--purple);margin-bottom:.2rem;">觸發</div>
+      <div style="font-weight:700;font-size:.95rem;">表單送出</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="1" style="padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--purple);margin-bottom:.2rem;">處理</div>
+      <div style="font-weight:700;font-size:.95rem;">AI 分析情緒</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="2" style="padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--purple);margin-bottom:.2rem;">儲存</div>
+      <div style="font-weight:700;font-size:.95rem;">寫入 Sheet</div>
+    </div>
+    <div class="flow-box accent fragment" data-order="3" style="padding:.8rem .5rem;">
+      <div style="font-size:.75rem;color:var(--purple);margin-bottom:.2rem;">通知</div>
+      <div style="font-weight:700;font-size:.95rem;">TG 推播</div>
+    </div>
+  </div>
+  <div class="bottom-line fragment" data-order="4">
+    <h3>觸發 → 處理 → 儲存 → 通知</h3>
+    <p>這四個元素組合在一起，就是一個完整的自動化服務<br>幾乎所有 SaaS 產品的核心邏輯都是這四步</p>
+  </div>
+</div>
+
+<!-- ══ 36: 事件驅動概念 ══ -->
+<div class="slide dataviz" data-act="R4：串 TG Bot" data-index="36">
+  <h2>你今天學到的：事件驅動</h2>
+  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+    <div class="quote-text">當 A 事件發生 → 自動觸發 B 動作</div>
+  </div>
+  <div class="card-grid" style="margin-top:1rem;">
+    <div class="card accent-top fragment" data-order="1">
+      <h3>你做的</h3>
+      <p>有人填表單（事件）<br>→ AI 分析 + 寫 Sheet<br>→ TG 主動推播給你</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="2">
+      <h3>常見的</h3>
+      <p>GitHub 有 push（事件）<br>→ 自動跑測試<br>→ 自動部署</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="3">
+      <h3>商業的</h3>
+      <p>收到付款（事件）<br>→ 更新庫存<br>→ 發出貨通知</p>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.6rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">事件驅動是所有自動化的共同模式 — 今天用的是 GAS 觸發器 + API 主動推送</p>
+  </div>
+</div>
+
+<!-- ══ 37: 常見問題（精簡）══ -->
+<div class="slide dataviz" data-act="R4：串 TG Bot" data-index="37">
+  <h2>R4 常見問題</h2>
+  <div class="card-grid" style="margin-top:.8rem;">
+    <div class="card accent-top fragment" data-order="0">
+      <h3>Token 貼錯</h3>
+      <p>多了空格或少了字元<br>→ 用 M1-3 學的「整段執行記錄貼給 AI」</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1">
+      <h3>新訊息沒進 getUpdates</h3>
+      <p>Telegram 30 秒內取一次新訊息<br>→ 自己對 Bot 發一則訊息再執行</p>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="2" style="margin-top:.6rem;">
+    <p style="font-size:.9rem;">大部分問題已經在 Step 2 的 prompt 預埋好了<br>剩下的小問題用 M1-3 的除錯流程就能搞定</p>
+  </div>
+</div>
+
+<!-- ══ 39: Round 4 小結 ══ -->
+<div class="slide dataviz" data-act="R4：串 TG Bot" data-index="39">
+  <h2>Round 4 小結</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box fragment" data-order="0" style="min-width:80px;">
+      <div style="font-size:.7rem;color:var(--g400);">R1</div>
+      能看
+    </div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box fragment" data-order="2" style="min-width:80px;">
+      <div style="font-size:.7rem;color:var(--g400);">R2</div>
+      能填存
+    </div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box fragment" data-order="4" style="min-width:80px;">
+      <div style="font-size:.7rem;color:var(--g400);">R3</div>
+      AI 分析
+    </div>
+    <div class="flow-arrow fragment" data-order="5">→</div>
+    <div class="flow-box accent fragment" data-order="6" style="min-width:80px;">
+      <div style="font-size:.7rem;color:var(--purple);">R4</div>
+      TG 通知
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="7">
+    <p style="font-size:.95rem;">四元素全部到齊<br>你有了一個完整的對外自動化服務</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 5：Demo 互測 (slides 40-47)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 40: Chapter poster — Round 5 ══ -->
+<div class="slide poster overlay-heavy" data-act="R5：Demo 互測" data-index="40"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 40%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:35–1:55</p>
+  <h1 style="color:#fff;font-size:2.8rem;">Demo 互測<br><span style="color:#c4b5fd;">+ 變化應用</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">技術相同，差異在「你解決了什麼問題」</p>
+</div>
+
+<!-- ══ 41: Demo 操作 ══ -->
+<div class="slide dataviz" data-act="R5：Demo 互測" data-index="41">
+  <h2>Demo 操作</h2>
+  <div class="step-list">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>每人把網址貼到群組</strong>
+        <p>大家有彼此的意見收集頁網址</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>互相填彼此的表單</strong>
+        <p>每個人去填其他同學的網頁</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>觀察手機收到一連串 TG 推播</strong>
+        <p>系統自動在跑 — 你寫的服務真的有人在用</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.6rem 1.2rem;">
+    <p style="font-size:.9rem;">收到至少 3 筆通知的同學請舉手</p>
+  </div>
+</div>
+
+<!-- ══ 43: 變化應用 ══ -->
+<div class="slide dataviz" data-act="R5：Demo 互測" data-index="43">
+  <h2>同樣架構可以做什麼</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;max-width:760px;width:100%;margin-top:.6rem;">
+    <div class="card accent-top fragment" data-order="0" style="min-width:0;max-width:none;padding:1rem;">
+      <h3 style="font-size:1rem;">客服自動分類</h3>
+      <p style="font-size:.85rem;">留言 → AI 分類 → TG 通知對應客服</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1" style="min-width:0;max-width:none;padding:1rem;">
+      <h3 style="font-size:1rem;">庫存警報</h3>
+      <p style="font-size:.85rem;">定時掃 Sheet → AI 判斷不足 → TG 推採購</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="2" style="min-width:0;max-width:none;padding:1rem;">
+      <h3 style="font-size:1rem;">每日銷售報告</h3>
+      <p style="font-size:.85rem;">18:00 觸發 → AI 摘要 → TG 推主管</p>
+    </div>
+    <div class="card accent-top-orange fragment" data-order="3" style="min-width:0;max-width:none;padding:1rem;">
+      <h3 style="font-size:1rem;">問卷自動歸納</h3>
+      <p style="font-size:.85rem;">回覆累積 → AI 歸納主題 → TG 推研究者</p>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.6rem;padding:.6rem 1rem;">
+    <p style="font-size:.88rem;">技術都一樣（網頁 + AI + Sheet + 通知），差別只在「你解決什麼問題」</p>
+  </div>
+</div>
+
+<!-- ══ 45: M1-3 → M1-4 完整流程 ══ -->
+<div class="slide dataviz" data-act="R5：Demo 互測" data-index="45">
+  <h2>從一張菜單到完整服務</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box fragment" data-order="0" style="min-width:110px;">
+      <div style="font-size:.7rem;color:var(--g400);">M1-3</div>
+      飲料菜單
+    </div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box fragment" data-order="2" style="min-width:110px;">
+      團購表單
+    </div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box fragment" data-order="4" style="min-width:110px;">
+      自動統計
+    </div>
+    <div class="flow-arrow fragment" data-order="5">→</div>
+    <div class="flow-box fragment" data-order="6" style="min-width:110px;">
+      AI 分析
+    </div>
+    <div class="flow-arrow fragment" data-order="7">→</div>
+    <div class="flow-box accent fragment" data-order="8" style="min-width:110px;">
+      TG 通知老闆
+    </div>
+  </div>
+  <div class="bottom-line fragment" data-order="9">
+    <h3>一條龍完整服務</h3>
+    <p>從一張飲料菜單開始<br>到一個完整的自動化對外服務<br>這就是 Stage 1 的終點</p>
+  </div>
+</div>
+
+<!-- ══ 46: 六維度反思 ══ -->
+<div class="slide dataviz" data-act="R5：Demo 互測" data-index="46">
+  <h2>六維度反思</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.5rem 0;">
+    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">1</div>
+      <div style="font-weight:700;font-size:.95rem;">功能完整度</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">2</div>
+      <div style="font-weight:700;font-size:.95rem;">畫面品質</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">3</div>
+      <div style="font-weight:700;font-size:.95rem;">幾步完成</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">4</div>
+      <div style="font-weight:700;font-size:.95rem;">花多少時間</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">5</div>
+      <div style="font-weight:700;font-size:.95rem;">操作難易度</div>
+    </div>
+    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">6</div>
+      <div style="font-weight:700;font-size:.95rem;">總體效果</div>
+    </div>
+  </div>
+  <div class="info-box note" style="padding:.8rem 1.2rem;margin-top:.3rem;">
+    <p style="font-size:.9rem;">用這六個維度評估自己和同學的作品<br>差距來自哪裡 — 指令品質、架構理解、還是除錯速度</p>
+  </div>
+</div>
+
+<!-- ══ 47: Round 5 小結 ══ -->
+<div class="slide dataviz" data-act="R5：Demo 互測" data-index="47">
+  <h2>Round 5 小結</h2>
+  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+    <div class="quote-text">你擁有了一個可以複製到任何場景的架構<br>觸發 → 處理 → 儲存 → 通知<br>接下來只需要換場景和需求</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Round 6：Stage 1 回顧 (slides 48-59)
+     ══════════════════════════════════════ -->
+
+<!-- ══ 48: Chapter poster — Round 6 ══ -->
+<div class="slide poster overlay-heavy" data-act="R6：Stage 1 回顧" data-index="48"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 40%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:55–2:05</p>
+  <h1 style="color:#fff;font-size:2.8rem;">Stage 1 回顧<br><span style="color:#c4b5fd;">+ Stage 2 預告</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">四堂課的升級線，和下一階段的方向</p>
+</div>
+
+<!-- ══ 49: Stage 1 升級線 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="49">
+  <h2>Stage 1 升級線</h2>
+  <div style="max-width:800px;width:100%;margin:.5rem 0;">
+    <div class="flow" style="flex-direction:column;align-items:stretch;gap:0;">
+      <div style="display:flex;align-items:center;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--g100);">
+        <div style="flex-shrink:0;width:60px;height:60px;border-radius:12px;background:var(--green-lt);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--green);font-size:.9rem;" class="fragment" data-order="0">M1-1</div>
+        <div class="fragment" data-order="0" style="flex:1;">
+          <div style="font-weight:700;">AI 聊天做 HTML</div>
+          <div style="font-size:.9rem;color:var(--g600);">存自己電腦，最原始</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--g100);">
+        <div style="flex-shrink:0;width:60px;height:60px;border-radius:12px;background:var(--blue-lt);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--blue);font-size:.9rem;" class="fragment" data-order="1">M1-2</div>
+        <div class="fragment" data-order="1" style="flex:1;">
+          <div style="font-weight:700;">封裝 GPT/Gem + 圖文生成</div>
+          <div style="font-size:.9rem;color:var(--g600);">可重複用 + 多模態</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--g100);">
+        <div style="flex-shrink:0;width:60px;height:60px;border-radius:12px;background:var(--gold-lt);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;color:#b07d00;font-size:.9rem;" class="fragment" data-order="2">M1-3</div>
+        <div class="fragment" data-order="2" style="flex:1;">
+          <div style="font-weight:700;">GAS 自動化</div>
+          <div style="font-size:.9rem;color:var(--g600);">背景自動跑，飲料團購系統</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;padding:.8rem 0;">
+        <div style="flex-shrink:0;width:60px;height:60px;border-radius:12px;background:var(--purple-lt);border:2px solid var(--purple);display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--purple);font-size:.9rem;" class="fragment" data-order="3">M1-4</div>
+        <div class="fragment" data-order="3" style="flex:1;">
+          <div style="font-weight:700;">GAS 網頁 + AI API + TG</div>
+          <div style="font-size:.9rem;color:var(--g600);">對外服務，一條龍</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 50: 能力累積 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="50">
+  <h2>Stage 1 能力累積</h2>
+  <div class="stat-grid" style="margin-top:1rem;">
+    <div class="stat-box fragment" data-order="0">
+      <div class="val">0</div>
+      <div class="label">行程式碼自己寫</div>
+    </div>
+    <div class="stat-box fragment" data-order="1">
+      <div class="val">4</div>
+      <div class="label">堂課完成</div>
+    </div>
+    <div class="stat-box fragment" data-order="2">
+      <div class="val">1</div>
+      <div class="label">完整對外服務</div>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="3" style="margin-top:1rem;">
+    <p style="font-size:.95rem;">從「完全不會寫程式」到「有一個公開的自動化服務」<br>中間只靠 AI 聊天 + 正確的操作流程</p>
+  </div>
+</div>
+
+<!-- ══ 51: 記憶機制回顧 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="51">
+  <h2>記憶機制回顧</h2>
+  <p style="color:var(--g600);margin-bottom:.5rem;">Stage 1 用到的四種「記住設定」的方式</p>
+  <div class="card-grid" style="margin-top:.5rem;">
+    <div class="card accent-top-green fragment" data-order="0" style="min-width:180px;">
+      <h3>GPT Instructions</h3>
+      <p>ChatGPT 的自定義指令<br>每次對話自動帶入</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="1" style="min-width:180px;">
+      <h3>Gem System Instructions</h3>
+      <p>Gemini 的系統指令<br>角色 + 限制 + 格式</p>
+    </div>
+    <div class="card accent-top fragment" data-order="2" style="min-width:180px;">
+      <h3>GAS Script Properties</h3>
+      <p>GAS 的安全儲存<br>API Key / Token</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="3" style="min-width:180px;">
+      <h3>CLAUDE.md</h3>
+      <p>Stage 2 預告<br>專案級的記憶檔案</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 52: 注意事項總覽 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="52">
+  <h2>M1-4 常見問題回顧</h2>
+  <table class="data-table" style="max-width:760px;font-size:.9rem;">
+    <thead>
+      <tr><th style="width:40px;">#</th><th>常見問題</th><th>學到什麼</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td>部署權限選錯</td><td>權限管理</td></tr>
+      <tr><td>2</td><td>新增部署 vs 管理部署搞混</td><td>網址不變要選「管理部署」</td></tr>
+      <tr><td>3</td><td>沒驗證收到空白提交</td><td>對外服務要防呆</td></tr>
+      <tr><td>4</td><td>API Key 寫在程式碼裡</td><td>Script Properties</td></tr>
+      <tr><td>5</td><td>TG Token 貼錯</td><td>整段執行記錄貼給 AI</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ 53: 帶走清單 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="53">
+  <h2>帶走清單</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:800px;width:100%;margin:.6rem 0;">
+    <div class="card accent-top" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">GAS 網頁</h3>
+      <p style="font-size:.85rem;">doGet + HtmlService<br>免費公開網址</p>
+    </div>
+    <div class="card accent-top-blue" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">Groq API 串接</h3>
+      <p style="font-size:.85rem;">免費 AI 分析<br>情緒分類 / 翻譯</p>
+    </div>
+    <div class="card accent-top-gold" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">TG Bot 通知</h3>
+      <p style="font-size:.85rem;">BotFather 建 Bot<br>自動推播</p>
+    </div>
+    <div class="card accent-top-orange" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">四元素架構</h3>
+      <p style="font-size:.85rem;">觸發 → 處理<br>→ 儲存 → 通知</p>
+    </div>
+    <div class="card accent-top-green" style="padding:1rem;min-width:0;max-width:none;">
+      <h3 style="font-size:1rem;">前端 vs 後端</h3>
+      <p style="font-size:.85rem;">用餐區 vs 廚房<br>網頁 vs GAS+Sheet</p>
+    </div>
+    <div class="card accent-top" style="padding:1rem;min-width:0;max-width:none;border-top-color:var(--purple);">
+      <h3 style="font-size:1rem;">Stage 1 完整經驗</h3>
+      <p style="font-size:.85rem;">四堂課的能力<br>一條龍服務</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 54: Stage 1 全景 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="54">
+  <h2>Stage 1 全景：你學會了什麼</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box accent fragment" data-order="0" style="min-width:130px;">
+      <div style="font-size:.75rem;color:var(--purple);">M1-1</div>
+      AI 聊天<br>做作品
+    </div>
+    <div class="flow-arrow fragment" data-order="1">→</div>
+    <div class="flow-box accent fragment" data-order="2" style="min-width:130px;">
+      <div style="font-size:.75rem;color:var(--purple);">M1-2</div>
+      封裝助手<br>多模態
+    </div>
+    <div class="flow-arrow fragment" data-order="3">→</div>
+    <div class="flow-box accent fragment" data-order="4" style="min-width:130px;">
+      <div style="font-size:.75rem;color:var(--purple);">M1-3</div>
+      GAS 自動化<br>背景執行
+    </div>
+    <div class="flow-arrow fragment" data-order="5">→</div>
+    <div class="flow-box accent fragment" data-order="6" style="min-width:130px;">
+      <div style="font-size:.75rem;color:var(--purple);">M1-4</div>
+      對外服務<br>一條龍
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="7">
+    <p style="font-size:.95rem;">從「零基礎」到「有公開服務」<br>Stage 1 的核心：<span class="hl-purple">用 AI 做事，不用自己寫程式</span></p>
+  </div>
+</div>
+
+<!-- ══ 55: Stage 1 的限制 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="55">
+  <h2>Stage 1 的限制</h2>
+  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+    <div class="quote-text">你用的都是「別人的平台」</div>
+  </div>
+  <div class="card-grid" style="margin-top:1rem;">
+    <div class="card accent-top fragment" data-order="1">
+      <h3>ChatGPT / Claude</h3>
+      <p>別人的 AI</p>
+    </div>
+    <div class="card accent-top-blue fragment" data-order="2">
+      <h3>Google Apps Script</h3>
+      <p>別人的伺服器</p>
+    </div>
+    <div class="card accent-top-gold fragment" data-order="3">
+      <h3>Telegram</h3>
+      <p>別人的通訊管道</p>
+    </div>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.8rem;">
+    <p style="font-size:.95rem;">平台規則改了，你就被影響<br>能不能有「自己的地盤」</p>
+  </div>
+</div>
+
+<!-- ══ 56: Stage 2 預告 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="56">
+  <h2>Stage 2 預告：串 AI</h2>
+  <div class="step-list" style="margin-top:.5rem;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num" style="background:var(--blue);">1</div>
+      <div class="step-content">
+        <strong>GitHub 做「你自己的網站」</strong>
+        <p>不再依賴 GAS 的超長網址</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num" style="background:var(--blue);">2</div>
+      <div class="step-content">
+        <strong>學會安全管理</strong>
+        <p>.env / Secrets — API Key 的正式管理方式</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num" style="background:var(--blue);">3</div>
+      <div class="step-content">
+        <strong>用 IDE 做更強的工具</strong>
+        <p>從瀏覽器操作進入開發環境</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box blue fragment" data-order="3" style="margin-top:.5rem;">
+    <p style="font-size:.9rem;">Stage 1 = 用 AI → Stage 2 = 串 AI → Stage 3 = 造 AI</p>
+  </div>
+</div>
+
+<!-- ══ 57: 課後操作 ══ -->
+<div class="slide dataviz" data-act="R6：Stage 1 回顧" data-index="57">
+  <h2>課後操作</h2>
+  <div class="info-box blue fragment" data-order="0">
+    <div class="label">實踐任務</div>
+    <p>把今天的意見收集系統改成你工作中的實際場景<br>例如：客戶回饋收集 / 內部建議箱 / 日報通知</p>
+  </div>
+  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+    <div class="label">記錄要求</div>
+    <p>記錄你改了什麼、遇到什麼問題、怎麼解決<br>這些素材在 Stage 2 會用到</p>
+  </div>
+</div>
+
+<!-- ══ 58: 預告 Stage 2 最終頁 ══ -->
+<div class="slide poster overlay-heavy" data-act="R6：Stage 1 回顧" data-index="58"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#4C1D95 40%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一階段 — Stage 2</p>
+  <h1 style="color:#fff;font-size:2.8rem;">你做了對外服務<br><span style="color:#c4b5fd;">但地盤是別人的</span></h1>
+  <p class="poster-subtitle" style="margin-top:1rem;">Stage 2：用 GitHub 建你自己的網站<br>學會安全管理，用 IDE 做更強的工具</p>
+  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">GitHub Pages</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">.env / Secrets</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">IDE</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">CLAUDE.md</span>
+  </div>
+  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M1-4 / Stage 1 完成</p>
+</div>
+
+</div><!-- end .slides -->
+
+<!-- ── Controls ── -->
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter">1 / 59</div>
+<div class="controls">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
+  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+</div>
+
+<!-- ── Chapter Menu ── -->
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">&#9670;</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">&#9650;</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+  let fragmentIdx = 0;
+
+  // Build chapter data
+  const chapters = [];
+  let lastAct = '';
+  slides.forEach((s, i) => {
+    const act = s.dataset.act || '';
+    if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+  });
+
+  // Build chapter menu
+  const list = document.getElementById('chapterList');
+  chapters.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = c.idx;
+    item.innerHTML = '<span class="chapter-dot"></span>' + c.act;
+    item.onclick = function(){ goTo(c.idx); closeChapterMenu(); };
+    list.appendChild(item);
+  });
+
+  function getFragments(slide){
+    return Array.from(slide.querySelectorAll('.fragment'))
+      .sort(function(a,b){ return (+a.dataset.order||0) - (+b.dataset.order||0); });
+  }
+
+  function showSlide(n, showAllFragments){
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total-1, n));
+    var s = slides[cur];
+    s.classList.add('active');
+    var frags = getFragments(s);
+    if(showAllFragments){
+      frags.forEach(function(f){ f.classList.add('visible'); });
+      fragmentIdx = frags.length;
+    } else {
+      frags.forEach(function(f){ f.classList.remove('visible'); });
+      fragmentIdx = 0;
+    }
+    updateUI();
+  }
+
+  function goTo(n){ showSlide(n, false); }
+
+  function navigate(dir){
+    var s = slides[cur];
+    var frags = getFragments(s);
+    if(dir > 0){
+      if(fragmentIdx < frags.length){
+        frags[fragmentIdx].classList.add('visible');
+        fragmentIdx++;
+        updateUI();
+        return;
+      }
+      showSlide(cur + 1, false);
+    } else {
+      if(fragmentIdx > 0){
+        fragmentIdx--;
+        frags[fragmentIdx].classList.remove('visible');
+        updateUI();
+        return;
+      }
+      showSlide(cur - 1, true);
+    }
+  }
+
+  function updateUI(){
+    document.getElementById('progress').style.width = ((cur/(total-1))*100)+'%';
+    document.getElementById('counter').textContent = (cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = cur === 0 && fragmentIdx === 0;
+    document.getElementById('nextBtn').disabled = cur === total-1 && fragmentIdx >= getFragments(slides[cur]).length;
+
+    var act = '';
+    for(var i = chapters.length-1; i >= 0; i--){
+      if(cur >= chapters[i].idx){ act = chapters[i].act; break; }
+    }
+    document.getElementById('chapterLabel').textContent = act || '章節';
+
+    document.querySelectorAll('.chapter-item').forEach(function(item){
+      var idx = +item.dataset.idx;
+      var end = total;
+      for(var j = 0; j < chapters.length; j++){ if(chapters[j].idx > idx){ end = chapters[j].idx; break; } }
+      item.classList.toggle('active', cur >= idx && cur < end);
+    });
+  }
+
+  function toggleChapterMenu(){
+    document.getElementById('chapterMenu').classList.toggle('open');
+  }
+  function closeChapterMenu(){
+    document.getElementById('chapterMenu').classList.remove('open');
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', function(e){
+    if(['ArrowRight',' ','PageDown'].indexOf(e.key)>=0){ e.preventDefault(); navigate(1); }
+    else if(['ArrowLeft','PageUp'].indexOf(e.key)>=0){ e.preventDefault(); navigate(-1); }
+    else if(e.key==='Home'){ e.preventDefault(); showSlide(0, false); }
+    else if(e.key==='End'){ e.preventDefault(); showSlide(total-1, true); }
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if(e.key==='Escape'){ closeChapterMenu(); }
+  });
+
+  // Click
+  document.querySelector('.slides').addEventListener('click', function(e){
+    if(e.target.closest('.controls')||e.target.closest('.chapter-menu')) return;
+    navigate(1);
+  });
+
+  // Touch swipe
+  var tx = 0;
+  document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ navigate(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+
+  // Init
+  updateUI();
+  window.navigate = navigate;
+  window.toggleChapterMenu = toggleChapterMenu;
+})();
+</script>
+</body>
+</html>

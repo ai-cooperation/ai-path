@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>M1-2 — AI 助手 + Gemini 圖文 | Vibe Coding Stage 1</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;family=Fira+Code:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════
    M1-2: 把作品變成 AI 助手 + Gemini 圖文生成
@@ -91,6 +92,22 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
 .flow-box.accent{border-color:var(--blue);background:var(--blue-lt);color:var(--blue);}
 .flow-arrow{color:var(--blue);font-size:1.5rem;font-weight:900;}
+
+/* arch-grid + lane + insight-grid + anchor-banner — common patterns from M1-1 */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
+.arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
+.arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
+.insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
+.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
+.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+.anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
 
 /* ── Info Boxes (white mode) ── */
 .info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
@@ -182,7 +199,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .controls button:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
 .controls button:disabled{opacity:.25;cursor:default;}
-.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500,var(--g400));font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
 .module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--blue-lt);color:var(--blue);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(26,115,232,.2);}
 .module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
 
@@ -246,279 +263,258 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </style>
 </head>
 <body>
-
 <div class="module-title">Vibe Coding — Stage 1 · 用 AI</div>
 <div class="module-badge">M1-2</div>
 <div class="slides">
-
 <!-- ══════════════════════════════════════
      開場 (slides 0-2)
      ══════════════════════════════════════ -->
-
 <!-- ══ 0: COVER ══ -->
-<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 1 · 用 AI</p>
-  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">把作品變成<br><span style="color:#93c5fd;">AI 助手</span></h1>
-  <p class="poster-subtitle" style="margin-top:1.2rem;">從聊天到封裝、從文字到圖像 — AI 的產出超乎你想像</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M1-2</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走 AI 助手</span>
-  </div>
-  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 1 · 用 AI</p>
+<h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">把作品變成<br/><span style="color:#93c5fd;">AI 助手</span></h1>
+<p class="poster-subtitle" style="margin-top:1.2rem;">從聊天到封裝、從文字到圖像 — AI 的產出超乎你想像</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M1-2</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走 AI 助手</span>
 </div>
-
+<p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
 <!-- ══ 1: M1-1 回顧 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
-  <h2>M1-1 回顧：你已經會的事</h2>
-  <div class="card-grid">
-    <div class="card accent-top fragment" data-order="0" style="min-width:180px;">
-      <h3>Prompt 四要素</h3>
-      <p>角色、任務、格式、限制<br>結構化指令產出高品質作品</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1" style="min-width:180px;">
-      <h3>介面判斷力</h3>
-      <p>首屏、配色、字級、CTA<br>從「能用」升級到「好用」</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="2" style="min-width:180px;">
-      <h3>迭代修正</h3>
-      <p>描述問題 → AI 修正<br>反覆對話到滿意為止</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="3" style="margin-top:.8rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;">M1-1 的問題：每次使用都要重新描述需求<br>M1-2 的目標：<strong>把指令封裝成可重複調用的 AI 助手</strong></p>
-  </div>
+<h2>M1-1 回顧：你已經會的事</h2>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0" style="min-width:180px;">
+<h3>Prompt 四要素</h3>
+<p>角色、任務、格式、限制<br/>結構化指令產出高品質作品</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1" style="min-width:180px;">
+<h3>介面判斷力</h3>
+<p>首屏、配色、字級、CTA<br/>從「能用」升級到「好用」</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="2" style="min-width:180px;">
+<h3>迭代修正</h3>
+<p>描述問題 → AI 修正<br/>反覆對話到滿意為止</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="margin-top:.8rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;">M1-1 的問題：每次使用都要重新描述需求<br/>M1-2 的目標：<strong>把指令封裝成可重複調用的 AI 助手</strong></p>
+</div>
+</div>
 <!-- ══ 2: 課程六輪循環 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="2">
-  <h2>六輪循環，逐層遞進</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-      <div style="font-weight:700;">自由發揮建 GPT</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-      <div style="font-weight:700;">四要素改寫</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-      <div style="font-weight:700;">Gem 平台差異</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-      <div style="font-weight:700;">行銷圖文</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-      <div style="font-weight:700;">裝潢應用</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-      <div style="font-weight:700;">三平台對比</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;"><strong>今天的升級路線</strong><br>聊天 → 封裝助手 → 跨平台 → 圖文生成 → 圖片理解 → 全面對比</p>
-  </div>
+<h2>六輪循環，逐層遞進</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+<div style="font-weight:700;">自由發揮建 GPT</div>
 </div>
-
+<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+<div style="font-weight:700;">四要素改寫</div>
+</div>
+<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+<div style="font-weight:700;">Gem 平台差異</div>
+</div>
+<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+<div style="font-weight:700;">行銷圖文</div>
+</div>
+<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+<div style="font-weight:700;">裝潢應用</div>
+</div>
+<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+<div style="font-weight:700;">三平台對比</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;"><strong>今天的升級路線</strong><br/>聊天 → 封裝助手 → 跨平台 → 圖文生成 → 圖片理解 → 全面對比</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 1：自由發揮建 GPT (slides 3-10)
      ══════════════════════════════════════ -->
-
 <!-- ══ 3: Chapter poster — Round 1 ══ -->
-<div class="slide poster overlay-heavy" data-act="R1：自由發揮建GPT" data-index="3"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:25</p>
-  <h1 style="color:#fff;font-size:2.8rem;">自由發揮<br><span style="color:#93c5fd;">直接建一個 GPT</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">不給指引，憑直覺填 Instructions，看會發生什麼</p>
+<div class="slide poster overlay-heavy" data-act="R1：自由發揮建GPT" data-index="3" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:25</p>
+<h1 style="color:#fff;font-size:2.8rem;">自由發揮<br/><span style="color:#93c5fd;">直接建一個 GPT</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">不給指引，憑直覺填 Instructions，看會發生什麼</p>
 </div>
-
 <!-- ══ 4: GPT 是什麼 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮建GPT" data-index="4">
-  <h2>什麼是「建立 GPT」</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">ChatGPT 允許你建立客製化的 AI 助手<br>設定好 Instructions，每次開啟就自動套用</p>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">每次聊天</div>
-      <p>打開 ChatGPT → 重新描述需求<br>每次對話都從零開始<br>風格、規則、知識無法延續</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">建立 GPT</div>
-      <p>打開 GPT → 直接開始問<br>Instructions 自動載入<br>風格、規則、知識持續生效</p>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="2" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">從「每次手動下指令」→「預設好一次，重複使用」</p>
-  </div>
+<h2>什麼是「建立 GPT」</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">ChatGPT 允許你建立客製化的 AI 助手<br/>設定好 Instructions，每次開啟就自動套用</p>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">每次聊天</div>
+<p>打開 ChatGPT → 重新描述需求<br/>每次對話都從零開始<br/>風格、規則、知識無法延續</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">建立 GPT</div>
+<p>打開 GPT → 直接開始問<br/>Instructions 自動載入<br/>風格、規則、知識持續生效</p>
+</div>
+</div>
+<div class="info-box success fragment" data-order="2" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">從「每次手動下指令」→「預設好一次，重複使用」</p>
+</div>
+</div>
 <!-- ══ 5: 操作指令 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮建GPT" data-index="5">
-  <h2>操作指令</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>打開 ChatGPT → 建立 GPT</strong>
-        <p>側欄 → Explore GPTs → Create</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>憑直覺填寫 Instructions</strong>
-        <p>不給任何指引 — 你現在想到什麼就寫什麼</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>用三個問題測試你的 GPT</strong>
-        <p>記錄回答的品質、風格、一致性</p>
-      </div>
-    </div>
-  </div>
-  <div class="stat-grid fragment" data-order="3" style="max-width:500px;grid-template-columns:1fr;">
-    <div class="stat-box">
-      <div class="val">10 min</div>
-      <div class="label">操作時間</div>
-    </div>
-  </div>
+<h2>操作指令</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>打開 ChatGPT → 建立 GPT</strong>
+<p>側欄 → Explore GPTs → Create</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>憑直覺填寫 Instructions</strong>
+<p>不給任何指引 — 你現在想到什麼就寫什麼</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>用三個問題測試你的 GPT</strong>
+<p>記錄回答的品質、風格、一致性</p>
+</div>
+</div>
+</div>
+<div class="stat-grid fragment" data-order="3" style="max-width:500px;grid-template-columns:1fr;">
+<div class="stat-box">
+<div class="val">10 min</div>
+<div class="label">操作時間</div>
+</div>
+</div>
+</div>
 <!-- ══ 6: 常見的自由發揮 Instructions ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮建GPT" data-index="6">
-  <h2>你可能會寫出這樣的 Instructions</h2>
-  <div class="code-block fragment" data-order="0" style="padding:.8rem 1.2rem;margin:.4rem 0;">
-    <div class="code-label">常見的直覺寫法</div>
-    <pre style="font-size:.85rem;line-height:1.6;">你是一個好用的助手
+<h2>你可能會寫出這樣的 Instructions</h2>
+<div class="code-block fragment" data-order="0" style="padding:.8rem 1.2rem;margin:.4rem 0;">
+<div class="code-label">常見的直覺寫法</div>
+<pre style="font-size:.85rem;line-height:1.6;">你是一個好用的助手
 你是一個萬能的 AI
 請用中文回答
 幫我解決問題</pre>
-  </div>
-  <div class="info-box warning fragment" data-order="1" style="padding:.8rem 1.2rem;">
-    <div class="label">問題</div>
-    <p>這些 Instructions 等於沒寫<br>AI 的預設行為就是「用中文回答」「幫你解決問題」<br>你的 GPT 跟直接聊天沒有任何差別</p>
-  </div>
 </div>
-
+<div class="info-box warning fragment" data-order="1" style="padding:.8rem 1.2rem;">
+<div class="label">問題</div>
+<p>這些 Instructions 等於沒寫<br/>AI 的預設行為就是「用中文回答」「幫你解決問題」<br/>你的 GPT 跟直接聊天沒有任何差別</p>
+</div>
+</div>
 <!-- ══ 7: 觀察結果 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮建GPT" data-index="7">
-  <h2>觀察：GPT 跟直接聊天差異不大</h2>
-  <div class="card-grid">
-    <div class="card accent-top-orange fragment" data-order="0">
-      <h3>風格不穩定</h3>
-      <p>每次回答語氣不同<br>沒有一致的人格</p>
-    </div>
-    <div class="card accent-top fragment" data-order="1">
-      <h3>回答太通用</h3>
-      <p>沒有領域專業性<br>像在問搜尋引擎</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>不知道你是誰</h3>
-      <p>沒有上下文<br>每次都要重新解釋背景</p>
-    </div>
-  </div>
+<h2>觀察：GPT 跟直接聊天差異不大</h2>
+<div class="card-grid">
+<div class="card accent-top-orange fragment" data-order="0">
+<h3>風格不穩定</h3>
+<p>每次回答語氣不同<br/>沒有一致的人格</p>
 </div>
-
+<div class="card accent-top fragment" data-order="1">
+<h3>回答太通用</h3>
+<p>沒有領域專業性<br/>像在問搜尋引擎</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>不知道你是誰</h3>
+<p>沒有上下文<br/>每次都要重新解釋背景</p>
+</div>
+</div>
+</div>
 <!-- ══ 8: 學到的概念 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮建GPT" data-index="8">
-  <h2>學到的概念：System Prompt</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">GPT 的 Instructions 就是 System Prompt<br>它決定 AI 在這個對話中「扮演什麼角色」</p>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">模糊的 System Prompt</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">你是一個好用的助手</p>
-      <p style="margin-top:.5rem;">AI 沒有方向<br>產出隨機、不可預測</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">結構化的 System Prompt</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">你是英日翻譯專家。使用者輸入中文，你同時給出英文和日文翻譯。格式用表格</p>
-      <p style="margin-top:.5rem;">角色、任務、格式<br>M1-1 學的四要素直接搬進來</p>
-    </div>
-  </div>
+<h2>學到的概念：System Prompt</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">GPT 的 Instructions 就是 System Prompt<br/>它決定 AI 在這個對話中「扮演什麼角色」</p>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">模糊的 System Prompt</div>
+<p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">你是一個好用的助手</p>
+<p style="margin-top:.5rem;">AI 沒有方向<br/>產出隨機、不可預測</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">結構化的 System Prompt</div>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">你是英日翻譯專家。使用者輸入中文，你同時給出英文和日文翻譯。格式用表格</p>
+<p style="margin-top:.5rem;">角色、任務、格式<br/>M1-1 學的四要素直接搬進來</p>
+</div>
+</div>
+</div>
 <!-- ══ 9: System Prompt = 四要素 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮建GPT" data-index="9">
-  <h2>M1-1 的四要素 → GPT 的 Instructions</h2>
-  <div class="flow" style="margin:1rem 0;">
-    <div class="flow-box accent fragment" data-order="0">M1-1<br>Prompt 四要素</div>
-    <div class="flow-arrow fragment" data-order="1">→</div>
-    <div class="flow-box accent fragment" data-order="2">M1-2<br>GPT Instructions</div>
-  </div>
-  <div class="info-box success fragment" data-order="3">
-    <div class="label">關鍵認知</div>
-    <p>M1-1 你學的是「每次寫一次指令」<br>M1-2 是「寫一次，永久生效」<br>知識沒有變，只是從一次性變成可重複調用</p>
-  </div>
+<h2>M1-1 的四要素 → GPT 的 Instructions</h2>
+<div class="flow" style="margin:1rem 0;">
+<div class="flow-box accent fragment" data-order="0">M1-1<br/>Prompt 四要素</div>
+<div class="flow-arrow fragment" data-order="1">→</div>
+<div class="flow-box accent fragment" data-order="2">M1-2<br/>GPT Instructions</div>
 </div>
-
+<div class="info-box success fragment" data-order="3">
+<div class="label">關鍵認知</div>
+<p>M1-1 你學的是「每次寫一次指令」<br/>M1-2 是「寫一次，永久生效」<br/>知識沒有變，只是從一次性變成可重複調用</p>
+</div>
+</div>
 <!-- ══ 10: Round 1 小結 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮建GPT" data-index="10">
-  <h2>Round 1 小結</h2>
-  <div class="bottom-line">
-    <h3>Instructions 太模糊 = 沒寫</h3>
-    <p>GPT 的價值取決於 Instructions 的品質<br>下一輪：用 M1-1 的四要素改寫，讓 GPT 真正有用</p>
-  </div>
+<h2>Round 1 小結</h2>
+<div class="bottom-line">
+<h3>Instructions 太模糊 = 沒寫</h3>
+<p>GPT 的價值取決於 Instructions 的品質<br/>下一輪：用 M1-1 的四要素改寫，讓 GPT 真正有用</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 2：四要素改寫 (slides 11-21)
      ══════════════════════════════════════ -->
-
 <!-- ══ 11: Chapter poster — Round 2 ══ -->
-<div class="slide poster overlay-heavy" data-act="R2：四要素改寫" data-index="11"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:25–0:50</p>
-  <h1 style="color:#fff;font-size:2.8rem;">四要素改寫<br><span style="color:#93c5fd;">讓 GPT 真正有用</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">把 M1-1 的 Prompt 結構搬進 Instructions</p>
+<div class="slide poster overlay-heavy" data-act="R2：四要素改寫" data-index="11" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:25–0:50</p>
+<h1 style="color:#fff;font-size:2.8rem;">四要素改寫<br/><span style="color:#93c5fd;">讓 GPT 真正有用</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">把 M1-1 的 Prompt 結構搬進 Instructions</p>
 </div>
-
 <!-- ══ 12: 操作步驟 ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="12">
-  <h2>操作步驟</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>用四要素改寫 Instructions</strong>
-        <p>角色 + 任務 + 格式 + 限制，寫進 GPT 設定</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>上傳知識庫（1-2 個檔案）</strong>
-        <p>產品規格、FAQ、個人簡歷 — 讓 GPT 有專屬知識</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>同樣三問再測 → 並排對比</strong>
-        <p>Round 1 的三個問題再問一次，看差異</p>
-      </div>
-    </div>
-  </div>
-  <div class="stat-grid fragment" data-order="3" style="max-width:500px;grid-template-columns:1fr;">
-    <div class="stat-box">
-      <div class="val">10 min</div>
-      <div class="label">操作時間</div>
-    </div>
-  </div>
+<h2>操作步驟</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>用四要素改寫 Instructions</strong>
+<p>角色 + 任務 + 格式 + 限制，寫進 GPT 設定</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>上傳知識庫（1-2 個檔案）</strong>
+<p>產品規格、FAQ、個人簡歷 — 讓 GPT 有專屬知識</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>同樣三問再測 → 並排對比</strong>
+<p>Round 1 的三個問題再問一次，看差異</p>
+</div>
+</div>
+</div>
+<div class="stat-grid fragment" data-order="3" style="max-width:500px;grid-template-columns:1fr;">
+<div class="stat-box">
+<div class="val">10 min</div>
+<div class="label">操作時間</div>
+</div>
+</div>
+</div>
 <!-- ══ 13: Instructions 改寫範例 ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="13">
-  <h2>Instructions 改寫範例：翻譯助手</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">結構化 Instructions</div>
-    <pre>【角色】你是精通中英日三語的專業翻譯
+<h2>Instructions 改寫範例：翻譯助手</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">結構化 Instructions</div>
+<pre>【角色】你是精通中英日三語的專業翻譯
 回答風格簡潔、準確，不加不必要的解釋
 
 【任務】使用者輸入中文時，同時給出英文和日文翻譯
@@ -529,619 +525,596 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 【限制】不翻譯超過 500 字的段落
 遇到專有名詞保留原文並加括號說明</pre>
-  </div>
 </div>
-
+</div>
 <!-- ══ 14: 改寫前後對比 ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="14">
-  <h2>改寫前後的回答差異</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">Round 1 — 自由發揮</div>
-      <p>問：翻譯「這個案子需要加班」</p>
-      <p style="margin-top:.5rem;font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">This project requires overtime work.</p>
-      <p style="margin-top:.3rem;color:var(--red);">只有英文、沒有日文、沒有情境</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">Round 2 — 四要素</div>
-      <p>同一個問題，自動表格輸出</p>
-      <p style="margin-top:.5rem;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">原文｜英文｜日文<br>加班（正式）｜overtime work｜残業<br>加班（口語）｜work late｜残業する</p>
-      <p style="margin-top:.3rem;color:var(--blue);">雙語 + 表格 + 情境，一次到位</p>
-    </div>
-  </div>
+<h2>改寫前後的回答差異</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">Round 1 — 自由發揮</div>
+<p>問：翻譯「這個案子需要加班」</p>
+<p style="margin-top:.5rem;font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">This project requires overtime work.</p>
+<p style="margin-top:.3rem;color:var(--red);">只有英文、沒有日文、沒有情境</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">Round 2 — 四要素</div>
+<p>同一個問題，自動表格輸出</p>
+<p style="margin-top:.5rem;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">原文｜英文｜日文<br/>加班（正式）｜overtime work｜残業<br/>加班（口語）｜work late｜残業する</p>
+<p style="margin-top:.3rem;color:var(--blue);">雙語 + 表格 + 情境，一次到位</p>
+</div>
+</div>
+</div>
 <!-- ══ 15: 觀察 ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="15">
-  <h2>觀察：回答穩定、一致、有風格</h2>
-  <div class="card-grid">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>穩定</h3>
-      <p>問十次，十次格式都一樣<br>不再隨機變換回答方式</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1">
-      <h3>一致</h3>
-      <p>語氣、深度、範圍都有規範<br>像在跟同一個人說話</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="2">
-      <h3>有風格</h3>
-      <p>知識庫讓 GPT 有專屬知識<br>回答帶有你的領域背景</p>
-    </div>
-  </div>
+<h2>觀察：回答穩定、一致、有風格</h2>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0">
+<h3>穩定</h3>
+<p>問十次，十次格式都一樣<br/>不再隨機變換回答方式</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1">
+<h3>一致</h3>
+<p>語氣、深度、範圍都有規範<br/>像在跟同一個人說話</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="2">
+<h3>有風格</h3>
+<p>知識庫讓 GPT 有專屬知識<br/>回答帶有你的領域背景</p>
+</div>
+</div>
+</div>
 <!-- ══ 16: Conversation Starters ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="16">
-  <h2>升級：Conversation Starters + 開場白</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">使用者第一次打開你的 GPT 時<br>看到什麼決定了他會不會繼續用</p>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>設定 Conversation Starters</strong>
-        <p>3-4 個常見問題，讓使用者一鍵開始</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>寫好開場白</strong>
-        <p>GPT 第一句話要告訴使用者：我是誰、我能幫你什麼</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>讓隔壁同學試用</strong>
-        <p>「第一次用的人 30 秒內知道怎麼開始嗎？」</p>
-      </div>
-    </div>
-  </div>
+<h2>升級：Conversation Starters + 開場白</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">使用者第一次打開你的 GPT 時<br/>看到什麼決定了他會不會繼續用</p>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>設定 Conversation Starters</strong>
+<p>3-4 個常見問題，讓使用者一鍵開始</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>寫好開場白</strong>
+<p>GPT 第一句話要告訴使用者：我是誰、我能幫你什麼</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>讓隔壁同學試用</strong>
+<p>「第一次用的人 30 秒內知道怎麼開始嗎？」</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 17: 經典範例 — 翻譯 GPT ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="17">
-  <h2>經典範例：高品質社群 GPT</h2>
-  <div class="mockup-browser fragment" data-order="0">
-    <div class="mockup-bar">
-      <div class="mockup-dot r"></div><div class="mockup-dot y"></div><div class="mockup-dot g"></div>
-      <span class="mockup-url">chatgpt.com/g/translator-pro</span>
-    </div>
-    <div class="mockup-body" style="text-align:center;">
-      <div style="font-size:1.5rem;font-weight:900;color:var(--g900);">Translator Pro</div>
-      <p style="color:var(--g600);margin-top:.5rem;font-size:.95rem;">精通 12 種語言的專業翻譯助手<br>自動偵測語言、表格輸出、附帶使用情境</p>
-      <div style="margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
-        <span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">翻譯這段會議紀錄</span>
-        <span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">商業書信中翻英</span>
-        <span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">日文敬語怎麼用</span>
-      </div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.85rem;">好的 GPT 開場設計：名稱清楚 + 一句話說明能力 + 3 個 Starter 引導操作</p>
-  </div>
+<h2>經典範例：高品質社群 GPT</h2>
+<div class="mockup-browser fragment" data-order="0">
+<div class="mockup-bar">
+<div class="mockup-dot r"></div><div class="mockup-dot y"></div><div class="mockup-dot g"></div>
+<span class="mockup-url">chatgpt.com/g/translator-pro</span>
 </div>
-
+<div class="mockup-body" style="text-align:center;">
+<div style="font-size:1.5rem;font-weight:900;color:var(--g900);">Translator Pro</div>
+<p style="color:var(--g600);margin-top:.5rem;font-size:.95rem;">精通 12 種語言的專業翻譯助手<br/>自動偵測語言、表格輸出、附帶使用情境</p>
+<div style="margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">翻譯這段會議紀錄</span>
+<span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">商業書信中翻英</span>
+<span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">日文敬語怎麼用</span>
+</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="1" style="padding:.7rem 1.2rem;">
+<p style="font-size:.85rem;">好的 GPT 開場設計：名稱清楚 + 一句話說明能力 + 3 個 Starter 引導操作</p>
+</div>
+</div>
 <!-- ══ 18: 經典範例 — 程式碼審查 ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="18">
-  <h2>經典範例：程式碼審查 GPT</h2>
-  <div class="mockup-browser fragment" data-order="0">
-    <div class="mockup-bar">
-      <div class="mockup-dot r"></div><div class="mockup-dot y"></div><div class="mockup-dot g"></div>
-      <span class="mockup-url">chatgpt.com/g/code-reviewer</span>
-    </div>
-    <div class="mockup-body" style="text-align:center;">
-      <div style="font-size:1.5rem;font-weight:900;color:var(--g900);">Code Reviewer</div>
-      <p style="color:var(--g600);margin-top:.5rem;font-size:.95rem;">資深工程師視角的程式碼審查<br>找出安全漏洞、效能瓶頸、可讀性問題</p>
-      <div style="margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
-        <span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">審查這段 Python</span>
-        <span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">找出安全問題</span>
-        <span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">優化效能</span>
-      </div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.85rem;">專業 GPT 的 Instructions 包含審查框架、嚴重等級分類、輸出格式<br>不是「幫我看程式碼」這麼簡單</p>
-  </div>
+<h2>經典範例：程式碼審查 GPT</h2>
+<div class="mockup-browser fragment" data-order="0">
+<div class="mockup-bar">
+<div class="mockup-dot r"></div><div class="mockup-dot y"></div><div class="mockup-dot g"></div>
+<span class="mockup-url">chatgpt.com/g/code-reviewer</span>
 </div>
-
+<div class="mockup-body" style="text-align:center;">
+<div style="font-size:1.5rem;font-weight:900;color:var(--g900);">Code Reviewer</div>
+<p style="color:var(--g600);margin-top:.5rem;font-size:.95rem;">資深工程師視角的程式碼審查<br/>找出安全漏洞、效能瓶頸、可讀性問題</p>
+<div style="margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">審查這段 Python</span>
+<span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">找出安全問題</span>
+<span style="background:var(--blue-lt);color:var(--blue);padding:.4rem 1rem;border-radius:100px;font-size:.8rem;">優化效能</span>
+</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="1" style="padding:.7rem 1.2rem;">
+<p style="font-size:.85rem;">專業 GPT 的 Instructions 包含審查框架、嚴重等級分類、輸出格式<br/>不是「幫我看程式碼」這麼簡單</p>
+</div>
+</div>
 <!-- ══ 19: 概念引出 — Onboarding ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="19">
-  <h2>概念引出：Onboarding 設計</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
-    <div class="quote-text">使用者體驗從「打開那一秒」就開始<br>不是從「輸入第一個問題」才開始</div>
-  </div>
-  <div class="card-grid" style="margin-top:1rem;">
-    <div class="card accent-top fragment" data-order="1">
-      <h3>名稱</h3>
-      <p>一看就知道這個 GPT 做什麼<br>不用猜</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>開場白</h3>
-      <p>自我介紹 + 能力範圍<br>降低使用門檻</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="3">
-      <h3>Starters</h3>
-      <p>常見問題一鍵發送<br>不需要想怎麼開口</p>
-    </div>
-  </div>
+<h2>概念引出：Onboarding 設計</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+<div class="quote-text">使用者體驗從「打開那一秒」就開始<br/>不是從「輸入第一個問題」才開始</div>
 </div>
-
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card accent-top fragment" data-order="1">
+<h3>名稱</h3>
+<p>一看就知道這個 GPT 做什麼<br/>不用猜</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>開場白</h3>
+<p>自我介紹 + 能力範圍<br/>降低使用門檻</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="3">
+<h3>Starters</h3>
+<p>常見問題一鍵發送<br/>不需要想怎麼開口</p>
+</div>
+</div>
+</div>
 <!-- ══ 20: 同學互測 ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="20">
-  <h2>互測：讓隔壁同學用你的 GPT</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>分享 GPT 連結給隔壁同學</strong>
-        <p>GPT 設定 → Share → Copy Link</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>觀察對方的使用過程</strong>
-        <p>有沒有卡住？有沒有問「這要怎麼用」？</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>收集反饋，微調 Instructions</strong>
-        <p>哪些地方不清楚 → 回去補充說明</p>
-      </div>
-    </div>
-  </div>
+<h2>互測：讓隔壁同學用你的 GPT</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>分享 GPT 連結給隔壁同學</strong>
+<p>GPT 設定 → Share → Copy Link</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>觀察對方的使用過程</strong>
+<p>有沒有卡住？有沒有問「這要怎麼用」？</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>收集反饋，微調 Instructions</strong>
+<p>哪些地方不清楚 → 回去補充說明</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 21: Round 2 小結 ══ -->
 <div class="slide dataviz" data-act="R2：四要素改寫" data-index="21">
-  <h2>Round 2 小結</h2>
-  <div class="bottom-line">
-    <h3>四要素不只是 Prompt 技巧<br>是 AI 助手的設計方法</h3>
-    <p>寫一次好的 Instructions，之後每次使用都自動套用<br>從「重複勞動」變成「一次封裝、永久調用」</p>
-  </div>
+<h2>Round 2 小結</h2>
+<div class="bottom-line">
+<h3>四要素不只是 Prompt 技巧<br/>是 AI 助手的設計方法</h3>
+<p>寫一次好的 Instructions，之後每次使用都自動套用<br/>從「重複勞動」變成「一次封裝、永久調用」</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 3：Gem 平台差異 (slides 22-31)
      ══════════════════════════════════════ -->
-
 <!-- ══ 22: Chapter poster — Round 3 ══ -->
-<div class="slide poster overlay-heavy" data-act="R3：Gem平台差異" data-index="22"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:50–1:10</p>
-  <h1 style="color:#fff;font-size:2.8rem;">同一個需求<br><span style="color:#93c5fd;">換到 Gemini Gem</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">平台不同，規則不同，產出不同</p>
+<div class="slide poster overlay-heavy" data-act="R3：Gem平台差異" data-index="22" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:50–1:10</p>
+<h1 style="color:#fff;font-size:2.8rem;">同一個需求<br/><span style="color:#93c5fd;">換到 Gemini Gem</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">平台不同，規則不同，產出不同</p>
 </div>
-
 <!-- ══ 23: 什麼是 Gem ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="23">
-  <h2>什麼是 Gemini 的 Gem</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">Google 的版本 — 功能類似 GPT，但規則不同</p>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col good fragment" data-order="0" style="background:var(--green-lt);border-color:var(--green);">
-      <div class="col-label" style="color:var(--green);">ChatGPT GPT</div>
-      <ul>
-        <li>Instructions（System Prompt）</li>
-        <li>可上傳知識庫檔案</li>
-        <li>Conversation Starters</li>
-        <li>可分享連結</li>
-        <li>DALL-E 生圖（另外觸發）</li>
-      </ul>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">Gemini Gem</div>
-      <ul>
-        <li>System Instructions</li>
-        <li>知識庫上傳方式不同</li>
-        <li>沒有 Conversation Starters</li>
-        <li>可分享連結</li>
-        <li>Imagen 生圖（同步輸出）</li>
-      </ul>
-    </div>
-  </div>
+<h2>什麼是 Gemini 的 Gem</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">Google 的版本 — 功能類似 GPT，但規則不同</p>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col good fragment" data-order="0" style="background:var(--green-lt);border-color:var(--green);">
+<div class="col-label" style="color:var(--green);">ChatGPT GPT</div>
+<ul>
+<li>Instructions（System Prompt）</li>
+<li>可上傳知識庫檔案</li>
+<li>Conversation Starters</li>
+<li>可分享連結</li>
+<li>啟用 Image Generation 能力後<br/>可在 GPT 內生成／編輯圖</li>
+</ul>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">Gemini Gem</div>
+<ul>
+<li>System Instructions</li>
+<li>知識庫上傳方式不同</li>
+<li>沒有 Conversation Starters</li>
+<li>可分享連結</li>
+<li>Gemini 2.5 圖像能力<br/>適合圖文對話式迭代</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 24: 操作步驟 ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="24">
-  <h2>操作：用同樣的 Instructions 建 Gem</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>打開 Gemini → 建立 Gem</strong>
-        <p>gemini.google.com → Gem Manager → New Gem</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>複製 GPT 的 Instructions 到 Gem</strong>
-        <p>直接貼上 Round 2 寫好的四要素結構</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>同樣三問再測 → 跟 GPT 並排比較</strong>
-        <p>觀察回答風格、格式、完整度的差異</p>
-      </div>
-    </div>
-  </div>
-  <div class="stat-grid fragment" data-order="3" style="max-width:500px;grid-template-columns:1fr;">
-    <div class="stat-box">
-      <div class="val">10 min</div>
-      <div class="label">操作時間</div>
-    </div>
-  </div>
+<h2>操作：用同樣的 Instructions 建 Gem</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>打開 Gemini → 建立 Gem</strong>
+<p>gemini.google.com → Gem Manager → New Gem</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>複製 GPT 的 Instructions 到 Gem</strong>
+<p>直接貼上 Round 2 寫好的四要素結構</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>同樣三問再測 → 跟 GPT 並排比較</strong>
+<p>觀察回答風格、格式、完整度的差異</p>
+</div>
+</div>
+</div>
+<div class="stat-grid fragment" data-order="3" style="max-width:500px;grid-template-columns:1fr;">
+<div class="stat-box">
+<div class="val">10 min</div>
+<div class="label">操作時間</div>
+</div>
+</div>
+</div>
 <!-- ══ 25: 注意事項 — 格式不通用 ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="25">
-  <h2>注意：Instructions 通用，但功能不同</h2>
-  <div class="info-box warning">
-    <div class="label">差異在平台各自支援的功能，不在文字語法</div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;max-width:860px;width:100%;margin-top:1rem;">
-    <div class="card accent-top-orange fragment" data-order="0" style="min-width:0;max-width:none;">
-      <h3>Conversation Starters</h3>
-      <p>GPT 有引導按鈕<br>Gem 沒有，要寫在 Instructions 裡</p>
-    </div>
-    <div class="card accent-top fragment" data-order="1" style="min-width:0;max-width:none;border-top-color:var(--blue);">
-      <h3>知識庫上傳</h3>
-      <p>GPT 直接上傳檔案<br>Gem 透過 Google Drive 整合</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2" style="min-width:0;max-width:none;">
-      <h3>圖片生成</h3>
-      <p>GPT 用 DALL-E（分開生成）<br>Gem 用 Imagen（圖文同步）</p>
-    </div>
-  </div>
+<h2>注意：Instructions 通用，但功能不同</h2>
+<div class="info-box warning">
+<div class="label">差異在平台各自支援的功能，不在文字語法</div>
 </div>
-
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;max-width:860px;width:100%;margin-top:1rem;">
+<div class="card accent-top-orange fragment" data-order="0" style="min-width:0;max-width:none;">
+<h3>Conversation Starters</h3>
+<p>GPT 有引導按鈕<br/>Gem 沒有，要寫在 Instructions 裡</p>
+</div>
+<div class="card accent-top fragment" data-order="1" style="min-width:0;max-width:none;border-top-color:var(--blue);">
+<h3>知識庫上傳</h3>
+<p>GPT 直接上傳檔案<br/>Gem 透過 Google Drive 整合</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2" style="min-width:0;max-width:none;">
+<h3>圖片生成</h3>
+<p>GPT 啟用 Image Generation<br/>Gemini 2.5 圖文迭代<br/>Imagen 是專門模型補充</p>
+</div>
+</div>
+</div>
 <!-- ══ 26: 觀察差異 ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="26">
-  <h2>觀察：同一個 Prompt，不同平台的回答</h2>
-  <div class="stat-grid" style="grid-template-columns:1fr 1fr;">
-    <div class="stat-box fragment" data-order="0">
-      <div class="val" style="font-size:1.4rem;color:var(--green);">ChatGPT GPT</div>
-      <div class="label" style="margin-top:.5rem;">格式穩定、遵從度高<br>知識庫整合完整</div>
-    </div>
-    <div class="stat-box fragment" data-order="1">
-      <div class="val" style="font-size:1.4rem;color:var(--blue);">Gemini Gem</div>
-      <div class="label" style="margin-top:.5rem;">回答更發散、風格不同<br>多模態能力更強</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="2" style="margin-top:.8rem;">
-    <p style="font-size:.95rem;">差異不是「誰比較好」<br>而是「不同平台有不同的行為模式」</p>
-  </div>
+<h2>觀察：同一個 Prompt，不同平台的回答</h2>
+<div class="stat-grid" style="grid-template-columns:1fr 1fr;">
+<div class="stat-box fragment" data-order="0">
+<div class="val" style="font-size:1.4rem;color:var(--green);">ChatGPT GPT</div>
+<div class="label" style="margin-top:.5rem;">格式穩定、遵從度高<br/>知識庫整合完整</div>
 </div>
-
+<div class="stat-box fragment" data-order="1">
+<div class="val" style="font-size:1.4rem;color:var(--blue);">Gemini Gem</div>
+<div class="label" style="margin-top:.5rem;">回答更發散、風格不同<br/>多模態能力更強</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="2" style="margin-top:.8rem;">
+<p style="font-size:.95rem;">差異不是「誰比較好」<br/>而是「不同平台有不同的行為模式」</p>
+</div>
+</div>
 <!-- ══ 27: 概念 — 平台鎖定 vs 可攜性 ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="27">
-  <h2>概念引出：平台鎖定 vs 可攜性</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">你的知識和邏輯是你的<br>平台只是載體</div>
-  </div>
-  <div class="card-grid" style="margin-top:1rem;">
-    <div class="card accent-top-red fragment" data-order="1">
-      <h3>平台鎖定</h3>
-      <p>只用一個平台<br>被迫接受它的限制<br>平台改版就要重來</p>
-    </div>
-    <div class="card accent-top fragment" data-order="2">
-      <h3>可攜性思維</h3>
-      <p>Instructions 存成文字檔<br>隨時搬到任何平台<br>知識資產永遠在自己手上</p>
-    </div>
-  </div>
+<h2>概念引出：平台鎖定 vs 可攜性</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">你的知識和邏輯是你的<br/>平台只是載體</div>
 </div>
-
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card accent-top-red fragment" data-order="1">
+<h3>平台鎖定</h3>
+<p>只用一個平台<br/>被迫接受它的限制<br/>平台改版就要重來</p>
+</div>
+<div class="card accent-top fragment" data-order="2">
+<h3>可攜性思維</h3>
+<p>Instructions 存成文字檔<br/>隨時搬到任何平台<br/>知識資產永遠在自己手上</p>
+</div>
+</div>
+</div>
 <!-- ══ 28: 可攜性實踐 ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="28">
-  <h2>可攜性的實踐方法</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>Instructions 存成獨立文字檔</strong>
-        <p>不只存在 GPT 裡 — 本地備份一份</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>知識庫檔案統一管理</strong>
-        <p>不只上傳到 GPT — 雲端硬碟也存一份</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>定期測試跨平台相容性</strong>
-        <p>同一個 Instructions 在 GPT / Gem / Claude 都跑一次</p>
-      </div>
-    </div>
-  </div>
+<h2>可攜性的實踐方法</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>Instructions 存成獨立文字檔</strong>
+<p>不只存在 GPT 裡 — 本地備份一份</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>知識庫檔案統一管理</strong>
+<p>不只上傳到 GPT — 雲端硬碟也存一份</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>定期測試跨平台相容性</strong>
+<p>同一個 Instructions 在 GPT / Gem / Claude 都跑一次</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 29: Round 3 小結 ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="29">
-  <h2>Round 3 小結</h2>
-  <div class="bottom-line">
-    <h3>平台會變，你的知識不會變</h3>
-    <p>把 Instructions 和知識庫當成自己的資產管理<br>平台只是執行環境，不是知識的歸宿</p>
-  </div>
+<h2>Round 3 小結</h2>
+<div class="bottom-line">
+<h3>平台會變，你的知識不會變</h3>
+<p>把 Instructions 和知識庫當成自己的資產管理<br/>平台只是執行環境，不是知識的歸宿</p>
 </div>
-
+</div>
 <!-- ══ 30: 反向拆解別人的 GPT/Gem ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="30">
-  <h2>學習最快的方法<br>— 反向拆解別人的 GPT / Gem</h2>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:800px;width:100%;margin-top:1rem;">
-    <div class="card accent-top-blue fragment" data-order="0" style="min-width:0;max-width:none;">
-      <h3 style="font-size:.95rem;">1. 找到好用的 GPT / Gem</h3>
-      <p>社群推薦、GPT Store<br>排行榜、朋友分享</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1" style="min-width:0;max-width:none;">
-      <h3 style="font-size:.95rem;">2. 用 Prompt 套出邏輯</h3>
-      <p>「你的角色設定是什麼？」<br>「你遵循哪些規則？」</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="2" style="min-width:0;max-width:none;">
-      <h3 style="font-size:.95rem;">3. 整理 Instructions 結構</h3>
-      <p>角色 → 任務 → 格式<br>→ 限制 → 知識庫範圍</p>
-    </div>
-    <div class="card accent-top-orange fragment" data-order="3" style="min-width:0;max-width:none;">
-      <h3 style="font-size:.95rem;">4. 改成自己的版本</h3>
-      <p>角色換你的場景<br>任務換你的需求</p>
-    </div>
-  </div>
+<h2>學習最快的方法<br/>— 反向拆解別人的 GPT / Gem</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:800px;width:100%;margin-top:1rem;">
+<div class="card accent-top-blue fragment" data-order="0" style="min-width:0;max-width:none;">
+<h3 style="font-size:.95rem;">1. 找到好用的 GPT / Gem</h3>
+<p>社群推薦、GPT Store<br/>排行榜、朋友分享</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1" style="min-width:0;max-width:none;">
+<h3 style="font-size:.95rem;">2. 用 Prompt 套出邏輯</h3>
+<p>「你的角色設定是什麼？」<br/>「你遵循哪些規則？」</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="2" style="min-width:0;max-width:none;">
+<h3 style="font-size:.95rem;">3. 整理 Instructions 結構</h3>
+<p>角色 → 任務 → 格式<br/>→ 限制 → 知識庫範圍</p>
+</div>
+<div class="card accent-top-orange fragment" data-order="3" style="min-width:0;max-width:none;">
+<h3 style="font-size:.95rem;">4. 改成自己的版本</h3>
+<p>角色換你的場景<br/>任務換你的需求</p>
+</div>
+</div>
+</div>
 <!-- ══ 31: 實作 — 講師帶拆解 ══ -->
 <div class="slide dataviz" data-act="R3：Gem平台差異" data-index="31">
-  <h2>實作：講師帶你拆解一個 GPT</h2>
-  <div class="step-list" style="max-width:720px;">
-    <div class="step fragment" data-order="0">
-      <div class="step-num" style="background:var(--blue);">1</div>
-      <div class="step-content">
-        <strong>講師挑一個公開 GPT，大家一起用</strong>
-        <p>正常使用 3-5 次，觀察它的回答模式和風格</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num" style="background:var(--blue);">2</div>
-      <div class="step-content">
-        <strong>大家一起下 Prompt 套出設計邏輯</strong>
-        <p>「你是怎麼被設計的？」「你的指令有哪些規則？」</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num" style="background:var(--blue);">3</div>
-      <div class="step-content">
-        <strong>整理出它的 Instructions 結構</strong>
-        <p>角色 → 任務 → 格式 → 限制 → 比對你在 R2 學的四要素</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num" style="background:var(--blue);">4</div>
-      <div class="step-content">
-        <strong>每人改成自己的版本</strong>
-        <p>換場景、換需求 → 你就有一個新的 AI 助手</p>
-      </div>
-    </div>
-  </div>
+<h2>實作：講師帶你拆解一個 GPT</h2>
+<div class="step-list" style="max-width:720px;">
+<div class="step fragment" data-order="0">
+<div class="step-num" style="background:var(--blue);">1</div>
+<div class="step-content">
+<strong>講師挑一個公開 GPT，大家一起用</strong>
+<p>正常使用 3-5 次，觀察它的回答模式和風格</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num" style="background:var(--blue);">2</div>
+<div class="step-content">
+<strong>大家一起下 Prompt 套出設計邏輯</strong>
+<p>「你是怎麼被設計的？」「你的指令有哪些規則？」</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num" style="background:var(--blue);">3</div>
+<div class="step-content">
+<strong>整理出它的 Instructions 結構</strong>
+<p>角色 → 任務 → 格式 → 限制 → 比對你在 R2 學的四要素</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num" style="background:var(--blue);">4</div>
+<div class="step-content">
+<strong>每人改成自己的版本</strong>
+<p>換場景、換需求 → 你就有一個新的 AI 助手</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 4：行銷圖文
      ══════════════════════════════════════ -->
-
 <!-- ══ 32: Chapter poster — Round 4 ══ -->
-<div class="slide poster overlay-heavy" data-act="R4：行銷圖文" data-index="30"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:10–1:35</p>
-  <h1 style="color:#fff;font-size:2.8rem;">Gemini Gem<br><span style="color:#93c5fd;">圖文一起出</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">行銷素材生成 — 文案 + 配圖同步產出</p>
+<div class="slide poster overlay-heavy" data-act="R4：行銷圖文" data-index="30" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:10–1:35</p>
+<h1 style="color:#fff;font-size:2.8rem;">Gemini Gem<br/><span style="color:#93c5fd;">圖文一起出</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">行銷素材生成 — 文案 + 配圖同步產出</p>
 </div>
-
 <!-- ══ 31: 操作步驟 ══ -->
 <div class="slide dataviz" data-act="R4：行銷圖文" data-index="31">
-  <h2>操作：建立行銷助手 Gem</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>進入 Round 3 的 Gem 或新建「行銷助手 Gem」</strong>
-        <p>System Instructions：「你是社群行銷專家，每次回覆包含文案+配圖」</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>輸入行銷需求</strong>
-        <p>「幫我做一張咖啡店新品上市的 IG 貼文，要有拿鐵的照片和文案」</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>Gem 同時產出文案 + 配圖</strong>
-        <p>Imagen 自動生成圖片，不需要分兩步</p>
-      </div>
-    </div>
-  </div>
+<h2>操作：建立行銷助手 Gem</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>進入 Round 3 的 Gem 或新建「行銷助手 Gem」</strong>
+<p>System Instructions：「你是社群行銷專家，每次回覆包含文案+配圖」</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>輸入行銷需求</strong>
+<p>「幫我做一張咖啡店新品上市的 IG 貼文，要有拿鐵的照片和文案」</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>Gem 同時產出文案 + 配圖</strong>
+<p>Imagen 自動生成圖片，不需要分兩步</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 32: 迭代範例 ══ -->
 <div class="slide dataviz" data-act="R4：行銷圖文" data-index="32">
-  <h2>迭代：一步步調整到滿意</h2>
-  <div class="flow" style="margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0">初版圖文</div>
-    <div class="flow-arrow fragment" data-order="1">→</div>
-    <div class="flow-box accent fragment" data-order="2">換日系風格</div>
-    <div class="flow-arrow fragment" data-order="3">→</div>
-    <div class="flow-box accent fragment" data-order="4">加上價格標籤</div>
-    <div class="flow-arrow fragment" data-order="5">→</div>
-    <div class="flow-box accent fragment" data-order="6">改直式<br>IG Story</div>
-  </div>
-  <div class="info-box success fragment" data-order="7" style="padding:.8rem 1.2rem;">
-    <div class="label">關鍵觀察</div>
-    <p>在 Gem 裡面，圖文一起出 → 不用分兩步<br>每次迭代都是「文案+圖片」同步更新</p>
-  </div>
+<h2>迭代：一步步調整到滿意</h2>
+<div class="flow" style="margin:.8rem 0;">
+<div class="flow-box accent fragment" data-order="0">初版圖文</div>
+<div class="flow-arrow fragment" data-order="1">→</div>
+<div class="flow-box accent fragment" data-order="2">換日系風格</div>
+<div class="flow-arrow fragment" data-order="3">→</div>
+<div class="flow-box accent fragment" data-order="4">加上價格標籤</div>
+<div class="flow-arrow fragment" data-order="5">→</div>
+<div class="flow-box accent fragment" data-order="6">改直式<br/>IG Story</div>
 </div>
-
+<div class="info-box success fragment" data-order="7" style="padding:.8rem 1.2rem;">
+<div class="label">關鍵觀察</div>
+<p>在 Gem 裡面，圖文一起出 → 不用分兩步<br/>每次迭代都是「文案+圖片」同步更新</p>
+</div>
+</div>
 <!-- ══ 33: 三平台圖文能力對比 ══ -->
 <div class="slide dataviz" data-act="R4：行銷圖文" data-index="33">
-  <h2>三平台的圖文生成能力</h2>
-  <div class="compare-three">
-    <div class="compare-col good fragment" data-order="0" style="background:var(--gold-lt);border-color:var(--gold);">
-      <div class="col-label" style="color:#b07d00;">ChatGPT GPT</div>
-      <p style="font-weight:700;">文字為主</p>
-      <p>圖要另外用 DALL-E</p>
-      <p style="color:var(--gold);margin-top:.3rem;">兩步完成</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">Gemini Gem</div>
-      <p style="font-weight:700;">圖文同時生成</p>
-      <p>Imagen 整合在對話中</p>
-      <p style="color:var(--blue);margin-top:.3rem;">一步到位</p>
-    </div>
-    <div class="compare-col good fragment" data-order="2" style="background:var(--purple-lt);border-color:var(--purple);">
-      <div class="col-label" style="color:var(--purple);">Claude Project</div>
-      <p style="font-weight:700;">純文字，不生圖</p>
-      <p>文案品質最精準</p>
-      <p style="color:var(--purple);margin-top:.3rem;">需搭配其他工具</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="3" style="padding:.7rem 1.2rem;margin-top:.6rem;">
-    <p style="font-size:.9rem;">這就是 Round 3 學的「平台差異」的延伸<br>每個平台有各自的強項</p>
-  </div>
+<h2>三平台的圖文生成能力</h2>
+<div class="compare-three">
+<div class="compare-col good fragment" data-order="0" style="background:var(--gold-lt);border-color:var(--gold);">
+<div class="col-label" style="color:#b07d00;">ChatGPT GPT</div>
+<p style="font-weight:700;">GPT 內生成／編輯圖</p>
+<p>啟用 Image Generation 能力<br/>可在 GPT 內完成圖像產出</p>
+<p style="color:var(--gold);margin-top:.3rem;">同一助手完成</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">Gemini Gem</div>
+<p style="font-weight:700;">圖文對話式迭代</p>
+<p>Gemini 2.5 圖像能力<br/>適合邊聊邊修圖</p>
+<p style="color:var(--blue);margin-top:.3rem;">多模態主線</p>
+</div>
+<div class="compare-col good fragment" data-order="2" style="background:var(--purple-lt);border-color:var(--purple);">
+<div class="col-label" style="color:var(--purple);">Claude Project</div>
+<p style="font-weight:700;">純文字，不生圖</p>
+<p>文案品質最精準</p>
+<p style="color:var(--purple);margin-top:.3rem;">需搭配其他工具</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="padding:.7rem 1.2rem;margin-top:.6rem;">
+<p style="font-size:.9rem;">Imagen 可作為 Google 專門生圖模型補充<br/>不要把它當成 Gem 的唯一機制</p>
+</div>
+</div>
 <!-- ══ 34: 注意事項 — AI 生圖的中文字 ══ -->
 <div class="slide dataviz" data-act="R4：行銷圖文" data-index="34">
-  <h2>注意：AI 生圖的中文字問題</h2>
-  <div class="info-box warning fragment" data-order="0">
-    <div class="label">已知問題</div>
-    <p>Gemini 生圖的中文字經常出現錯字、亂碼、筆畫缺失<br>這是目前所有 AI 生圖模型的共同限制</p>
-  </div>
-  <div class="compare-two" style="margin-top:.8rem;">
-    <div class="compare-col bad fragment" data-order="1">
-      <div class="col-label">AI 生圖的文字</div>
-      <p>中文字筆畫錯誤</p>
-      <p>字體不一致</p>
-      <p>排列位置偏移</p>
-      <p style="margin-top:.3rem;color:var(--red);">→ 不可直接使用</p>
-    </div>
-    <div class="compare-col good fragment" data-order="2">
-      <div class="col-label">正確做法</div>
-      <p>AI 生成圖片底圖</p>
-      <p>文字部分人工後製</p>
-      <p>用 Canva 或設計工具疊加</p>
-      <p style="margin-top:.3rem;color:var(--blue);">→ 圖片 AI 做，文字你加</p>
-    </div>
-  </div>
+<h2>注意：AI 生圖的中文字問題</h2>
+<div class="info-box warning fragment" data-order="0">
+<div class="label">已知問題</div>
+<p>Gemini 生圖的中文字經常出現錯字、亂碼、筆畫缺失<br/>這是目前所有 AI 生圖模型的共同限制</p>
 </div>
-
+<div class="compare-two" style="margin-top:.8rem;">
+<div class="compare-col bad fragment" data-order="1">
+<div class="col-label">AI 生圖的文字</div>
+<p>中文字筆畫錯誤</p>
+<p>字體不一致</p>
+<p>排列位置偏移</p>
+<p style="margin-top:.3rem;color:var(--red);">→ 不可直接使用</p>
+</div>
+<div class="compare-col good fragment" data-order="2">
+<div class="col-label">正確做法</div>
+<p>AI 生成圖片底圖</p>
+<p>文字部分人工後製</p>
+<p>用 Canva 或設計工具疊加</p>
+<p style="margin-top:.3rem;color:var(--blue);">→ 圖片 AI 做，文字你加</p>
+</div>
+</div>
+</div>
 <!-- ══ 35: 經典範例 — 行銷素材 ══ -->
 <div class="slide dataviz" data-act="R4：行銷圖文" data-index="35">
-  <h2>經典範例：Gem 生成的行銷素材</h2>
-  <div class="card-grid">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>社群貼文</h3>
-      <p>咖啡店新品上市<br>文案 + 產品情境圖<br><span style="color:var(--red);font-size:.85rem;">中文字需後製</span></p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1">
-      <h3>產品 DM</h3>
-      <p>課程招生海報<br>日系溫暖風格<br><span style="color:var(--red);font-size:.85rem;">價格排版需調整</span></p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="2">
-      <h3>活動海報</h3>
-      <p>工作坊宣傳<br>科技感視覺<br><span style="color:var(--red);font-size:.85rem;">標題字需替換</span></p>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="3" style="margin-top:.6rem;padding:.8rem 1.2rem;">
-    <div class="label">使用建議</div>
-    <p>標出需要人工修正的地方 → 養成「AI 初稿 + 人工修正」的工作流</p>
-  </div>
+<h2>經典範例：Gem 生成的行銷素材</h2>
+<div class="compare-two" style="margin-top:.5rem;max-width:860px;">
+<div class="compare-col good fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);text-align:center;">
+<div class="col-label" style="color:var(--g600);">Gem 產出初稿</div>
+<div style="width:260px;margin:.2rem auto 0;background:#fff;border:1px solid var(--g200);border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.08);">
+<div style="height:210px;position:relative;background:linear-gradient(145deg,#f7efe4 0%,#d8b486 100%);">
+<div style="position:absolute;top:.7rem;left:.7rem;background:rgba(255,255,255,.86);border-radius:100px;padding:.15rem .6rem;font-size:.65rem;font-weight:700;color:var(--g600);">圖片區</div>
+<div style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:110px;height:86px;background:#fff;border:5px solid #8b5e34;border-radius:0 0 42px 42px;"></div>
+<div style="position:absolute;left:49%;top:43%;transform:translateX(-50%);width:72px;height:18px;background:#b77943;border-radius:50%;"></div>
+<div style="position:absolute;right:51px;top:105px;width:36px;height:28px;border:6px solid #8b5e34;border-left:0;border-radius:0 22px 22px 0;"></div>
+<div style="position:absolute;left:44px;bottom:24px;width:172px;height:10px;background:rgba(255,255,255,.55);border-radius:50%;"></div>
 </div>
-
+<div style="padding:.8rem .9rem 1rem;text-align:left;">
+<div style="font-size:.7rem;font-weight:700;color:var(--blue);letter-spacing:.08em;">標題區</div>
+<div style="font-size:1.35rem;font-weight:900;line-height:1.25;color:var(--g900);margin-top:.2rem;">新品拿鐵</div>
+<div style="font-size:.82rem;color:var(--g600);line-height:1.55;margin-top:.25rem;">午後咖啡提案<br/>春季限定風味</div>
+</div>
+</div>
+</div>
+<div class="compare-col good fragment" data-order="1" style="text-align:left;">
+<div class="col-label">人工檢查點</div>
+<p>圖片構圖可作為初稿<br/>中文標題改用 Canva 疊字<br/>價格、日期、CTA 由人確認</p>
+<div class="fragment" data-order="2" style="margin-top:.7rem;background:var(--red-lt);border-left:4px solid var(--red);border-radius:8px;padding:.55rem .75rem;">
+<p style="font-size:.82rem;color:var(--g800);line-height:1.55;">限制點：AI 圖內中文字<br/>容易錯字、變形或位置偏移</p>
+</div>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="3" style="margin-top:.6rem;padding:.8rem 1.2rem;">
+<div class="label">使用建議</div>
+<p>先把圖片底圖跑出來，再人工處理文字與關鍵資訊</p>
+</div>
+</div>
 <!-- ══ 36: 概念 — 多模態 AI ══ -->
 <div class="slide dataviz" data-act="R4：行銷圖文" data-index="36">
-  <h2>概念引出：多模態 AI（Multimodal）</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">同一個 AI 能同時處理文字 + 圖片<br>這叫做多模態能力</div>
-  </div>
-  <div class="card-grid" style="margin-top:1rem;">
-    <div class="card accent-top fragment" data-order="1">
-      <h3>文字 → 文字</h3>
-      <p>翻譯、寫文案、寫程式<br>M1-1 就在做這件事</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>文字 → 圖片</h3>
-      <p>描述需求 → AI 生成圖片<br>Round 4 剛體驗過</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="3">
-      <h3>圖片 → 文字</h3>
-      <p>上傳圖片 → AI 理解分析<br>Round 5 要體驗的</p>
-    </div>
-  </div>
+<h2>概念引出：多模態 AI（Multimodal）</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">同一個 AI 能同時處理文字 + 圖片<br/>這叫做多模態能力</div>
 </div>
-
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card accent-top fragment" data-order="1">
+<h3>文字 → 文字</h3>
+<p>翻譯、寫文案、寫程式<br/>M1-1 就在做這件事</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>文字 → 圖片</h3>
+<p>描述需求 → AI 生成圖片<br/>Round 4 剛體驗過</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="3">
+<h3>圖片 → 文字</h3>
+<p>上傳圖片 → AI 理解分析<br/>Round 5 要體驗的</p>
+</div>
+</div>
+</div>
 <!-- ══ 37: Round 4 小結 ══ -->
 <div class="slide dataviz" data-act="R4：行銷圖文" data-index="37">
-  <h2>Round 4 小結</h2>
-  <div class="bottom-line">
-    <h3>AI 的產出不只文字 — 圖文一體是趨勢</h3>
-    <p>Gemini 的 Gem 讓文案和配圖同步產出<br>但 AI 生圖的文字仍需人工修正 — 這是目前的能力邊界</p>
-  </div>
+<h2>Round 4 小結</h2>
+<div class="bottom-line">
+<h3>AI 的產出不只文字 — 圖文一體是趨勢</h3>
+<p>Gemini 的 Gem 讓文案和配圖同步產出<br/>但 AI 生圖的文字仍需人工修正 — 這是目前的能力邊界</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 5：裝潢應用 (slides 38-47)
      ══════════════════════════════════════ -->
-
 <!-- ══ 38: Chapter poster — Round 5 ══ -->
-<div class="slide poster overlay-heavy" data-act="R5：裝潢應用" data-index="38"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:35–2:00</p>
-  <h1 style="color:#fff;font-size:2.8rem;">圖片理解<br><span style="color:#93c5fd;">室內裝潢應用</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">上傳平面圖 → AI 分析 → 產出風格渲染示意圖</p>
+<div class="slide poster overlay-heavy" data-act="R5：裝潢應用" data-index="38" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:35–2:00</p>
+<h1 style="color:#fff;font-size:2.8rem;">圖片理解<br/><span style="color:#93c5fd;">室內裝潢應用</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">上傳平面圖 → AI 分析 → 產出風格渲染示意圖</p>
 </div>
-
 <!-- ══ 39: 操作步驟 ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="39">
-  <h2>操作：建立室內設計助手 Gem</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>新建 Gem →「室內設計助手」</strong>
-        <p>System Instructions：分析空間配置，生成風格渲染示意圖</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>上傳室內平面圖</strong>
-        <p>「這是 30 坪公寓客廳平面圖，生成北歐風格 3D 渲染示意圖」</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>Gem 分析平面圖 → 產出設計說明 + 示意圖</strong>
-        <p>迭代：「改工業風」「加落地窗自然光」「沙發換 L 型」</p>
-      </div>
-    </div>
-  </div>
+<h2>操作：建立室內設計助手 Gem</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>新建 Gem →「室內設計助手」</strong>
+<p>System Instructions：分析空間配置，生成風格渲染示意圖</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>上傳室內平面圖</strong>
+<p>「這是 30 坪公寓客廳平面圖，生成北歐風格 3D 渲染示意圖」</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>Gem 分析平面圖 → 產出設計說明 + 示意圖</strong>
+<p>迭代：「改工業風」「加落地窗自然光」「沙發換 L 型」</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 40: Instructions 範例 ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="40">
-  <h2>室內設計 Gem 的 Instructions</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">System Instructions</div>
-    <pre>你是室內設計顧問
+<h2>室內設計 Gem 的 Instructions</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">System Instructions</div>
+<pre>你是室內設計顧問
 
 使用者上傳平面圖或室內照片時：
 1. 分析空間配置（坪數、動線、採光）
@@ -1150,511 +1123,501 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 每次回覆包含：設計說明 + 渲染圖
 使用者可指定風格：北歐/工業/日式/現代簡約</pre>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">注意：這裡同時用到了「圖片輸入」和「圖片輸出」<br>AI 理解你的圖 → 產出新的圖</p>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">注意：這裡同時用到了「圖片輸入」和「圖片輸出」<br/>AI 理解你的圖 → 產出新的圖</p>
+</div>
+</div>
 <!-- ══ 41: 迭代流程 ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="41">
-  <h2>迭代流程：從平面圖到多風格渲染</h2>
-  <div class="flow" style="margin:.8rem 0;">
-    <div class="flow-box fragment" data-order="0">上傳平面圖</div>
-    <div class="flow-arrow fragment" data-order="1">→</div>
-    <div class="flow-box accent fragment" data-order="2">北歐風渲染</div>
-    <div class="flow-arrow fragment" data-order="3">→</div>
-    <div class="flow-box accent fragment" data-order="4">改工業風</div>
-    <div class="flow-arrow fragment" data-order="5">→</div>
-    <div class="flow-box accent fragment" data-order="6">加自然光</div>
-  </div>
-  <div class="info-box success fragment" data-order="7" style="padding:.8rem 1.2rem;">
-    <div class="label">Gem 的記憶在這裡發揮作用</div>
-    <p>第二張圖不用重新描述風格偏好<br>Gem 記得你上一輪選的風格 — 回扣 Round 3 的平台差異</p>
-  </div>
+<h2>迭代流程：從平面圖到多風格渲染</h2>
+<div class="flow" style="margin:.8rem 0;">
+<div class="flow-box fragment" data-order="0">上傳平面圖</div>
+<div class="flow-arrow fragment" data-order="1">→</div>
+<div class="flow-box accent fragment" data-order="2">北歐風渲染</div>
+<div class="flow-arrow fragment" data-order="3">→</div>
+<div class="flow-box accent fragment" data-order="4">改工業風</div>
+<div class="flow-arrow fragment" data-order="5">→</div>
+<div class="flow-box accent fragment" data-order="6">加自然光</div>
 </div>
-
+<div class="info-box success fragment" data-order="7" style="padding:.8rem 1.2rem;">
+<div class="label">Gem 的記憶在這裡發揮作用</div>
+<p>第二張圖不用重新描述風格偏好<br/>Gem 記得你上一輪選的風格 — 回扣 Round 3 的平台差異</p>
+</div>
+</div>
 <!-- ══ 42: 觀察 ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="42">
-  <h2>觀察：AI 理解圖片的能力</h2>
-  <div class="card-grid">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>圖片輸入 + 圖片輸出</h3>
-      <p>上傳平面圖（輸入）<br>產出渲染圖（輸出）<br>完整的多模態循環</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1">
-      <h3>對話記憶生效</h3>
-      <p>第二張圖自動套用<br>你偏好的風格設定<br>不需重新描述</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="2">
-      <h3>溝通示意足夠</h3>
-      <p>跟客戶溝通方向<br>比口頭描述清楚 10 倍<br>但不等於施工圖</p>
-    </div>
-  </div>
+<h2>觀察：AI 理解圖片的能力</h2>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0">
+<h3>圖片輸入 + 圖片輸出</h3>
+<p>上傳平面圖（輸入）<br/>產出渲染圖（輸出）<br/>完整的多模態循環</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1">
+<h3>對話記憶生效</h3>
+<p>第二張圖自動套用<br/>你偏好的風格設定<br/>不需重新描述</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="2">
+<h3>溝通示意足夠</h3>
+<p>跟客戶溝通方向<br/>比口頭描述清楚 10 倍<br/>但不等於施工圖</p>
+</div>
+</div>
+</div>
 <!-- ══ 43: 注意事項 — 平面圖太複雜 ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="43">
-  <h2>注意：複雜輸入讓 AI 理解錯誤</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">問題情況</div>
-      <p>平面圖標注太多文字</p>
-      <p>尺寸線密密麻麻</p>
-      <p>多個房間同時呈現</p>
-      <p style="margin-top:.3rem;color:var(--red);">→ Gemini 理解錯誤，渲染失真</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">解決方法</div>
-      <p>簡化平面圖（去除多餘標注）</p>
-      <p>分區上傳（一次一個空間）</p>
-      <p>用文字補充 AI 看不懂的部分</p>
-      <p style="margin-top:.3rem;color:var(--blue);">→ 複雜輸入要分區處理</p>
-    </div>
-  </div>
+<h2>注意：複雜輸入讓 AI 理解錯誤</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">問題情況</div>
+<p>平面圖標注太多文字</p>
+<p>尺寸線密密麻麻</p>
+<p>多個房間同時呈現</p>
+<p style="margin-top:.3rem;color:var(--red);">→ Gemini 理解錯誤，渲染失真</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">解決方法</div>
+<p>簡化平面圖（去除多餘標注）</p>
+<p>分區上傳（一次一個空間）</p>
+<p>用文字補充 AI 看不懂的部分</p>
+<p style="margin-top:.3rem;color:var(--blue);">→ 複雜輸入要分區處理</p>
+</div>
+</div>
+</div>
 <!-- ══ 44: 注意事項 — 比例失真 ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="44">
-  <h2>注意：AI 渲染的比例失真</h2>
-  <div class="info-box warning fragment" data-order="0">
-    <div class="label">已知限制</div>
-    <p>AI 生成的 3D 渲染可能出現比例失真<br>窗戶大小不對、家具比例失調、空間深度不準確</p>
-  </div>
-  <div class="quote-box fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="quote-text">AI 生圖用於溝通示意，不用於施工<br>作為「跟客戶溝通的方向」非常夠用</div>
-  </div>
+<h2>注意：AI 渲染的比例失真</h2>
+<div class="info-box warning fragment" data-order="0">
+<div class="label">已知限制</div>
+<p>AI 生成的 3D 渲染可能出現比例失真<br/>窗戶大小不對、家具比例失調、空間深度不準確</p>
 </div>
-
+<div class="quote-box fragment" data-order="1" style="margin-top:.8rem;">
+<div class="quote-text">AI 生圖用於溝通示意，不用於施工<br/>作為「跟客戶溝通的方向」非常夠用</div>
+</div>
+</div>
 <!-- ══ 45: 經典範例 — before/after ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="45">
-  <h2>經典範例：平面圖 → 風格渲染</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col good fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);text-align:center;">
-      <div class="col-label" style="color:var(--g600);">BEFORE — 平面圖</div>
-      <div style="font-size:3rem;margin:.8rem 0;color:var(--g400);">[ 平面圖 ]</div>
-      <p style="font-size:.85rem;">30 坪客廳平面圖<br>標注動線和傢俱位置</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1" style="text-align:center;">
-      <div class="col-label">AFTER — Gem 渲染</div>
-      <div style="font-size:3rem;margin:.8rem 0;color:var(--blue);">[ 渲染圖 ]</div>
-      <p style="font-size:.85rem;">北歐風格 3D 示意<br>配色、材質、光線一目瞭然</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="2" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.85rem;">3 組 before → after 對比，讓客戶 10 秒看懂設計方向<br>過去需要設計師畫 3 天的示意圖，現在 3 分鐘</p>
-  </div>
+<h2>經典範例：平面圖 → 風格渲染</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col good fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);text-align:center;">
+<div class="col-label" style="color:var(--g600);">BEFORE — 平面圖</div>
+<div style="width:260px;height:180px;margin:.7rem auto;position:relative;background:#fff;border:3px solid var(--g600);">
+<div style="position:absolute;left:0;top:74px;width:150px;border-top:3px solid var(--g600);"></div>
+<div style="position:absolute;left:150px;top:0;height:180px;border-left:3px solid var(--g600);"></div>
+<div style="position:absolute;left:150px;top:82px;width:110px;border-top:3px solid var(--g600);"></div>
+<div style="position:absolute;left:22px;top:20px;font-size:.65rem;font-weight:700;color:var(--g600);">客廳</div>
+<div style="position:absolute;left:178px;top:24px;font-size:.65rem;font-weight:700;color:var(--g600);">廚房</div>
+<div style="position:absolute;left:174px;top:112px;font-size:.65rem;font-weight:700;color:var(--g600);">玄關</div>
+<div style="position:absolute;left:36px;top:102px;width:78px;height:32px;border:2px solid var(--blue);border-radius:4px;font-size:.58rem;color:var(--blue);line-height:28px;">沙發</div>
+<div style="position:absolute;left:28px;top:142px;width:94px;border-top:3px dashed var(--green);transform:rotate(-12deg);"></div>
 </div>
-
+<p style="font-size:.85rem;">30 坪客廳平面圖<br/>標注動線和傢俱位置</p>
+</div>
+<div class="compare-col good fragment" data-order="1" style="text-align:center;">
+<div class="col-label">AFTER — Gem 渲染</div>
+<div style="width:260px;height:180px;margin:.7rem auto;position:relative;overflow:hidden;background:linear-gradient(180deg,#eef5fb 0%,#eef5fb 46%,#d9c8b3 47%,#b99f80 100%);border:1px solid var(--g200);border-radius:10px;">
+<div style="position:absolute;left:34px;top:26px;width:78px;height:50px;background:#fff;border:5px solid #6b8fb3;"></div>
+<div style="position:absolute;left:48px;top:38px;width:50px;border-top:2px solid #6b8fb3;"></div>
+<div style="position:absolute;left:164px;top:28px;width:42px;height:88px;background:#d6e4d2;border-radius:22px 22px 8px 8px;"></div>
+<div style="position:absolute;left:46px;top:104px;width:118px;height:34px;background:#4f7f7a;border-radius:10px 10px 4px 4px;"></div>
+<div style="position:absolute;left:34px;top:130px;width:142px;height:18px;background:#365b59;border-radius:4px;"></div>
+<div style="position:absolute;left:64px;top:92px;width:42px;height:22px;background:#f2f0e8;border-radius:6px;"></div>
+<div class="fragment" data-order="2" style="position:absolute;right:.55rem;bottom:.55rem;background:rgba(252,232,230,.94);color:var(--red);border:1px solid rgba(217,48,37,.35);border-radius:8px;padding:.25rem .45rem;font-size:.62rem;font-weight:700;">比例需確認</div>
+</div>
+<p style="font-size:.85rem;">北歐風格 3D 示意<br/>配色、材質、光線一目瞭然</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="2" style="padding:.7rem 1.2rem;">
+<p style="font-size:.85rem;">3 組 before → after 對比，讓客戶 10 秒看懂設計方向<br/>過去需要設計師畫 3 天的示意圖，現在 3 分鐘</p>
+</div>
+</div>
 <!-- ══ 46: 概念 — AI 的定位 ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="46">
-  <h2>概念引出：AI = 初稿生成器</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">AI 不取代專業<br>但大幅降低溝通成本</div>
-  </div>
-  <div class="card-grid" style="margin-top:1rem;">
-    <div class="card accent-top fragment" data-order="1">
-      <h3>AI 擅長</h3>
-      <p>快速產出初稿<br>視覺化抽象概念<br>多風格快速切換</p>
-    </div>
-    <div class="card accent-top-red fragment" data-order="2">
-      <h3>AI 不擅長</h3>
-      <p>精確尺寸和比例<br>材質物理特性<br>施工細節規範</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="3">
-      <h3>最佳定位</h3>
-      <p>溝通示意用途<br>初期方向探索<br>客戶提案輔助</p>
-    </div>
-  </div>
+<h2>概念引出：AI = 初稿生成器</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">AI 不取代專業<br/>但大幅降低溝通成本</div>
 </div>
-
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card accent-top fragment" data-order="1">
+<h3>AI 擅長</h3>
+<p>快速產出初稿<br/>視覺化抽象概念<br/>多風格快速切換</p>
+</div>
+<div class="card accent-top-red fragment" data-order="2">
+<h3>AI 不擅長</h3>
+<p>精確尺寸和比例<br/>材質物理特性<br/>施工細節規範</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="3">
+<h3>最佳定位</h3>
+<p>溝通示意用途<br/>初期方向探索<br/>客戶提案輔助</p>
+</div>
+</div>
+</div>
 <!-- ══ 47: Round 5 小結 ══ -->
 <div class="slide dataviz" data-act="R5：裝潢應用" data-index="47">
-  <h2>Round 5 小結</h2>
-  <div class="bottom-line">
-    <h3>圖片輸入 + 圖片輸出 = 完整的多模態循環</h3>
-    <p>AI 理解你的圖、產出新的圖、記住你的偏好<br>定位是「溝通加速器」，不是「專業工具替代品」</p>
-  </div>
+<h2>Round 5 小結</h2>
+<div class="bottom-line">
+<h3>圖片輸入 + 圖片輸出 = 完整的多模態循環</h3>
+<p>AI 理解你的圖、產出新的圖、記住你的偏好<br/>定位是「溝通加速器」，不是「專業工具替代品」</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 6：三平台對比 (slides 48-59)
      ══════════════════════════════════════ -->
-
 <!-- ══ 48: Chapter poster — Round 6 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：三平台對比" data-index="48"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:00–2:15</p>
-  <h1 style="color:#fff;font-size:2.8rem;">跨平台實作<br><span style="color:#93c5fd;">並排對比</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">沒有「最好的」— 只有「最適合這個場景的」</p>
+<div class="slide poster overlay-heavy" data-act="R6：三平台對比" data-index="48" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:00–2:15</p>
+<h1 style="color:#fff;font-size:2.8rem;">跨平台實作<br/><span style="color:#93c5fd;">並排對比</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">沒有「最好的」— 只有「最適合這個場景的」</p>
 </div>
-
 <!-- ══ 49: 操作說明 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="49">
-  <h2>操作：三平台做同一件事</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">每人選一個場景（行銷 or 裝潢）→ 三平台並排</p>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>ChatGPT GPT</strong>
-        <p>同樣需求 → 文字為主 + DALL-E 圖</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>Gemini Gem</strong>
-        <p>Round 4/5 的結果 → 圖文同步</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>Claude Project</strong>
-        <p>同樣需求 → 純文字分析，無圖</p>
-      </div>
-    </div>
-  </div>
+<h2>操作：三平台做同一件事</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">每人選一個場景（行銷 or 裝潢）→ 三平台並排</p>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>ChatGPT GPT</strong>
+<p>同樣需求 → 啟用 Image Generation 後產圖</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>Gemini Gem</strong>
+<p>Round 4/5 的結果 → Gemini 2.5 圖文迭代</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>Claude Project</strong>
+<p>同樣需求 → 純文字分析，無圖</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 50: 比較維度 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="50">
-  <h2>五個比較維度</h2>
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;max-width:860px;width:100%;margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0" style="min-width:0;max-width:none;border-top-color:var(--blue);">
-      <h3 style="white-space:nowrap;">文字品質</h3>
-      <p>準確度<br>深度<br>風格一致性</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1" style="min-width:0;max-width:none;">
-      <h3 style="white-space:nowrap;">圖片品質</h3>
-      <p>細節<br>風格<br>可用性</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="2" style="min-width:0;max-width:none;">
-      <h3 style="white-space:nowrap;">圖文整合</h3>
-      <p>一步 or 兩步<br>配合度</p>
-    </div>
-    <div class="card accent-top-orange fragment" data-order="3" style="min-width:0;max-width:none;">
-      <h3 style="white-space:nowrap;">迭代效率</h3>
-      <p>修改速度<br>理解精準度</p>
-    </div>
-    <div class="card accent-top-green fragment" data-order="4" style="min-width:0;max-width:none;">
-      <h3 style="white-space:nowrap;">記憶延續</h3>
-      <p>跨輪次<br>偏好保留</p>
-    </div>
-  </div>
+<h2>五個比較維度</h2>
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;max-width:860px;width:100%;margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0" style="min-width:0;max-width:none;border-top-color:var(--blue);">
+<h3 style="white-space:nowrap;">文字品質</h3>
+<p>準確度<br/>深度<br/>風格一致性</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1" style="min-width:0;max-width:none;">
+<h3 style="white-space:nowrap;">圖片品質</h3>
+<p>細節<br/>風格<br/>可用性</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="2" style="min-width:0;max-width:none;">
+<h3 style="white-space:nowrap;">圖文整合</h3>
+<p>一步 or 兩步<br/>配合度</p>
+</div>
+<div class="card accent-top-orange fragment" data-order="3" style="min-width:0;max-width:none;">
+<h3 style="white-space:nowrap;">迭代效率</h3>
+<p>修改速度<br/>理解精準度</p>
+</div>
+<div class="card accent-top-green fragment" data-order="4" style="min-width:0;max-width:none;">
+<h3 style="white-space:nowrap;">記憶延續</h3>
+<p>跨輪次<br/>偏好保留</p>
+</div>
+</div>
+</div>
 <!-- ══ 51: 對比表格 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="51">
-  <h2>學員自己填：三平台並排對比</h2>
-  <div style="max-width:860px;width:100%;overflow-x:auto;margin:.8rem 0;">
-    <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
-      <thead>
-        <tr style="background:var(--blue-lt);">
-          <th style="padding:.6rem;text-align:left;border-bottom:2px solid var(--blue);font-weight:700;color:var(--blue);">維度</th>
-          <th style="padding:.6rem;text-align:center;border-bottom:2px solid var(--blue);font-weight:700;color:var(--g800);">ChatGPT GPT</th>
-          <th style="padding:.6rem;text-align:center;border-bottom:2px solid var(--blue);font-weight:700;color:var(--g800);">Gemini Gem</th>
-          <th style="padding:.6rem;text-align:center;border-bottom:2px solid var(--blue);font-weight:700;color:var(--g800);">Claude Project</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom:1px solid var(--g100);">
-          <td style="padding:.5rem .6rem;font-weight:600;">文字品質</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--g100);">
-          <td style="padding:.5rem .6rem;font-weight:600;">圖片品質</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--g100);">
-          <td style="padding:.5rem .6rem;font-weight:600;">圖文整合度</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-        </tr>
-        <tr style="border-bottom:1px solid var(--g100);">
-          <td style="padding:.5rem .6rem;font-weight:600;">迭代效率</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-        </tr>
-        <tr>
-          <td style="padding:.5rem .6rem;font-weight:600;">記憶延續</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-          <td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="info-box note" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.9rem;">用你自己的實測結果填寫<br>每個人的結論可能不同 — 這正是重點</p>
-  </div>
+<h2>學員自己填：三平台並排對比</h2>
+<div style="max-width:860px;width:100%;overflow-x:auto;margin:.8rem 0;">
+<table style="width:100%;border-collapse:collapse;font-size:.9rem;">
+<thead>
+<tr style="background:var(--blue-lt);">
+<th style="padding:.6rem;text-align:left;border-bottom:2px solid var(--blue);font-weight:700;color:var(--blue);">維度</th>
+<th style="padding:.6rem;text-align:center;border-bottom:2px solid var(--blue);font-weight:700;color:var(--g800);">ChatGPT GPT</th>
+<th style="padding:.6rem;text-align:center;border-bottom:2px solid var(--blue);font-weight:700;color:var(--g800);">Gemini Gem</th>
+<th style="padding:.6rem;text-align:center;border-bottom:2px solid var(--blue);font-weight:700;color:var(--g800);">Claude Project</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--g100);">
+<td style="padding:.5rem .6rem;font-weight:600;">文字品質</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+</tr>
+<tr style="border-bottom:1px solid var(--g100);">
+<td style="padding:.5rem .6rem;font-weight:600;">圖片品質</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+</tr>
+<tr style="border-bottom:1px solid var(--g100);">
+<td style="padding:.5rem .6rem;font-weight:600;">圖文整合度</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+</tr>
+<tr style="border-bottom:1px solid var(--g100);">
+<td style="padding:.5rem .6rem;font-weight:600;">迭代效率</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+</tr>
+<tr>
+<td style="padding:.5rem .6rem;font-weight:600;">記憶延續</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+<td style="padding:.5rem;text-align:center;color:var(--g400);">___</td>
+</tr>
+</tbody>
+</table>
 </div>
-
+<div class="info-box note" style="padding:.7rem 1.2rem;">
+<p style="font-size:.9rem;">用你自己的實測結果填寫<br/>每個人的結論可能不同 — 這正是重點</p>
+</div>
+</div>
 <!-- ══ 52: 場景匹配結論 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="52">
-  <h2>結論：場景決定平台選擇</h2>
-  <div class="card-grid">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>行銷圖文</h3>
-      <p>推薦 <span class="hl-blue">Gemini Gem</span><br>圖文一體，迭代快速<br>一步產出完整素材</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="1">
-      <h3>深度文案</h3>
-      <p>推薦 <span style="color:var(--purple);font-weight:700;">Claude Project</span><br>文字品質最精準<br>長文案邏輯清晰</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>平衡通用</h3>
-      <p>推薦 <span class="hl-gold">ChatGPT GPT</span><br>功能最全面<br>生態系最完整</p>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="3" style="margin-top:.6rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;">Stage 2 用 AI 寫程式碼時 → Claude 會是主力<br>工具選擇永遠跟著需求走</p>
-  </div>
+<h2>結論：場景決定平台選擇</h2>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0">
+<h3>行銷圖文</h3>
+<p>推薦 <span class="hl-blue">Gemini Gem</span><br/>圖文一體，迭代快速<br/>一步產出完整素材</p>
 </div>
-
+<div class="card accent-top-purple fragment" data-order="1">
+<h3>深度文案</h3>
+<p>推薦 <span style="color:var(--purple);font-weight:700;">Claude Project</span><br/>文字品質最精準<br/>長文案邏輯清晰</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>平衡通用</h3>
+<p>推薦 <span class="hl-gold">ChatGPT GPT</span><br/>功能最全面<br/>生態系最完整</p>
+</div>
+</div>
+<div class="info-box success fragment" data-order="3" style="margin-top:.6rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;">Stage 2 用 AI 寫程式碼時 → Claude 會是主力<br/>工具選擇永遠跟著需求走</p>
+</div>
+</div>
 <!-- ══ 53: GPT / Gem 應用場景擴展 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="53">
-  <h2>GPT / Gem 還能做什麼</h2>
-  <div class="card-grid" style="max-width:860px;">
-    <div class="card accent-top-blue fragment" data-order="0" style="min-width:0;max-width:none;flex:1;">
-      <h3>客服助手</h3>
-      <p>上傳產品 FAQ<br>自動回答常見問題</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1" style="min-width:0;max-width:none;flex:1;">
-      <h3>翻譯助手</h3>
-      <p>設定翻譯風格<br>保留專有名詞不翻</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="2" style="min-width:0;max-width:none;flex:1;">
-      <h3>會議摘要</h3>
-      <p>上傳會議逐字稿<br>自動產出重點和待辦</p>
-    </div>
-    <div class="card accent-top-green fragment" data-order="3" style="min-width:0;max-width:none;flex:1;border-top-color:var(--green);">
-      <h3>論文寫作</h3>
-      <p>上傳文獻 → 整理摘要<br>生成大綱 → 輔助撰稿</p>
-    </div>
-  </div>
+<h2>GPT / Gem 還能做什麼</h2>
+<div class="card-grid" style="max-width:860px;">
+<div class="card accent-top-blue fragment" data-order="0" style="min-width:0;max-width:none;flex:1;">
+<h3>客服助手</h3>
+<p>上傳產品 FAQ<br/>自動回答常見問題</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1" style="min-width:0;max-width:none;flex:1;">
+<h3>翻譯助手</h3>
+<p>設定翻譯風格<br/>保留專有名詞不翻</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="2" style="min-width:0;max-width:none;flex:1;">
+<h3>會議摘要</h3>
+<p>上傳會議逐字稿<br/>自動產出重點和待辦</p>
+</div>
+<div class="card accent-top-green fragment" data-order="3" style="min-width:0;max-width:none;flex:1;border-top-color:var(--green);">
+<h3>論文寫作</h3>
+<p>上傳文獻 → 整理摘要<br/>生成大綱 → 輔助撰稿</p>
+</div>
+</div>
+</div>
 <!-- ══ 54: 論文寫作 Gem 深入 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="54">
-  <h2>案例：Gem 輔助論文寫作</h2>
-  <div class="flow" style="margin:.6rem 0;">
-    <div class="flow-box fragment" data-order="0" style="border-color:var(--blue);font-size:.9rem;">定義問題</div>
-    <div class="flow-arrow fragment" data-order="1">→</div>
-    <div class="flow-box fragment" data-order="2" style="font-size:.9rem;">上傳文獻</div>
-    <div class="flow-arrow fragment" data-order="3">→</div>
-    <div class="flow-box fragment" data-order="4" style="font-size:.9rem;">生成整理</div>
-    <div class="flow-arrow fragment" data-order="5">→</div>
-    <div class="flow-box fragment" data-order="6" style="font-size:.9rem;">核對引用</div>
-    <div class="flow-arrow fragment" data-order="7">→</div>
-    <div class="flow-box accent fragment" data-order="8" style="font-size:.9rem;border-color:var(--blue);background:var(--blue-lt);color:var(--blue);">改寫成自己的文字</div>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;max-width:760px;width:100%;margin-top:.8rem;">
-    <div class="card accent-top-blue fragment" data-order="9" style="min-width:0;max-width:none;">
-      <h3>Gem 幫你做</h3>
-      <p>整理數十篇文獻成表格<br>生成大綱和初步草稿<br>提供研究方法建議</p>
-    </div>
-    <div class="card accent-top-orange fragment" data-order="10" style="min-width:0;max-width:none;">
-      <h3>你自己做</h3>
-      <p>核心分析和論證<br>引用人工核對<br>改寫保持原創性</p>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="11" style="margin-top:.6rem;max-width:760px;">
-    <div class="label">核心原則</div>
-    <p>Gem 是思路助攻和資料整理工具，最終文字仍需人工撰寫</p>
-  </div>
+<h2>案例：Gem 輔助論文寫作</h2>
+<div class="flow" style="margin:.6rem 0;">
+<div class="flow-box fragment" data-order="0" style="border-color:var(--blue);font-size:.9rem;">定義問題</div>
+<div class="flow-arrow fragment" data-order="1">→</div>
+<div class="flow-box fragment" data-order="2" style="font-size:.9rem;">上傳文獻</div>
+<div class="flow-arrow fragment" data-order="3">→</div>
+<div class="flow-box fragment" data-order="4" style="font-size:.9rem;">生成整理</div>
+<div class="flow-arrow fragment" data-order="5">→</div>
+<div class="flow-box fragment" data-order="6" style="font-size:.9rem;">核對引用</div>
+<div class="flow-arrow fragment" data-order="7">→</div>
+<div class="flow-box accent fragment" data-order="8" style="font-size:.9rem;border-color:var(--blue);background:var(--blue-lt);color:var(--blue);">改寫成自己的文字</div>
 </div>
-
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;max-width:760px;width:100%;margin-top:.8rem;">
+<div class="card accent-top-blue fragment" data-order="9" style="min-width:0;max-width:none;">
+<h3>Gem 幫你做</h3>
+<p>整理數十篇文獻成表格<br/>生成大綱和初步草稿<br/>提供研究方法建議</p>
+</div>
+<div class="card accent-top-orange fragment" data-order="10" style="min-width:0;max-width:none;">
+<h3>你自己做</h3>
+<p>核心分析和論證<br/>引用人工核對<br/>改寫保持原創性</p>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="11" style="margin-top:.6rem;max-width:760px;">
+<div class="label">核心原則</div>
+<p>Gem 是思路助攻和資料整理工具，最終文字仍需人工撰寫</p>
+</div>
+</div>
 <!-- ══ 55: 記憶機制總整理 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="53">
-  <h2>記憶機制總整理</h2>
-  <div class="flow" style="margin:1rem 0;">
-    <div class="flow-box fragment" data-order="0" style="min-width:160px;">
-      <div style="font-size:.75rem;color:var(--g400);">M1-1</div>
+<h2>記憶機制總整理</h2>
+<div class="flow" style="margin:1rem 0;">
+<div class="flow-box fragment" data-order="0" style="min-width:160px;">
+<div style="font-size:.75rem;color:var(--g400);">M1-1</div>
       聊天記錄
     </div>
-    <div class="flow-arrow fragment" data-order="1">→</div>
-    <div class="flow-box accent fragment" data-order="2" style="min-width:160px;">
-      <div style="font-size:.75rem;color:var(--blue);">M1-2</div>
+<div class="flow-arrow fragment" data-order="1">→</div>
+<div class="flow-box accent fragment" data-order="2" style="min-width:160px;">
+<div style="font-size:.75rem;color:var(--blue);">M1-2</div>
       Instructions
     </div>
-    <div class="flow-arrow fragment" data-order="3">→</div>
-    <div class="flow-box fragment" data-order="4" style="min-width:160px;">
-      <div style="font-size:.75rem;color:var(--g400);">M1-3</div>
+<div class="flow-arrow fragment" data-order="3">→</div>
+<div class="flow-box fragment" data-order="4" style="min-width:160px;">
+<div style="font-size:.75rem;color:var(--g400);">M1-3</div>
       GAS Script
     </div>
-  </div>
-  <div class="stat-grid fragment" data-order="5">
-    <div class="stat-box">
-      <div class="val" style="font-size:1.3rem;">M1-1</div>
-      <div class="label">每次重新描述<br>記憶靠對話歷史</div>
-    </div>
-    <div class="stat-box" style="border-color:var(--blue);">
-      <div class="val" style="font-size:1.3rem;">M1-2</div>
-      <div class="label">寫一次，持續生效<br>記憶靠 Instructions</div>
-    </div>
-    <div class="stat-box">
-      <div class="val" style="font-size:1.3rem;">M1-3</div>
-      <div class="label">時間到自動執行<br>記憶靠程式碼</div>
-    </div>
-  </div>
 </div>
-
+<div class="stat-grid fragment" data-order="5">
+<div class="stat-box">
+<div class="val" style="font-size:1.3rem;">M1-1</div>
+<div class="label">每次重新描述<br/>記憶靠對話歷史</div>
+</div>
+<div class="stat-box" style="border-color:var(--blue);">
+<div class="val" style="font-size:1.3rem;">M1-2</div>
+<div class="label">寫一次，持續生效<br/>記憶靠 Instructions</div>
+</div>
+<div class="stat-box">
+<div class="val" style="font-size:1.3rem;">M1-3</div>
+<div class="label">時間到自動執行<br/>記憶靠程式碼</div>
+</div>
+</div>
+</div>
 <!-- ══ 54: 升級線預告 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="54">
-  <h2>升級線：從手動到自動</h2>
-  <div class="compare-two" style="margin-top:.8rem;">
-    <div class="compare-col good fragment" data-order="0" style="text-align:center;">
-      <div class="col-label">M1-1 / M1-2</div>
-      <p style="font-size:1.1rem;font-weight:700;">手動觸發 AI</p>
-      <p style="margin-top:.5rem;">你問它才動<br>你打開 GPT/Gem 才開始工作<br>離開對話就停了</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1" style="text-align:center;background:var(--green-lt);border-color:var(--green);">
-      <div class="col-label" style="color:var(--green);">M1-3</div>
-      <p style="font-size:1.1rem;font-weight:700;color:var(--green);">自動化</p>
-      <p style="margin-top:.5rem;">時間到了自動動<br>表單送出自動回覆<br>你不在電腦前也在跑</p>
-    </div>
-  </div>
+<h2>升級線：從手動到自動</h2>
+<div class="compare-two" style="margin-top:.8rem;">
+<div class="compare-col good fragment" data-order="0" style="text-align:center;">
+<div class="col-label">M1-1 / M1-2</div>
+<p style="font-size:1.1rem;font-weight:700;">手動觸發 AI</p>
+<p style="margin-top:.5rem;">你問它才動<br/>你打開 GPT/Gem 才開始工作<br/>離開對話就停了</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1" style="text-align:center;background:var(--green-lt);border-color:var(--green);">
+<div class="col-label" style="color:var(--green);">M1-3</div>
+<p style="font-size:1.1rem;font-weight:700;color:var(--green);">自動化</p>
+<p style="margin-top:.5rem;">時間到了自動動<br/>表單送出自動回覆<br/>你不在電腦前也在跑</p>
+</div>
+</div>
+</div>
 <!-- ══ 55: 注意事項總覽 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="55">
-  <h2>M1-2 注意事項總覽</h2>
-  <div class="step-list">
-    <div class="step">
-      <div class="step-num" style="background:var(--red);">1</div>
-      <div class="step-content">
-        <strong>Instructions 太模糊</strong>
-        <p>System Prompt 需要結構 — 四要素直接搬進來</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num" style="background:var(--orange);">2</div>
-      <div class="step-content">
-        <strong>ChatGPT 格式貼 Gemini 不通用</strong>
-        <p>平台差異 + 可攜性 — 知識是你的，平台只是載體</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num" style="background:var(--gold);">3</div>
-      <div class="step-content">
-        <strong>Gemini 中文字生圖有錯字</strong>
-        <p>AI 生圖的文字還需人工檢查和修正</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num" style="background:var(--blue);">4</div>
-      <div class="step-content">
-        <strong>複雜平面圖 AI 理解錯誤</strong>
-        <p>複雜輸入要簡化或分區處理</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num" style="background:var(--purple);">5</div>
-      <div class="step-content">
-        <strong>3D 渲染比例失真</strong>
-        <p>AI = 溝通示意，不是精確設計工具</p>
-      </div>
-    </div>
-  </div>
+<h2>M1-2 注意事項總覽</h2>
+<div class="step-list">
+<div class="step">
+<div class="step-num" style="background:var(--red);">1</div>
+<div class="step-content">
+<strong>Instructions 太模糊</strong>
+<p>System Prompt 需要結構 — 四要素直接搬進來</p>
 </div>
-
+</div>
+<div class="step">
+<div class="step-num" style="background:var(--orange);">2</div>
+<div class="step-content">
+<strong>ChatGPT 格式貼 Gemini 不通用</strong>
+<p>平台差異 + 可攜性 — 知識是你的，平台只是載體</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:var(--gold);">3</div>
+<div class="step-content">
+<strong>Gemini 中文字生圖有錯字</strong>
+<p>AI 生圖的文字還需人工檢查和修正</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:var(--blue);">4</div>
+<div class="step-content">
+<strong>複雜平面圖 AI 理解錯誤</strong>
+<p>複雜輸入要簡化或分區處理</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:var(--purple);">5</div>
+<div class="step-content">
+<strong>3D 渲染比例失真</strong>
+<p>AI = 溝通示意，不是精確設計工具</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 56: 今天帶走的東西 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="56">
-  <h2>今天帶走的東西</h2>
-  <div class="checklist">
-    <div class="check-item">
-      <div class="check-icon done">+</div>
-      <div class="check-text">
-        <strong>2+ 客製化 AI 助手</strong>
-        <p>GPT + Gem，Instructions 結構化，可重複使用</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">+</div>
-      <div class="check-text">
-        <strong>行銷圖文生成能力</strong>
-        <p>Gemini Gem 圖文同步產出，行銷素材一步到位</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">+</div>
-      <div class="check-text">
-        <strong>裝潢渲染示意圖</strong>
-        <p>平面圖上傳 → AI 風格渲染，降低溝通成本</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">+</div>
-      <div class="check-text">
-        <strong>三平台實作對比表</strong>
-        <p>ChatGPT / Gemini / Claude 的實測差異數據</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">+</div>
-      <div class="check-text">
-        <strong>多模態 + 可攜性概念</strong>
-        <p>文字+圖片的 AI 能力邊界，跨平台知識管理思維</p>
-      </div>
-    </div>
-  </div>
+<h2>帶走清單</h2>
+<div class="anchor-banner">
+<span class="anchor-label">本堂定位</span>
+<span class="anchor-text">體驗最小的自動化 — 用 Gem / GPT 做「複製流程」</span>
 </div>
-
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了<br/><em style="color:var(--g500);font-size:.85rem;">從「把 AI 當答題工具」→ 設計成協作角色</em></p>
+<div class="insight-grid">
+<div class="insight-card fragment" data-order="0" style="--card-color:var(--green);">
+<div class="insight-before">從「先叫它試試看」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">好助手要先定型</div>
+</div>
+<div class="insight-card fragment" data-order="1" style="--card-color:var(--blue);">
+<div class="insight-before">從「講清楚就好了」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">角色比指令更穩</div>
+</div>
+<div class="insight-card fragment" data-order="2" style="--card-color:var(--gold);">
+<div class="insight-before">從「模型都差不多」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">平台有各自脾氣</div>
+</div>
+<div class="insight-card fragment" data-order="3" style="--card-color:var(--purple);">
+<div class="insight-before">從「圖好看靠運氣」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">審美要先被說清</div>
+</div>
+<div class="insight-card fragment" data-order="4" style="--card-color:var(--orange);">
+<div class="insight-before">從「我不懂怎麼畫」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">場景才是生成語言</div>
+</div>
+<div class="insight-card fragment" data-order="5" style="--card-color:var(--accent);">
+<div class="insight-before">從「選最強的就好」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">工具要按任務配對</div>
+</div>
+</div>
+</div>
 <!-- ══ 57: 課後操作 ══ -->
 <div class="slide dataviz" data-act="R6：三平台對比" data-index="57">
-  <h2>課後操作</h2>
-  <div class="info-box blue fragment" data-order="0">
-    <div class="label">實踐任務</div>
-    <p>在工作場景中選一個需求，建立你的專屬 AI 助手<br>寫好 Instructions + 設定 Conversation Starters + 上傳知識庫</p>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">記錄要求</div>
-    <p>記錄你的 Instructions（存成文字檔備份）<br>下堂課會用到這些素材作為自動化操作的基礎</p>
-  </div>
+<h2>課後操作</h2>
+<div class="info-box blue fragment" data-order="0">
+<div class="label">實踐任務</div>
+<p>在工作場景中選一個需求，建立你的專屬 AI 助手<br/>寫好 Instructions + 設定 Conversation Starters + 上傳知識庫</p>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">記錄要求</div>
+<p>記錄你的 Instructions（存成文字檔備份）<br/>下堂課會用到這些素材作為自動化操作的基礎</p>
+</div>
+</div>
 <!-- ══ 58: 預告 M1-3 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：三平台對比" data-index="58"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M1-3</p>
-  <h1 style="color:#fff;font-size:2.8rem;">你建了 AI 助手<br><span style="color:#93c5fd;">但每次都要手動打開</span></h1>
-  <p class="poster-subtitle" style="margin-top:1rem;">下一堂課的主題：讓 AI 在時間到了自動執行任務</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">GAS 自動化</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">觸發器</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">AI 幫你寫程式</span>
-  </div>
-  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M1-2 完成</p>
+<div class="slide poster overlay-heavy" data-act="R6：三平台對比" data-index="58" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M1-3</p>
+<h1 style="color:#fff;font-size:2.8rem;">你建了 AI 助手<br/><span style="color:#93c5fd;">但每次都要手動打開</span></h1>
+<p class="poster-subtitle" style="margin-top:1rem;">下一堂課的主題：讓 AI 在時間到了自動執行任務</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">GAS 自動化</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">觸發器</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">AI 幫你寫程式</span>
 </div>
-
+<p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M1-2 完成</p>
+</div>
 </div><!-- end .slides -->
-
 <!-- ── Controls ── -->
 <div class="progress" id="progress"></div>
 <div class="slide-counter" id="counter">1 / 59</div>
 <div class="controls">
-  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
-  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+<button disabled="" id="prevBtn" onclick="navigate(-1)">‹</button>
+<button id="nextBtn" onclick="navigate(1)">›</button>
 </div>
-
 <!-- ── Chapter Menu ── -->
 <div class="chapter-menu" id="chapterMenu">
-  <div class="chapter-btn" onclick="toggleChapterMenu()">
-    <span class="chapter-icon">&#9672;</span>
-    <span id="chapterLabel">章節</span>
-    <span class="chapter-arrow">&#9650;</span>
-  </div>
-  <div class="chapter-list" id="chapterList"></div>
+<div class="chapter-btn" onclick="toggleChapterMenu()">
+<span class="chapter-icon">◈</span>
+<span id="chapterLabel">章節</span>
+<span class="chapter-arrow">▲</span>
 </div>
-
+<div class="chapter-list" id="chapterList"></div>
+</div>
 <script>
 (function(){
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -1780,8 +1743,92 @@ p,li{font-size:1.1rem;line-height:1.8;}
   // Init
   updateUI();
   window.navigate = navigate;
+  window.goTo = goTo;
   window.toggleChapterMenu = toggleChapterMenu;
 })();
 </script>
+
+<!-- VIBE_INJECT_START -->
+<style>
+  .code-block{position:relative;}
+  .code-block .copy-btn{
+    position:absolute;top:.35rem;right:.4rem;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    padding:.18rem .55rem;border:0;border-radius:4px;
+    background:rgba(15,157,138,.85);color:#fff;cursor:pointer;
+    opacity:.55;transition:opacity .15s,background .15s;
+    letter-spacing:.05em;z-index:5;
+  }
+  .code-block:hover .copy-btn,
+  .code-block .copy-btn:focus{opacity:1;}
+  .code-block .copy-btn.copied{background:rgba(52,211,153,.95);opacity:1;}
+  @media (hover:none){.code-block .copy-btn{opacity:.85;}}
+</style>
+<script>
+(function(){
+  /* ── copy button ── */
+  function addBtn(block){
+    if(block.querySelector('.copy-btn'))return;
+    var pre=block.querySelector('pre');
+    if(!pre)return;
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='✓ 已複製';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='複製';btn.classList.remove('copied');},1500);
+      };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text,done);});
+      }else{fallback(text,done);}
+    });
+    block.appendChild(btn);
+  }
+  function fallback(text,cb){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.top='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');cb();}catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ── hash router: #round-N jumps to first slide whose data-act matches "Round N：" or "RN：" ── */
+  function routeHash(){
+    var m=(window.location.hash||'').match(/^#round-(\d+)/i);
+    if(!m)return;
+    var n=m[1];
+    var patterns=[
+      new RegExp('^Round\\s*'+n+'[\u{ff1a}:\\s]','u'),
+      new RegExp('^R'+n+'[\u{ff1a}:\\s]','u'),
+    ];
+    var target=null;
+    var slides=document.querySelectorAll('.slide[data-act]');
+    for(var i=0;i<slides.length;i++){
+      if(target)break;
+      var act=slides[i].getAttribute('data-act')||'';
+      for(var j=0;j<patterns.length;j++){
+        if(patterns[j].test(act)){target=slides[i];break;}
+      }
+    }
+    if(target&&typeof window.goTo==='function'){
+      var idx=parseInt(target.getAttribute('data-index'),10);
+      window.goTo(idx);
+    }
+  }
+  window.addEventListener('hashchange',routeHash);
+
+  function init(){
+    document.querySelectorAll('.code-block').forEach(addBtn);
+    setTimeout(routeHash,80);  /* wait for slide system init */
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{init();}
+})();
+</script>
+<!-- VIBE_INJECT_END -->
+
 </body>
 </html>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>M3-2 — 大神專案 + 開源風險辨識 | Vibe Coding Stage 3</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;family=Fira+Code:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════
    M3-2: 大神專案 + 開源套用 + 風險辨識
@@ -92,6 +93,22 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .flow-box.accent{border-color:var(--accent);background:var(--navy-lt);color:var(--accent);}
 .flow-arrow{color:var(--accent);font-size:1.5rem;font-weight:900;}
 
+/* arch-grid + lane + insight-grid + anchor-banner — common patterns from M1-1 */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
+.arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
+.arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
+.insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
+.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
+.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+.anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
+
 /* ── Info Boxes (white mode) ── */
 .info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
 .info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
@@ -175,7 +192,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
 .controls button:disabled{opacity:.25;cursor:default;}
-.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500,var(--g400));font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
 .module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--navy-lt);color:var(--accent);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(11,60,93,.2);}
 .module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
 
@@ -227,1223 +244,1164 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </style>
 </head>
 <body>
-
 <div class="module-title">Vibe Coding — Stage 3 · 造系統</div>
 <div class="module-badge">M3-2</div>
 <div class="slides">
-
 <!-- ══════════════════════════════════════
      開場 (slides 0-2)
      ══════════════════════════════════════ -->
-
 <!-- ══ 0: COVER ══ -->
-<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 3 · 造系統</p>
-  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">大神專案<br><span style="color:#7ec8e3;">+ 開源風險辨識</span></h1>
-  <p class="poster-subtitle" style="margin-top:1.2rem;">站在巨人的肩膀上 — 但先檢查巨人是不是好人</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M3-2</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走工具箱</span>
-  </div>
-  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0" style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
+<p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 3 · 造系統</p>
+<h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">大神專案<br/><span style="color:#7ec8e3;">+ 開源風險辨識</span></h1>
+<p class="poster-subtitle" style="margin-top:1.2rem;">站在巨人的肩膀上 — 但先檢查巨人是不是好人</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M3-2</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走工具箱</span>
 </div>
-
+<p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
 <!-- ══ 1: 上集回顧 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
-  <h2>M3-1 回顧</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">上一堂課你已經建好了開發環境</p>
-  <div class="stat-grid fragment" data-order="0" style="grid-template-columns:repeat(3,1fr);">
-    <div class="stat-box">
-      <div class="val">CLI</div>
-      <div class="label">Claude Code 終端操作</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">MCP</div>
-      <div class="label">外部工具串接</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">Skills</div>
-      <div class="label">自訂能力擴充</div>
-    </div>
-  </div>
-  <div class="info-box navy fragment" data-order="1">
-    <div class="label">今天的主軸</div>
-    <p>帶著這些工具，去探索別人的專案<br>學會判斷哪些值得用、哪些藏了風險</p>
-  </div>
+<h2>M3-1 回顧</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">上一堂課你已經建好了開發環境</p>
+<div class="stat-grid fragment" data-order="0" style="grid-template-columns:repeat(3,1fr);">
+<div class="stat-box">
+<div class="val">CLI</div>
+<div class="label">Claude Code 終端操作</div>
 </div>
-
+<div class="stat-box">
+<div class="val">MCP</div>
+<div class="label">外部工具串接</div>
+</div>
+<div class="stat-box">
+<div class="val">Skills</div>
+<div class="label">自訂能力擴充</div>
+</div>
+</div>
+<div class="info-box navy fragment" data-order="1">
+<div class="label">今天的主軸</div>
+<p>帶著這些工具，去探索別人的專案<br/>學會判斷哪些值得用、哪些藏了風險</p>
+</div>
+</div>
 <!-- ══ 2: 六輪循環總覽 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="2">
-  <h2>六輪循環，逐層遞進</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-      <div style="font-weight:700;">大神專案導覽</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-      <div style="font-weight:700;">風險辨識</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-      <div style="font-weight:700;">Clone 改造</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-      <div style="font-weight:700;">限時 30min 部署</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-      <div style="font-weight:700;">注意事項 + 急救卡</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-      <div style="font-weight:700;">開源工具箱</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;"><strong>今天的節奏</strong><br>先用 → 帶風險 → 限時部署任務<br>M3-1 建好的工具，今天全部上場</p>
-  </div>
+<h2>六輪循環，逐層遞進</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+<div style="font-weight:700;">大神專案導覽</div>
 </div>
-
+<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+<div style="font-weight:700;">風險辨識</div>
+</div>
+<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+<div style="font-weight:700;">Clone 改造</div>
+</div>
+<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+<div style="font-weight:700;">限時 30min 部署</div>
+</div>
+<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+<div style="font-weight:700;">注意事項 + 急救卡</div>
+</div>
+<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+<div style="font-weight:700;">開源工具箱</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;"><strong>今天的節奏</strong><br/>先用 → 帶風險 → 限時部署任務<br/>M3-1 建好的工具，今天全部上場</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 1：大神專案導覽 (slides 3-10)
      ══════════════════════════════════════ -->
-
 <!-- ══ 3: Chapter poster — Round 1 ══ -->
-<div class="slide poster overlay-heavy" data-act="R1 大神專案導覽" data-index="3"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
-  <h1 style="color:#fff;font-size:2.8rem;">大神專案<br><span style="color:#7ec8e3;">AI 幫你讀 repo</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">30 秒理解別人花三個月寫的專案</p>
+<div class="slide poster overlay-heavy" data-act="R1 大神專案導覽" data-index="3" style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
+<h1 style="color:#fff;font-size:2.8rem;">大神專案<br/><span style="color:#7ec8e3;">AI 幫你讀 repo</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">30 秒理解別人花三個月寫的專案</p>
 </div>
-
 <!-- ══ 4: 為什麼要讀別人的專案 ══ -->
 <div class="slide dataviz" data-act="R1 大神專案導覽" data-index="4">
-  <h2>為什麼要讀別人的專案</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">Open Source = 站在巨人肩膀上<br>從好的基礎改起，不必從零開始</div>
-  </div>
-  <div class="card-grid" style="margin-top:1rem;">
-    <div class="card accent-top fragment" data-order="1">
-      <h3>學架構</h3>
-      <p>看大神怎麼組織程式碼<br>比教科書更真實</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="2">
-      <h3>省時間</h3>
-      <p>現成的輪子不用重造<br>改三處就變自己的</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="3">
-      <h3>建眼光</h3>
-      <p>看多了好專案<br>判斷力自然提升</p>
-    </div>
-  </div>
+<h2>為什麼要讀別人的專案</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">Open Source = 站在巨人肩膀上<br/>從好的基礎改起，不必從零開始</div>
 </div>
-
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card accent-top fragment" data-order="1">
+<h3>學架構</h3>
+<p>看大神怎麼組織程式碼<br/>比教科書更真實</p>
+</div>
+<div class="card accent-top-blue fragment" data-order="2">
+<h3>省時間</h3>
+<p>現成的輪子不用重造<br/>改三處就變自己的</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="3">
+<h3>建眼光</h3>
+<p>看多了好專案<br/>判斷力自然提升</p>
+</div>
+</div>
+</div>
 <!-- ══ 5: 推薦專案清單 ══ -->
 <div class="slide dataviz" data-act="R1 大神專案導覽" data-index="5">
-  <h2>推薦大神專案</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">講師精選，每個都值得一看</p>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>awesome-claude-code</strong>
-        <p>社群精選 CLAUDE.md 範例與最佳實踐</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>漂亮的個人網站 repo</strong>
-        <p>可直接 Fork 改造成自己的作品集</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>實用自動化工具 repo</strong>
-        <p>CLI 工具、MCP Server、Workflow 自動化</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>ai-cooperation/openclaw</strong>
-        <p>講師實際作品 — 等下用來做資安分析練習</p>
-      </div>
-    </div>
-  </div>
+<h2>推薦大神專案</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">講師精選，每個都值得一看</p>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>awesome-claude-code</strong>
+<p>社群精選 CLAUDE.md 範例與最佳實踐</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>漂亮的個人網站 repo</strong>
+<p>可直接 Fork 改造成自己的作品集</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>實用自動化工具 repo</strong>
+<p>CLI 工具、MCP Server、Workflow 自動化</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>ai-cooperation/openclaw</strong>
+<p>講師實際作品 — 等下用來做資安分析練習</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 6: 操作指令 — git clone ══ -->
 <div class="slide dataviz" data-act="R1 大神專案導覽" data-index="6">
-  <h2>操作：選一個 clone 下來</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">TERMINAL</div>
-    <pre>git clone https://github.com/xxx/awesome-project.git
+<h2>操作：選一個 clone 下來</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">TERMINAL</div>
+<pre>git clone https://github.com/xxx/awesome-project.git
 cd awesome-project</pre>
-  </div>
-  <div class="info-box navy fragment" data-order="1">
-    <div class="label">操作條件</div>
-    <p>從推薦清單中選一個感興趣的專案<br>用 Claude Code 在終端機執行 git clone</p>
-  </div>
-  <div class="stat-grid fragment" data-order="2" style="max-width:400px;grid-template-columns:1fr;">
-    <div class="stat-box">
-      <div class="val">5 min</div>
-      <div class="label">選專案 + Clone</div>
-    </div>
-  </div>
 </div>
-
+<div class="info-box navy fragment" data-order="1">
+<div class="label">操作條件</div>
+<p>從推薦清單中選一個感興趣的專案<br/>用 Claude Code 在終端機執行 git clone</p>
+</div>
+<div class="stat-grid fragment" data-order="2" style="max-width:400px;grid-template-columns:1fr;">
+<div class="stat-box">
+<div class="val">5 min</div>
+<div class="label">選專案 + Clone</div>
+</div>
+</div>
+</div>
 <!-- ══ 7: AI 讀 repo ══ -->
 <div class="slide dataviz" data-act="R1 大神專案導覽" data-index="7">
-  <h2>AI 30 秒摘要整個專案</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">PROMPT</div>
-    <pre>幫我看這個專案的結構和功能
+<h2>AI 30 秒摘要整個專案</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">PROMPT</div>
+<pre>幫我看這個專案的結構和功能
 重點告訴我：
 1. 這專案在做什麼
 2. 用了哪些技術
 3. 怎麼跑起來</pre>
-  </div>
-  <div class="info-box success fragment" data-order="1">
-    <div class="label">觀察</div>
-    <p>AI 快速理解別人專案 → 不需要一行行看程式碼<br>過去需要一整天讀完的 repo，現在 30 秒搞定</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1">
+<div class="label">觀察</div>
+<p>AI 快速理解別人專案 → 不需要一行行看程式碼<br/>過去需要一整天讀完的 repo，現在 30 秒搞定</p>
+</div>
+</div>
 <!-- ══ 8: AI 摘要範例 ══ -->
 <div class="slide dataviz" data-act="R1 大神專案導覽" data-index="8">
-  <h2>AI 摘要會告訴你什麼</h2>
-  <div class="card-grid">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>專案用途</h3>
-      <p>「這是一個 CLI 工具<br>用來自動生成 README」</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1">
-      <h3>技術棧</h3>
-      <p>「Node.js + TypeScript<br>依賴 OpenAI API」</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>啟動方式</h3>
-      <p>「npm install → npm start<br>需要設定 .env」</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="3">
-    <p style="font-size:.95rem;">不只是讀程式碼 — AI 還會找 README、package.json、設定檔<br>把分散的資訊整合成一份摘要</p>
-  </div>
+<h2>AI 摘要會告訴你什麼</h2>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0">
+<h3>專案用途</h3>
+<p>「這是一個 CLI 工具<br/>用來自動生成 README」</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>技術棧</h3>
+<p>「Node.js + TypeScript<br/>依賴 OpenAI API」</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>啟動方式</h3>
+<p>「npm install → npm start<br/>需要設定 .env」</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3">
+<p style="font-size:.95rem;">不只是讀程式碼 — AI 還會找 README、package.json、設定檔<br/>把分散的資訊整合成一份摘要</p>
+</div>
+</div>
 <!-- ══ 9: 注意事項 — clone 太大 ══ -->
 <div class="slide dataviz" data-act="R1 大神專案導覽" data-index="9">
-  <h2>注意：clone 超大 repo</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">注意事項</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">git clone huge-repo.git</p>
-      <p style="margin-top:.5rem;">500MB 的 repo<br>clone 半天還沒完</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">解法</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">先到 GitHub 看 repo 大小<br>或用 --depth 1 只抓最新版</p>
-      <p style="margin-top:.5rem;">先看大小再 clone<br>養成好習慣</p>
-    </div>
-  </div>
-  <div class="code-block fragment" data-order="2" style="margin-top:.6rem;">
-    <div class="code-label">淺層 CLONE</div>
-    <pre>git clone --depth 1 https://github.com/xxx/big-repo.git</pre>
-  </div>
+<h2>注意：clone 超大 repo</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">注意事項</div>
+<p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">git clone huge-repo.git</p>
+<p style="margin-top:.5rem;">500MB 的 repo<br/>clone 半天還沒完</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">解法</div>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">先到 GitHub 看 repo 大小<br/>或用 --depth 1 只抓最新版</p>
+<p style="margin-top:.5rem;">先看大小再 clone<br/>養成好習慣</p>
+</div>
+</div>
+<div class="code-block fragment" data-order="2" style="margin-top:.6rem;">
+<div class="code-label">淺層 CLONE</div>
+<pre>git clone --depth 1 https://github.com/xxx/big-repo.git</pre>
+</div>
+</div>
 <!-- ══ 10: Round 1 小結 ══ -->
 <div class="slide dataviz" data-act="R1 大神專案導覽" data-index="10">
-  <h2>Round 1 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>AI 是你的 repo 導覽員</h3>
-    <p>不必一行行讀程式碼<br>30 秒掌握專案全貌，決定值不值得深入</p>
-  </div>
+<h2>Round 1 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>AI 是你的 repo 導覽員</h3>
+<p>不必一行行讀程式碼<br/>30 秒掌握專案全貌，決定值不值得深入</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 2：風險辨識 (slides 11-22)
      ══════════════════════════════════════ -->
-
 <!-- ══ 11: Chapter poster — Round 2 ══ -->
-<div class="slide poster overlay-heavy" data-act="R2 風險辨識" data-index="11"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:45</p>
-  <h1 style="color:#fff;font-size:2.8rem;">風險辨識<br><span style="color:#e74c3c;">OpenClaw 真實案例</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">用講師的 repo 當活靶，學會安全檢查</p>
+<div class="slide poster overlay-heavy" data-act="R2 風險辨識" data-index="11" style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:45</p>
+<h1 style="color:#fff;font-size:2.8rem;">風險辨識<br/><span style="color:#e74c3c;">OpenClaw 真實案例</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">用講師的 repo 當活靶，學會安全檢查</p>
 </div>
-
 <!-- ══ 12: 為什麼需要風險辨識 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="12">
-  <h2>為什麼需要風險辨識</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">npm install 一個套件<br>等於信任了它背後的整條供應鏈</div>
-  </div>
-  <div class="info-box warning fragment" data-order="1">
-    <div class="label">真實事件</div>
-    <p><strong>event-stream 事件</strong> — 熱門套件被惡意接管，植入竊取比特幣的程式碼<br><strong>ua-parser-js 事件</strong> — 週下載量 700 萬的套件被注入挖礦程式</p>
-  </div>
+<h2>為什麼需要風險辨識</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">npm install 一個套件<br/>等於信任了它背後的整條供應鏈</div>
 </div>
-
+<div class="info-box warning fragment" data-order="1">
+<div class="label">真實事件</div>
+<p><strong>event-stream 事件</strong> — 熱門套件被惡意接管，植入竊取比特幣的程式碼<br/><strong>ua-parser-js 事件</strong> — 週下載量 700 萬的套件被注入挖礦程式</p>
+</div>
+</div>
 <!-- ══ 13: 供應鏈攻擊流程 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="13">
-  <h2>供應鏈攻擊怎麼發生</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">熱門套件</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">維護者交出權限</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">植入惡意程式碼</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">npm install</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="border-color:var(--red);color:var(--red);">你的機器中招</div>
-  </div>
-  <div class="info-box note fragment" data-order="1">
-    <div class="label">重點</div>
-    <p>攻擊者不需要直接攻擊你<br>只要汙染你信任的套件就夠了</p>
-  </div>
+<h2>供應鏈攻擊怎麼發生</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">熱門套件</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">維護者交出權限</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">植入惡意程式碼</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">npm install</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--red);color:var(--red);">你的機器中招</div>
 </div>
-
+<div class="info-box note fragment" data-order="1">
+<div class="label">重點</div>
+<p>攻擊者不需要直接攻擊你<br/>只要汙染你信任的套件就夠了</p>
+</div>
+</div>
 <!-- ══ 14: 安全檢查五步驟 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="14">
-  <h2>Repo 安全檢查清單</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon done">1</div>
-      <div class="check-text">
-        <strong>Stars + 活躍度</strong>
-        <p>Stars 數量、最近 commit 時間、Issue 回覆速度</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon done">2</div>
-      <div class="check-text">
-        <strong>package.json scripts</strong>
-        <p>postinstall / preinstall 有沒有可疑指令</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon done">3</div>
-      <div class="check-text">
-        <strong>.env.example 需要什麼 Key</strong>
-        <p>列了哪些 API Key — 你願意提供嗎</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="3">
-      <div class="check-icon done">4</div>
-      <div class="check-text">
-        <strong>AI 掃描外部請求</strong>
-        <p>有沒有向不明 URL 發送資料</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="4">
-      <div class="check-icon done">5</div>
-      <div class="check-text">
-        <strong>README 完整度</strong>
-        <p>文件差的專案，維護品質通常也差</p>
-      </div>
-    </div>
-  </div>
+<h2>Repo 安全檢查清單</h2>
+<div class="checklist">
+<div class="check-item fragment" data-order="0">
+<div class="check-icon done">1</div>
+<div class="check-text">
+<strong>Stars + 活躍度</strong>
+<p>Stars 數量、最近 commit 時間、Issue 回覆速度</p>
 </div>
-
+</div>
+<div class="check-item fragment" data-order="1">
+<div class="check-icon done">2</div>
+<div class="check-text">
+<strong>package.json scripts</strong>
+<p>postinstall / preinstall 有沒有可疑指令</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="2">
+<div class="check-icon done">3</div>
+<div class="check-text">
+<strong>.env.example 需要什麼 Key</strong>
+<p>列了哪些 API Key — 你願意提供嗎</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="3">
+<div class="check-icon done">4</div>
+<div class="check-text">
+<strong>AI 掃描外部請求</strong>
+<p>有沒有向不明 URL 發送資料</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="4">
+<div class="check-icon done">5</div>
+<div class="check-text">
+<strong>README 完整度</strong>
+<p>文件差的專案，維護品質通常也差</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 15: 操作 — AI 掃描 OpenClaw ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="15">
-  <h2>操作：用 AI 掃描 OpenClaw</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">PROMPT</div>
-    <pre>幫我檢查這個 repo 的安全性：
+<h2>操作：用 AI 掃描 OpenClaw</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">PROMPT</div>
+<pre>幫我檢查這個 repo 的安全性：
 1. package.json 的 scripts 有沒有可疑指令
 2. 依賴清單有沒有已知風險套件
 3. .env.example 需要什麼 Key
 4. 有沒有可疑的外部請求
 5. README 完整度如何</pre>
-  </div>
-  <div class="info-box navy fragment" data-order="1">
-    <div class="label">操作對象</div>
-    <p>ai-cooperation/openclaw — 講師的真實專案<br>不是教科書範例，是上線運行的系統</p>
-  </div>
 </div>
-
+<div class="info-box navy fragment" data-order="1">
+<div class="label">操作對象</div>
+<p>ai-cooperation/openclaw — 講師的真實專案<br/>不是教科書範例，是上線運行的系統</p>
+</div>
+</div>
 <!-- ══ 16: AI 掃描結果解讀 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="16">
-  <h2>AI 掃描結果解讀</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">講師帶讀：哪些正常、哪些要注意</p>
-  <div class="compare-two">
-    <div class="compare-col good fragment" data-order="0">
-      <div class="col-label">正常項目</div>
-      <ul>
-        <li>build / start / test 腳本</li>
-        <li>主流框架依賴</li>
-        <li>MIT / ISC 授權</li>
-        <li>README 有安裝說明</li>
-      </ul>
-    </div>
-    <div class="compare-col bad fragment" data-order="1">
-      <div class="col-label">需要注意</div>
-      <ul>
-        <li>postinstall 執行外部腳本</li>
-        <li>需要多組 API Key</li>
-        <li>直接呼叫外部 API</li>
-        <li>沒有 .gitignore</li>
-      </ul>
-    </div>
-  </div>
+<h2>AI 掃描結果解讀</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">講師帶讀：哪些正常、哪些要注意</p>
+<div class="compare-two">
+<div class="compare-col good fragment" data-order="0">
+<div class="col-label">正常項目</div>
+<ul>
+<li>build / start / test 腳本</li>
+<li>主流框架依賴</li>
+<li>MIT / ISC 授權</li>
+<li>README 有安裝說明</li>
+</ul>
 </div>
-
+<div class="compare-col bad fragment" data-order="1">
+<div class="col-label">需要注意</div>
+<ul>
+<li>postinstall 執行外部腳本</li>
+<li>需要多組 API Key</li>
+<li>直接呼叫外部 API</li>
+<li>沒有 .gitignore</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 17: .env.example 分析 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="17">
-  <h2>.env.example 告訴你什麼</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">.env.example</div>
-    <pre>OPENAI_API_KEY=your-key-here
+<h2>.env.example 告訴你什麼</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">.env.example</div>
+<pre>OPENAI_API_KEY=your-key-here
 FIREBASE_API_KEY=your-key-here
 ANTHROPIC_API_KEY=your-key-here</pre>
-  </div>
-  <div class="info-box tip fragment" data-order="1">
-    <div class="label">判斷重點</div>
-    <p>這些 Key 會花你的錢嗎<br>你願意讓這個專案使用你的 Key 嗎<br>有沒有替代方案（免費 tier / mock data）</p>
-  </div>
 </div>
-
+<div class="info-box tip fragment" data-order="1">
+<div class="label">判斷重點</div>
+<p>這些 Key 會花你的錢嗎<br/>你願意讓這個專案使用你的 Key 嗎<br/>有沒有替代方案（免費 tier / mock data）</p>
+</div>
+</div>
 <!-- ══ 18: postinstall 風險 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="18">
-  <h2>postinstall 風險</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">package.json</div>
-    <pre>"scripts": {
+<h2>postinstall 風險</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">package.json</div>
+<pre>"scripts": {
   "postinstall": "node setup.js",  // 安裝完自動執行
   "build": "next build",           // 正常
   "start": "next start"            // 正常
 }</pre>
-  </div>
-  <div class="info-box warning fragment" data-order="1">
-    <div class="label">為什麼危險</div>
-    <p>npm install 之後會自動執行 postinstall<br>你還沒看過程式碼，它已經在你電腦上跑了</p>
-  </div>
-  <div class="info-box success fragment" data-order="2">
-    <div class="label">安全做法</div>
-    <p>先用 <span class="hl-navy">npm install --ignore-scripts</span> 安裝<br>檢查完 postinstall 內容，確認安全再執行</p>
-  </div>
 </div>
-
+<div class="info-box warning fragment" data-order="1">
+<div class="label">為什麼危險</div>
+<p>npm install 之後會自動執行 postinstall<br/>你還沒看過程式碼，它已經在你電腦上跑了</p>
+</div>
+<div class="info-box success fragment" data-order="2">
+<div class="label">安全做法</div>
+<p>先用 <span class="hl-navy">npm install --ignore-scripts</span> 安裝<br/>檢查完 postinstall 內容，確認安全再執行</p>
+</div>
+</div>
 <!-- ══ 19: 三層信任模型 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="19">
-  <h2>開源專案信任三層模型</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num" style="background:var(--green);">1</div>
-      <div class="step-content">
-        <strong>高信任 — 大型基金會 / 知名團隊維護</strong>
-        <p>React, Vue, Next.js, Express — 可直接使用</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num" style="background:var(--gold);">2</div>
-      <div class="step-content">
-        <strong>中信任 — 社群活躍、Stars 多、持續更新</strong>
-        <p>需要看 scripts、依賴、Issue 品質 — 檢查後使用</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num" style="background:var(--red);">3</div>
-      <div class="step-content">
-        <strong>低信任 — 個人專案、久未更新、Stars 少</strong>
-        <p>需要 AI 深度掃描 — 確認安全才使用</p>
-      </div>
-    </div>
-  </div>
+<h2>開源專案信任三層模型</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num" style="background:var(--green);">1</div>
+<div class="step-content">
+<strong>高信任 — 大型基金會 / 知名團隊維護</strong>
+<p>React, Vue, Next.js, Express — 可直接使用</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num" style="background:var(--gold);">2</div>
+<div class="step-content">
+<strong>中信任 — 社群活躍、Stars 多、持續更新</strong>
+<p>需要看 scripts、依賴、Issue 品質 — 檢查後使用</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num" style="background:var(--red);">3</div>
+<div class="step-content">
+<strong>低信任 — 個人專案、久未更新、Stars 少</strong>
+<p>需要 AI 深度掃描 — 確認安全才使用</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 20: 供應鏈安全概念 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="20">
-  <h2>供應鏈安全</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">你信任的套件可能有惡意程式碼<br>你信任的依賴也可能被接管</div>
-  </div>
-  <div class="info-box note fragment" data-order="1">
-    <div class="label">關鍵思維</div>
-    <p>不是「這個套件安不安全」的問題<br>是「這個套件的依賴的依賴安不安全」的問題<br>一個 npm install 平均拉進 <span class="hl-red">200+ 個依賴</span></p>
-  </div>
+<h2>供應鏈安全</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">你信任的套件可能有惡意程式碼<br/>你信任的依賴也可能被接管</div>
 </div>
-
+<div class="info-box note fragment" data-order="1">
+<div class="label">關鍵思維</div>
+<p>不是「這個套件安不安全」的問題<br/>是「這個套件的依賴的依賴安不安全」的問題<br/>一個 npm install 平均拉進 <span class="hl-red">200+ 個依賴</span></p>
+</div>
+</div>
 <!-- ══ 21: 依賴樹深度 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="21">
-  <h2>依賴樹的深度</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">你的專案</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">套件 A</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">套件 B</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="border-color:var(--red);color:var(--red);">被接管的套件 C</div>
-  </div>
-  <div class="big-stat fragment" data-order="1">
-    <div class="num">200+</div>
-    <div class="unit">平均依賴數量</div>
-    <div class="caption">一個 npm install 背後的真相</div>
-  </div>
+<h2>依賴樹的深度</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">你的專案</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">套件 A</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">套件 B</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--red);color:var(--red);">被接管的套件 C</div>
 </div>
-
+<div class="big-stat fragment" data-order="1">
+<div class="num">200+</div>
+<div class="unit">平均依賴數量</div>
+<div class="caption">一個 npm install 背後的真相</div>
+</div>
+</div>
 <!-- ══ 22: Round 2 小結 ══ -->
 <div class="slide dataviz" data-act="R2 風險辨識" data-index="22">
-  <h2>Round 2 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>AI 是你的安全掃描器</h3>
-    <p>真實專案比教科書複雜 — AI 幫你快速理解<br>五步驟檢查清單，養成 clone 前先檢查的習慣</p>
-  </div>
+<h2>Round 2 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>AI 是你的安全掃描器</h3>
+<p>真實專案比教科書複雜 — AI 幫你快速理解<br/>五步驟檢查清單，養成 clone 前先檢查的習慣</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 3：Clone 改造 (slides 23-31)
      ══════════════════════════════════════ -->
-
 <!-- ══ 23: Chapter poster — Round 3 ══ -->
-<div class="slide poster overlay-heavy" data-act="R3 Clone 改造" data-index="23"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:05</p>
-  <h1 style="color:#fff;font-size:2.8rem;">Clone<br><span style="color:#7ec8e3;">用 MCP/Skills 改造</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">Fork 一個好專案，用你的工具把它變成你的</p>
+<div class="slide poster overlay-heavy" data-act="R3 Clone 改造" data-index="23" style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:05</p>
+<h1 style="color:#fff;font-size:2.8rem;">Clone<br/><span style="color:#7ec8e3;">用 MCP/Skills 改造</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">Fork 一個好專案，用你的工具把它變成你的</p>
 </div>
-
 <!-- ══ 24: Fork 工作流 ══ -->
 <div class="slide dataviz" data-act="R3 Clone 改造" data-index="24">
-  <h2>Fork 改造工作流</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box accent">Fork</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">Clone</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">AI 改造</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">Push</div>
-  </div>
-  <div class="code-block fragment" data-order="1">
-    <div class="code-label">TERMINAL</div>
-    <pre># 1. 在 GitHub 上按 Fork
+<h2>Fork 改造工作流</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box accent">Fork</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">Clone</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">AI 改造</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">Push</div>
+</div>
+<div class="code-block fragment" data-order="1">
+<div class="code-label">TERMINAL</div>
+<pre># 1. 在 GitHub 上按 Fork
 # 2. Clone 自己的 Fork
 git clone https://github.com/你的帳號/awesome-project.git
 cd awesome-project</pre>
-  </div>
 </div>
-
+</div>
 <!-- ══ 25: 三種改造武器 ══ -->
 <div class="slide dataviz" data-act="R3 Clone 改造" data-index="25">
-  <h2>三種 AI 改造武器</h2>
-  <div class="card-grid">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>Translate Skill</h3>
-      <p>翻譯 README 成中文<br>讓你的 Fork 更好讀</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1">
-      <h3>Code Review Skill</h3>
-      <p>找出可改善的地方<br>AI 幫你列改善清單</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>Claude Code 改功能</h3>
-      <p>直接對 AI 說要改什麼<br>它幫你寫程式碼</p>
-    </div>
-  </div>
+<h2>三種 AI 改造武器</h2>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0">
+<h3>Translate Skill</h3>
+<p>翻譯 README 成中文<br/>讓你的 Fork 更好讀</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>Code Review Skill</h3>
+<p>找出可改善的地方<br/>AI 幫你列改善清單</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>Claude Code 改功能</h3>
+<p>直接對 AI 說要改什麼<br/>它幫你寫程式碼</p>
+</div>
+</div>
+</div>
 <!-- ══ 26: 操作 — Translate README ══ -->
 <div class="slide dataviz" data-act="R3 Clone 改造" data-index="26">
-  <h2>操作：翻譯 README</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">PROMPT</div>
-    <pre>把這個專案的 README.md 翻譯成繁體中文
+<h2>操作：翻譯 README</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">PROMPT</div>
+<pre>把這個專案的 README.md 翻譯成繁體中文
 保留原本的 Markdown 格式
 技術名詞不翻譯</pre>
-  </div>
-  <div class="info-box success fragment" data-order="1">
-    <div class="label">效果</div>
-    <p>30 秒完成整份 README 翻譯<br>你的 Fork 立刻對中文使用者更友善</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1">
+<div class="label">效果</div>
+<p>30 秒完成整份 README 翻譯<br/>你的 Fork 立刻對中文使用者更友善</p>
+</div>
+</div>
 <!-- ══ 27: 操作 — Code Review ══ -->
 <div class="slide dataviz" data-act="R3 Clone 改造" data-index="27">
-  <h2>操作：AI Code Review</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">PROMPT</div>
-    <pre>幫我 review 這個專案的程式碼
+<h2>操作：AI Code Review</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">PROMPT</div>
+<pre>幫我 review 這個專案的程式碼
 列出 3 個最值得改善的地方
 每個給出具體修改建議</pre>
-  </div>
-  <div class="info-box note fragment" data-order="1">
-    <div class="label">觀察</div>
-    <p>AI 不只找 bug — 還會建議架構改善、效能優化、安全加固<br>比你自己讀程式碼有效率得多</p>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="1">
+<div class="label">觀察</div>
+<p>AI 不只找 bug — 還會建議架構改善、效能優化、安全加固<br/>比你自己讀程式碼有效率得多</p>
+</div>
+</div>
 <!-- ══ 28: 操作 — 改功能 ══ -->
 <div class="slide dataviz" data-act="R3 Clone 改造" data-index="28">
-  <h2>操作：改功能</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">PROMPT 範例</div>
-    <pre>把首頁的配色改成深藍色系
+<h2>操作：改功能</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">PROMPT 範例</div>
+<pre>把首頁的配色改成深藍色系
 加上一個「回到頂端」按鈕
 把 Footer 的連結改成我的社群帳號</pre>
-  </div>
-  <div class="info-box tip fragment" data-order="1">
-    <div class="label">改造策略</div>
-    <p>只改必要部分 — 不要重寫整個專案<br>每次改一個小點，確認沒壞再改下一個</p>
-  </div>
 </div>
-
+<div class="info-box tip fragment" data-order="1">
+<div class="label">改造策略</div>
+<p>只改必要部分 — 不要重寫整個專案<br/>每次改一個小點，確認沒壞再改下一個</p>
+</div>
+</div>
 <!-- ══ 29: MCP + Skills 改造特別有效 ══ -->
 <div class="slide dataviz" data-act="R3 Clone 改造" data-index="29">
-  <h2>MCP + Skills 改造別人專案特別有效</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒有工具</div>
-      <ul>
-        <li>手動讀程式碼理解架構</li>
-        <li>自己搜尋翻譯工具</li>
-        <li>手動一個檔案一個檔案改</li>
-        <li>不確定改了會不會壞</li>
-      </ul>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">有 MCP + Skills</div>
-      <ul>
-        <li>AI 30 秒摘要架構</li>
-        <li>Translate Skill 一鍵翻</li>
-        <li>Claude Code 批次改</li>
-        <li>Code Review 確認品質</li>
-      </ul>
-    </div>
-  </div>
+<h2>MCP + Skills 改造別人專案特別有效</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒有工具</div>
+<ul>
+<li>手動讀程式碼理解架構</li>
+<li>自己搜尋翻譯工具</li>
+<li>手動一個檔案一個檔案改</li>
+<li>不確定改了會不會壞</li>
+</ul>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">有 MCP + Skills</div>
+<ul>
+<li>AI 30 秒摘要架構</li>
+<li>Translate Skill 一鍵翻</li>
+<li>Claude Code 批次改</li>
+<li>Code Review 確認品質</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 30: Push 到自己 repo ══ -->
 <div class="slide dataviz" data-act="R3 Clone 改造" data-index="30">
-  <h2>Push 到自己的 repo</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">TERMINAL</div>
-    <pre>git add .
+<h2>Push 到自己的 repo</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">TERMINAL</div>
+<pre>git add .
 git commit -m "feat: 翻譯 README + 改配色 + 加回頂按鈕"
 git push origin main</pre>
-  </div>
-  <div class="info-box success fragment" data-order="1">
-    <div class="label">成果</div>
-    <p>你的 GitHub 上多了一個改造過的專案<br>這就是你的 Portfolio — 面試時能展示的作品</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1">
+<div class="label">成果</div>
+<p>你的 GitHub 上多了一個改造過的專案<br/>這就是你的 Portfolio — 面試時能展示的作品</p>
+</div>
+</div>
 <!-- ══ 31: Round 3 小結 ══ -->
 <div class="slide dataviz" data-act="R3 Clone 改造" data-index="31">
-  <h2>Round 3 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>Fork + AI 改造 = 最快的作品累積法</h3>
-    <p>不必從零開始 — 站在好專案的基礎上<br>用 M3-1 建好的工具，讓改造效率翻倍</p>
-  </div>
+<h2>Round 3 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>Fork + AI 改造 = 最快的作品累積法</h3>
+<p>不必從零開始 — 站在好專案的基礎上<br/>用 M3-1 建好的工具，讓改造效率翻倍</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 4：限時 30min 部署 (slides 32-40)
      ══════════════════════════════════════ -->
-
 <!-- ══ 32: Chapter poster — Round 4 ══ -->
-<div class="slide poster overlay-heavy" data-act="R4 限時部署" data-index="32"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:05–1:35</p>
-  <h1 style="color:#fff;font-size:2.8rem;">限時任務<br><span style="color:#7ec8e3;">30 分鐘部署上線</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">自己找專案、掃描、改造、部署 — 全流程</p>
+<div class="slide poster overlay-heavy" data-act="R4 限時部署" data-index="32" style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:05–1:35</p>
+<h1 style="color:#fff;font-size:2.8rem;">限時任務<br/><span style="color:#7ec8e3;">30 分鐘部署上線</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">自己找專案、掃描、改造、部署 — 全流程</p>
 </div>
-
 <!-- ══ 33: 任務規則 ══ -->
 <div class="slide dataviz" data-act="R4 限時部署" data-index="33">
-  <h2>限時任務規則</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon done">1</div>
-      <div class="check-text">
-        <strong>自己去 GitHub 找一個開源專案</strong>
-        <p>限制：≤10MB / Stars ≥50 / 6 個月內有更新</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon done">2</div>
-      <div class="check-text">
-        <strong>AI 掃描安全性 → 確認安全</strong>
-        <p>五步驟檢查清單，不安全就換一個</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon done">3</div>
-      <div class="check-text">
-        <strong>Clone → AI 改造至少 3 處</strong>
-        <p>翻譯、改配色、加功能，至少改三個地方</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="3">
-      <div class="check-icon done">4</div>
-      <div class="check-text">
-        <strong>Push → 部署上線</strong>
-        <p>GitHub Pages 或本機跑起來都算</p>
-      </div>
-    </div>
-  </div>
+<h2>限時任務規則</h2>
+<div class="checklist">
+<div class="check-item fragment" data-order="0">
+<div class="check-icon done">1</div>
+<div class="check-text">
+<strong>自己去 GitHub 找一個開源專案</strong>
+<p>限制：≤10MB / Stars ≥50 / 6 個月內有更新</p>
 </div>
-
+</div>
+<div class="check-item fragment" data-order="1">
+<div class="check-icon done">2</div>
+<div class="check-text">
+<strong>AI 協助初篩 → 依五項證據判斷是否低風險試跑</strong>
+<p>先看 scripts / .env.example / 外部請求<br/>授權 / 最近活躍度，再用 npm install --ignore-scripts 或 sandbox 試跑</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="2">
+<div class="check-icon done">3</div>
+<div class="check-text">
+<strong>Clone → AI 改造至少 3 處</strong>
+<p>翻譯、改配色、加功能，至少改三個地方</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="3">
+<div class="check-icon done">4</div>
+<div class="check-text">
+<strong>Push → 部署上線</strong>
+<p>GitHub Pages 或本機跑起來都算</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 34: 計時開始 ══ -->
 <div class="slide dataviz" data-act="R4 限時部署" data-index="34">
-  <h2>計時開始</h2>
-  <div class="big-stat">
-    <div class="num">30</div>
-    <div class="unit">分鐘</div>
-    <div class="caption">能部署成功的舉手</div>
-  </div>
-  <div class="info-box navy fragment" data-order="0">
-    <div class="label">時間分配建議</div>
-    <p>找專案 + 安全掃描：<span class="hl-navy">10 min</span><br>Clone + AI 改造：<span class="hl-navy">15 min</span><br>Push + 部署：<span class="hl-navy">5 min</span></p>
-  </div>
+<h2>計時開始</h2>
+<div class="big-stat">
+<div class="num">30</div>
+<div class="unit">分鐘</div>
+<div class="caption">能部署成功的舉手</div>
 </div>
-
+<div class="info-box navy fragment" data-order="0">
+<div class="label">時間分配建議</div>
+<p>找專案 + 安全掃描：<span class="hl-navy">10 min</span><br/>Clone + AI 改造：<span class="hl-navy">15 min</span><br/>Push + 部署：<span class="hl-navy">5 min</span></p>
+</div>
+</div>
 <!-- ══ 35: 專案篩選三條件 ══ -->
 <div class="slide dataviz" data-act="R4 限時部署" data-index="35">
-  <h2>專案篩選三條件</h2>
-  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
-    <div class="stat-box fragment" data-order="0">
-      <div class="val">≤10MB</div>
-      <div class="label">Repo 大小</div>
-    </div>
-    <div class="stat-box fragment" data-order="1">
-      <div class="val">≥50</div>
-      <div class="label">Stars 數量</div>
-    </div>
-    <div class="stat-box fragment" data-order="2">
-      <div class="val">6 月</div>
-      <div class="label">最近更新時間</div>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="3">
-    <div class="label">搜尋技巧</div>
-    <p>GitHub 搜尋欄 → 加上 stars:>50 size:&lt;10000<br>選 Recently updated 排序</p>
-  </div>
+<h2>專案篩選三條件</h2>
+<div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+<div class="stat-box fragment" data-order="0">
+<div class="val">≤10MB</div>
+<div class="label">Repo 大小</div>
 </div>
-
+<div class="stat-box fragment" data-order="1">
+<div class="val">≥50</div>
+<div class="label">Stars 數量</div>
+</div>
+<div class="stat-box fragment" data-order="2">
+<div class="val">6 月</div>
+<div class="label">最近更新時間</div>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="3">
+<div class="label">搜尋技巧</div>
+<p>GitHub 搜尋欄 → 加上 stars:&gt;50 size:&lt;10000<br/>選 Recently updated 排序</p>
+</div>
+</div>
 <!-- ══ 36: 成功關鍵 ══ -->
 <div class="slide dataviz" data-act="R4 限時部署" data-index="36">
-  <h2>30 分鐘成功的關鍵</h2>
-  <div class="card-grid">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>選對專案</h3>
-      <p>簡單、文件好、依賴少<br>HTML/CSS 類最容易成功</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1">
-      <h3>AI 快速理解</h3>
-      <p>不要自己讀程式碼<br>讓 AI 30 秒摘要結構</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>只改必要部分</h3>
-      <p>不要想重寫整個專案<br>改三處就夠了</p>
-    </div>
-  </div>
+<h2>30 分鐘成功的關鍵</h2>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0">
+<h3>選對專案</h3>
+<p>簡單、文件好、依賴少<br/>HTML/CSS 類最容易成功</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>AI 快速理解</h3>
+<p>不要自己讀程式碼<br/>讓 AI 30 秒摘要結構</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>只改必要部分</h3>
+<p>不要想重寫整個專案<br/>改三處就夠了</p>
+</div>
+</div>
+</div>
 <!-- ══ 37: 常見失敗原因 ══ -->
 <div class="slide dataviz" data-act="R4 限時部署" data-index="37">
-  <h2>常見失敗原因</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num" style="background:var(--red);">1</div>
-      <div class="step-content">
-        <strong>選太複雜的專案</strong>
-        <p>30 分鐘搞不定 → 花太多時間在理解架構</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num" style="background:var(--red);">2</div>
-      <div class="step-content">
-        <strong>依賴太多 npm install 一堆錯</strong>
-        <p>Node 版本不對、平台不相容、套件衝突</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num" style="background:var(--red);">3</div>
-      <div class="step-content">
-        <strong>README 差不知道怎麼跑</strong>
-        <p>文件品質差 = 選擇失誤的訊號</p>
-      </div>
-    </div>
-  </div>
+<h2>常見失敗原因</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num" style="background:var(--red);">1</div>
+<div class="step-content">
+<strong>選太複雜的專案</strong>
+<p>30 分鐘搞不定 → 花太多時間在理解架構</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num" style="background:var(--red);">2</div>
+<div class="step-content">
+<strong>依賴太多 npm install 一堆錯</strong>
+<p>Node 版本不對、平台不相容、套件衝突</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num" style="background:var(--red);">3</div>
+<div class="step-content">
+<strong>README 差不知道怎麼跑</strong>
+<p>文件品質差 = 選擇失誤的訊號</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 38: 分享時間 ══ -->
 <div class="slide dataviz" data-act="R4 限時部署" data-index="38">
-  <h2>分享：成功與失敗</h2>
-  <div class="compare-two">
-    <div class="compare-col good fragment" data-order="0">
-      <div class="col-label">成功的同學</div>
-      <ul>
-        <li>選了什麼專案</li>
-        <li>改了哪三處</li>
-        <li>怎麼部署的</li>
-      </ul>
-    </div>
-    <div class="compare-col bad fragment" data-order="1">
-      <div class="col-label">卡住的同學</div>
-      <ul>
-        <li>卡在哪一步</li>
-        <li>時間花在哪裡最多</li>
-        <li>下次會怎麼選</li>
-      </ul>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="2">
-    <p style="font-size:.95rem;">失敗不丟臉 — 失敗的經驗更值錢<br>知道「什麼不能選」也是判斷力</p>
-  </div>
+<h2>分享：成功與失敗</h2>
+<div class="compare-two">
+<div class="compare-col good fragment" data-order="0">
+<div class="col-label">成功的同學</div>
+<ul>
+<li>選了什麼專案</li>
+<li>改了哪三處</li>
+<li>怎麼部署的</li>
+</ul>
 </div>
-
+<div class="compare-col bad fragment" data-order="1">
+<div class="col-label">卡住的同學</div>
+<ul>
+<li>卡在哪一步</li>
+<li>時間花在哪裡最多</li>
+<li>下次會怎麼選</li>
+</ul>
+</div>
+</div>
+<div class="info-box note fragment" data-order="2">
+<p style="font-size:.95rem;">失敗不丟臉 — 失敗的經驗更值錢<br/>知道「什麼不能選」也是判斷力</p>
+</div>
+</div>
 <!-- ══ 39: 專案選擇判斷力 ══ -->
 <div class="slide dataviz" data-act="R4 限時部署" data-index="39">
-  <h2>專案選擇判斷力</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">會挑比會做更重要</div>
-    <div class="quote-src">— 選錯專案，AI 也救不了你</div>
-  </div>
-  <div class="info-box navy fragment" data-order="1">
-    <div class="label">判斷公式</div>
-    <p><span class="hl-navy">好專案</span> = 文件清楚 + 依賴少 + 大小合理 + 最近有人維護<br><span class="hl-red">壞專案</span> = README 不完整 + 依賴爆多 + 三年沒更新</p>
-  </div>
+<h2>專案選擇判斷力</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">會挑比會做更重要</div>
+<div class="quote-src">— 選錯專案，AI 也救不了你</div>
 </div>
-
+<div class="info-box navy fragment" data-order="1">
+<div class="label">判斷公式</div>
+<p><span class="hl-navy">好專案</span> = 文件清楚 + 依賴少 + 大小合理 + 最近有人維護<br/><span class="hl-red">壞專案</span> = README 不完整 + 依賴爆多 + 三年沒更新</p>
+</div>
+</div>
 <!-- ══ 40: Round 4 小結 ══ -->
 <div class="slide dataviz" data-act="R4 限時部署" data-index="40">
-  <h2>Round 4 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>限時任務練的是判斷力</h3>
-    <p>30 分鐘夠不夠，取決於你的選擇<br>「會挑比會做更重要」是這一輪的核心</p>
-  </div>
+<h2>Round 4 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>限時任務練的是判斷力</h3>
+<p>30 分鐘夠不夠，取決於你的選擇<br/>「會挑比會做更重要」是這一輪的核心</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 5：講師注意事項 + 急救卡 (slides 41-49)
      ══════════════════════════════════════ -->
-
 <!-- ══ 41: Chapter poster — Round 5 ══ -->
-<div class="slide poster overlay-heavy" data-act="R5 注意事項 + 急救卡" data-index="41"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:35–1:50</p>
-  <h1 style="color:#fff;font-size:2.8rem;">注意事項分享<br><span style="color:#7ec8e3;">+ Git 急救卡</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">每個坑都有一句話解法 — 不用背，遇到問 AI</p>
+<div class="slide poster overlay-heavy" data-act="R5 注意事項 + 急救卡" data-index="41" style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:35–1:50</p>
+<h1 style="color:#fff;font-size:2.8rem;">注意事項分享<br/><span style="color:#7ec8e3;">+ Git 急救卡</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">每個坑都有一句話解法 — 不用背，遇到問 AI</p>
 </div>
-
 <!-- ══ 42: 講師真實注意事項 ══ -->
 <div class="slide dataviz" data-act="R5 注意事項 + 急救卡" data-index="42">
-  <h2>講師真實注意事項</h2>
-  <p style="color:var(--g600);margin-bottom:.6rem;">這些坑我都踩過 — 分享解法讓你少走彎路</p>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num" style="background:var(--red);">1</div>
-      <div class="step-content">
-        <strong>index.lock 卡住</strong>
-        <p>Git 操作中斷留下鎖檔 → 所有 git 指令都失敗</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num" style="background:var(--red);">2</div>
-      <div class="step-content">
-        <strong>git push rejected</strong>
-        <p>遠端有新 commit 你沒拉 → push 被拒絕</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num" style="background:var(--red);">3</div>
-      <div class="step-content">
-        <strong>npm install 失敗</strong>
-        <p>Node 版本不對 / 平台不相容 / 套件衝突</p>
-      </div>
-    </div>
-  </div>
+<h2>講師真實注意事項</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;">這些坑我都踩過 — 分享解法讓你少走彎路</p>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num" style="background:var(--red);">1</div>
+<div class="step-content">
+<strong>index.lock 卡住</strong>
+<p>Git 操作中斷留下鎖檔 → 所有 git 指令都失敗</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num" style="background:var(--red);">2</div>
+<div class="step-content">
+<strong>git push rejected</strong>
+<p>遠端有新 commit 你沒拉 → push 被拒絕</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num" style="background:var(--red);">3</div>
+<div class="step-content">
+<strong>npm install 失敗</strong>
+<p>Node 版本不對 / 平台不相容 / 套件衝突</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 43: 更多注意事項 ══ -->
 <div class="slide dataviz" data-act="R5 注意事項 + 急救卡" data-index="43">
-  <h2>更多真實注意事項</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num" style="background:var(--red);">4</div>
-      <div class="step-content">
-        <strong>SSH timeout</strong>
-        <p>網路問題或 SSH Agent 沒載入 → 連不上 GitHub</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num" style="background:var(--red);">5</div>
-      <div class="step-content">
-        <strong>pre-commit hook 擋住</strong>
-        <p>Hook 檢查不通過 → commit 被攔截</p>
-      </div>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="2">
-    <div class="label">共通解法</div>
-    <p>遇到任何錯誤 → 複製錯誤訊息 → 貼給 AI<br>AI 比 Google 更快給你正確解法</p>
-  </div>
+<h2>更多真實注意事項</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num" style="background:var(--red);">4</div>
+<div class="step-content">
+<strong>SSH timeout</strong>
+<p>網路問題或 SSH Agent 沒載入 → 連不上 GitHub</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num" style="background:var(--red);">5</div>
+<div class="step-content">
+<strong>pre-commit hook 擋住</strong>
+<p>Hook 檢查不通過 → commit 被攔截</p>
+</div>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="2">
+<div class="label">共通解法</div>
+<p>遇到任何錯誤 → 複製錯誤訊息 → 貼給 AI<br/>AI 比 Google 更快給你正確解法</p>
+</div>
+</div>
 <!-- ══ 44: Git 急救卡 — 標題 ══ -->
 <div class="slide dataviz" data-act="R5 注意事項 + 急救卡" data-index="44">
-  <h2>Git 急救卡</h2>
-  <p style="color:var(--g600);margin-bottom:.8rem;">一個問題一句話解法 — 存在手機裡隨時查</p>
-  <div class="card-grid" style="max-width:1100px;">
-    <div class="card accent-top-red fragment" data-order="0" style="max-width:320px;">
-      <h3>index.lock 卡住</h3>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">rm .git/index.lock</p>
-    </div>
-    <div class="card accent-top-red fragment" data-order="1" style="max-width:320px;">
-      <h3>push rejected</h3>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">git pull --rebase<br>git push</p>
-    </div>
-    <div class="card accent-top-red fragment" data-order="2" style="max-width:320px;">
-      <h3>SSH timeout</h3>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">eval "$(ssh-agent -s)"<br>ssh-add</p>
-    </div>
-  </div>
+<h2>Git 急救卡</h2>
+<p style="color:var(--g600);margin-bottom:.8rem;">一個問題一句話解法 — 存在手機裡隨時查</p>
+<div class="card-grid" style="max-width:1100px;">
+<div class="card accent-top-red fragment" data-order="0" style="max-width:320px;">
+<h3>index.lock 卡住</h3>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">rm .git/index.lock</p>
 </div>
-
+<div class="card accent-top-red fragment" data-order="1" style="max-width:320px;">
+<h3>push rejected</h3>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">git pull --rebase<br/>git push</p>
+</div>
+<div class="card accent-top-red fragment" data-order="2" style="max-width:320px;">
+<h3>SSH timeout</h3>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">eval "$(ssh-agent -s)"<br/>ssh-add</p>
+</div>
+</div>
+</div>
 <!-- ══ 45: Git 急救卡 — 更多 ══ -->
 <div class="slide dataviz" data-act="R5 注意事項 + 急救卡" data-index="45">
-  <h2>Git 急救卡（續）</h2>
-  <div class="card-grid" style="max-width:1100px;">
-    <div class="card accent-top-orange fragment" data-order="0" style="max-width:320px;">
-      <h3>hook 擋住 commit</h3>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">cat .git/hooks/pre-commit<br># 看 hook 內容再決定</p>
-    </div>
-    <div class="card accent-top-orange fragment" data-order="1" style="max-width:320px;">
-      <h3>npm install 失敗</h3>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">node -v  # 檢查版本<br># 或貼錯誤訊息問 AI</p>
-    </div>
-    <div class="card accent-top-orange fragment" data-order="2" style="max-width:320px;">
-      <h3>merge conflict</h3>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;"># 讓 AI 幫你解衝突<br>把衝突檔案貼給 Claude</p>
-    </div>
-  </div>
+<h2>Git 急救卡（續）</h2>
+<div class="card-grid" style="max-width:1100px;">
+<div class="card accent-top-orange fragment" data-order="0" style="max-width:320px;">
+<h3>hook 擋住 commit</h3>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">cat .git/hooks/pre-commit<br/># 看 hook 內容再決定</p>
 </div>
-
+<div class="card accent-top-orange fragment" data-order="1" style="max-width:320px;">
+<h3>npm install 失敗</h3>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;">node -v  # 檢查版本<br/># 或貼錯誤訊息問 AI</p>
+</div>
+<div class="card accent-top-orange fragment" data-order="2" style="max-width:320px;">
+<h3>merge conflict</h3>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:var(--offwhite);padding:.4rem .6rem;border-radius:6px;margin-top:.3rem;"># 讓 AI 幫你解衝突<br/>把衝突檔案貼給 Claude</p>
+</div>
+</div>
+</div>
 <!-- ══ 46: 不用背 — 問 AI ══ -->
 <div class="slide dataviz" data-act="R5 注意事項 + 急救卡" data-index="46">
-  <h2>不用背，遇到問 AI</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">遇到錯誤時的 PROMPT</div>
-    <pre>我在執行 git push 時遇到這個錯誤：
+<h2>不用背，遇到問 AI</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">遇到錯誤時的 PROMPT</div>
+<pre>我在執行 git push 時遇到這個錯誤：
 [貼上完整錯誤訊息]
 
 請告訴我原因和解法</pre>
-  </div>
-  <div class="info-box success fragment" data-order="1">
-    <div class="label">重點</div>
-    <p>完整貼上錯誤訊息 — 不要只說「git push 失敗了」<br>AI 需要看到具體錯誤才能給精準解法</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1">
+<div class="label">重點</div>
+<p>完整貼上錯誤訊息 — 不要只說「git push 失敗了」<br/>AI 需要看到具體錯誤才能給精準解法</p>
+</div>
+</div>
 <!-- ══ 47: 注意事項總覽表 ══ -->
 <div class="slide dataviz" data-act="R5 注意事項 + 急救卡" data-index="47">
-  <h2>M3-2 注意事項總覽</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num" style="background:var(--accent);">1</div>
-      <div class="step-content">
-        <strong>clone 超大 repo</strong>
-        <p>引出：先看大小再 clone</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num" style="background:var(--accent);">2</div>
-      <div class="step-content">
-        <strong>postinstall 惡意腳本</strong>
-        <p>引出：供應鏈安全</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num" style="background:var(--accent);">3</div>
-      <div class="step-content">
-        <strong>選太複雜的專案</strong>
-        <p>引出：專案選擇判斷力</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num" style="background:var(--accent);">4</div>
-      <div class="step-content">
-        <strong>npm install 錯誤</strong>
-        <p>引出：依賴管理</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="4">
-      <div class="step-num" style="background:var(--accent);">5</div>
-      <div class="step-content">
-        <strong>README 差不會跑</strong>
-        <p>引出：文件品質也是選擇標準</p>
-      </div>
-    </div>
-  </div>
+<h2>M3-2 注意事項總覽</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num" style="background:var(--accent);">1</div>
+<div class="step-content">
+<strong>clone 超大 repo</strong>
+<p>引出：先看大小再 clone</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num" style="background:var(--accent);">2</div>
+<div class="step-content">
+<strong>postinstall 惡意腳本</strong>
+<p>引出：供應鏈安全</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num" style="background:var(--accent);">3</div>
+<div class="step-content">
+<strong>選太複雜的專案</strong>
+<p>引出：專案選擇判斷力</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num" style="background:var(--accent);">4</div>
+<div class="step-content">
+<strong>npm install 錯誤</strong>
+<p>引出：依賴管理</p>
+</div>
+</div>
+<div class="step fragment" data-order="4">
+<div class="step-num" style="background:var(--accent);">5</div>
+<div class="step-content">
+<strong>README 差不會跑</strong>
+<p>引出：文件品質也是選擇標準</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 48: Round 5 小結 ══ -->
 <div class="slide dataviz" data-act="R5 注意事項 + 急救卡" data-index="48">
-  <h2>Round 5 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>坑不可怕，沒有解法才可怕</h3>
-    <p>每個坑都有一句話解法<br>急救卡存起來，遇到時比 Google 更快</p>
-  </div>
+<h2>Round 5 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>坑不可怕，沒有解法才可怕</h3>
+<p>每個坑都有一句話解法<br/>急救卡存起來，遇到時比 Google 更快</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 6：回顧 + 開源工具箱 (slides 49-57)
      ══════════════════════════════════════ -->
-
 <!-- ══ 49: Chapter poster — Round 6 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6 開源工具箱" data-index="49"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:50–2:00</p>
-  <h1 style="color:#fff;font-size:2.8rem;">回顧<br><span style="color:#7ec8e3;">你的開源工具箱</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">今天帶走四件東西</p>
+<div class="slide poster overlay-heavy" data-act="R6 開源工具箱" data-index="49" style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:50–2:00</p>
+<h1 style="color:#fff;font-size:2.8rem;">回顧<br/><span style="color:#7ec8e3;">你的開源工具箱</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">今天帶走四件東西</p>
 </div>
-
 <!-- ══ 50: 六維度反思 ══ -->
 <div class="slide dataviz" data-act="R6 開源工具箱" data-index="50">
-  <h2>六維度反思</h2>
-  <div class="card-grid" style="max-width:1100px;">
-    <div class="card accent-top fragment" data-order="0" style="max-width:260px;">
-      <h3>判斷力</h3>
-      <p>我能快速判斷一個<br>專案值不值得用嗎</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1" style="max-width:260px;">
-      <h3>安全意識</h3>
-      <p>我知道 clone 前<br>要檢查什麼嗎</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2" style="max-width:260px;">
-      <h3>改造能力</h3>
-      <p>我能用 AI 工具<br>快速改造專案嗎</p>
-    </div>
-    <div class="card accent-top-orange fragment" data-order="3" style="max-width:260px;">
-      <h3>部署經驗</h3>
-      <p>我能在限時內<br>把專案上線嗎</p>
-    </div>
-    <div class="card accent-top-purple fragment" data-order="4" style="max-width:260px;">
-      <h3>除錯能力</h3>
-      <p>遇到 Git 問題<br>我知道怎麼解決嗎</p>
-    </div>
-    <div class="card accent-top-green fragment" data-order="5" style="max-width:260px;">
-      <h3>協作思維</h3>
-      <p>我理解 Fork / PR<br>的開源協作流程嗎</p>
-    </div>
-  </div>
+<h2>六維度反思</h2>
+<div class="card-grid" style="max-width:1100px;">
+<div class="card accent-top fragment" data-order="0" style="max-width:260px;">
+<h3>判斷力</h3>
+<p>我能快速判斷一個<br/>專案值不值得用嗎</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1" style="max-width:260px;">
+<h3>安全意識</h3>
+<p>我知道 clone 前<br/>要檢查什麼嗎</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2" style="max-width:260px;">
+<h3>改造能力</h3>
+<p>我能用 AI 工具<br/>快速改造專案嗎</p>
+</div>
+<div class="card accent-top-orange fragment" data-order="3" style="max-width:260px;">
+<h3>部署經驗</h3>
+<p>我能在限時內<br/>把專案上線嗎</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="4" style="max-width:260px;">
+<h3>除錯能力</h3>
+<p>遇到 Git 問題<br/>我知道怎麼解決嗎</p>
+</div>
+<div class="card accent-top-green fragment" data-order="5" style="max-width:260px;">
+<h3>協作思維</h3>
+<p>我理解 Fork / PR<br/>的開源協作流程嗎</p>
+</div>
+</div>
+</div>
 <!-- ══ 51: 你的開源工具箱 ══ -->
 <div class="slide dataviz" data-act="R6 開源工具箱" data-index="51">
-  <h2>你的開源工具箱</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon done">1</div>
-      <div class="check-text">
-        <strong>推薦大神專案清單</strong>
-        <p>精選過的好專案，直接 Fork 或學習</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon done">2</div>
-      <div class="check-text">
-        <strong>Repo 安全檢查清單</strong>
-        <p>五步驟掃描，clone 前必跑</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon done">3</div>
-      <div class="check-text">
-        <strong>Git 急救卡</strong>
-        <p>一個問題一句話解法，存手機裡備用</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="3">
-      <div class="check-icon done">4</div>
-      <div class="check-text">
-        <strong>Fork 改造過的作品</strong>
-        <p>你的 GitHub 上多了一個 Portfolio</p>
-      </div>
-    </div>
-  </div>
+<h2>你的開源工具箱</h2>
+<div class="checklist">
+<div class="check-item fragment" data-order="0">
+<div class="check-icon done">1</div>
+<div class="check-text">
+<strong>推薦大神專案清單</strong>
+<p>精選過的好專案，直接 Fork 或學習</p>
 </div>
-
+</div>
+<div class="check-item fragment" data-order="1">
+<div class="check-icon done">2</div>
+<div class="check-text">
+<strong>Repo 安全檢查清單</strong>
+<p>五步驟掃描，clone 前必跑</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="2">
+<div class="check-icon done">3</div>
+<div class="check-text">
+<strong>Git 急救卡</strong>
+<p>一個問題一句話解法，存手機裡備用</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="3">
+<div class="check-icon done">4</div>
+<div class="check-text">
+<strong>Fork 改造過的作品</strong>
+<p>你的 GitHub 上多了一個 Portfolio</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 52: 安全檢查清單完整版 ══ -->
 <div class="slide dataviz" data-act="R6 開源工具箱" data-index="52">
-  <h2>安全檢查清單（完整版）</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon warn">!</div>
-      <div class="check-text">
-        <strong>Stars + 最近活躍度</strong>
-        <p>Stars ≥50、6 個月內有 commit</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon warn">!</div>
-      <div class="check-text">
-        <strong>package.json scripts</strong>
-        <p>postinstall / preinstall 有沒有可疑指令</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon warn">!</div>
-      <div class="check-text">
-        <strong>.env.example 需要什麼 Key</strong>
-        <p>你願意提供這些 Key 嗎</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="3">
-      <div class="check-icon warn">!</div>
-      <div class="check-text">
-        <strong>AI 掃描外部請求</strong>
-        <p>有沒有向不明 URL 發送資料</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="4">
-      <div class="check-icon warn">!</div>
-      <div class="check-text">
-        <strong>README + LICENSE 完整度</strong>
-        <p>授權類型確認、文件品質評估</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="5">
-      <div class="check-icon warn">!</div>
-      <div class="check-text">
-        <strong>依賴數量 + 大小</strong>
-        <p>依賴越少越安全，repo ≤10MB 為佳</p>
-      </div>
-    </div>
-  </div>
+<h2>安全檢查清單（完整版）</h2>
+<div class="checklist">
+<div class="check-item fragment" data-order="0">
+<div class="check-icon warn">!</div>
+<div class="check-text">
+<strong>Stars + 最近活躍度</strong>
+<p>Stars ≥50、6 個月內有 commit</p>
 </div>
-
+</div>
+<div class="check-item fragment" data-order="1">
+<div class="check-icon warn">!</div>
+<div class="check-text">
+<strong>package.json scripts</strong>
+<p>postinstall / preinstall 有沒有可疑指令</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="2">
+<div class="check-icon warn">!</div>
+<div class="check-text">
+<strong>.env.example 需要什麼 Key</strong>
+<p>你願意提供這些 Key 嗎</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="3">
+<div class="check-icon warn">!</div>
+<div class="check-text">
+<strong>AI 掃描外部請求</strong>
+<p>有沒有向不明 URL 發送資料</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="4">
+<div class="check-icon warn">!</div>
+<div class="check-text">
+<strong>README + LICENSE 完整度</strong>
+<p>授權類型確認、文件品質評估</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="5">
+<div class="check-icon warn">!</div>
+<div class="check-text">
+<strong>依賴數量 + 大小</strong>
+<p>依賴越少越安全，repo ≤10MB 為佳</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 53: 今日帶走 ══ -->
 <div class="slide dataviz" data-act="R6 開源工具箱" data-index="53">
-  <h2>今天帶走</h2>
-  <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);max-width:700px;">
-    <div class="stat-box fragment" data-order="0">
-      <div class="val" style="font-size:1.5rem;">大神專案篩選</div>
-      <div class="label">怎麼找到好的 repo</div>
-    </div>
-    <div class="stat-box fragment" data-order="1">
-      <div class="val" style="font-size:1.5rem;">風險判斷</div>
-      <div class="label">clone 前先檢查</div>
-    </div>
-    <div class="stat-box fragment" data-order="2">
-      <div class="val" style="font-size:1.5rem;">限時部署經驗</div>
-      <div class="label">30 min 全流程實戰</div>
-    </div>
-    <div class="stat-box fragment" data-order="3">
-      <div class="val" style="font-size:1.5rem;">Git 急救卡</div>
-      <div class="label">遇到問題不慌</div>
-    </div>
-  </div>
+<h2>帶走清單</h2>
+<div class="anchor-banner">
+<span class="anchor-label">本堂定位</span>
+<span class="anchor-text">複製、抄襲是學習的開始</span>
 </div>
-
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了<br/><em style="color:var(--g500);font-size:.85rem;">從「拿來用」→ 負責任地繼承與改造</em></p>
+<div class="insight-grid">
+<div class="insight-card fragment" data-order="0" style="--card-color:var(--green);">
+<div class="insight-before">從「大神專案直接用」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">偉大背後也有脈絡</div>
+</div>
+<div class="insight-card fragment" data-order="1" style="--card-color:var(--red);">
+<div class="insight-before">從「開源等於安全」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">風險藏在信任裡</div>
+</div>
+<div class="insight-card fragment" data-order="2" style="--card-color:var(--blue);">
+<div class="insight-before">從「改一改就變我的」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">繼承先要懂脈絡</div>
+</div>
+<div class="insight-card fragment" data-order="3" style="--card-color:var(--gold);">
+<div class="insight-before">從「部署成功就穩了」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">上線只是風險開始</div>
+</div>
+<div class="insight-card fragment" data-order="4" style="--card-color:var(--purple);">
+<div class="insight-before">從「壞了再找人救」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">急救能力也是資產</div>
+</div>
+<div class="insight-card fragment" data-order="5" style="--card-color:var(--accent);">
+<div class="insight-before">從「我只是使用者」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">我是生態的繼承者</div>
+</div>
+</div>
+</div>
 <!-- ══ 54: 從 R1 到 R6 的能力成長 ══ -->
 <div class="slide dataviz" data-act="R6 開源工具箱" data-index="54">
-  <h2>從 Round 1 到 Round 6</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">看專案</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">辨風險</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">改造</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">部署</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">急救</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">工具箱</div>
-  </div>
-  <div class="info-box navy fragment" data-order="1">
-    <div class="label">能力成長</div>
-    <p>M3-1 建好了環境和工具<br>M3-2 學會了用這些工具去探索和判斷<br>你已經從「會用」進化到「會選」</p>
-  </div>
+<h2>從 Round 1 到 Round 6</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">看專案</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">辨風險</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">改造</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">部署</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">急救</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">工具箱</div>
 </div>
-
+<div class="info-box navy fragment" data-order="1">
+<div class="label">能力成長</div>
+<p>M3-1 建好了環境和工具<br/>M3-2 學會了用這些工具去探索和判斷<br/>你已經從「會用」進化到「會選」</p>
+</div>
+</div>
 <!-- ══ 55: Stage 3 進度 ══ -->
 <div class="slide dataviz" data-act="R6 開源工具箱" data-index="55">
-  <h2>Stage 3 · 造系統 — 進度</h2>
-  <div class="cycle-ring">
-    <div class="cycle-step fragment" data-order="0">
-      <span class="cycle-label">M3-1</span>
+<h2>Stage 3 · 造系統 — 進度</h2>
+<div class="cycle-ring">
+<div class="cycle-step fragment" data-order="0">
+<span class="cycle-label">M3-1</span>
       CLI + MCP + Skills
     </div>
-    <div class="cycle-step active-step fragment" data-order="1">
-      <span class="cycle-label">M3-2</span>
+<div class="cycle-step active-step fragment" data-order="1">
+<span class="cycle-label">M3-2</span>
       開源 + 風險辨識
     </div>
-    <div class="cycle-step fragment" data-order="2">
-      <span class="cycle-label">M3-3</span>
+<div class="cycle-step fragment" data-order="2">
+<span class="cycle-label">M3-3</span>
       問題集大成
     </div>
-    <div class="cycle-step fragment" data-order="3">
-      <span class="cycle-label">M3-4</span>
+<div class="cycle-step fragment" data-order="3">
+<span class="cycle-label">M3-4</span>
       多 Agent 協作
     </div>
-  </div>
-  <div class="info-box note fragment" data-order="4">
-    <p style="font-size:.95rem;">你已經完成 Stage 3 的前兩堂<br>下一堂會把所有的坑集大成，用 spec.md 系統化解決</p>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="4">
+<p style="font-size:.95rem;">你已經完成 Stage 3 的前兩堂<br/>下一堂會把所有的坑集大成，用 spec.md 系統化解決</p>
+</div>
+</div>
 <!-- ══ 56: 預告 M3-3 ══ -->
 <div class="slide dataviz" data-act="R6 開源工具箱" data-index="56">
-  <h2>下一堂預告：M3-3</h2>
-  <div class="card-grid" style="max-width:700px;">
-    <div class="card accent-top-red fragment" data-order="0" style="max-width:300px;">
-      <h3>問題集大成</h3>
-      <p>所有的坑走過一遍<br>然後用一份文件避開它們</p>
-    </div>
-    <div class="card accent-top fragment" data-order="1" style="max-width:300px;">
-      <h3>spec.md 架構思維</h3>
-      <p>系統藍圖 = 你跟 AI 的溝通契約<br>有規格才不會每次蓋不同的房子</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="2">
-    <div class="label">M3-3 題目</div>
-    <p>諮詢時段預約系統 — 講師自己要用的<br>做完真的上線</p>
-  </div>
+<h2>下一堂預告：M3-3</h2>
+<div class="card-grid" style="max-width:700px;">
+<div class="card accent-top-red fragment" data-order="0" style="max-width:300px;">
+<h3>問題集大成</h3>
+<p>所有的坑走過一遍<br/>然後用一份文件避開它們</p>
 </div>
-
+<div class="card accent-top fragment" data-order="1" style="max-width:300px;">
+<h3>spec.md 架構思維</h3>
+<p>系統藍圖 = 你跟 AI 的溝通契約<br/>有規格才不會每次蓋不同的房子</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="2">
+<div class="label">M3-3 題目</div>
+<p>諮詢時段預約系統 — 講師自己要用的<br/>做完真的上線</p>
+</div>
+</div>
 <!-- ══ 57: END ══ -->
-<div class="slide poster overlay-heavy" data-act="R6 開源工具箱" data-index="57"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
-  <h1 style="color:#fff;font-size:2.8rem;">站在巨人肩膀上<br><span style="color:#7ec8e3;">但先確認巨人是好人</span></h1>
-  <p class="poster-subtitle" style="margin-top:1rem;">大神專案篩選 + 風險判斷 + 限時部署 + Git 急救卡</p>
-  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M3-2 完成</p>
+<div class="slide poster overlay-heavy" data-act="R6 開源工具箱" data-index="57" style="background:linear-gradient(135deg,#0B3C5D 0%,#0a2540 40%,#1a5276 100%);">
+<h1 style="color:#fff;font-size:2.8rem;">站在巨人肩膀上<br/><span style="color:#7ec8e3;">但先確認巨人是好人</span></h1>
+<p class="poster-subtitle" style="margin-top:1rem;">大神專案篩選 + 風險判斷 + 限時部署 + Git 急救卡</p>
+<p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M3-2 完成</p>
 </div>
-
 </div><!-- end .slides -->
-
 <!-- ── Controls ── -->
 <div class="progress" id="progress"></div>
 <div class="slide-counter" id="counter">1 / 58</div>
 <div class="controls">
-  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
-  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+<button disabled="" id="prevBtn" onclick="navigate(-1)">‹</button>
+<button id="nextBtn" onclick="navigate(1)">›</button>
 </div>
-
 <!-- ── Chapter Menu ── -->
 <div class="chapter-menu" id="chapterMenu">
-  <div class="chapter-btn" onclick="toggleChapterMenu()">
-    <span class="chapter-icon">&#9672;</span>
-    <span id="chapterLabel">章節</span>
-    <span class="chapter-arrow">&#9650;</span>
-  </div>
-  <div class="chapter-list" id="chapterList"></div>
+<div class="chapter-btn" onclick="toggleChapterMenu()">
+<span class="chapter-icon">◈</span>
+<span id="chapterLabel">章節</span>
+<span class="chapter-arrow">▲</span>
 </div>
-
+<div class="chapter-list" id="chapterList"></div>
+</div>
 <script>
 (function(){
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -1571,8 +1529,92 @@ git push origin main</pre>
   // Init
   updateUI();
   window.navigate = navigate;
+  window.goTo = goTo;
   window.toggleChapterMenu = toggleChapterMenu;
 })();
 </script>
+
+<!-- VIBE_INJECT_START -->
+<style>
+  .code-block{position:relative;}
+  .code-block .copy-btn{
+    position:absolute;top:.35rem;right:.4rem;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    padding:.18rem .55rem;border:0;border-radius:4px;
+    background:rgba(15,157,138,.85);color:#fff;cursor:pointer;
+    opacity:.55;transition:opacity .15s,background .15s;
+    letter-spacing:.05em;z-index:5;
+  }
+  .code-block:hover .copy-btn,
+  .code-block .copy-btn:focus{opacity:1;}
+  .code-block .copy-btn.copied{background:rgba(52,211,153,.95);opacity:1;}
+  @media (hover:none){.code-block .copy-btn{opacity:.85;}}
+</style>
+<script>
+(function(){
+  /* ── copy button ── */
+  function addBtn(block){
+    if(block.querySelector('.copy-btn'))return;
+    var pre=block.querySelector('pre');
+    if(!pre)return;
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='✓ 已複製';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='複製';btn.classList.remove('copied');},1500);
+      };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text,done);});
+      }else{fallback(text,done);}
+    });
+    block.appendChild(btn);
+  }
+  function fallback(text,cb){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.top='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');cb();}catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ── hash router: #round-N jumps to first slide whose data-act matches "Round N：" or "RN：" ── */
+  function routeHash(){
+    var m=(window.location.hash||'').match(/^#round-(\d+)/i);
+    if(!m)return;
+    var n=m[1];
+    var patterns=[
+      new RegExp('^Round\\s*'+n+'[\u{ff1a}:\\s]','u'),
+      new RegExp('^R'+n+'[\u{ff1a}:\\s]','u'),
+    ];
+    var target=null;
+    var slides=document.querySelectorAll('.slide[data-act]');
+    for(var i=0;i<slides.length;i++){
+      if(target)break;
+      var act=slides[i].getAttribute('data-act')||'';
+      for(var j=0;j<patterns.length;j++){
+        if(patterns[j].test(act)){target=slides[i];break;}
+      }
+    }
+    if(target&&typeof window.goTo==='function'){
+      var idx=parseInt(target.getAttribute('data-index'),10);
+      window.goTo(idx);
+    }
+  }
+  window.addEventListener('hashchange',routeHash);
+
+  function init(){
+    document.querySelectorAll('.code-block').forEach(addBtn);
+    setTimeout(routeHash,80);  /* wait for slide system init */
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{init();}
+})();
+</script>
+<!-- VIBE_INJECT_END -->
+
 </body>
 </html>

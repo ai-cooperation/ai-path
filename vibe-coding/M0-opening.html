@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M0 — 開場：跨越聊天到工作的那一跳 | Vibe Coding</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   M1-1: AI 聊天做作品
+   Design System: WHITE BACKGROUND
+   Accent: --green (#0F9D8A)
+   ═══════════════════════════════════════ */
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --navy:#0B3C5D;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --accent:#0F9D8A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;font-weight:400;background:var(--white);}
+
+/* ── Slides Core ── */
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 4rem 1.5rem;overflow:hidden;}
+.slide.active{display:flex;}
+
+/* ── DataViz: white bg content page ── */
+.slide.dataviz{background:var(--white);color:var(--g900);padding-top:3.5rem;overflow-y:auto;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.dataviz h2{color:var(--g900);}
+
+/* ── Poster: colored gradient chapter dividers ── */
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster::before{content:'';position:absolute;inset:0;z-index:1;}
+.slide.poster>*{position:relative;z-index:2;}
+.slide.poster.overlay-heavy::before{background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.7) 100%);}
+.slide.poster h2{color:#fff;}
+
+/* ── Typography ── */
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+.slide.poster h1{color:#fff;}
+h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;}
+h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
+p,li{font-size:1.1rem;line-height:1.8;}
+.subtitle{font-size:1.15rem;font-weight:500;}
+.dim{opacity:.6;}
+
+/* ── Fragment ── */
+.fragment{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.fragment.visible{opacity:1;transform:none;}
+
+/* ── Step List ── */
+.step-list{text-align:left;max-width:800px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;}
+
+/* ── Stat Grid (white mode) ── */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
+.stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
+.stat-box .val{font-size:2.4rem;font-weight:900;color:var(--green);line-height:1.1;}
+.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Card Grid (white mode) ── */
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:960px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.5rem;min-width:200px;max-width:280px;flex:1;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.card:hover{border-color:var(--green);}
+.card .icon{font-size:2.2rem;margin-bottom:.5rem;}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.6;}
+.card.accent-top{border-top:4px solid var(--green);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+.card.accent-top-purple{border-top:4px solid var(--purple);}
+
+/* ── Flow (white mode) ── */
+.flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
+
+/* architecture grid: 3-column Prompt → Sources → Output 比較 */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
+.arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
+.arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
+
+/* swim lane: 雙泳道 mini 流程（用於 data-index 6 / 5 之類） */
+.lane-wrap{display:flex;flex-direction:column;gap:.5rem;max-width:900px;margin:.4rem auto .6rem;}
+.lane{display:flex;align-items:center;gap:.4rem;background:var(--lane-bg,var(--offwhite));border:1px solid var(--g200);border-left:4px solid var(--lane-color,var(--g400));border-radius:10px;padding:.45rem .7rem;}
+.lane-label{font-size:.8rem;font-weight:700;color:var(--lane-color,var(--g800));min-width:7em;}
+.lane-step{background:#fff;border:1px solid var(--g200);border-radius:6px;padding:.25rem .6rem;font-size:.78rem;color:var(--g800);white-space:nowrap;}
+.lane-arrow{color:var(--lane-color,var(--g400));font-size:.85rem;font-weight:900;}
+.lane-merge{font-size:.78rem;color:var(--g600);text-align:center;padding:.2rem;}
+
+/* insight cards: 心態 BEFORE → AFTER 轉變（用於帶走清單） */
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
+.insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
+.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
+.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+
+/* anchor banner：課程設計者視角的單元核心觀念，置於 h2 與 6 卡之間 */
+.anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
+
+/* ── Info Boxes (white mode) ── */
+.info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.success p{color:var(--g800);}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:var(--g800);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip p{color:var(--g800);}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note p{color:var(--g800);}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue p{color:var(--g800);}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning p{color:var(--g800);}
+
+/* ── Quote Box (white mode) ── */
+.quote-box{max-width:800px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.5rem 2rem;margin:.8rem 0;text-align:left;}
+.quote-box .quote-text{font-size:1.3rem;font-weight:700;line-height:1.6;color:var(--g900);}
+.quote-box .quote-src{font-size:.9rem;color:var(--g400);margin-top:.5rem;}
+
+/* ── Code Block (white mode) ── */
+.code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1.2rem 1.5rem;max-width:800px;width:100%;text-align:left;margin:.8rem 0;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:.9rem;color:var(--g900);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.5rem;}
+
+/* ── Two-Column Compare ── */
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:860px;width:100%;margin-top:.8rem;}
+.compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
+.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--green);}
+.compare-col p,
+.compare-col li{font-size:1rem;line-height:1.7;color:var(--g800);}
+.compare-col ul{padding-left:1.2rem;}
+
+/* ── Theme Grid (topic selection) ── */
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:860px;width:100%;margin-top:1rem;}
+.theme-card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:border-color .2s,box-shadow .2s;}
+.theme-card:hover{border-color:var(--green);box-shadow:0 4px 16px rgba(15,157,138,.15);}
+.theme-card .t-icon{font-size:2rem;margin-bottom:.4rem;}
+.theme-card .t-name{font-size:1rem;font-weight:700;color:var(--g900);}
+.theme-card .t-desc{font-size:.85rem;color:var(--g600);margin-top:.2rem;line-height:1.5;}
+
+/* ── Checklist ── */
+.checklist{max-width:800px;width:100%;}
+.check-item{display:flex;align-items:flex-start;gap:1rem;padding:.7rem 0;border-bottom:1px solid var(--g100);}
+.check-item:last-child{border:none;}
+.check-icon{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.check-icon.done{background:var(--green-lt);color:var(--green);}
+.check-icon.todo{background:var(--offwhite);color:var(--g400);border:2px solid var(--g200);}
+.check-text strong{font-size:1.05rem;color:var(--g900);}
+.check-text p{font-size:.95rem;color:var(--g600);}
+
+/* ── Prompt 四要素 tag style ── */
+.prompt-tags{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.8rem;justify-content:center;}
+.ptag{padding:.5rem 1.2rem;border-radius:100px;font-size:1rem;font-weight:700;}
+.ptag.role{background:var(--blue-lt);color:var(--blue);}
+.ptag.task{background:var(--green-lt);color:var(--green);}
+.ptag.format{background:var(--gold-lt);color:#b07d00;}
+.ptag.limit{background:var(--red-lt);color:var(--red);}
+
+/* ── Big Number Highlight ── */
+.big-stat{text-align:center;margin:1rem 0;}
+.big-stat .num{font-size:4rem;font-weight:900;color:var(--green);line-height:1;}
+.big-stat .unit{font-size:1.2rem;font-weight:700;color:var(--g600);}
+.big-stat .caption{font-size:1rem;color:var(--g600);margin-top:.3rem;}
+
+/* ── Highlight Text ── */
+.hl-green{color:var(--green);font-weight:700;}
+.hl-blue{color:var(--blue);font-weight:700;}
+.hl-gold{color:var(--gold);font-weight:700;}
+.hl-orange{color:var(--orange);font-weight:700;}
+
+/* ── Bottom Line Summary ── */
+.bottom-line{max-width:800px;width:100%;background:var(--green-lt);border:2px solid rgba(15,157,138,.3);border-radius:16px;padding:2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.5rem;color:var(--green);margin-bottom:.6rem;}
+.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:640px;margin:0 auto;line-height:1.7;}
+
+/* ── Poster text helpers ── */
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.9rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin-top:.8rem;}
+
+/* ── Controls (light themed) ── */
+.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--green);transition:width .4s;z-index:100;}
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--green);border-color:var(--green);color:#fff;}
+.controls button:disabled{opacity:.25;cursor:default;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500,var(--g400));font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--green-lt);color:var(--green);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(15,157,138,.2);}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+
+/* ── Chapter Menu (light themed) ── */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--green);}
+.chapter-icon{color:var(--green);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:200px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--green);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--green);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  html,body{font-size:16px;}
+  .slide{padding:1rem 1.2rem 1rem;}
+  .slide.dataviz{padding-top:3rem;}
+  h1{font-size:1.9rem;}
+  h2{font-size:1.4rem;margin-bottom:.6rem;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:.8rem;}
+  .stat-box .val{font-size:1.8rem;}
+  .card-grid{flex-direction:column;align-items:center;}
+  .card{max-width:100%;min-width:0;}
+  .theme-grid{grid-template-columns:repeat(2,1fr);}
+  .compare-two{grid-template-columns:1fr;}
+  .controls button{width:40px;height:40px;font-size:1rem;}
+  .module-title{font-size:.7rem;left:.8rem;top:.6rem;}
+  .module-badge{font-size:.65rem;top:.6rem;right:.6rem;padding:.2rem .6rem;}
+  .quote-box .quote-text{font-size:1.05rem;}
+  .prompt-tags{gap:.5rem;}
+  .ptag{font-size:.9rem;padding:.4rem .9rem;}
+  .code-block pre{font-size:.8rem;}
+  .cycle-ring{gap:.4rem;}
+  .cycle-step{min-width:100px;font-size:.85rem;padding:.5rem .6rem;}
+}
+
+/* ── Cycle Ring (6-round diagram) ── */
+.cycle-ring{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;max-width:860px;width:100%;margin:1rem 0;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.6rem 1rem;font-size:.95rem;font-weight:700;text-align:center;min-width:120px;color:var(--g800);position:relative;}
+.cycle-step.active-step{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.cycle-step .cycle-label{font-size:.75rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step.active-step .cycle-label{color:var(--green);}
+
+/* ── Theme Grid 2x2 ── */
+.theme-grid-2x2{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;max-width:700px;width:100%;margin-top:1rem;}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — 開場</div>
+<div class="module-badge">M0</div>
+<div class="slides">
+<!-- ══════════════════════════════════════
+     Section 1 — 定位（5 slides）
+     ══════════════════════════════════════ -->
+
+<!-- ══ 0: COVER ══ -->
+<div class="slide poster overlay-heavy active" data-act="定位" data-index="0"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#0F9D8A 100%);">
+<p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 學習路徑｜Stage 1</p>
+<h1 style="color:#fff;font-size:3rem;line-height:1.3;">從 AI 對話<br>到可交付作品</h1>
+<p class="poster-subtitle" style="margin-top:1.5rem;font-size:1.05rem;line-height:1.8;">這兩天處理的是第一層能力：<br>把需求說清楚、讓 AI 產出、判斷結果、修正到可交付</p>
+<div style="margin-top:2.5rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#fff;">2026-05-16｜17</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#fff;">4 模組｜12 小時</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#fff;">陳重光</span>
+</div>
+</div>
+
+<!-- ══ 1: 聊天型 vs 工作型使用 ══ -->
+<div class="slide dataviz" data-act="定位" data-index="1">
+<h2>聊天型使用與工作型使用</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.6rem;">同樣用 AI，兩種使用方式產生的價值不同</p>
+<div class="compare-two" style="margin-top:.6rem;">
+<div class="compare-col" style="background:var(--gold-lt);border:2px solid var(--gold);">
+<div class="col-label" style="color:#b07000;">聊天型使用</div>
+<p>單次提問 → 單次回答</p>
+<p>結果停在參考資料</p>
+<p>沒有驗證、沒有下一步</p>
+</div>
+<div class="compare-col" style="background:var(--green-lt);border:2px solid var(--green);">
+<div class="col-label" style="color:var(--green);">工作型使用</div>
+<p>先定義需求</p>
+<p>設定格式與限制</p>
+<p>用可檢查的標準修正產出</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.8rem;">
+<p style="font-size:.95rem;">本課程要建立的是<strong>第二種使用方式</strong></p>
+</div>
+</div>
+
+<!-- ══ 2: 第一層能力的操作模型 ══ -->
+<div class="slide dataviz" data-act="定位" data-index="2">
+<h2>第一層能力的操作模型</h2>
+<div class="flow" style="margin:2rem 0;">
+<div class="flow-box accent" style="min-width:130px;">需求</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:130px;">產出</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:130px;">驗證</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent" style="min-width:130px;">修正</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.8rem;">
+<div class="label">四個節點</div>
+<p style="font-size:.95rem;">每個節點都有對應的判斷與技能。<br>這兩天的四個模組，依序建立這四個節點的處理能力。</p>
+</div>
+</div>
+
+<!-- ══ 3: 三個學習缺口 ══ -->
+<div class="slide dataviz" data-act="定位" data-index="3">
+<h2>三個常見學習缺口</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">學過 AI 課但用不上的結構性原因</p>
+<div class="card-grid" style="margin-top:.5rem;">
+<div class="card fragment" data-order="0" style="border-top:4px solid var(--red);">
+<h3>需求結構化</h3>
+<p style="font-size:.9rem;">會用自然語言聊，<br>但無法把需求拆成<br>可被 AI 執行的結構</p>
+</div>
+<div class="card fragment" data-order="1" style="border-top:4px solid var(--red);">
+<h3>產出判斷</h3>
+<p style="font-size:.9rem;">看得到 AI 給的結果，<br>但缺乏判斷它<br>能不能用的標準</p>
+</div>
+<div class="card fragment" data-order="2" style="border-top:4px solid var(--red);">
+<h3>迭代修正</h3>
+<p style="font-size:.9rem;">不滿意產出時，<br>除了重問一次，<br>沒有其他處理方式</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="margin-top:.6rem;">
+<p style="font-size:.9rem;">本課程的四個模組，<strong>依序處理</strong>這三個缺口。</p>
+</div>
+</div>
+
+<!-- ══ 4: 不教什麼 ══ -->
+<div class="slide dataviz" data-act="定位" data-index="4">
+<h2>本課程不處理的範圍</h2>
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card" style="border-top:4px solid var(--g400);">
+<h3>程式語法</h3>
+<p style="font-size:.9rem;">不要求學員<br>讀懂或撰寫程式碼</p>
+</div>
+<div class="card" style="border-top:4px solid var(--g400);">
+<h3>特定工具按鈕</h3>
+<p style="font-size:.9rem;">不教 ChatGPT / Claude<br>介面點選的固定流程</p>
+</div>
+<div class="card" style="border-top:4px solid var(--g400);">
+<h3>Prompt 招式</h3>
+<p style="font-size:.9rem;">不背特定話術，<br>建立判斷指令<br>結構好壞的能力</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.8rem;">
+<p style="font-size:.95rem;">工具會迭代，介面會改版，特定話術會失效。<br>課程的設計，是讓 AI 工具更換時，建立的判斷框架仍然適用。</p>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Section 2 — 方法（8 slides，含 Demo 內嵌）
+     ══════════════════════════════════════ -->
+
+<!-- ══ 5: 六輪循環 ══ -->
+<div class="slide dataviz" data-act="方法" data-index="5">
+<h2>每堂課的學習結構：六輪循環</h2>
+<div class="flow" style="margin:1.5rem 0;flex-wrap:wrap;">
+<div class="flow-box accent" style="min-width:110px;">操作</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:110px;">觀察</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:110px;">分析</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:110px;">升級</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent" style="min-width:110px;">驗證</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:1.2rem;">
+<div class="label">循環的設計目的</div>
+<p style="font-size:.95rem;">每一輪都從操作開始、回到驗證結束。<br>學員學會的不是某個單一技巧，而是面對新工具時的工作流程。</p>
+</div>
+</div>
+
+<!-- ══ 6: M1-1 為例 ══ -->
+<div class="slide dataviz" data-act="方法" data-index="6">
+<h2>M1-1 六輪示範</h2>
+<table class="data-table" style="max-width:780px;font-size:.88rem;">
+<thead><tr><th>輪</th><th>操作內容</th><th>建立的能力</th></tr></thead>
+<tbody>
+<tr><td><strong>R1</strong></td><td>用原本的方式請 AI 做網頁</td><td>看見目前的能力水位</td></tr>
+<tr><td><strong>R2</strong></td><td>引入指令四要素，重做一次</td><td>需求結構化</td></tr>
+<tr><td><strong>R3</strong></td><td>加入介面判斷五項</td><td>產出判斷</td></tr>
+<tr><td><strong>R4</strong></td><td>跨平台比較與邊界辨識</td><td>工具選擇</td></tr>
+<tr><td><strong>R5</strong></td><td>挑戰互動產品</td><td>需求描述顆粒度</td></tr>
+<tr><td><strong>R6</strong></td><td>回顧與多維評估</td><td>迭代修正</td></tr>
+</tbody>
+</table>
+<div class="info-box note fragment" data-order="0" style="margin-top:.6rem;font-size:.88rem;">
+<p>3 小時內走完六輪，等於六次「操作 → 觀察差異 → 引入方法 → 驗證」的完整循環。</p>
+</div>
+</div>
+
+<!-- ══ 7: 卡點分類 ══ -->
+<div class="slide dataviz" data-act="方法" data-index="7">
+<h2>學習過程中的卡點分類</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">每一類卡點對應不同的處理方式，不是同一個解</p>
+<div class="card-grid" style="margin-top:.5rem;">
+<div class="card fragment" data-order="0" style="border-top:4px solid var(--gold);">
+<h3>需求不清</h3>
+<p style="font-size:.88rem;">AI 產出方向錯誤<br>→ 回到指令四要素，<br>檢查角色 / 任務 / 格式 / 限制</p>
+</div>
+<div class="card fragment" data-order="1" style="border-top:4px solid var(--gold);">
+<h3>輸出不符</h3>
+<p style="font-size:.88rem;">AI 理解了但格式錯<br>→ 補充輸出範例或限制條件</p>
+</div>
+<div class="card fragment" data-order="2" style="border-top:4px solid var(--gold);">
+<h3>功能失效</h3>
+<p style="font-size:.88rem;">產出有錯誤訊息或不能運作<br>→ 描述具體失效狀況，<br>讓 AI 修正</p>
+</div>
+<div class="card fragment" data-order="3" style="border-top:4px solid var(--gold);">
+<h3>判斷標準不足</h3>
+<p style="font-size:.88rem;">產出能跑但不知好壞<br>→ 引入 UI/UX 五判斷點<br>或同類經典範例對照</p>
+</div>
+</div>
+</div>
+
+<!-- ══ 8: 課堂運作三原則 ══ -->
+<div class="slide dataviz" data-act="方法" data-index="8">
+<h2>課堂運作原則</h2>
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card fragment" data-order="0" style="border-top:4px solid var(--green);">
+<h3>先建立基準，再引入方法</h3>
+<p style="font-size:.9rem;">第一輪先用原本的方式操作，<br>目的是看見目前的能力水位。<br>結構與技巧在第二輪才引入。</p>
+</div>
+<div class="card fragment" data-order="1" style="border-top:4px solid var(--green);">
+<h3>判斷標準取代語法記憶</h3>
+<p style="font-size:.9rem;">不要求背程式語法，<br>建立的是判斷輸出品質的標準。<br>標準可遷移到其他工具與情境。</p>
+</div>
+<div class="card fragment" data-order="2" style="border-top:4px solid var(--green);">
+<h3>討論作品差異，不評價個人</h3>
+<p style="font-size:.9rem;">同學作品作為案例使用，<br>分析的是指令結構與產出的因果關係，<br>不對學員個人能力做比較。</p>
+</div>
+</div>
+</div>
+
+<!-- ══ 9: Demo 介紹 ══ -->
+<div class="slide dataviz" data-act="方法" data-index="9">
+<h2>方法跑完，會長成什麼樣子</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">以 M1-4 為例：從表單到通知的一條資料流</p>
+<div class="flow" style="margin:1.5rem 0;">
+<div class="flow-box accent" style="min-width:120px;">輸入層</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:120px;">儲存層</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:120px;">判斷層</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent" style="min-width:120px;">通知層</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.8rem;">
+<div class="label">觀察重點</div>
+<p style="font-size:.92rem;">不是案例本身的趣味，是<strong>資料如何被接住、處理、觸發下一步</strong>。<br>相同結構可套用到報名表、訂單系統、回報流程等多種場景。</p>
+</div>
+</div>
+
+<!-- ══ 10: Demo 1/3 — 輸入層 ══ -->
+<div class="slide dataviz" data-act="方法" data-index="10">
+<h2>輸入層：表單接收使用者填寫</h2>
+<div style="display:flex;justify-content:center;margin:1rem 0;">
+<div style="background:var(--white);border:2px solid var(--g200);border-radius:12px;padding:1.5rem 2rem;max-width:480px;width:100%;">
+<div style="font-size:1rem;font-weight:700;color:var(--g900);margin-bottom:1rem;">校園飲料團購表單</div>
+<div style="margin-bottom:.8rem;"><div style="font-size:.85rem;color:var(--g600);margin-bottom:.2rem;">姓名</div><div style="border:1px solid var(--g200);border-radius:6px;padding:.5rem;color:var(--g400);font-size:.9rem;">輸入姓名</div></div>
+<div style="margin-bottom:.8rem;"><div style="font-size:.85rem;color:var(--g600);margin-bottom:.2rem;">品項</div><div style="border:1px solid var(--g200);border-radius:6px;padding:.5rem;color:var(--g700);font-size:.9rem;">▾ 珍珠奶茶 / 烏龍綠 / 紅茶拿鐵 ...</div></div>
+<div style="margin-bottom:.8rem;"><div style="font-size:.85rem;color:var(--g600);margin-bottom:.2rem;">甜度</div><div style="border:1px solid var(--g200);border-radius:6px;padding:.5rem;color:var(--g700);font-size:.9rem;">正常糖</div></div>
+<button style="background:var(--blue);color:#fff;border:none;padding:.5rem 1.2rem;border-radius:6px;font-size:.9rem;font-weight:700;margin-top:.4rem;">送出</button>
+</div>
+</div>
+<p style="font-size:.85rem;color:var(--g600);text-align:center;margin-top:.4rem;">結構特徵：欄位定義 → 限定選項 → 觸發送出</p>
+</div>
+
+<!-- ══ 11: Demo 2/3 — 儲存 + 判斷層 ══ -->
+<div class="slide dataviz" data-act="方法" data-index="11">
+<h2>儲存與判斷：資料寫入 + AI 分類</h2>
+<div style="display:flex;justify-content:center;margin:1rem 0;">
+<table style="border-collapse:collapse;font-size:.85rem;background:#fff;border:1px solid var(--g200);box-shadow:0 1px 3px rgba(0,0,0,.08);">
+<thead style="background:var(--g50);">
+<tr><th style="padding:.5rem 1rem;border-bottom:1px solid var(--g200);text-align:left;">時間</th><th style="padding:.5rem 1rem;border-bottom:1px solid var(--g200);text-align:left;">姓名</th><th style="padding:.5rem 1rem;border-bottom:1px solid var(--g200);text-align:left;">品項</th><th style="padding:.5rem 1rem;border-bottom:1px solid var(--g200);text-align:left;">AI 分類</th></tr>
+</thead>
+<tbody>
+<tr><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">10:23</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">小明</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">珍奶 正常 少冰</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);color:var(--green);">茶類</td></tr>
+<tr><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">10:25</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">小華</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">咖啡拿鐵 無糖</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);color:var(--gold);">咖啡</td></tr>
+<tr><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">10:28</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">小芳</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);">烏龍綠 半糖</td><td style="padding:.4rem 1rem;border-bottom:1px solid var(--g100);color:var(--green);">茶類</td></tr>
+<tr><td style="padding:.4rem 1rem;">10:31</td><td style="padding:.4rem 1rem;">小英</td><td style="padding:.4rem 1rem;">紅茶拿鐵 全糖</td><td style="padding:.4rem 1rem;color:var(--green);">茶類</td></tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:.85rem;color:var(--g600);text-align:center;margin-top:.4rem;">資料逐筆累積 + AI 依品項內容自動歸類，產生可分析的結構</p>
+</div>
+
+<!-- ══ 12: Demo 3/3 — 通知層 ══ -->
+<div class="slide dataviz" data-act="方法" data-index="12">
+<h2>通知層：條件觸發 + 訊息推送</h2>
+<div style="display:flex;justify-content:center;margin:1rem 0;">
+<div style="background:#0088cc;border-radius:12px;padding:1rem 1.2rem;max-width:420px;width:100%;color:#fff;font-family:-apple-system,sans-serif;">
+<div style="font-size:.82rem;opacity:.85;margin-bottom:.5rem;">團購助手｜10:31</div>
+<div style="font-size:.98rem;line-height:1.6;">
+今日累計訂單 10 筆<br>
+咖啡類 3 杯<br>
+茶類 7 杯<br>
+總金額 NT$ 580<br><br>
+<span style="font-size:.88rem;opacity:.95;">已達設定的提醒門檻</span>
+</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.5rem;">
+<p style="font-size:.9rem;">四個層次串成一條資料流：表單接收 → Sheet 儲存 → AI 分類 → Telegram 推送。<br>這是 M1-4 結束時學員會建立的成品結構。</p>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Section 3 — 產出（5 slides）
+     ══════════════════════════════════════ -->
+
+<!-- ══ 13: 四個模組與對應能力 ══ -->
+<div class="slide dataviz" data-act="產出" data-index="13">
+<h2>四個模組與對應能力</h2>
+<table class="data-table" style="max-width:780px;font-size:.85rem;">
+<thead><tr><th>模組</th><th>主題</th><th>建立的能力</th></tr></thead>
+<tbody>
+<tr><td><strong>M1-1</strong></td><td>AI 對話做作品</td><td>需求結構化、判斷標準</td></tr>
+<tr><td><strong>M1-2</strong></td><td>封裝 AI 助手 + 圖文</td><td>從一次性對話到可重複調用</td></tr>
+<tr><td><strong>M1-3</strong></td><td>Google 自動化</td><td>跨服務串接、資料處理</td></tr>
+<tr><td><strong>M1-4</strong></td><td>完整服務</td><td>多層次系統整合</td></tr>
+</tbody>
+</table>
+<div class="info-box note fragment" data-order="0" style="margin-top:.6rem;">
+<p style="font-size:.9rem;">每一個模組在前一個模組的能力基礎上擴展，能力可累積。</p>
+</div>
+</div>
+
+<!-- ══ 14: 課後留下的三項材料 ══ -->
+<div class="slide dataviz" data-act="產出" data-index="14">
+<h2>每堂課後留下的三項材料</h2>
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card fragment" data-order="0" style="border-top:4px solid var(--green);">
+<h3>作品連結</h3>
+<p style="font-size:.9rem;">確認產出可以被打開、<br>展示與檢查。</p>
+</div>
+<div class="card fragment" data-order="1" style="border-top:4px solid var(--blue);">
+<h3>關鍵指令</h3>
+<p style="font-size:.9rem;">保留讓作品成形的<br>主要 prompt，<br>方便下次重用。</p>
+</div>
+<div class="card fragment" data-order="2" style="border-top:4px solid var(--gold);">
+<h3>修正紀錄</h3>
+<p style="font-size:.9rem;">記錄 AI 哪裡做錯、<br>你如何描述問題、<br>最後如何修正。</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="margin-top:.8rem;">
+<p style="font-size:.9rem;">這三項材料是下一堂 M1-2 的工作基礎。<br>把一次性的對話封裝成可重複調用的 AI 助手，需要這些材料。</p>
+</div>
+</div>
+
+<!-- ══ 15: 平台覆蓋 ══ -->
+<div class="slide dataviz" data-act="產出" data-index="15">
+<h2>本課程使用的三大平台</h2>
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card" style="border-top:4px solid var(--purple);">
+<h3>Claude</h3>
+<p style="font-size:.88rem;">長文本處理<br>結構化指令<br>程式碼相關任務</p>
+</div>
+<div class="card" style="border-top:4px solid var(--gold);">
+<h3>ChatGPT</h3>
+<p style="font-size:.88rem;">通用對話<br>圖像產出<br>多模態任務</p>
+</div>
+<div class="card" style="border-top:4px solid var(--blue);">
+<h3>Gemini</h3>
+<p style="font-size:.88rem;">Google 服務整合<br>長 context 處理<br>免費 API 額度</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.8rem;">
+<p style="font-size:.9rem;">學員會在課程中分別使用三個平台。<br>選擇依據是任務性質，不是平台優劣。</p>
+</div>
+</div>
+
+<!-- ══ 16: 兩天行程 ══ -->
+<div class="slide dataviz" data-act="產出" data-index="16">
+<h2>兩天行程</h2>
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card" style="border-top:4px solid var(--green);">
+<h3>Day 1（5/16 六）</h3>
+<p style="font-size:.9rem;line-height:1.7;">
+<strong>M1-1</strong>　AI 對話做作品<br>
+<strong>M1-2</strong>　封裝 AI 助手 + 圖文<br>
+<span style="color:var(--g600);font-size:.78rem;">10:00 - 17:00</span>
+</p>
+</div>
+<div class="card" style="border-top:4px solid var(--blue);">
+<h3>Day 2（5/17 日）</h3>
+<p style="font-size:.9rem;line-height:1.7;">
+<strong>M1-3</strong>　Google 自動化<br>
+<strong>M1-4</strong>　完整服務<br>
+<span style="color:var(--g600);font-size:.78rem;">10:00 - 17:00</span>
+</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.8rem;">
+<p style="font-size:.9rem;">每個模組 3 小時，包含六輪循環的完整操作。</p>
+</div>
+</div>
+
+<!-- ══ 17: 收尾 ══ -->
+<div class="slide poster overlay-heavy" data-act="產出" data-index="17"
+     style="background:linear-gradient(135deg,#0F9D8A 0%,#1A56A0 50%,#0B3C5D 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.5);margin-bottom:1.5rem;letter-spacing:.15em;">課程範圍</p>
+<h1 style="color:#fff;font-size:2.4rem;line-height:1.5;">從這裡到 M1-4<br>共 <span style="color:#fbbf24;">12 小時</span>，建立<span style="color:#6ee7d4;">第一層能力</span></h1>
+<p class="poster-subtitle" style="margin-top:2rem;font-size:1rem;line-height:1.8;">結束時帶走 4 件可運作的成品<br>跟一套可遷移的指令設計方法</p>
+<p style="color:rgba(255,255,255,.4);margin-top:3rem;font-size:.9rem;">第一個操作從 M1-1 起手</p>
+</div>
+</div><!-- end .slides -->
+
+<!-- ── Controls ── -->
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter">1 / 18</div>
+<div class="controls">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>‹</button>
+  <button id="nextBtn" onclick="navigate(1)">›</button>
+</div>
+
+<!-- ── Chapter Menu ── -->
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">◈</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">▲</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+  let fragmentIdx = 0;
+
+  // Build chapter data
+  const chapters = [];
+  let lastAct = '';
+  slides.forEach((s, i) => {
+    const act = s.dataset.act || '';
+    if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+  });
+
+  // Build chapter menu
+  const list = document.getElementById('chapterList');
+  chapters.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = c.idx;
+    item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+    item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+    list.appendChild(item);
+  });
+
+  function getFragments(slide){
+    return Array.from(slide.querySelectorAll('.fragment'))
+      .sort((a,b) => (+a.dataset.order||0) - (+b.dataset.order||0));
+  }
+
+  function showSlide(n, showAllFragments){
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total-1, n));
+    const s = slides[cur];
+    s.classList.add('active');
+    const frags = getFragments(s);
+    if(showAllFragments){
+      // Going backward: show all fragments so page is complete
+      frags.forEach(f => f.classList.add('visible'));
+      fragmentIdx = frags.length;
+    } else {
+      // Going forward: hide all fragments, reveal one by one
+      frags.forEach(f => f.classList.remove('visible'));
+      fragmentIdx = 0;
+    }
+    updateUI();
+  }
+
+  function goTo(n){ showSlide(n, false); }
+
+  function navigate(dir){
+    const s = slides[cur];
+    const frags = getFragments(s);
+    if(dir > 0){
+      if(fragmentIdx < frags.length){
+        frags[fragmentIdx].classList.add('visible');
+        fragmentIdx++;
+        updateUI();
+        return;
+      }
+      showSlide(cur + 1, false);
+    } else {
+      if(fragmentIdx > 0){
+        fragmentIdx--;
+        frags[fragmentIdx].classList.remove('visible');
+        updateUI();
+        return;
+      }
+      showSlide(cur - 1, true);
+    }
+  }
+
+  function updateUI(){
+    document.getElementById('progress').style.width = ((cur/(total-1))*100)+'%';
+    document.getElementById('counter').textContent = (cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = cur === 0 && fragmentIdx === 0;
+    document.getElementById('nextBtn').disabled = cur === total-1 && fragmentIdx >= getFragments(slides[cur]).length;
+
+    // Chapter label
+    let act = '';
+    for(let i = chapters.length-1; i >= 0; i--){
+      if(cur >= chapters[i].idx){ act = chapters[i].act; break; }
+    }
+    document.getElementById('chapterLabel').textContent = act || '章節';
+
+    // Update chapter items
+    document.querySelectorAll('.chapter-item').forEach(item => {
+      const idx = +item.dataset.idx;
+      // Find this chapter's end
+      let end = total;
+      for(let c of chapters){ if(c.idx > idx){ end = c.idx; break; } }
+      item.classList.toggle('active', cur >= idx && cur < end);
+    });
+  }
+
+  function toggleChapterMenu(){
+    document.getElementById('chapterMenu').classList.toggle('open');
+  }
+  function closeChapterMenu(){
+    document.getElementById('chapterMenu').classList.remove('open');
+  }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){ e.preventDefault(); navigate(1); }
+    else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); navigate(-1); }
+    else if(e.key==='Home'){ e.preventDefault(); showSlide(0, false); }
+    else if(e.key==='End'){ e.preventDefault(); showSlide(total-1, true); }
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if(e.key==='Escape'){ closeChapterMenu(); }
+  });
+
+  // Click (not on controls/menu)
+  document.querySelector('.slides').addEventListener('click', e => {
+    if(e.target.closest('.controls')||e.target.closest('.chapter-menu')) return;
+    navigate(1);
+  });
+
+  // Touch swipe
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ navigate(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+
+  // Init
+  updateUI();
+  window.navigate = navigate;
+  window.goTo = goTo;
+  window.toggleChapterMenu = toggleChapterMenu;
+})();
+</script>
+
+<!-- VIBE_INJECT_START -->
+<style>
+  .code-block{position:relative;}
+  .code-block .copy-btn{
+    position:absolute;top:.35rem;right:.4rem;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    padding:.18rem .55rem;border:0;border-radius:4px;
+    background:rgba(15,157,138,.85);color:#fff;cursor:pointer;
+    opacity:.55;transition:opacity .15s,background .15s;
+    letter-spacing:.05em;z-index:5;
+  }
+  .code-block:hover .copy-btn,
+  .code-block .copy-btn:focus{opacity:1;}
+  .code-block .copy-btn.copied{background:rgba(52,211,153,.95);opacity:1;}
+  @media (hover:none){.code-block .copy-btn{opacity:.85;}}
+</style>
+<script>
+(function(){
+  /* ── copy button ── */
+  function addBtn(block){
+    if(block.querySelector('.copy-btn'))return;
+    var pre=block.querySelector('pre');
+    if(!pre)return;
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='✓ 已複製';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='複製';btn.classList.remove('copied');},1500);
+      };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text,done);});
+      }else{fallback(text,done);}
+    });
+    block.appendChild(btn);
+  }
+  function fallback(text,cb){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.top='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');cb();}catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ── hash router: #round-N jumps to first slide whose data-act matches "Round N：" or "RN：" ── */
+  function routeHash(){
+    var m=(window.location.hash||'').match(/^#round-(\d+)/i);
+    if(!m)return;
+    var n=m[1];
+    var patterns=[
+      new RegExp('^Round\\s*'+n+'[\u{ff1a}:\\s]','u'),
+      new RegExp('^R'+n+'[\u{ff1a}:\\s]','u'),
+    ];
+    var target=null;
+    var slides=document.querySelectorAll('.slide[data-act]');
+    for(var i=0;i<slides.length;i++){
+      if(target)break;
+      var act=slides[i].getAttribute('data-act')||'';
+      for(var j=0;j<patterns.length;j++){
+        if(patterns[j].test(act)){target=slides[i];break;}
+      }
+    }
+    if(target&&typeof window.goTo==='function'){
+      var idx=parseInt(target.getAttribute('data-index'),10);
+      window.goTo(idx);
+    }
+  }
+  window.addEventListener('hashchange',routeHash);
+
+  function init(){
+    document.querySelectorAll('.code-block').forEach(addBtn);
+    setTimeout(routeHash,80);  /* wait for slide system init */
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{init();}
+})();
+</script>
+<!-- VIBE_INJECT_END -->
+
+</body>
+</html>

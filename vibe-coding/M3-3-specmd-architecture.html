@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>M3-3 — 問題集大成 + spec.md 架構思維 | Vibe Coding Stage 3</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;family=Fira+Code:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════
    M3-3: 問題集大成 + spec.md 架構思維
@@ -91,6 +92,22 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .flow-box.accent{border-color:var(--accent);background:var(--red-lt);color:var(--accent);}
 .flow-arrow{color:var(--accent);font-size:1.5rem;font-weight:900;}
 
+/* arch-grid + lane + insight-grid + anchor-banner — common patterns from M1-1 */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
+.arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
+.arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
+.insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
+.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
+.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+.anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
+
 /* ── Info Boxes (white mode) ── */
 .info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
 .info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
@@ -176,7 +193,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .controls button:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
 .controls button:disabled{opacity:.25;cursor:default;}
-.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500,var(--g400));font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
 .module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--red-lt);color:var(--accent);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(217,48,37,.2);}
 .module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
 
@@ -237,440 +254,410 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </style>
 </head>
 <body>
-
 <div class="module-title">Vibe Coding — Stage 3 · 造系統</div>
 <div class="module-badge">M3-3</div>
 <div class="slides">
-
 <!-- ══════════════════════════════════════
      開場 (slides 0-2)
      ══════════════════════════════════════ -->
-
 <!-- ══ 0: COVER ══ -->
-<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 3 · 造系統</p>
-  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">問題集大成<br><span style="color:#f8a09b;">spec.md 架構思維</span></h1>
-  <p class="poster-subtitle" style="margin-top:1.2rem;">所有的坑走過一遍 — 然後用一份文件避開它們</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M3-3</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">諮詢預約系統</span>
-  </div>
-  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0" style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
+<p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 3 · 造系統</p>
+<h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">問題集大成<br/><span style="color:#f8a09b;">spec.md 架構思維</span></h1>
+<p class="poster-subtitle" style="margin-top:1.2rem;">所有的坑走過一遍 — 然後用一份文件避開它們</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M3-3</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">諮詢預約系統</span>
 </div>
-
+<p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
 <!-- ══ 1: 六輪循環總覽 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
-  <h2>六輪循環，逐層遞進</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-      <div style="font-weight:700;">自由發揮預約系統</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-      <div style="font-weight:700;">坑的總整理</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-      <div style="font-weight:700;">一起寫 spec.md</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-      <div style="font-weight:700;">用 spec.md 重做</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-      <div style="font-weight:700;">前後對比</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-      <div style="font-weight:700;">spec.md 模板</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;"><strong>這堂課的節奏</strong><br>先自由發揮注意事項 → 分類所有問題 → 引出 spec.md → 用 spec.md 重做 → 體感差距<br>每一輪新增一層理解，前面遇到的問題都是教材</p>
-  </div>
+<h2>六輪循環，逐層遞進</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+<div style="font-weight:700;">自由發揮預約系統</div>
 </div>
-
+<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+<div style="font-weight:700;">坑的總整理</div>
+</div>
+<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+<div style="font-weight:700;">一起寫 spec.md</div>
+</div>
+<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+<div style="font-weight:700;">用 spec.md 重做</div>
+</div>
+<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+<div style="font-weight:700;">前後對比</div>
+</div>
+<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+<div style="font-weight:700;">spec.md 模板</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;"><strong>這堂課的節奏</strong><br/>先自由發揮注意事項 → 分類所有問題 → 引出 spec.md → 用 spec.md 重做 → 體感差距<br/>每一輪新增一層理解，前面遇到的問題都是教材</p>
+</div>
+</div>
 <!-- ══ 2: 今天的題目 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="2">
-  <h2>今天的題目：諮詢時段預約系統</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:.8rem;">
-    <div class="quote-text">這不是練習題 — 是講師自己真的要用的系統<br>做得好的版本，會直接上線</div>
-  </div>
-  <div class="card-grid" style="margin-top:1rem;">
-    <div class="card accent-top fragment" data-order="1">
-      <h3>預約者</h3>
-      <p>選時段、填資料<br>收到確認信</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="2">
-      <h3>講師</h3>
-      <p>設定可預約時段<br>查看預約清單</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="3">
-      <h3>系統</h3>
-      <p>防衝突、防過期<br>自動寄通知信</p>
-    </div>
-  </div>
+<h2>今天的題目：諮詢時段預約系統</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:.8rem;">
+<div class="quote-text">這不是練習題 — 是講師自己真的要用的系統<br/>做得好的版本，會直接上線</div>
 </div>
-
+<div class="card-grid" style="margin-top:1rem;">
+<div class="card accent-top fragment" data-order="1">
+<h3>預約者</h3>
+<p>選時段、填資料<br/>收到確認信</p>
+</div>
+<div class="card accent-top-blue fragment" data-order="2">
+<h3>講師</h3>
+<p>設定可預約時段<br/>查看預約清單</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="3">
+<h3>系統</h3>
+<p>防衝突、防過期<br/>自動寄通知信</p>
+</div>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 1：自由發揮預約系統 (slides 3-10)
      ══════════════════════════════════════ -->
-
 <!-- ══ 3: Chapter poster — Round 1 ══ -->
-<div class="slide poster overlay-heavy" data-act="R1：自由發揮" data-index="3"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:25</p>
-  <h1 style="color:#fff;font-size:2.8rem;">不給規格<br><span style="color:#f8a09b;">直接做</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">用一句話指令，看 AI 自由發揮的結果</p>
+<div class="slide poster overlay-heavy" data-act="R1：自由發揮" data-index="3" style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:25</p>
+<h1 style="color:#fff;font-size:2.8rem;">不給規格<br/><span style="color:#f8a09b;">直接做</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">用一句話指令，看 AI 自由發揮的結果</p>
 </div>
-
 <!-- ══ 4: 操作指令 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮" data-index="4">
-  <h2>操作指令</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">你的指令</div>
-    <pre>做一個諮詢預約系統
+<h2>操作指令</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">你的指令</div>
+<pre>做一個諮詢預約系統
 讓別人可以選時段預約
 我能看到預約清單</pre>
-  </div>
-  <div class="info-box warning fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">操作條件</div>
-    <p>不給架構指引、不指定技術選型、不定義資料結構<br>用最自然的方式描述需求，看會發生什麼事</p>
-  </div>
-  <div class="stat-grid fragment" data-order="2" style="max-width:500px;grid-template-columns:1fr;">
-    <div class="stat-box">
-      <div class="val">25 min</div>
-      <div class="label">操作時間</div>
-    </div>
-  </div>
 </div>
-
+<div class="info-box warning fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">操作條件</div>
+<p>不給架構指引、不指定技術選型、不定義資料結構<br/>用最自然的方式描述需求，看會發生什麼事</p>
+</div>
+<div class="stat-grid fragment" data-order="2" style="max-width:500px;grid-template-columns:1fr;">
+<div class="stat-box">
+<div class="val">25 min</div>
+<div class="label">操作時間</div>
+</div>
+</div>
+</div>
 <!-- ══ 5: 觀察：5 個人的架構完全不同 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮" data-index="5">
-  <h2>觀察：5 個人的架構完全不同</h2>
-  <p style="color:var(--g600);margin-bottom:.8rem;">同樣的需求、同樣的工具、同樣的時間</p>
-  <div class="stat-grid fragment" data-order="0" style="grid-template-columns:repeat(3,1fr);">
-    <div class="stat-box">
-      <div class="val">5</div>
-      <div class="label">種不同架構</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">0</div>
-      <div class="label">個完整可用</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">6+</div>
-      <div class="label">類共同問題</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
-    <p>AI 沒有收到規格 → 每次自由發揮 → 每個人拿到完全不同的東西</p>
-  </div>
+<h2>觀察：5 個人的架構完全不同</h2>
+<p style="color:var(--g600);margin-bottom:.8rem;">同樣的需求、同樣的工具、同樣的時間</p>
+<div class="stat-grid fragment" data-order="0" style="grid-template-columns:repeat(3,1fr);">
+<div class="stat-box">
+<div class="val">5</div>
+<div class="label">種不同架構</div>
 </div>
-
+<div class="stat-box">
+<div class="val">0</div>
+<div class="label">個完整可用</div>
+</div>
+<div class="stat-box">
+<div class="val">6+</div>
+<div class="label">類共同問題</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+<p>AI 沒有收到規格 → 每次自由發揮 → 每個人拿到完全不同的東西</p>
+</div>
+</div>
 <!-- ══ 6: 注意事項 1-3 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮" data-index="6">
-  <h2>自由發揮踩到的坑（上）</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>資料存前端 → 重新整理消失</strong>
-        <p>M2-2 踩過的坑又來了 — 沒有指定儲存方式，AI 預設用 localStorage</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>同一個時段被多人預約</strong>
-        <p>沒有時段衝突防護 — 兩個人同時點同一個時段，都預約成功</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>已過期的時段還能選</strong>
-        <p>沒有時間驗證 — 昨天的時段今天還顯示「可預約」</p>
-      </div>
-    </div>
-  </div>
+<h2>自由發揮踩到的坑（上）</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>資料存前端 → 重新整理消失</strong>
+<p>M2-2 踩過的坑又來了 — 沒有指定儲存方式，AI 預設用 localStorage</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>同一個時段被多人預約</strong>
+<p>沒有時段衝突防護 — 兩個人同時點同一個時段，都預約成功</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>已過期的時段還能選</strong>
+<p>沒有時間驗證 — 昨天的時段今天還顯示「可預約」</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 7: 注意事項 4-6 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮" data-index="7">
-  <h2>自由發揮踩到的坑（下）</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>預約後沒有確認通知</strong>
-        <p>使用者不確定預約是否成功 — 只有畫面閃一下</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">5</div>
-      <div class="step-content">
-        <strong>前後端混在一起</strong>
-        <p>改一個功能壞全部 — 資料邏輯和畫面邏輯纏在一起</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">6</div>
-      <div class="step-content">
-        <strong>AI 每次給不同架構</strong>
-        <p>加功能時前後矛盾 — 第一次用物件，第二次用陣列，第三次又改回來</p>
-      </div>
-    </div>
-  </div>
+<h2>自由發揮踩到的坑（下）</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>預約後沒有確認通知</strong>
+<p>使用者不確定預約是否成功 — 只有畫面閃一下</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">5</div>
+<div class="step-content">
+<strong>前後端混在一起</strong>
+<p>改一個功能壞全部 — 資料邏輯和畫面邏輯纏在一起</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">6</div>
+<div class="step-content">
+<strong>AI 每次給不同架構</strong>
+<p>加功能時前後矛盾 — 第一次用物件，第二次用陣列，第三次又改回來</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 8: R1 小結 ══ -->
 <div class="slide dataviz" data-act="R1：自由發揮" data-index="8">
-  <h2>Round 1 小結</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
-    <div class="quote-text">沒有藍圖 → AI 每次亂蓋 → 改到後來改不動</div>
-  </div>
-  <div class="flow fragment" data-order="1" style="margin-top:1.2rem;">
-    <div class="flow-box">一句話需求</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">AI 自由發揮</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">每次不同架構</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">越改越壞</div>
-  </div>
-  <div class="info-box warning fragment" data-order="2" style="margin-top:.8rem;">
-    <p>問題不在 AI 的能力 — 而是你沒有給它規格<br>接下來把所有坑攤開，找出共同根因</p>
-  </div>
+<h2>Round 1 小結</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+<div class="quote-text">沒有藍圖 → AI 每次亂蓋 → 改到後來改不動</div>
 </div>
-
+<div class="flow fragment" data-order="1" style="margin-top:1.2rem;">
+<div class="flow-box">一句話需求</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">AI 自由發揮</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">每次不同架構</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">越改越壞</div>
+</div>
+<div class="info-box warning fragment" data-order="2" style="margin-top:.8rem;">
+<p>問題不在 AI 的能力 — 而是你沒有給它規格<br/>接下來把所有坑攤開，找出共同根因</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 2：坑的總整理 (slides 9-17)
      ══════════════════════════════════════ -->
-
 <!-- ══ 9: Chapter poster — Round 2 ══ -->
-<div class="slide poster overlay-heavy" data-act="R2：坑的總整理" data-index="9"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:25–0:45</p>
-  <h1 style="color:#fff;font-size:2.8rem;">三個 Stage<br><span style="color:#f8a09b;">的坑攤開</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">不只是預約系統 — 是整個課程遇到的所有問題</p>
+<div class="slide poster overlay-heavy" data-act="R2：坑的總整理" data-index="9" style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:25–0:45</p>
+<h1 style="color:#fff;font-size:2.8rem;">三個 Stage<br/><span style="color:#f8a09b;">的坑攤開</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">不只是預約系統 — 是整個課程遇到的所有問題</p>
 </div>
-
 <!-- ══ 10: 六大分類表頭 ══ -->
 <div class="slide dataviz" data-act="R2：坑的總整理" data-index="10">
-  <h2>六大類問題，一個共同根因</h2>
-  <table class="data-table fragment" data-order="0">
-    <tr><th style="width:80px;">類別</th><th>典型問題</th><th>根本原因</th></tr>
-    <tr><td class="cat">資料</td><td>消失 / 不一致 / 時段衝突</td><td>沒定義資料結構</td></tr>
-    <tr><td class="cat">安全</td><td>Key 外洩 / 重複提交</td><td>沒定義安全規則</td></tr>
-    <tr><td class="cat">架構</td><td>前後端混亂 / 改壞</td><td>沒定義分工</td></tr>
-    <tr><td class="cat">AI</td><td>每次不同方案 / 衝突</td><td>沒給明確規格</td></tr>
-    <tr><td class="cat">範圍</td><td>越加越多 / 失控</td><td>沒定義功能邊界</td></tr>
-    <tr><td class="cat">驗證</td><td>過期時段還能選 / 沒通知</td><td>沒定義業務規則</td></tr>
-  </table>
+<h2>六大類問題，一個共同根因</h2>
+<table class="data-table fragment" data-order="0">
+<tr><th style="width:80px;">類別</th><th>典型問題</th><th>根本原因</th></tr>
+<tr><td class="cat">資料</td><td>消失 / 不一致 / 時段衝突</td><td>沒定義資料結構</td></tr>
+<tr><td class="cat">安全</td><td>Key 外洩 / 重複提交</td><td>沒定義安全規則</td></tr>
+<tr><td class="cat">架構</td><td>前後端混亂 / 改壞</td><td>沒定義分工</td></tr>
+<tr><td class="cat">AI</td><td>每次不同方案 / 衝突</td><td>沒給明確規格</td></tr>
+<tr><td class="cat">範圍</td><td>越加越多 / 失控</td><td>沒定義功能邊界</td></tr>
+<tr><td class="cat">驗證</td><td>過期時段還能選 / 沒通知</td><td>沒定義業務規則</td></tr>
+</table>
 </div>
-
 <!-- ══ 11: 資料類問題展開 ══ -->
 <div class="slide dataviz" data-act="R2：坑的總整理" data-index="11">
-  <h2>資料類：消失、不一致、衝突</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒定義 → 發生什麼</div>
-      <ul>
-        <li>資料存 localStorage，重整消失</li>
-        <li>兩個人同時預約同一時段</li>
-        <li>前端顯示的時段跟後端不同步</li>
-      </ul>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">有定義 → 應該怎樣</div>
-      <ul>
-        <li>指定 Google Sheet 作為唯一資料源</li>
-        <li>後端鎖定時段，寫入前再檢查一次</li>
-        <li>前端每次從後端拉最新狀態</li>
-      </ul>
-    </div>
-  </div>
+<h2>資料類：消失、不一致、衝突</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒定義 → 發生什麼</div>
+<ul>
+<li>資料存 localStorage，重整消失</li>
+<li>兩個人同時預約同一時段</li>
+<li>前端顯示的時段跟後端不同步</li>
+</ul>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">有定義 → 應該怎樣</div>
+<ul>
+<li>指定 Google Sheet 作為唯一資料源</li>
+<li>後端鎖定時段，寫入前再檢查一次</li>
+<li>前端每次從後端拉最新狀態</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 12: 安全類問題展開 ══ -->
 <div class="slide dataviz" data-act="R2：坑的總整理" data-index="12">
-  <h2>安全類：Key 外洩、重複提交</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒定義 → 發生什麼</div>
-      <ul>
-        <li>API Key 寫在前端 JavaScript 裡</li>
-        <li>按鈕連點三次 → 三筆重複預約</li>
-        <li>任何人都能打 admin 端點</li>
-      </ul>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">有定義 → 應該怎樣</div>
-      <ul>
-        <li>Key 只放在 GAS 後端 PropertiesService</li>
-        <li>提交後停用按鈕 + 後端去重</li>
-        <li>admin 端點加 Key 驗證</li>
-      </ul>
-    </div>
-  </div>
+<h2>安全類：Key 外洩、重複提交</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒定義 → 發生什麼</div>
+<ul>
+<li>API Key 寫在前端 JavaScript 裡</li>
+<li>按鈕連點三次 → 三筆重複預約</li>
+<li>任何人都能打 admin 端點</li>
+</ul>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">有定義 → 應該怎樣</div>
+<ul>
+<li>Key 只放在 GAS 後端 PropertiesService</li>
+<li>提交後停用按鈕 + 後端去重</li>
+<li>admin 端點加 Key 驗證</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 13: 架構 + AI 類問題展開 ══ -->
 <div class="slide dataviz" data-act="R2：坑的總整理" data-index="13">
-  <h2>架構 + AI：混亂、矛盾、改壞</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒定義 → 發生什麼</div>
-      <ul>
-        <li>前後端邏輯混在同一個檔案</li>
-        <li>AI 第一次用物件、第二次用陣列</li>
-        <li>加功能時跟原有邏輯衝突</li>
-      </ul>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">有定義 → 應該怎樣</div>
-      <ul>
-        <li>前端只管顯示、後端只管邏輯</li>
-        <li>API 端點和資料格式寫死在規格裡</li>
-        <li>加功能前先更新 spec，再讓 AI 照做</li>
-      </ul>
-    </div>
-  </div>
+<h2>架構 + AI：混亂、矛盾、改壞</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒定義 → 發生什麼</div>
+<ul>
+<li>前後端邏輯混在同一個檔案</li>
+<li>AI 第一次用物件、第二次用陣列</li>
+<li>加功能時跟原有邏輯衝突</li>
+</ul>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">有定義 → 應該怎樣</div>
+<ul>
+<li>前端只管顯示、後端只管邏輯</li>
+<li>API 端點和資料格式寫死在規格裡</li>
+<li>加功能前先更新 spec，再讓 AI 照做</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 14: 範圍 + 驗證類問題展開 ══ -->
 <div class="slide dataviz" data-act="R2：坑的總整理" data-index="14">
-  <h2>範圍 + 驗證：失控、無效</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒定義 → 發生什麼</div>
-      <ul>
-        <li>「順便加個評分功能」→ 系統越長越大</li>
-        <li>過期時段還能選</li>
-        <li>預約成功但沒有任何確認</li>
-      </ul>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">有定義 → 應該怎樣</div>
-      <ul>
-        <li>spec.md 列出功能邊界，超出範圍不做</li>
-        <li>後端驗證時段是否在未來 + 是否可用</li>
-        <li>預約後觸發 Email 通知雙方</li>
-      </ul>
-    </div>
-  </div>
+<h2>範圍 + 驗證：失控、無效</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒定義 → 發生什麼</div>
+<ul>
+<li>「順便加個評分功能」→ 系統越長越大</li>
+<li>過期時段還能選</li>
+<li>預約成功但沒有任何確認</li>
+</ul>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">有定義 → 應該怎樣</div>
+<ul>
+<li>spec.md 列出功能邊界，超出範圍不做</li>
+<li>後端驗證時段是否在未來 + 是否可用</li>
+<li>預約後觸發 Email 通知雙方</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 15: 共同根因 ══ -->
 <div class="slide dataviz" data-act="R2：坑的總整理" data-index="15">
-  <h2>六類問題，一個根因</h2>
-  <div class="big-stat fragment" data-order="0">
-    <div class="num" style="font-size:2.5rem;">開始前沒有定義清楚</div>
-  </div>
-  <div class="flow fragment" data-order="1" style="margin-top:1.5rem;">
-    <div class="flow-box">沒有規格</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">AI 自行決定</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">每次不同</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">系統壞掉</div>
-  </div>
+<h2>六類問題，一個根因</h2>
+<div class="big-stat fragment" data-order="0">
+<div class="num" style="font-size:2.5rem;">開始前沒有定義清楚</div>
 </div>
-
+<div class="flow fragment" data-order="1" style="margin-top:1.5rem;">
+<div class="flow-box">沒有規格</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">AI 自行決定</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">每次不同</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">系統壞掉</div>
+</div>
+</div>
 <!-- ══ 16: 概念引出 — spec.md ══ -->
 <div class="slide dataviz" data-act="R2：坑的總整理" data-index="16">
-  <h2>spec.md = 系統藍圖</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
-    <div class="quote-text">spec.md = 你跟 AI 的溝通契約<br>寫清楚了，AI 照著做<br>沒寫清楚，AI 自己決定</div>
-  </div>
-  <div class="card-grid fragment" data-order="1" style="margin-top:1rem;">
-    <div class="card accent-top" style="max-width:350px;">
-      <h3>不是文件</h3>
-      <p>不是寫給人看的文件<br>是寫給 AI 執行的規格</p>
-    </div>
-    <div class="card accent-top-blue" style="max-width:350px;">
-      <h3>不是選配</h3>
-      <p>沒有 spec.md 的系統<br>等於沒有藍圖的建築</p>
-    </div>
-  </div>
+<h2>spec.md = 系統藍圖</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+<div class="quote-text">spec.md = 你跟 AI 的溝通契約<br/>寫清楚了，AI 照著做<br/>沒寫清楚，AI 自己決定</div>
 </div>
-
+<div class="card-grid fragment" data-order="1" style="margin-top:1rem;">
+<div class="card accent-top" style="max-width:350px;">
+<h3>不是文件</h3>
+<p>不是寫給人看的文件<br/>是寫給 AI 執行的規格</p>
+</div>
+<div class="card accent-top-blue" style="max-width:350px;">
+<h3>不是選配</h3>
+<p>沒有 spec.md 的系統<br/>等於沒有藍圖的建築</p>
+</div>
+</div>
+</div>
 <!-- ══ 17: R2 小結 ══ -->
 <div class="slide dataviz" data-act="R2：坑的總整理" data-index="17">
-  <h2>Round 2 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>問題不在 AI，在你的規格</h3>
-    <p>資料、安全、架構、AI、範圍、驗證<br>六類問題的解法都是同一個：<br><span class="hl-red">開始前寫清楚</span></p>
-  </div>
+<h2>Round 2 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>問題不在 AI，在你的規格</h3>
+<p>資料、安全、架構、AI、範圍、驗證<br/>六類問題的解法都是同一個：<br/><span class="hl-red">開始前寫清楚</span></p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 3：一起寫 spec.md (slides 18-28)
      ══════════════════════════════════════ -->
-
 <!-- ══ 18: Chapter poster — Round 3 ══ -->
-<div class="slide poster overlay-heavy" data-act="R3：寫 spec.md" data-index="18"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:10</p>
-  <h1 style="color:#fff;font-size:2.8rem;">一起寫<br><span style="color:#f8a09b;">spec.md</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">用 Claude Code 輔助，為預約系統寫規格書</p>
+<div class="slide poster overlay-heavy" data-act="R3：寫 spec.md" data-index="18" style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:10</p>
+<h1 style="color:#fff;font-size:2.8rem;">一起寫<br/><span style="color:#f8a09b;">spec.md</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">用 Claude Code 輔助，為預約系統寫規格書</p>
 </div>
-
 <!-- ══ 19: spec.md 結構預覽 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="19">
-  <h2>spec.md 的五大區塊</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>功能需求</strong>
-        <p>系統要做什麼 — 列出所有功能點</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>技術選型</strong>
-        <p>前端、後端、儲存、通知 — 每一層用什麼</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>資料結構</strong>
-        <p>哪些 Sheet、哪些欄位、狀態怎麼定義</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>API 端點</strong>
-        <p>幾支 API、輸入什麼、回傳什麼</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="4">
-      <div class="step-num">5</div>
-      <div class="step-content">
-        <strong>安全規則</strong>
-        <p>誰能做什麼、怎麼驗證、Key 放哪裡</p>
-      </div>
-    </div>
-  </div>
+<h2>spec.md 的五大區塊</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>功能需求</strong>
+<p>系統要做什麼 — 列出所有功能點</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>技術選型</strong>
+<p>前端、後端、儲存、通知 — 每一層用什麼</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>資料結構</strong>
+<p>哪些 Sheet、哪些欄位、狀態怎麼定義</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>API 端點</strong>
+<p>幾支 API、輸入什麼、回傳什麼</p>
+</div>
+</div>
+<div class="step fragment" data-order="4">
+<div class="step-num">5</div>
+<div class="step-content">
+<strong>安全規則</strong>
+<p>誰能做什麼、怎麼驗證、Key 放哪裡</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 20: spec.md — 功能需求 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="20">
-  <h2>區塊一：功能需求</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">spec.md — 功能需求</div>
-    <pre># 諮詢預約系統 spec.md
+<h2>區塊一：功能需求</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">spec.md — 功能需求</div>
+<pre># 諮詢預約系統 spec.md
 
 ## 功能需求
 - 顯示可預約時段（排除已過期、已被預約的）
@@ -678,54 +665,51 @@ p,li{font-size:1.1rem;line-height:1.8;}
 - 預約後寄確認信給預約者
 - 講師收到通知信（含預約者資訊）
 - 講師可查看所有預約清單</pre>
-  </div>
-  <div class="info-box success fragment" data-order="1">
-    <div class="label">為什麼要列這麼細</div>
-    <p>每一條就是一個驗收標準<br>沒列到的，AI 不會主動做</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1">
+<div class="label">為什麼要列這麼細</div>
+<p>每一條就是一個驗收標準<br/>沒列到的，AI 不會主動做</p>
+</div>
+</div>
 <!-- ══ 21: spec.md — 技術選型 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="21">
-  <h2>區塊二：技術選型</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">spec.md — 技術選型</div>
-    <pre>## 技術選型
+<h2>區塊二：技術選型</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">spec.md — 技術選型</div>
+<pre>## 技術選型
 - 前端：HTML / CSS / JS（GitHub Pages）
 - 後端：GAS（API Proxy + 資料存取 + 寄信）
 - 儲存：Google Sheet
 - 通知：GmailApp</pre>
-  </div>
-  <div class="info-box tip fragment" data-order="1">
-    <div class="label">關鍵決策</div>
-    <p>技術選型必須由人類決定，不是 AI<br>AI 會根據你的選型建立一致的架構<br>不指定 → AI 每次選不同的，後續改不動</p>
-  </div>
 </div>
-
+<div class="info-box tip fragment" data-order="1">
+<div class="label">關鍵決策</div>
+<p>技術選型必須由人類決定，不是 AI<br/>AI 會根據你的選型建立一致的架構<br/>不指定 → AI 每次選不同的，後續改不動</p>
+</div>
+</div>
 <!-- ══ 22: spec.md — 資料結構 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="22">
-  <h2>區塊三：資料結構</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">spec.md — 資料結構</div>
-    <pre>## 資料結構
+<h2>區塊三：資料結構</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">spec.md — 資料結構</div>
+<pre>## 資料結構
 - Sheet "時段"
   日期 / 開始時間 / 結束時間 / 狀態（可預約/已預約/已過期）
 
 - Sheet "預約"
   時段ID / 姓名 / Email / 預約時間 / 確認信狀態</pre>
-  </div>
-  <div class="info-box blue fragment" data-order="1">
-    <div class="label">對應 R1 的坑</div>
-    <p>資料消失 → 因為沒指定儲存位置<br>時段衝突 → 因為沒有「狀態」欄位<br>寫清楚資料結構 = 一次解決兩個問題</p>
-  </div>
 </div>
-
+<div class="info-box blue fragment" data-order="1">
+<div class="label">對應 R1 的坑</div>
+<p>資料消失 → 因為沒指定儲存位置<br/>時段衝突 → 因為沒有「狀態」欄位<br/>寫清楚資料結構 = 一次解決兩個問題</p>
+</div>
+</div>
 <!-- ══ 23: spec.md — API 端點 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="23">
-  <h2>區塊四：API 端點</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">spec.md — API 端點</div>
-    <pre>## API 端點
+<h2>區塊四：API 端點</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">spec.md — API 端點</div>
+<pre>## API 端點
 - GET /slots
   → 取得可預約時段（自動排除過期 + 已預約）
 
@@ -733,37 +717,36 @@ p,li{font-size:1.1rem;line-height:1.8;}
   → 預約（帶時段ID + 姓名 + Email）
   → 寫入 Sheet + 寄確認信
 
-- GET /admin?key=xxx
-  → 講師查看預約清單</pre>
-  </div>
-  <div class="info-box note fragment" data-order="1">
-    <p>三支 API，職責分明<br>前端只呼叫 API、後端只處理邏輯<br>這就是 R1 缺少的「分工」</p>
-  </div>
+- GET /admin
+  → 講師查看預約清單
+  → 後端檢查 admin session / token</pre>
 </div>
-
+<div class="info-box note fragment" data-order="1">
+<p>不要把 key 放在 URL<br/>secret 放 GAS PropertiesService<br/>前端只送一次性或表單驗證資料</p>
+</div>
+</div>
 <!-- ══ 24: spec.md — 安全規則 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="24">
-  <h2>區塊五：安全規則</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">spec.md — 安全規則</div>
-    <pre>## 安全規則
+<h2>區塊五：安全規則</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">spec.md — 安全規則</div>
+<pre>## 安全規則
 - 後端驗證時段是否仍可預約（不信任前端）
 - 同一 Email 同一時段不能重複預約
 - admin 端點需要 Key 驗證
 - 前端不存任何 Key</pre>
-  </div>
-  <div class="info-box warning fragment" data-order="1">
-    <div class="label">這段最容易被忽略</div>
-    <p>安全規則不寫 → AI 不會主動幫你想<br>「不信任前端」這四個字，值整個系統的安全</p>
-  </div>
 </div>
-
+<div class="info-box warning fragment" data-order="1">
+<div class="label">這段最容易被忽略</div>
+<p>安全規則不寫 → AI 不會主動幫你想<br/>「不信任前端」這四個字，值整個系統的安全</p>
+</div>
+</div>
 <!-- ══ 25: 完整 spec.md 一覽 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="25">
-  <h2>完整的 spec.md</h2>
-  <div class="code-block fragment" data-order="0" style="max-height:65vh;overflow-y:auto;">
-    <div class="code-label">諮詢預約系統 spec.md（完整版）</div>
-    <pre># 諮詢預約系統 spec.md
+<h2>完整的 spec.md</h2>
+<div class="code-block fragment" data-order="0" style="max-height:65vh;overflow-y:auto;">
+<div class="code-label">諮詢預約系統 spec.md（完整版）</div>
+<pre># 諮詢預約系統 spec.md
 
 ## 功能需求
 - 顯示可預約時段（排除已過期、已被預約的）
@@ -788,387 +771,362 @@ p,li{font-size:1.1rem;line-height:1.8;}
 ## API 端點
 - GET /slots → 取得可預約時段
 - POST /book → 預約 + 寫入 + 寄信
-- GET /admin?key=xxx → 講師查看清單
+- GET /admin → 講師查看清單，後端檢查 admin session / token
 
 ## 安全規則
 - 後端驗證時段是否仍可預約
 - 同一 Email 同一時段不能重複預約
-- admin 端點需要 Key 驗證
-- 前端不存任何 Key</pre>
-  </div>
+- admin 端點檢查 admin session / token
+- 不要把 key 放在 URL
+- secret 放 GAS PropertiesService
+- 前端只送一次性或表單驗證資料</pre>
 </div>
-
+</div>
 <!-- ══ 26: 寫 spec.md 的時間成本 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="26">
-  <h2>寫 spec.md 約 15 分鐘</h2>
-  <div class="stat-grid fragment" data-order="0" style="grid-template-columns:1fr 1fr;">
-    <div class="stat-box">
-      <div class="val">15</div>
-      <div class="label">分鐘寫規格</div>
-    </div>
-    <div class="stat-box">
-      <div class="val" style="color:var(--green);">品質天壤之別</div>
-      <div class="label">後續 AI 產出差距</div>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="margin-top:1rem;">
-    <div class="label">投資報酬率</div>
-    <p>15 分鐘的規格 → 省下 3 小時的除錯和重做<br>這就是「先規劃再動手」的體感</p>
-  </div>
+<h2>寫 spec.md 約 15 分鐘</h2>
+<div class="stat-grid fragment" data-order="0" style="grid-template-columns:1fr 1fr;">
+<div class="stat-box">
+<div class="val">15</div>
+<div class="label">分鐘寫規格</div>
 </div>
-
+<div class="stat-box">
+<div class="val" style="color:var(--green);">品質天壤之別</div>
+<div class="label">後續 AI 產出差距</div>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="1" style="margin-top:1rem;">
+<div class="label">投資報酬率</div>
+<p>15 分鐘的規格 → 省下 3 小時的除錯和重做<br/>這就是「先規劃再動手」的體感</p>
+</div>
+</div>
 <!-- ══ 27: spec.md 的注意事項 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="27">
-  <h2>spec.md 也有坑</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">spec.md 太簡略 → AI 還是自己補<br>關鍵決策不能讓 AI 決定</div>
-  </div>
-  <div class="compare-two fragment" data-order="1" style="margin-top:1rem;">
-    <div class="compare-col bad">
-      <div class="col-label">太簡略</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">## 功能<br>預約系統</p>
-      <p style="margin-top:.5rem;">AI 只知道「預約」兩個字<br>其餘全部自行決定</p>
-    </div>
-    <div class="compare-col good">
-      <div class="col-label">剛好的粒度</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">## 功能需求<br>- 顯示可預約時段<br>- 排除已過期+已預約<br>- 預約後寄確認信</p>
-      <p style="margin-top:.5rem;">每一條都可驗收<br>AI 不需要猜</p>
-    </div>
-  </div>
+<h2>spec.md 也有坑</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">spec.md 太簡略 → AI 還是自己補<br/>關鍵決策不能讓 AI 決定</div>
 </div>
-
+<div class="compare-two fragment" data-order="1" style="margin-top:1rem;">
+<div class="compare-col bad">
+<div class="col-label">太簡略</div>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">## 功能<br/>預約系統</p>
+<p style="margin-top:.5rem;">AI 只知道「預約」兩個字<br/>其餘全部自行決定</p>
+</div>
+<div class="compare-col good">
+<div class="col-label">剛好的粒度</div>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">## 功能需求<br/>- 顯示可預約時段<br/>- 排除已過期+已預約<br/>- 預約後寄確認信</p>
+<p style="margin-top:.5rem;">每一條都可驗收<br/>AI 不需要猜</p>
+</div>
+</div>
+</div>
 <!-- ══ 28: spec.md 是契約 ══ -->
 <div class="slide dataviz" data-act="R3：寫 spec.md" data-index="28">
-  <h2>spec.md 不是文件，是契約</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>你跟 AI 之間的溝通協議</h3>
-    <p>寫在 spec.md 裡的 → AI 照著做<br>沒寫在 spec.md 裡的 → AI 自己決定<br>你不想讓 AI 決定的事，就寫進去</p>
-  </div>
+<h2>spec.md 不是文件，是契約</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>你跟 AI 之間的溝通協議</h3>
+<p>寫在 spec.md 裡的 → AI 照著做<br/>沒寫在 spec.md 裡的 → AI 自己決定<br/>你不想讓 AI 決定的事，就寫進去</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 4：用 spec.md 重做 (slides 29-36)
      ══════════════════════════════════════ -->
-
 <!-- ══ 29: Chapter poster — Round 4 ══ -->
-<div class="slide poster overlay-heavy" data-act="R4：重做" data-index="29"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:10–1:35</p>
-  <h1 style="color:#fff;font-size:2.8rem;">用 spec.md<br><span style="color:#f8a09b;">重做一次</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">同一個系統、同樣的時間 — 感受差距</p>
+<div class="slide poster overlay-heavy" data-act="R4：重做" data-index="29" style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:10–1:35</p>
+<h1 style="color:#fff;font-size:2.8rem;">用 spec.md<br/><span style="color:#f8a09b;">重做一次</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">同一個系統、同樣的時間 — 感受差距</p>
 </div>
-
 <!-- ══ 30: 操作指令 ══ -->
 <div class="slide dataviz" data-act="R4：重做" data-index="30">
-  <h2>操作指令</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">這次的指令</div>
-    <pre>清空專案 → spec.md 放進去
+<h2>操作指令</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">這次的指令</div>
+<pre>清空專案 → spec.md 放進去
 
 「按 spec.md 建這個預約系統」</pre>
-  </div>
-  <div class="info-box note fragment" data-order="1">
-    <div class="label">操作條件</div>
-    <p>把 R1 的成品全部清掉<br>只放 spec.md 進去，一句話啟動<br>25 分鐘，跟 R1 完全相同的時間</p>
-  </div>
-  <div class="stat-grid fragment" data-order="2" style="max-width:500px;grid-template-columns:1fr;">
-    <div class="stat-box">
-      <div class="val">25 min</div>
-      <div class="label">與 R1 相同時間</div>
-    </div>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="1">
+<div class="label">操作條件</div>
+<p>把 R1 的成品全部清掉<br/>只放 spec.md 進去，一句話啟動<br/>25 分鐘，跟 R1 完全相同的時間</p>
+</div>
+<div class="stat-grid fragment" data-order="2" style="max-width:500px;grid-template-columns:1fr;">
+<div class="stat-box">
+<div class="val">25 min</div>
+<div class="label">與 R1 相同時間</div>
+</div>
+</div>
+</div>
 <!-- ══ 31: 觀察 — AI 行為改變 ══ -->
 <div class="slide dataviz" data-act="R4：重做" data-index="31">
-  <h2>觀察：AI 的行為完全不同</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>AI 問的問題少了</strong>
-        <p>規格清楚 → 不需要反覆確認</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>時段衝突有防了</strong>
-        <p>spec 有寫 → AI 照做</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>確認信有寄了</strong>
-        <p>spec 有寫 → AI 照做</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>過期時段自動隱藏了</strong>
-        <p>spec 有寫 → AI 照做</p>
-      </div>
-    </div>
-  </div>
+<h2>觀察：AI 的行為完全不同</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>AI 問的問題少了</strong>
+<p>規格清楚 → 不需要反覆確認</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>時段衝突有防了</strong>
+<p>spec 有寫 → AI 照做</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>確認信有寄了</strong>
+<p>spec 有寫 → AI 照做</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>過期時段自動隱藏了</strong>
+<p>spec 有寫 → AI 照做</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 32: 規律浮現 ══ -->
 <div class="slide dataviz" data-act="R4：重做" data-index="32">
-  <h2>規律浮現</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
-    <div class="quote-text">spec 有寫 → AI 照做<br>spec 沒寫 → AI 自己決定</div>
-  </div>
-  <div class="flow fragment" data-order="1" style="margin-top:1.2rem;">
-    <div class="flow-box">spec.md</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">AI 照做</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="border-color:var(--green);background:var(--green-lt);color:var(--green);">一致的架構</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="border-color:var(--green);background:var(--green-lt);color:var(--green);">可擴展</div>
-  </div>
+<h2>規律浮現</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+<div class="quote-text">spec 有寫 → AI 照做<br/>spec 沒寫 → AI 自己決定</div>
 </div>
-
+<div class="flow fragment" data-order="1" style="margin-top:1.2rem;">
+<div class="flow-box">spec.md</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">AI 照做</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--green);background:var(--green-lt);color:var(--green);">一致的架構</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="border-color:var(--green);background:var(--green-lt);color:var(--green);">可擴展</div>
+</div>
+</div>
 <!-- ══ 33: 升級測試 — 加功能 ══ -->
 <div class="slide dataviz" data-act="R4：重做" data-index="33">
-  <h2>升級測試：加上取消預約功能</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">追加指令</div>
-    <pre>在現有系統上加上「取消預約」功能
+<h2>升級測試：加上取消預約功能</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">追加指令</div>
+<pre>在現有系統上加上「取消預約」功能
 預約者收到確認信後，信裡有取消連結
 點取消 → 時段恢復為可預約</pre>
-  </div>
-  <div class="compare-two fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="compare-col bad">
-      <div class="col-label">R1 加功能</div>
-      <p>架構亂 → 不知道改哪裡<br>改了一個 → 壞了三個<br>AI 重新生一版 → 跟原本矛盾</p>
-    </div>
-    <div class="compare-col good">
-      <div class="col-label">R4 加功能</div>
-      <p>API 結構清楚 → 加一支端點<br>資料結構清楚 → 加一個狀態<br>AI 照架構加 → 不壞原有功能</p>
-    </div>
-  </div>
 </div>
-
+<div class="compare-two fragment" data-order="1" style="margin-top:.8rem;">
+<div class="compare-col bad">
+<div class="col-label">R1 加功能</div>
+<p>架構亂 → 不知道改哪裡<br/>改了一個 → 壞了三個<br/>AI 重新生一版 → 跟原本矛盾</p>
+</div>
+<div class="compare-col good">
+<div class="col-label">R4 加功能</div>
+<p>API 結構清楚 → 加一支端點<br/>資料結構清楚 → 加一個狀態<br/>AI 照架構加 → 不壞原有功能</p>
+</div>
+</div>
+</div>
 <!-- ══ 34: 彩蛋 ══ -->
 <div class="slide dataviz" data-act="R4：重做" data-index="34">
-  <h2>彩蛋</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1.5rem;">
-    <div class="quote-text">做得好的版本<br>講師真的會拿去上線用</div>
-    <div class="quote-src">這不是練習題 — 這是真的要用的系統</div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:1rem;">
-    <p>有 spec.md 的版本 → 功能完整、架構乾淨、可擴展<br>講師下課後直接部署，省下自己開發的時間</p>
-  </div>
+<h2>彩蛋</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:1.5rem;">
+<div class="quote-text">做得好的版本<br/>講師真的會拿去上線用</div>
+<div class="quote-src">這不是練習題 — 這是真的要用的系統</div>
 </div>
-
+<div class="info-box success fragment" data-order="1" style="margin-top:1rem;">
+<p>有 spec.md 的版本 → 功能完整、架構乾淨、可擴展<br/>講師下課後直接部署，省下自己開發的時間</p>
+</div>
+</div>
 <!-- ══ 35: R1 vs R4 時間對比 ══ -->
 <div class="slide dataviz" data-act="R4：重做" data-index="35">
-  <h2>R1 vs R4：時間相同，品質天壤之別</h2>
-  <div class="stat-grid fragment" data-order="0" style="grid-template-columns:1fr 1fr;">
-    <div class="stat-box" style="border-color:var(--red);">
-      <div class="val" style="color:var(--red);">R1</div>
-      <div class="label">25 分鐘亂做<br>6 個坑、無法加功能</div>
-    </div>
-    <div class="stat-box" style="border-color:var(--green);">
-      <div class="val" style="color:var(--green);">R4</div>
-      <div class="label">25 分鐘有藍圖<br>完整可用、可擴展</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
-    <p>差別不在時間、不在工具、不在 AI 的能力<br>差別在你有沒有先寫規格</p>
-  </div>
+<h2>R1 vs R4：時間相同，品質天壤之別</h2>
+<div class="stat-grid fragment" data-order="0" style="grid-template-columns:1fr 1fr;">
+<div class="stat-box" style="border-color:var(--red);">
+<div class="val" style="color:var(--red);">R1</div>
+<div class="label">25 分鐘亂做<br/>6 個坑、無法加功能</div>
 </div>
-
+<div class="stat-box" style="border-color:var(--green);">
+<div class="val" style="color:var(--green);">R4</div>
+<div class="label">25 分鐘有藍圖<br/>完整可用、可擴展</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+<p>差別不在時間、不在工具、不在 AI 的能力<br/>差別在你有沒有先寫規格</p>
+</div>
+</div>
 <!-- ══ 36: R4 小結 ══ -->
 <div class="slide dataviz" data-act="R4：重做" data-index="36">
-  <h2>Round 4 小結</h2>
-  <div class="bottom-line fragment" data-order="0" style="background:var(--green-lt);border-color:rgba(15,157,138,.3);">
-    <h3 style="color:var(--green);">15 分鐘的規格 → 省下 3 小時的除錯</h3>
-    <p>spec.md 不是增加工作量<br>是把「後面會踩到的坑」提前在前面解決</p>
-  </div>
+<h2>Round 4 小結</h2>
+<div class="bottom-line fragment" data-order="0" style="background:var(--green-lt);border-color:rgba(15,157,138,.3);">
+<h3 style="color:var(--green);">15 分鐘的規格 → 省下 3 小時的除錯</h3>
+<p>spec.md 不是增加工作量<br/>是把「後面會踩到的坑」提前在前面解決</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 5：前後對比 (slides 37-44)
      ══════════════════════════════════════ -->
-
 <!-- ══ 37: Chapter poster — Round 5 ══ -->
-<div class="slide poster overlay-heavy" data-act="R5：前後對比" data-index="37"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:35–1:50</p>
-  <h1 style="color:#fff;font-size:2.8rem;">六維度<br><span style="color:#f8a09b;">前後對比</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">R1 和 R4 並排 — 用數據看差距</p>
+<div class="slide poster overlay-heavy" data-act="R5：前後對比" data-index="37" style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:35–1:50</p>
+<h1 style="color:#fff;font-size:2.8rem;">六維度<br/><span style="color:#f8a09b;">前後對比</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">R1 和 R4 並排 — 用數據看差距</p>
 </div>
-
 <!-- ══ 38: 六維度對比 — compare-two ══ -->
 <div class="slide dataviz" data-act="R5：前後對比" data-index="38">
-  <h2>R1 vs R4：六維度評分</h2>
-  <div class="compare-two fragment" data-order="0">
-    <div class="compare-col bad">
-      <div class="col-label">R1（自由發揮）</div>
-      <ul>
-        <li>功能完整度：部分缺失</li>
-        <li>時段衝突防護：無</li>
-        <li>通知機制：無</li>
-        <li>可擴展性：加功能就壞</li>
-        <li>程式碼品質：前後端混雜</li>
-        <li>AI 協作效率：反覆修正</li>
-      </ul>
-    </div>
-    <div class="compare-col good">
-      <div class="col-label">R4（有 spec.md）</div>
-      <ul>
-        <li>功能完整度：全部實作</li>
-        <li>時段衝突防護：後端驗證</li>
-        <li>通知機制：雙向 Email</li>
-        <li>可擴展性：加功能不壞</li>
-        <li>程式碼品質：職責分離</li>
-        <li>AI 協作效率：一次到位</li>
-      </ul>
-    </div>
-  </div>
+<h2>R1 vs R4：六維度評分</h2>
+<div class="compare-two fragment" data-order="0">
+<div class="compare-col bad">
+<div class="col-label">R1（自由發揮）</div>
+<ul>
+<li>功能完整度：部分缺失</li>
+<li>時段衝突防護：無</li>
+<li>通知機制：無</li>
+<li>可擴展性：加功能就壞</li>
+<li>程式碼品質：前後端混雜</li>
+<li>AI 協作效率：反覆修正</li>
+</ul>
 </div>
-
+<div class="compare-col good">
+<div class="col-label">R4（有 spec.md）</div>
+<ul>
+<li>功能完整度：全部實作</li>
+<li>時段衝突防護：後端驗證</li>
+<li>通知機制：雙向 Email</li>
+<li>可擴展性：加功能不壞</li>
+<li>程式碼品質：職責分離</li>
+<li>AI 協作效率：一次到位</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 39: 維度 1-2 展開 ══ -->
 <div class="slide dataviz" data-act="R5：前後對比" data-index="39">
-  <h2>功能完整度 + 時段衝突防護</h2>
-  <div style="max-width:800px;width:100%;">
-    <div class="dim-row fragment" data-order="0">
-      <div class="dim-label">功能完整度</div>
-      <div class="dim-bar-wrap">
-        <div class="dim-bar bad" style="width:35%;">R1 35%</div>
-        <div class="dim-bar good" style="width:95%;">R4 95%</div>
-      </div>
-    </div>
-    <div class="dim-row fragment" data-order="1">
-      <div class="dim-label">衝突防護</div>
-      <div class="dim-bar-wrap">
-        <div class="dim-bar bad" style="width:5%;">0</div>
-        <div class="dim-bar good" style="width:90%;">R4 90%</div>
-      </div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="2" style="margin-top:1rem;">
-    <p>R1 的 35% 功能裡，還有一半是壞的<br>R4 的 95% 功能，全部通過手動測試</p>
-  </div>
+<h2>功能完整度 + 時段衝突防護</h2>
+<div style="max-width:800px;width:100%;">
+<div class="dim-row fragment" data-order="0">
+<div class="dim-label">功能完整度</div>
+<div class="dim-bar-wrap">
+<div class="dim-bar bad" style="width:35%;">R1 35%</div>
+<div class="dim-bar good" style="width:95%;">R4 95%</div>
 </div>
-
+</div>
+<div class="dim-row fragment" data-order="1">
+<div class="dim-label">衝突防護</div>
+<div class="dim-bar-wrap">
+<div class="dim-bar bad" style="width:5%;">0</div>
+<div class="dim-bar good" style="width:90%;">R4 90%</div>
+</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="2" style="margin-top:1rem;">
+<p>R1 的 35% 功能裡，還有一半是壞的<br/>R4 的 95% 功能，全部通過手動測試</p>
+</div>
+</div>
 <!-- ══ 40: 維度 3-4 展開 ══ -->
 <div class="slide dataviz" data-act="R5：前後對比" data-index="40">
-  <h2>通知機制 + 可擴展性</h2>
-  <div style="max-width:800px;width:100%;">
-    <div class="dim-row fragment" data-order="0">
-      <div class="dim-label">通知機制</div>
-      <div class="dim-bar-wrap">
-        <div class="dim-bar bad" style="width:5%;">0</div>
-        <div class="dim-bar good" style="width:85%;">R4 85%</div>
-      </div>
-    </div>
-    <div class="dim-row fragment" data-order="1">
-      <div class="dim-label">可擴展性</div>
-      <div class="dim-bar-wrap">
-        <div class="dim-bar bad" style="width:15%;">R1 15%</div>
-        <div class="dim-bar good" style="width:88%;">R4 88%</div>
-      </div>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="2" style="margin-top:1rem;">
-    <p>R4 加「取消預約」功能只花 3 分鐘<br>R1 試了 15 分鐘，加完反而壞了原有功能</p>
-  </div>
+<h2>通知機制 + 可擴展性</h2>
+<div style="max-width:800px;width:100%;">
+<div class="dim-row fragment" data-order="0">
+<div class="dim-label">通知機制</div>
+<div class="dim-bar-wrap">
+<div class="dim-bar bad" style="width:5%;">0</div>
+<div class="dim-bar good" style="width:85%;">R4 85%</div>
 </div>
-
+</div>
+<div class="dim-row fragment" data-order="1">
+<div class="dim-label">可擴展性</div>
+<div class="dim-bar-wrap">
+<div class="dim-bar bad" style="width:15%;">R1 15%</div>
+<div class="dim-bar good" style="width:88%;">R4 88%</div>
+</div>
+</div>
+</div>
+<div class="info-box success fragment" data-order="2" style="margin-top:1rem;">
+<p>R4 加「取消預約」功能只花 3 分鐘<br/>R1 試了 15 分鐘，加完反而壞了原有功能</p>
+</div>
+</div>
 <!-- ══ 41: 維度 5-6 展開 ══ -->
 <div class="slide dataviz" data-act="R5：前後對比" data-index="41">
-  <h2>程式碼品質 + AI 協作效率</h2>
-  <div style="max-width:800px;width:100%;">
-    <div class="dim-row fragment" data-order="0">
-      <div class="dim-label">程式碼品質</div>
-      <div class="dim-bar-wrap">
-        <div class="dim-bar bad" style="width:20%;">R1 20%</div>
-        <div class="dim-bar good" style="width:82%;">R4 82%</div>
-      </div>
-    </div>
-    <div class="dim-row fragment" data-order="1">
-      <div class="dim-label">AI 協作效率</div>
-      <div class="dim-bar-wrap">
-        <div class="dim-bar bad" style="width:25%;">R1 25%</div>
-        <div class="dim-bar good" style="width:90%;">R4 90%</div>
-      </div>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="2" style="margin-top:1rem;">
-    <div class="label">AI 協作效率的意思</div>
-    <p>R1：你說一句，AI 問三句，做出來不對，再改<br>R4：你給 spec，AI 直接做，一次到位</p>
-  </div>
+<h2>程式碼品質 + AI 協作效率</h2>
+<div style="max-width:800px;width:100%;">
+<div class="dim-row fragment" data-order="0">
+<div class="dim-label">程式碼品質</div>
+<div class="dim-bar-wrap">
+<div class="dim-bar bad" style="width:20%;">R1 20%</div>
+<div class="dim-bar good" style="width:82%;">R4 82%</div>
 </div>
-
+</div>
+<div class="dim-row fragment" data-order="1">
+<div class="dim-label">AI 協作效率</div>
+<div class="dim-bar-wrap">
+<div class="dim-bar bad" style="width:25%;">R1 25%</div>
+<div class="dim-bar good" style="width:90%;">R4 90%</div>
+</div>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="2" style="margin-top:1rem;">
+<div class="label">AI 協作效率的意思</div>
+<p>R1：你說一句，AI 問三句，做出來不對，再改<br/>R4：你給 spec，AI 直接做，一次到位</p>
+</div>
+</div>
 <!-- ══ 42: 經典範例 — 真實世界的 spec ══ -->
 <div class="slide dataviz" data-act="R5：前後對比" data-index="42">
-  <h2>真實世界的規格文件</h2>
-  <div class="card-grid fragment" data-order="0">
-    <div class="card accent-top">
-      <h3>PRD</h3>
-      <p>Product Requirements Document<br>產品經理寫的功能需求書<br>定義「做什麼」</p>
-    </div>
-    <div class="card accent-top-blue">
-      <h3>RFC</h3>
-      <p>Request for Comments<br>工程師寫的技術提案<br>定義「怎麼做」</p>
-    </div>
-    <div class="card accent-top-gold">
-      <h3>spec.md</h3>
-      <p>我們的簡化版<br>PRD + RFC 的精華<br>一個檔案搞定</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
-    <p>spec.md 是工程界數十年經驗的簡化版<br>不需要學 PRD 的完整格式，掌握核心就夠</p>
-  </div>
+<h2>真實世界的規格文件</h2>
+<div class="card-grid fragment" data-order="0">
+<div class="card accent-top">
+<h3>PRD</h3>
+<p>Product Requirements Document<br/>產品經理寫的功能需求書<br/>定義「做什麼」</p>
 </div>
-
+<div class="card accent-top-blue">
+<h3>RFC</h3>
+<p>Request for Comments<br/>工程師寫的技術提案<br/>定義「怎麼做」</p>
+</div>
+<div class="card accent-top-gold">
+<h3>spec.md</h3>
+<p>我們的簡化版<br/>PRD + RFC 的精華<br/>一個檔案搞定</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+<p>spec.md 是工程界數十年經驗的簡化版<br/>不需要學 PRD 的完整格式，掌握核心就夠</p>
+</div>
+</div>
 <!-- ══ 43: 注意事項總表 ══ -->
 <div class="slide dataviz" data-act="R5：前後對比" data-index="43">
-  <h2>M3-3 注意事項總表</h2>
-  <table class="data-table fragment" data-order="0">
-    <tr><th style="width:30px;">#</th><th>常見問題</th><th>學到什麼</th></tr>
-    <tr><td>1</td><td>同時段被多人預約</td><td>業務邏輯驗證（後端防衝突）</td></tr>
-    <tr><td>2</td><td>過期時段還能選</td><td>時間驗證要在後端做</td></tr>
-    <tr><td>3</td><td>AI 每次給不同架構</td><td>沒有藍圖 = AI 亂蓋</td></tr>
-    <tr><td>4</td><td>加功能改壞原有功能</td><td>API 規格 + 可擴展性</td></tr>
-    <tr><td>5</td><td>spec.md 太簡略</td><td>關鍵決策要人類做</td></tr>
-  </table>
+<h2>M3-3 注意事項總表</h2>
+<table class="data-table fragment" data-order="0">
+<tr><th style="width:30px;">#</th><th>常見問題</th><th>學到什麼</th></tr>
+<tr><td>1</td><td>同時段被多人預約</td><td>業務邏輯驗證（後端防衝突）</td></tr>
+<tr><td>2</td><td>過期時段還能選</td><td>時間驗證要在後端做</td></tr>
+<tr><td>3</td><td>AI 每次給不同架構</td><td>沒有藍圖 = AI 亂蓋</td></tr>
+<tr><td>4</td><td>加功能改壞原有功能</td><td>API 規格 + 可擴展性</td></tr>
+<tr><td>5</td><td>spec.md 太簡略</td><td>關鍵決策要人類做</td></tr>
+</table>
 </div>
-
 <!-- ══ 44: R5 小結 ══ -->
 <div class="slide dataviz" data-act="R5：前後對比" data-index="44">
-  <h2>Round 5 小結</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
-    <div class="quote-text">差距不是靠更厲害的 AI 拉開的<br>是靠 15 分鐘的規格書拉開的</div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:1rem;">
-    <p>六個維度全面碾壓 — 因為規格清楚<br>AI 的能力一直都在，差的是你給它的指引</p>
-  </div>
+<h2>Round 5 小結</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+<div class="quote-text">差距不是靠更厲害的 AI 拉開的<br/>是靠 15 分鐘的規格書拉開的</div>
 </div>
-
+<div class="info-box success fragment" data-order="1" style="margin-top:1rem;">
+<p>六個維度全面碾壓 — 因為規格清楚<br/>AI 的能力一直都在，差的是你給它的指引</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 6：spec.md 模板 + 三層定位 (slides 45-55)
      ══════════════════════════════════════ -->
-
 <!-- ══ 45: Chapter poster — Round 6 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：模板與定位" data-index="45"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:50–2:00</p>
-  <h1 style="color:#fff;font-size:2.8rem;">spec.md 模板<br><span style="color:#f8a09b;">三層定位</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">帶走模板 + 理解三份文件的分工</p>
+<div class="slide poster overlay-heavy" data-act="R6：模板與定位" data-index="45" style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:50–2:00</p>
+<h1 style="color:#fff;font-size:2.8rem;">spec.md 模板<br/><span style="color:#f8a09b;">三層定位</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">帶走模板 + 理解三份文件的分工</p>
 </div>
-
 <!-- ══ 46: spec.md 通用模板（上） ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="46">
-  <h2>spec.md 通用模板（上）</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">模板上半部 — 功能 + 技術 + 資料</div>
-    <pre># [專案名稱] spec.md
+<h2>spec.md 通用模板（上）</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">模板上半部 — 功能 + 技術 + 資料</div>
+<pre># [專案名稱] spec.md
 
 ## 功能需求
 - [ ] 功能 1：描述 + 驗收條件
@@ -1184,15 +1142,14 @@ p,li{font-size:1.1rem;line-height:1.8;}
 ## 資料結構
 - 表/集合名稱
   欄位 1 / 欄位 2 / 欄位 3 / 狀態</pre>
-  </div>
 </div>
-
+</div>
 <!-- ══ 47: spec.md 通用模板（下） ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="47">
-  <h2>spec.md 通用模板（下）</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">模板下半部 — API + 安全 + 範圍</div>
-    <pre>## API 端點
+<h2>spec.md 通用模板（下）</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">模板下半部 — API + 安全 + 範圍</div>
+<pre>## API 端點
 - GET /endpoint1 → 說明
 - POST /endpoint2 → 說明 + 輸入 + 回傳
 
@@ -1205,194 +1162,181 @@ p,li{font-size:1.1rem;line-height:1.8;}
 - 第一版做：功能 A / B / C
 - 第一版不做：功能 D / E
 - 未來考慮：功能 F</pre>
-  </div>
-  <div class="info-box tip fragment" data-order="1">
-    <div class="label">範圍定義是新增的</div>
-    <p>明確寫出「不做什麼」<br>防止 AI 自行加功能 → 系統膨脹失控</p>
-  </div>
 </div>
-
+<div class="info-box tip fragment" data-order="1">
+<div class="label">範圍定義是新增的</div>
+<p>明確寫出「不做什麼」<br/>防止 AI 自行加功能 → 系統膨脹失控</p>
+</div>
+</div>
 <!-- ══ 48: 練習 — 寫自己的 spec.md ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="48">
-  <h2>練習：寫自己的 spec.md</h2>
-  <div class="info-box blue fragment" data-order="0">
-    <div class="label">操作</div>
-    <p>用模板，為你下一個想做的系統寫 spec.md 大綱<br>不用寫完 — 先把五大區塊的標題和重點列出來</p>
-  </div>
-  <div class="stat-grid fragment" data-order="1" style="grid-template-columns:1fr 1fr;max-width:500px;margin-top:1rem;">
-    <div class="stat-box">
-      <div class="val">10</div>
-      <div class="label">分鐘</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">5</div>
-      <div class="label">大區塊</div>
-    </div>
-  </div>
+<h2>練習：寫自己的 spec.md</h2>
+<div class="info-box blue fragment" data-order="0">
+<div class="label">操作</div>
+<p>用模板，為你下一個想做的系統寫 spec.md 大綱<br/>不用寫完 — 先把五大區塊的標題和重點列出來</p>
 </div>
-
+<div class="stat-grid fragment" data-order="1" style="grid-template-columns:1fr 1fr;max-width:500px;margin-top:1rem;">
+<div class="stat-box">
+<div class="val">10</div>
+<div class="label">分鐘</div>
+</div>
+<div class="stat-box">
+<div class="val">5</div>
+<div class="label">大區塊</div>
+</div>
+</div>
+</div>
 <!-- ══ 49: 三層定位 — 總覽 ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="49">
-  <h2>三層定位：三份文件各管什麼</h2>
-  <div class="card-grid fragment" data-order="0">
-    <div class="card accent-top" style="max-width:260px;">
-      <h3>CLAUDE.md</h3>
-      <p>AI 的個性和偏好<br><span class="hl-red">跨專案不變</span><br>「你是什麼樣的 AI」</p>
-    </div>
-    <div class="card accent-top-blue" style="max-width:260px;">
-      <h3>spec.md</h3>
-      <p>這個專案的規格<br><span class="hl-blue">每個專案獨立</span><br>「這次要做什麼」</p>
-    </div>
-    <div class="card accent-top-gold" style="max-width:260px;">
-      <h3>Skills</h3>
-      <p>AI 的技能方法<br><span class="hl-gold">跨專案共用</span><br>「用什麼方法做」</p>
-    </div>
-  </div>
+<h2>三層定位：三份文件各管什麼</h2>
+<div class="card-grid fragment" data-order="0">
+<div class="card accent-top" style="max-width:260px;">
+<h3>CLAUDE.md</h3>
+<p>AI 的個性和偏好<br/><span class="hl-red">跨專案不變</span><br/>「你是什麼樣的 AI」</p>
 </div>
-
+<div class="card accent-top-blue" style="max-width:260px;">
+<h3>spec.md</h3>
+<p>這個專案的規格<br/><span class="hl-blue">每個專案獨立</span><br/>「這次要做什麼」</p>
+</div>
+<div class="card accent-top-gold" style="max-width:260px;">
+<h3>Skills</h3>
+<p>AI 的技能方法<br/><span class="hl-gold">跨專案共用</span><br/>「用什麼方法做」</p>
+</div>
+</div>
+</div>
 <!-- ══ 50: CLAUDE.md 是什麼 ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="50">
-  <h2>CLAUDE.md — AI 的個性設定</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">CLAUDE.md 範例</div>
-    <pre># 開發偏好
+<h2>CLAUDE.md — AI 的個性設定</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">CLAUDE.md 範例</div>
+<pre># 開發偏好
 - 使用繁體中文回應
 - 程式碼加註解
 - 優先使用 GAS + Google Sheet
 - 錯誤訊息要對使用者友善
 - 不要用 emoji</pre>
-  </div>
-  <div class="info-box note fragment" data-order="1">
-    <p>放在 ~/.claude/CLAUDE.md<br>所有專案共用 — AI 在任何專案都會遵守這些偏好</p>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="1">
+<p>放在 ~/.claude/CLAUDE.md<br/>所有專案共用 — AI 在任何專案都會遵守這些偏好</p>
+</div>
+</div>
 <!-- ══ 51: spec.md 在三層中的位置 ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="51">
-  <h2>spec.md — 專案級規格</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">放置位置</div>
-    <pre>你的專案/
+<h2>spec.md — 專案級規格</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">放置位置</div>
+<pre>你的專案/
 ├── spec.md          ← 這個專案的規格
 ├── index.html       ← 前端
 ├── gas/             ← 後端
 │   └── Code.gs
 └── README.md</pre>
-  </div>
-  <div class="info-box success fragment" data-order="1">
-    <p>spec.md 放在專案根目錄<br>AI 開始工作前會先讀這份文件<br>後續所有決策都以 spec.md 為準</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1">
+<p>spec.md 放在專案根目錄<br/>AI 開始工作前會先讀這份文件<br/>後續所有決策都以 spec.md 為準</p>
+</div>
+</div>
 <!-- ══ 52: Skills 是什麼 ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="52">
-  <h2>Skills — AI 的可重用技能</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">Skills 範例</div>
-    <pre># GAS API 部署 Skill
+<h2>Skills — AI 的可重用技能</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">Skills 範例</div>
+<pre># GAS API 部署 Skill
 1. 建立 GAS 專案
 2. 寫 doGet / doPost 處理函式
 3. 部署為 Web App（設為所有人可存取）
 4. 測試 API 端點回應
 5. 把 URL 貼回前端設定</pre>
-  </div>
-  <div class="info-box note fragment" data-order="1">
-    <p>Skills 定義「怎麼做」— 標準化的工作流程<br>寫一次，所有專案都能用<br>不需要每次重新教 AI 同樣的步驟</p>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="1">
+<p>Skills 定義「怎麼做」— 標準化的工作流程<br/>寫一次，所有專案都能用<br/>不需要每次重新教 AI 同樣的步驟</p>
+</div>
+</div>
 <!-- ══ 53: 三者互補 ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="53">
-  <h2>三者互補，缺一不可</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box accent">CLAUDE.md<br><span style="font-size:.8rem;font-weight:400;">定性格</span></div>
-    <div class="flow-arrow">+</div>
-    <div class="flow-box" style="border-color:var(--blue);background:var(--blue-lt);color:var(--blue);">spec.md<br><span style="font-size:.8rem;font-weight:400;">定規格</span></div>
-    <div class="flow-arrow">+</div>
-    <div class="flow-box" style="border-color:var(--gold);background:var(--gold-lt);color:#b07d00;">Skills<br><span style="font-size:.8rem;font-weight:400;">定方法</span></div>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="margin-top:1.2rem;">
-    <div class="label">比喻</div>
-    <p>CLAUDE.md = 員工的個性（他是什麼樣的人）<br>spec.md = 這次的工作單（今天要做什麼）<br>Skills = 公司的 SOP（用什麼方法做）</p>
-  </div>
+<h2>三者互補，缺一不可</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box accent">CLAUDE.md<br/><span style="font-size:.8rem;font-weight:400;">定性格</span></div>
+<div class="flow-arrow">+</div>
+<div class="flow-box" style="border-color:var(--blue);background:var(--blue-lt);color:var(--blue);">spec.md<br/><span style="font-size:.8rem;font-weight:400;">定規格</span></div>
+<div class="flow-arrow">+</div>
+<div class="flow-box" style="border-color:var(--gold);background:var(--gold-lt);color:#b07d00;">Skills<br/><span style="font-size:.8rem;font-weight:400;">定方法</span></div>
 </div>
-
+<div class="info-box tip fragment" data-order="1" style="margin-top:1.2rem;">
+<div class="label">比喻</div>
+<p>CLAUDE.md = 員工的個性（他是什麼樣的人）<br/>spec.md = 這次的工作單（今天要做什麼）<br/>Skills = 公司的 SOP（用什麼方法做）</p>
+</div>
+</div>
 <!-- ══ 54: 帶走清單 ══ -->
 <div class="slide dataviz" data-act="R6：模板與定位" data-index="54">
-  <h2>今天帶走的東西</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon done">V</div>
-      <div class="check-text">
-        <strong>spec.md 模板</strong>
-        <p>五大區塊 + 範圍定義，直接套用到下一個專案</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon done">V</div>
-      <div class="check-text">
-        <strong>「先規劃再動手」的體感</strong>
-        <p>R1 vs R4 的差距不是理論 — 是你親手做出來的</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon done">V</div>
-      <div class="check-text">
-        <strong>注意事項總整理</strong>
-        <p>六大類問題 + 五個注意事項 → 下次遇到直接對照</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="3">
-      <div class="check-icon done">V</div>
-      <div class="check-text">
-        <strong>三層定位</strong>
-        <p>CLAUDE.md / spec.md / Skills 各管什麼、怎麼搭配</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="4">
-      <div class="check-icon done">V</div>
-      <div class="check-text">
-        <strong>可能真的上線的預約系統</strong>
-        <p>有 spec.md 的版本，講師會挑最好的直接部署</p>
-      </div>
-    </div>
-  </div>
+<h2>帶走清單</h2>
+<div class="anchor-banner">
+<span class="anchor-label">本堂定位</span>
+<span class="anchor-text">SDD 驅動、TDD 驅動</span>
 </div>
-
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了<br/><em style="color:var(--g500);font-size:.85rem;">從「請 AI 幫我做事」→ 設計 AI 能執行的系統</em></p>
+<div class="insight-grid">
+<div class="insight-card fragment" data-order="0" style="--card-color:var(--green);">
+<div class="insight-before">從「先叫 AI 做看看」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">模糊會放大混亂</div>
+</div>
+<div class="insight-card fragment" data-order="1" style="--card-color:var(--red);">
+<div class="insight-before">從「坑是 AI 不夠強」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">坑多半來自未定義</div>
+</div>
+<div class="insight-card fragment" data-order="2" style="--card-color:var(--blue);">
+<div class="insight-before">從「需求在我腦中」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">規格是共享邊界</div>
+</div>
+<div class="insight-card fragment" data-order="3" style="--card-color:var(--gold);">
+<div class="insight-before">從「重做就是浪費」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">重做是校準系統</div>
+</div>
+<div class="insight-card fragment" data-order="4" style="--card-color:var(--purple);">
+<div class="insight-before">從「結果好壞看運氣」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">對比能暴露結構</div>
+</div>
+<div class="insight-card fragment" data-order="5" style="--card-color:var(--accent);">
+<div class="insight-before">從「spec 只是文件」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">spec 是 AI 作業系統</div>
+</div>
+</div>
+</div>
 <!-- ══ 55: 預告 M3-4 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：模板與定位" data-index="55"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M3-4</p>
-  <h1 style="color:#fff;font-size:2.8rem;">你的系統做好了<br><span style="color:#f8a09b;">但電腦關機就停了</span></h1>
-  <p class="poster-subtitle" style="margin-top:1rem;">下一堂課：GitHub Actions + Cloudflare Worker + 永遠有選擇</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">自動排程</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">事件驅動</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">閉環通知</span>
-  </div>
-  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M3-3 完成</p>
+<div class="slide poster overlay-heavy" data-act="R6：模板與定位" data-index="55" style="background:linear-gradient(135deg,#0B3C5D 0%,#5a1a1a 40%,#D93025 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M3-4</p>
+<h1 style="color:#fff;font-size:2.8rem;">你的系統做好了<br/><span style="color:#f8a09b;">但電腦關機就停了</span></h1>
+<p class="poster-subtitle" style="margin-top:1rem;">下一堂課：GitHub Actions + Cloudflare Worker + 永遠有選擇</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">自動排程</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">事件驅動</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">閉環通知</span>
 </div>
-
+<p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M3-3 完成</p>
+</div>
 </div><!-- end .slides -->
-
 <!-- ── Controls ── -->
 <div class="progress" id="progress"></div>
 <div class="slide-counter" id="counter">1 / 56</div>
 <div class="controls">
-  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
-  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+<button disabled="" id="prevBtn" onclick="navigate(-1)">‹</button>
+<button id="nextBtn" onclick="navigate(1)">›</button>
 </div>
-
 <!-- ── Chapter Menu ── -->
 <div class="chapter-menu" id="chapterMenu">
-  <div class="chapter-btn" onclick="toggleChapterMenu()">
-    <span class="chapter-icon">&#9670;</span>
-    <span id="chapterLabel">章節</span>
-    <span class="chapter-arrow">&#9650;</span>
-  </div>
-  <div class="chapter-list" id="chapterList"></div>
+<div class="chapter-btn" onclick="toggleChapterMenu()">
+<span class="chapter-icon">◆</span>
+<span id="chapterLabel">章節</span>
+<span class="chapter-arrow">▲</span>
 </div>
-
+<div class="chapter-list" id="chapterList"></div>
+</div>
 <script>
 (function(){
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -1520,8 +1464,92 @@ p,li{font-size:1.1rem;line-height:1.8;}
   // Init
   updateUI();
   window.navigate = navigate;
+  window.goTo = goTo;
   window.toggleChapterMenu = toggleChapterMenu;
 })();
 </script>
+
+<!-- VIBE_INJECT_START -->
+<style>
+  .code-block{position:relative;}
+  .code-block .copy-btn{
+    position:absolute;top:.35rem;right:.4rem;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    padding:.18rem .55rem;border:0;border-radius:4px;
+    background:rgba(15,157,138,.85);color:#fff;cursor:pointer;
+    opacity:.55;transition:opacity .15s,background .15s;
+    letter-spacing:.05em;z-index:5;
+  }
+  .code-block:hover .copy-btn,
+  .code-block .copy-btn:focus{opacity:1;}
+  .code-block .copy-btn.copied{background:rgba(52,211,153,.95);opacity:1;}
+  @media (hover:none){.code-block .copy-btn{opacity:.85;}}
+</style>
+<script>
+(function(){
+  /* ── copy button ── */
+  function addBtn(block){
+    if(block.querySelector('.copy-btn'))return;
+    var pre=block.querySelector('pre');
+    if(!pre)return;
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='✓ 已複製';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='複製';btn.classList.remove('copied');},1500);
+      };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text,done);});
+      }else{fallback(text,done);}
+    });
+    block.appendChild(btn);
+  }
+  function fallback(text,cb){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.top='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');cb();}catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ── hash router: #round-N jumps to first slide whose data-act matches "Round N：" or "RN：" ── */
+  function routeHash(){
+    var m=(window.location.hash||'').match(/^#round-(\d+)/i);
+    if(!m)return;
+    var n=m[1];
+    var patterns=[
+      new RegExp('^Round\\s*'+n+'[\u{ff1a}:\\s]','u'),
+      new RegExp('^R'+n+'[\u{ff1a}:\\s]','u'),
+    ];
+    var target=null;
+    var slides=document.querySelectorAll('.slide[data-act]');
+    for(var i=0;i<slides.length;i++){
+      if(target)break;
+      var act=slides[i].getAttribute('data-act')||'';
+      for(var j=0;j<patterns.length;j++){
+        if(patterns[j].test(act)){target=slides[i];break;}
+      }
+    }
+    if(target&&typeof window.goTo==='function'){
+      var idx=parseInt(target.getAttribute('data-index'),10);
+      window.goTo(idx);
+    }
+  }
+  window.addEventListener('hashchange',routeHash);
+
+  function init(){
+    document.querySelectorAll('.code-block').forEach(addBtn);
+    setTimeout(routeHash,80);  /* wait for slide system init */
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{init();}
+})();
+</script>
+<!-- VIBE_INJECT_END -->
+
 </body>
 </html>

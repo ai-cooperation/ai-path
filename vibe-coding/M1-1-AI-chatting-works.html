@@ -90,6 +90,34 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
 .flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
 
+/* architecture grid: 3-column Prompt → Sources → Output 比較 */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
+.arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
+.arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
+
+/* swim lane: 雙泳道 mini 流程（用於 data-index 6 / 5 之類） */
+.lane-wrap{display:flex;flex-direction:column;gap:.5rem;max-width:900px;margin:.4rem auto .6rem;}
+.lane{display:flex;align-items:center;gap:.4rem;background:var(--lane-bg,var(--offwhite));border:1px solid var(--g200);border-left:4px solid var(--lane-color,var(--g400));border-radius:10px;padding:.45rem .7rem;}
+.lane-label{font-size:.8rem;font-weight:700;color:var(--lane-color,var(--g800));min-width:7em;}
+.lane-step{background:#fff;border:1px solid var(--g200);border-radius:6px;padding:.25rem .6rem;font-size:.78rem;color:var(--g800);white-space:nowrap;}
+.lane-arrow{color:var(--lane-color,var(--g400));font-size:.85rem;font-weight:900;}
+.lane-merge{font-size:.78rem;color:var(--g600);text-align:center;padding:.2rem;}
+
+/* insight cards: 心態 BEFORE → AFTER 轉變（用於帶走清單） */
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
+.insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
+.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
+.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+
+/* anchor banner：課程設計者視角的單元核心觀念，置於 h2 與 6 卡之間 */
+.anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
+
 /* ── Info Boxes (white mode) ── */
 .info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
 .info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
@@ -183,7 +211,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .controls button:hover{background:var(--green);border-color:var(--green);color:#fff;}
 .controls button:disabled{opacity:.25;cursor:default;}
-.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500,var(--g400));font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
 .module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--green-lt);color:var(--green);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(15,157,138,.2);}
 .module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
 
@@ -332,8 +360,8 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <!-- ══ 5: 參考起手式 ══ -->
 <!-- Height: h2(77) + p(42) + 3×code-block(3×80=240) + margins(48) = 407px ✅ -->
 <div class="slide dataviz" data-act="Round 1：操作" data-index="4">
-  <h2>三個最基本的起手式</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">以下不是好的指令，只是起點</p>
+  <h2>常見起點（剛才若卡住可參考）</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">以下三個是常見起點，下次可以嘗試<br>Round 1 結束後再回來看</p>
   <div class="code-block fragment" data-order="0" style="padding:.7rem 1.2rem;margin:.4rem 0;">
     <pre style="font-size:.85rem;line-height:1.5;">A：幫我做一個自我介紹網頁
 B：做一個我的作品集頁面
@@ -417,7 +445,7 @@ C：做一個活動報名頁</pre>
 <!-- Height: h2(77) + quote-box(88) + margins(16) = 181px ✅ -->
 <div class="slide dataviz" data-act="Round 1：操作" data-index="8">
   <h2>Round 1 小結</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1.5rem;">
+  <div class="quote-box" data-order="0" style="margin-top:1.5rem;">
     <div class="quote-text">指令的精確度，直接決定產出的品質<br>這個因果關係會在下一輪被驗證</div>
   </div>
 </div>
@@ -447,7 +475,7 @@ C：做一個活動報名頁</pre>
     </div>
     <div class="compare-col good fragment" data-order="1">
       <div class="col-label">結構完整的指令</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">你是前端工程師。製作個人名片網頁，含姓名、技能標籤、聯絡方式。白色背景，現代簡約風格。</p>
+      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">你是前端工程師<br>製作個人名片網頁，含姓名、技能標籤、聯絡方式<br>白色背景，現代簡約風格</p>
       <p style="margin-top:.5rem;">角色、任務、內容、風格<br>四個維度都有交代</p>
     </div>
   </div>
@@ -691,7 +719,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
       </div>
     </div>
   </div>
-  <div class="bottom-line fragment" data-order="3" style="padding:1.2rem;margin-top:.6rem;">
+  <div class="bottom-line" data-order="3" style="padding:1.2rem;margin-top:.6rem;">
     <h3 style="font-size:1.3rem;">指令結構化不是技巧，是工作方法</h3>
     <p style="font-size:.95rem;">你剛才親身驗證了指令結構與產出品質之間的因果關係</p>
   </div>
@@ -735,6 +763,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
       <p style="margin-top:.5rem;font-size:.9rem;color:var(--green);">從入座到結帳的動線 — 決定回訪率</p>
     </div>
   </div>
+  <p style="color:var(--g700);font-size:1rem;margin-top:.6rem;text-align:center;">UI 是視覺線索，UX 是任務完成路徑</p>
 </div>
 
 <!-- ══ 25: 判斷點一：首屏 ══ -->
@@ -1093,7 +1122,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- Height: h2(77) + bottom-line(120) + margins(16) = 213px ✅ -->
 <div class="slide dataviz" data-act="Round 3：介面" data-index="37">
   <h2>Round 3 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
+  <div class="bottom-line" data-order="0">
     <h3>指令結構決定內容品質，介面指令決定呈現品質</h3>
     <p>兩層疊加是完整的產出控制<br>只控制內容不控制介面，等於只完成了一半的指令設計</p>
   </div>
@@ -1210,7 +1239,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card accent-top-blue fragment" data-order="2" style="text-align:center;">
       <h3>Gemini</h3>
-      <p>Google 生態系<br>免費額度最大<br>多模態能力強</p>
+      <p>Google 生態系<br>額度與限制依帳號方案變動<br>現場以實測為準</p>
     </div>
   </div>
 </div>
@@ -1242,7 +1271,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- Actually with 4 cards, max-width:280 and gap 1.2rem, 3 fit in first row, 1 in second. Second row = single card ~176px. Total card area ≈ 176+176=352. 77+352+16=445px ✅ -->
 <div class="slide dataviz" data-act="Round 4：風險" data-index="45">
   <h2>觀察比較的四個維度</h2>
-  <div class="card-grid">
+  <div class="card-grid" style="display:grid;grid-template-columns:repeat(2,1fr);max-width:760px;">
     <div class="card accent-top fragment" data-order="0">
       <h3>回應速度</h3>
       <p>從提交到完整輸出的耗時差異</p>
@@ -1277,32 +1306,47 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card fragment" data-order="2" style="border-top:4px solid var(--blue);text-align:center;">
       <h3>Gemini</h3>
-      <p>Google 生態系<br>免費額度最充足<br>帳號直接使用</p>
+      <p>Google 生態系<br>額度與限制依帳號方案變動<br>現場以實測為準</p>
     </div>
   </div>
 </div>
 
-<!-- ══ 45: 平台記憶機制差異 ══ -->
-<!-- Height: h2(77) + p(42) + card-grid(176) + info-box(88) + margins(48) = 431px ✅ -->
+<!-- ══ 45: 平台記憶機制差異（架構圖版：Prompt → Context Sources → Output 三欄）══ -->
+<!-- Height: h2(77) + p(42) + arch-grid(~340) + info-box(72) + margins(40) = 571px ✅ -->
 <div class="slide dataviz" data-act="Round 4：風險" data-index="47">
   <h2>平台記憶機制的差異</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">多數人不知道的差異，直接影響產出的「個人化程度」</p>
-  <div class="card-grid">
-    <div class="card fragment" data-order="0" style="border-top:4px solid var(--purple);">
-      <h3>Claude</h3>
-      <p style="font-size:.95rem;">讀取你的記憶檔和設定<br>產出可能引用你過去的偏好</p>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">同一指令在不同平台產生差異，常來自可讀取的上下文來源</p>
+  <div class="arch-grid">
+    <!-- Claude 欄 -->
+    <div class="arch-col fragment" data-order="0" style="--col-color:var(--blue);--col-bg:var(--blue-lt);">
+      <div class="arch-head">Claude</div>
+      <div class="arch-cell">指令</div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-cell src">Memory<br>Projects</div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-cell">產出</div>
     </div>
-    <div class="card fragment" data-order="1" style="border-top:4px solid var(--gold);">
-      <h3>ChatGPT</h3>
-      <p style="font-size:.95rem;">讀取歷史對話偏好<br>帶有過去對話的脈絡影響</p>
+    <!-- ChatGPT 欄 -->
+    <div class="arch-col fragment" data-order="1" style="--col-color:var(--gold);--col-bg:var(--gold-lt);">
+      <div class="arch-head">ChatGPT</div>
+      <div class="arch-cell">指令</div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-cell src">帳號歷史<br>Memory 功能</div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-cell">產出</div>
     </div>
-    <div class="card fragment" data-order="2" style="border-top:4px solid var(--blue);">
-      <h3>Gemini</h3>
-      <p style="font-size:.95rem;">不讀取歷史<br>每次都是全新對話，不帶任何預設</p>
+    <!-- Gemini 欄 -->
+    <div class="arch-col fragment" data-order="2" style="--col-color:var(--green);--col-bg:var(--green-lt);">
+      <div class="arch-head">Gemini</div>
+      <div class="arch-cell">指令</div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-cell src">當前對話<br><span style="color:var(--red);font-weight:700;">不讀</span>跨對話歷史</div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-cell">產出</div>
     </div>
   </div>
-  <div class="info-box note fragment" data-order="3" style="margin-top:.4rem;padding:1rem 1.5rem;">
-    <p style="font-size:.9rem;">Claude 可能比較「懂你」— 不是它比較聰明，是它讀了你的資料<br>理解這個差異，才能正確評估各平台的產出</p>
+  <div class="info-box note fragment" data-order="3" style="margin-top:.6rem;padding:.8rem 1.5rem;">
+    <p style="font-size:.9rem;">差異不是誰比較聰明，是可讀取的上下文來源不同</p>
   </div>
 </div>
 
@@ -1323,7 +1367,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- Height: h2(77) + bottom-line(120) + margins(16) = 213px ✅ -->
 <div class="slide dataviz" data-act="Round 4：風險" data-index="49">
   <h2>Round 4 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
+  <div class="bottom-line" data-order="0">
     <h3>能力邊界決定使用策略</h3>
     <p>AI 不是全知的工具，是高效的協作者<br>理解它的邊界，才能正確運用它的能力</p>
   </div>
@@ -1372,20 +1416,20 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- ══ 50: 互動產品指令要點 ══ -->
 <!-- Height: h2(77) + p(42) + card-grid(176) + margins(32) = 327px ✅ -->
 <div class="slide dataviz" data-act="Round 5：互動" data-index="52">
-  <h2>互動產品的指令要點</h2>
-  <p style="color:var(--g600);margin-bottom:.8rem;">與靜態網頁的關鍵差異：需要描述操作規則、計分邏輯、狀態管理</p>
+  <h2>Round 5 觀察：哪些地方卡住？</h2>
+  <p style="color:var(--g600);margin-bottom:.8rem;">先用 Round 2/3 已學的四要素與五判斷，做一個猜拳或翻牌遊戲（5 分鐘）<br>卡住的原因常見三類</p>
   <div class="card-grid" style="margin-top:.5rem;">
     <div class="card accent-top fragment" data-order="0">
-      <h3>操作規則</h3>
-      <p>翻牌、方向鍵、點擊放棋子<br>明確描述互動方式</p>
+      <h3>操作規則不清楚</h3>
+      <p>使用者要點哪裡<br>成功或失敗如何判定</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="1">
-      <h3>計分邏輯</h3>
-      <p>配對計分、翻牌計數<br>倒數計時量化回饋</p>
+      <h3>回饋機制不足</h3>
+      <p>分數、倒數、翻牌次數<br>沒有形成可觀察結果</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="2">
-      <h3>狀態管理</h3>
-      <p>開始 / 進行中 / 結束<br>重新開始按鈕完整生命週期</p>
+      <h3>狀態轉換漏掉</h3>
+      <p>開始、進行中、結束<br>重新開始沒有完整交代</p>
     </div>
   </div>
 </div>
@@ -1393,17 +1437,17 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- ══ 51: 遊戲 Prompt 範例 ══ -->
 <!-- Height: h2(77) + code-block(220) + margins(16) = 313px ✅ -->
 <div class="slide dataviz" data-act="Round 5：互動" data-index="53">
-  <h2>遊戲指令範例：記憶翻牌</h2>
+  <h2>補強版範例（卡住後參考）</h2>
   <div class="code-block fragment" data-order="0" style="padding:1rem 1.3rem;">
     <div class="code-label">完整指令 — 角色 + 任務 + 規則 + 介面</div>
-    <pre style="font-size:.85rem;line-height:1.6;">你是一位前端遊戲開發者。
+    <pre style="font-size:.85rem;line-height:1.6;">你是一位前端遊戲開發者
 用 HTML/CSS/JS 做一個記憶翻牌遊戲：
 - 4×4 共 16 張牌（8 對 emoji）
 - 翻兩張配對，成功留著，失敗翻回
 - 翻轉動畫 + 計時 + 翻牌次數
 - 完成後顯示結果 + 重新開始按鈕
-白色背景，卡片藍色漸層，不超過 3 主色。
-輸出完整 HTML，不用外部框架。</pre>
+白色背景，卡片藍色漸層，不超過 3 主色
+輸出完整 HTML，不用外部框架</pre>
   </div>
 </div>
 
@@ -1496,7 +1540,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <div class="slide dataviz" data-act="Round 5：互動" data-index="57">
   <h2>從同學作品中提取升級方向</h2>
   <p style="color:var(--g600);margin-bottom:.8rem;">觀察別人的作品後，選擇一個或多個功能升級你的遊戲：</p>
-  <div class="card-grid">
+  <div class="card-grid" style="display:grid;grid-template-columns:repeat(2,1fr);max-width:760px;">
     <div class="card accent-top fragment" data-order="0">
       <h3>音效回饋</h3>
       <p>操作時的聲音反饋增加沉浸感</p>
@@ -1659,56 +1703,72 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- ══ 60: 三層升級路線 ══ -->
 <!-- Height: h2(77) + flow(55) + info-box(88) + margins(32) = 252px ✅ -->
 <div class="slide dataviz" data-act="Round 6：回顧" data-index="63">
-  <h2>三層升級路線</h2>
+  <h2>四層升級路線</h2>
   <div class="flow" style="margin:1.5rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="min-width:180px;">
+    <div class="flow-box accent fragment" data-order="0" style="min-width:160px;">
       <div style="font-size:.75rem;color:var(--green);">Level 1 — 今天</div>
-      AI 對話產出
+      AI 對話做作品
     </div>
     <div class="flow-arrow fragment" data-order="1">→</div>
-    <div class="flow-box fragment" data-order="2" style="min-width:180px;">
-      <div style="font-size:.75rem;color:var(--g400);">Level 2</div>
-      GAS 自動化 + 部署
+    <div class="flow-box fragment" data-order="2" style="min-width:160px;">
+      <div style="font-size:.75rem;color:var(--g400);">Level 2 — M1-2</div>
+      封裝 AI 助手
     </div>
     <div class="flow-arrow fragment" data-order="3">→</div>
-    <div class="flow-box fragment" data-order="4" style="min-width:180px;">
-      <div style="font-size:.75rem;color:var(--g400);">Level 3</div>
-      CLI 系統建造
+    <div class="flow-box fragment" data-order="4" style="min-width:160px;">
+      <div style="font-size:.75rem;color:var(--g400);">Level 3 — M1-3/M1-4</div>
+      自動化 + 部署
+    </div>
+    <div class="flow-arrow fragment" data-order="5">→</div>
+    <div class="flow-box fragment" data-order="6" style="min-width:160px;">
+      <div style="font-size:.75rem;color:var(--g400);">Level 4 — M3</div>
+      系統建造
     </div>
   </div>
-  <div class="info-box note fragment" data-order="5">
+  <div class="info-box note fragment" data-order="7">
     <div class="label">定位</div>
-    <p>今天完成的是 Level 1 的基礎<br>每一層建立在前一層的能力上，指令四要素和迭代方法在每一層都會使用</p>
+    <p>今天完成的是 Level 1 的基礎<br>下一堂 M1-2 會把對話能力封裝成可重複使用的 AI 助手</p>
   </div>
 </div>
 
-<!-- ══ 61: 帶走清單（3×2 grid） ══ -->
+<!-- ══ 61: 帶走清單（核心定位 + 6 個心態轉變 3×2 grid） ══ -->
 <div class="slide dataviz" data-act="Round 6：回顧" data-index="64">
   <h2>帶走清單</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:800px;width:100%;margin:.6rem 0;">
-    <div class="card accent-top" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">指令四要素</h3>
-      <p style="font-size:.85rem;">角色、任務<br>格式、限制</p>
+  <div class="anchor-banner">
+    <span class="anchor-label">本堂定位</span>
+    <span class="anchor-text">學會辨識的第一堂課</span>
+  </div>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了</p>
+  <div class="insight-grid">
+    <div class="insight-card fragment" data-order="0" style="--card-color:var(--green);">
+      <div class="insight-before">從「碰運氣寫指令」</div>
+      <div class="insight-arrow">↓</div>
+      <div class="insight-after">指令是可設計的工程</div>
     </div>
-    <div class="card accent-top-blue" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">介面五判斷</h3>
-      <p style="font-size:.85rem;">首屏、配色、字級<br>行動按鈕、手機版</p>
+    <div class="insight-card fragment" data-order="1" style="--card-color:var(--blue);">
+      <div class="insight-before">從「AI 給什麼我接受什麼」</div>
+      <div class="insight-arrow">↓</div>
+      <div class="insight-after">審美觀決定產出的質感</div>
     </div>
-    <div class="card accent-top-gold" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">安全三原則</h3>
-      <p style="font-size:.85rem;">不丟機敏資料<br>不當事實、人做決定</p>
+    <div class="insight-card fragment" data-order="2" style="--card-color:var(--red);">
+      <div class="insight-before">從「AI 不可信」或「AI 全能」</div>
+      <div class="insight-arrow">↓</div>
+      <div class="insight-after">認識邊界才能用得對</div>
     </div>
-    <div class="card accent-top-purple" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">三平台差異</h3>
-      <p style="font-size:.85rem;">ChatGPT / Claude<br>Gemini 記憶機制</p>
+    <div class="insight-card fragment" data-order="3" style="--card-color:var(--gold);">
+      <div class="insight-before">從「比哪個聰明」</div>
+      <div class="insight-arrow">↓</div>
+      <div class="insight-after">辨識每個工具的個性</div>
     </div>
-    <div class="card accent-top-orange" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">迭代方法</h3>
-      <p style="font-size:.85rem;">描述問題 → AI 修正<br>→ 再測試</p>
+    <div class="insight-card fragment" data-order="4" style="--card-color:var(--purple);">
+      <div class="insight-before">從「AI 做不出來」</div>
+      <div class="insight-arrow">↓</div>
+      <div class="insight-after">是彼此認知落差沒對齊</div>
     </div>
-    <div class="card accent-top" style="padding:1rem;min-width:0;max-width:none;border-top-color:var(--green);">
-      <h3 style="font-size:1rem;">2+ 可分享作品</h3>
-      <p style="font-size:.85rem;">個人網頁<br>+ 互動遊戲</p>
+    <div class="insight-card fragment" data-order="5" style="--card-color:var(--accent);">
+      <div class="insight-before">從「今天學了個技能」</div>
+      <div class="insight-arrow">↓</div>
+      <div class="insight-after">這是基礎能力<br>後面每層都會用到</div>
     </div>
   </div>
 </div>
@@ -1891,8 +1951,92 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   // Init
   updateUI();
   window.navigate = navigate;
+  window.goTo = goTo;
   window.toggleChapterMenu = toggleChapterMenu;
 })();
 </script>
+
+<!-- VIBE_INJECT_START -->
+<style>
+  .code-block{position:relative;}
+  .code-block .copy-btn{
+    position:absolute;top:.35rem;right:.4rem;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    padding:.18rem .55rem;border:0;border-radius:4px;
+    background:rgba(15,157,138,.85);color:#fff;cursor:pointer;
+    opacity:.55;transition:opacity .15s,background .15s;
+    letter-spacing:.05em;z-index:5;
+  }
+  .code-block:hover .copy-btn,
+  .code-block .copy-btn:focus{opacity:1;}
+  .code-block .copy-btn.copied{background:rgba(52,211,153,.95);opacity:1;}
+  @media (hover:none){.code-block .copy-btn{opacity:.85;}}
+</style>
+<script>
+(function(){
+  /* ── copy button ── */
+  function addBtn(block){
+    if(block.querySelector('.copy-btn'))return;
+    var pre=block.querySelector('pre');
+    if(!pre)return;
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='✓ 已複製';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='複製';btn.classList.remove('copied');},1500);
+      };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text,done);});
+      }else{fallback(text,done);}
+    });
+    block.appendChild(btn);
+  }
+  function fallback(text,cb){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.top='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');cb();}catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ── hash router: #round-N jumps to first slide whose data-act matches "Round N：" or "RN：" ── */
+  function routeHash(){
+    var m=(window.location.hash||'').match(/^#round-(\d+)/i);
+    if(!m)return;
+    var n=m[1];
+    var patterns=[
+      new RegExp('^Round\\s*'+n+'[\u{ff1a}:\\s]','u'),
+      new RegExp('^R'+n+'[\u{ff1a}:\\s]','u'),
+    ];
+    var target=null;
+    var slides=document.querySelectorAll('.slide[data-act]');
+    for(var i=0;i<slides.length;i++){
+      if(target)break;
+      var act=slides[i].getAttribute('data-act')||'';
+      for(var j=0;j<patterns.length;j++){
+        if(patterns[j].test(act)){target=slides[i];break;}
+      }
+    }
+    if(target&&typeof window.goTo==='function'){
+      var idx=parseInt(target.getAttribute('data-index'),10);
+      window.goTo(idx);
+    }
+  }
+  window.addEventListener('hashchange',routeHash);
+
+  function init(){
+    document.querySelectorAll('.code-block').forEach(addBtn);
+    setTimeout(routeHash,80);  /* wait for slide system init */
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{init();}
+})();
+</script>
+<!-- VIBE_INJECT_END -->
+
 </body>
 </html>

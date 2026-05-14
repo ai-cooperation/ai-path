@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>M2-1 — AI 做網頁 + GitHub Pages | Vibe Coding Stage 2</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;family=Fira+Code:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════
    M2-1: AI 做網頁 + GitHub Pages
@@ -91,6 +92,22 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
 .flow-box.accent{border-color:var(--blue);background:var(--blue-lt);color:var(--blue);}
 .flow-arrow{color:var(--blue);font-size:1.5rem;font-weight:900;}
+
+/* arch-grid + lane + insight-grid + anchor-banner — common patterns from M1-1 */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
+.arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
+.arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
+.insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
+.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
+.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+.anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
 
 /* ── Info Boxes (white mode) ── */
 .info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
@@ -180,7 +197,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .controls button:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
 .controls button:disabled{opacity:.25;cursor:default;}
-.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500,var(--g400));font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
 .module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--blue-lt);color:var(--blue);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(26,115,232,.2);}
 .module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
 
@@ -241,1356 +258,1291 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </style>
 </head>
 <body>
-
 <div class="module-title">Vibe Coding — Stage 2 · 串 AI</div>
 <div class="module-badge">M2-1</div>
 <div class="slides">
-
 <!-- ══════════════════════════════════════
      開場 (slides 0-2)
      ══════════════════════════════════════ -->
-
 <!-- ══ 0: COVER ══ -->
-<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 串 AI</p>
-  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">AI 做網頁<br><span style="color:#93c5fd;">上線 GitHub Pages</span></h1>
-  <p class="poster-subtitle" style="margin-top:1.2rem;">網頁三階段升級完成 — 你的網站，你的網址</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M2-1</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">全程瀏覽器操作</span>
-  </div>
-  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 串 AI</p>
+<h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">AI 做網頁<br/><span style="color:#93c5fd;">上線 GitHub Pages</span></h1>
+<p class="poster-subtitle" style="margin-top:1.2rem;">網頁三階段升級完成 — 你的網站，你的網址</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M2-1</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">全程瀏覽器操作</span>
 </div>
-
+<p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
 <!-- ══ 1: 課程定位 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
-  <h2>從聊天到上線的最後一步</h2>
-  <div class="flow" style="margin:.8rem 0;">
-    <div class="flow-box" style="min-width:140px;">
-      <div style="font-size:.75rem;color:var(--g400);">M1-1</div>
+<h2>從聊天到上線的最後一步</h2>
+<div class="flow" style="margin:.8rem 0;">
+<div class="flow-box" style="min-width:140px;">
+<div style="font-size:.75rem;color:var(--g400);">M1-1</div>
       AI 聊天做 HTML
     </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="min-width:140px;">
-      <div style="font-size:.75rem;color:var(--g400);">M1-4</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:140px;">
+<div style="font-size:.75rem;color:var(--g400);">M1-4</div>
       GAS 網頁部署
     </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent" style="min-width:140px;">
-      <div style="font-size:.75rem;color:var(--blue);">M2-1 今天</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent" style="min-width:140px;">
+<div style="font-size:.75rem;color:var(--blue);">M2-1 今天</div>
       GitHub Pages
     </div>
-  </div>
-  <div class="info-box blue fragment" data-order="0">
-    <div class="label">今天的目標</div>
-    <p>用 M1-1 學的指令能力，做更好的網頁<br>用 GitHub 上線，拿到短網址、版本控制、發布權</p>
-  </div>
 </div>
-
+<div class="info-box blue fragment" data-order="0">
+<div class="label">今天的目標</div>
+<p>用 M1-1 學的指令能力，做更好的網頁<br/>用 GitHub 上線，拿到短網址、版本控制、發布權</p>
+</div>
+</div>
 <!-- ══ 2: 六輪循環 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="2">
-  <h2>六輪循環，逐層遞進</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-      <div style="font-weight:700;">AI做更好的網頁</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-      <div style="font-weight:700;">GitHub帳號+repo</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-      <div style="font-weight:700;">上傳+Pages</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-      <div style="font-weight:700;">修改+版本</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-      <div style="font-weight:700;">Public vs Private</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-      <div style="font-weight:700;">三階段回顧</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;"><strong>關鍵原則</strong><br>全程瀏覽器操作，不使用終端機指令<br>手動上傳檔案到 GitHub — 先理解流程，再學工具</p>
-  </div>
+<h2>六輪循環，逐層遞進</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+<div style="font-weight:700;">AI做更好的網頁</div>
 </div>
-
+<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+<div style="font-weight:700;">GitHub帳號+repo</div>
+</div>
+<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+<div style="font-weight:700;">上傳+Pages</div>
+</div>
+<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+<div style="font-weight:700;">修改+版本</div>
+</div>
+<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+<div style="font-weight:700;">Public vs Private</div>
+</div>
+<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+<div style="font-weight:700;">三階段回顧</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;"><strong>關鍵原則</strong><br/>全程瀏覽器操作，不使用終端機指令<br/>手動上傳檔案到 GitHub — 先理解流程，再學工具</p>
+</div>
+</div>
 <!-- ══ 3: 課前確認 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="3">
-  <h2>課前確認</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>M1-1 指令四要素</strong>
-        <p>角色、任務、格式、限制 — 今天會直接使用</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>ChatGPT 或 Claude 帳號</strong>
-        <p>AI 聊天工具可正常使用</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>瀏覽器 + 檔案操作</strong>
-        <p>知道如何建立、命名、儲存檔案</p>
-      </div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="3" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">今天不需要安裝任何軟體<br>所有操作都在瀏覽器裡完成</p>
-  </div>
+<h2>課前確認</h2>
+<div class="checklist">
+<div class="check-item fragment" data-order="0">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>M1-1 指令四要素</strong>
+<p>角色、任務、格式、限制 — 今天會直接使用</p>
 </div>
-
+</div>
+<div class="check-item fragment" data-order="1">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>ChatGPT 或 Claude 帳號</strong>
+<p>AI 聊天工具可正常使用</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="2">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>瀏覽器 + 檔案操作</strong>
+<p>知道如何建立、命名、儲存檔案</p>
+</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">今天不需要安裝任何軟體<br/>所有操作都在瀏覽器裡完成</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 1：用 AI 做更好的網頁 (slides 4-11)
      ══════════════════════════════════════ -->
-
 <!-- ══ 4: Chapter poster — Round 1 ══ -->
-<div class="slide poster overlay-heavy" data-act="R1：AI做更好的網頁" data-index="4"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
-  <h1 style="color:#fff;font-size:2.8rem;">用 AI 聊天<br><span style="color:#93c5fd;">做一個更好的網頁</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">M1-1 的能力升級 — 你知道怎麼要求了</p>
+<div class="slide poster overlay-heavy" data-act="R1：AI做更好的網頁" data-index="4" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
+<h1 style="color:#fff;font-size:2.8rem;">用 AI 聊天<br/><span style="color:#93c5fd;">做一個更好的網頁</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">M1-1 的能力升級 — 你知道怎麼要求了</p>
 </div>
-
 <!-- ══ 5: 操作指令 ══ -->
 <div class="slide dataviz" data-act="R1：AI做更好的網頁" data-index="5">
-  <h2>操作指令</h2>
-  <div style="text-align:center;margin:.8rem 0;">
-    <p style="font-size:1.3rem;font-weight:700;color:var(--blue);line-height:1.6;">回到 ChatGPT 或 Claude<br>用四要素寫一個完整指令<br>請 AI 產出一個個人品牌網頁</p>
-  </div>
-  <div class="code-block fragment" data-order="0" style="padding:.8rem 1.2rem;">
-    <div class="code-label">範例指令方向</div>
-    <pre style="font-size:.85rem;line-height:1.5;">你是一位前端工程師
+<h2>操作指令</h2>
+<div style="text-align:center;margin:.8rem 0;">
+<p style="font-size:1.3rem;font-weight:700;color:var(--blue);line-height:1.6;">回到 ChatGPT 或 Claude<br/>用四要素寫一個完整指令<br/>請 AI 產出一個個人品牌網頁</p>
+</div>
+<div class="code-block fragment" data-order="0" style="padding:.8rem 1.2rem;">
+<div class="code-label">範例指令方向</div>
+<pre style="font-size:.85rem;line-height:1.5;">你是一位前端工程師
 幫我做個人品牌網頁，要有：
 - Hero 區塊（姓名 + 一句話定位）
 - 關於我、技能列表、聯絡方式
 深色模式、響應式設計、現代簡約風格
 單頁 HTML，不用外部框架</pre>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="padding:.8rem 1.2rem;">
-    <div class="label">與 M1-1 的差異</div>
-    <p>同樣是 AI 聊天做 HTML，但你現在知道四要素<br>指令品質決定產出品質 — 這次你有方法了</p>
-  </div>
 </div>
-
+<div class="info-box tip fragment" data-order="1" style="padding:.8rem 1.2rem;">
+<div class="label">與 M1-1 的差異</div>
+<p>同樣是 AI 聊天做 HTML，但你現在知道四要素<br/>指令品質決定產出品質 — 這次你有方法了</p>
+</div>
+</div>
 <!-- ══ 6: 操作計時 ══ -->
 <div class="slide dataviz" data-act="R1：AI做更好的網頁" data-index="6">
-  <h2>操作計時</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat">
-      <div class="num">10</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">用四要素寫指令 + AI 產出網頁</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="0">
-    <div class="label">操作重點</div>
-    <p>不要只下一句話 — 用角色、任務、格式、限制四個維度描述<br>產出後用 Canvas / Artifacts 即時預覽</p>
-  </div>
+<h2>操作計時</h2>
+<div style="text-align:center;margin:1rem 0;">
+<div class="big-stat">
+<div class="num">10</div>
+<div class="unit">分鐘</div>
+<div class="caption">用四要素寫指令 + AI 產出網頁</div>
 </div>
-
+</div>
+<div class="info-box note fragment" data-order="0">
+<div class="label">操作重點</div>
+<p>不要只下一句話 — 用角色、任務、格式、限制四個維度描述<br/>產出後用 Canvas / Artifacts 即時預覽</p>
+</div>
+</div>
 <!-- ══ 7: 即時預覽 + 迭代 ══ -->
 <div class="slide dataviz" data-act="R1：AI做更好的網頁" data-index="7">
-  <h2>即時預覽 + 迭代修改</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col good fragment" data-order="0" style="background:var(--blue-lt);border-color:var(--blue);">
-      <div class="col-label" style="color:var(--blue);">ChatGPT Canvas</div>
-      <p>按右上角「Preview」<br>即時看到網頁效果</p>
-      <p style="margin-top:.5rem;font-size:.9rem;color:var(--blue);">直接在 Canvas 裡對話修改</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">Claude Artifacts</div>
-      <p>右側面板自動預覽<br>即時看到程式碼結果</p>
-      <p style="margin-top:.5rem;font-size:.9rem;color:var(--green);">按「Publish」取得分享連結</p>
-    </div>
-  </div>
-  <div class="info-box blue fragment" data-order="2" style="padding:.8rem 1.2rem;">
-    <div class="label">迭代至少 3 次</div>
-    <p>第一版出來後繼續對話：「配色改成...」「加一個區塊...」「手機版排版要好看」</p>
-  </div>
+<h2>即時預覽 + 迭代修改</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col good fragment" data-order="0" style="background:var(--blue-lt);border-color:var(--blue);">
+<div class="col-label" style="color:var(--blue);">ChatGPT Canvas</div>
+<p>按右上角「Preview」<br/>即時看到網頁效果</p>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--blue);">直接在 Canvas 裡對話修改</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">Claude Artifacts</div>
+<p>右側面板自動預覽<br/>即時看到程式碼結果</p>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--green);">按「Publish」取得分享連結</p>
+</div>
+</div>
+<div class="info-box blue fragment" data-order="2" style="padding:.8rem 1.2rem;">
+<div class="label">迭代至少 3 次</div>
+<p>第一版出來後繼續對話：「配色改成...」「加一個區塊...」「手機版排版要好看」</p>
+</div>
+</div>
 <!-- ══ 8: 存檔方法 ══ -->
 <div class="slide dataviz" data-act="R1：AI做更好的網頁" data-index="8">
-  <h2>把 AI 產出存成檔案</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>複製 AI 產出的完整程式碼</strong>
-        <p>通常有一個「Copy code」按鈕</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>打開文字編輯器（記事本 / TextEdit）</strong>
-        <p>貼上程式碼</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>儲存為 index.html</strong>
-        <p>檔名必須是 index.html — 這是網頁的預設入口</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>雙擊開啟確認</strong>
-        <p>用瀏覽器打開，確認畫面正常</p>
-      </div>
-    </div>
-  </div>
+<h2>先用 AI 工具驗收版本</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>在 Canvas / Artifacts 打開 Preview</strong>
+<p>先看畫面，不急著搬到 GitHub</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>用 Publish / Share 取得驗收連結</strong>
+<p>確認手機與桌面都能正常瀏覽</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>進 GitHub 網頁介面建立 index.html</strong>
+<p>若工具可匯出，就用匯出的版本上傳</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>Commit 後再用 Pages URL 驗收</strong>
+<p>GitHub 上的版本才是公開網站版本</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 9: 注意事項 ══ -->
 <div class="slide dataviz" data-act="R1：AI做更好的網頁" data-index="9">
-  <h2>常見問題</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">注意事項</div>
-      <ul>
-        <li>檔名用中文或有空格</li>
-        <li>存成 .txt 而不是 .html</li>
-        <li>只複製部分程式碼</li>
-        <li>AI 給的程式碼太大不知道怎麼存</li>
-      </ul>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">正確做法</div>
-      <ul>
-        <li>用英文 + 連字號命名</li>
-        <li>副檔名確認是 .html</li>
-        <li>從 &lt;!DOCTYPE&gt; 到 &lt;/html&gt; 全選</li>
-        <li>右鍵另存 / 用文字編輯器存檔</li>
-      </ul>
-    </div>
-  </div>
+<h2>常見問題</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">工具內狀態</div>
+<ul>
+<li>Preview 還沒打開</li>
+<li>Publish link 不是最新版</li>
+<li>Canvas / Artifact 停在舊版本</li>
+<li>分享連結能看，不代表 GitHub 已更新</li>
+</ul>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">上線檢查</div>
+<ul>
+<li>Preview 畫面先確認可讀</li>
+<li>Publish / Share 後重新開連結</li>
+<li>同步最新版到 GitHub 的 index.html</li>
+<li>index.html 放在 repository 根目錄</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 10: 分享觀察 ══ -->
 <div class="slide dataviz" data-act="R1：AI做更好的網頁" data-index="10">
-  <h2>分享與觀察</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>連結或螢幕截圖貼到群組</strong>
-        <p>Publish 連結或本機截圖皆可</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>打開三位同學的作品</strong>
-        <p>跟自己的 M1-1 作品比較</p>
-      </div>
-    </div>
-  </div>
-  <div class="quote-box fragment" data-order="2" style="margin-top:1rem;">
-    <div class="quote-text">你進步了，因為你知道怎麼要求了</div>
-    <div class="quote-src">同樣的 AI 工具，不同的指令品質 → 不同的產出品質</div>
-  </div>
+<h2>分享與觀察</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>連結或螢幕截圖貼到群組</strong>
+<p>Publish 連結或本機截圖皆可</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>打開三位同學的作品</strong>
+<p>跟自己的 M1-1 作品比較</p>
+</div>
+</div>
+</div>
+<div class="quote-box fragment" data-order="2" style="margin-top:1rem;">
+<div class="quote-text">你進步了，因為你知道怎麼要求了</div>
+<div class="quote-src">同樣的 AI 工具，不同的指令品質 → 不同的產出品質</div>
+</div>
+</div>
 <!-- ══ 11: Round 1 小結 ══ -->
 <div class="slide dataviz" data-act="R1：AI做更好的網頁" data-index="11">
-  <h2>Round 1 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>指令能力已升級</h3>
-    <p>M1-1 教了四要素，M2-1 立刻實戰驗證<br>接下來要解決的問題：這個網頁只存在你的電腦裡</p>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:1rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;">本機 HTML 只能自己看<br>下一步：讓全世界都能用一個網址打開你的網頁</p>
-  </div>
+<h2>Round 1 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>指令能力已升級</h3>
+<p>M1-1 教了四要素，M2-1 立刻實戰驗證<br/>接下來要解決的問題：這個網頁只存在你的電腦裡</p>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:1rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;">本機 HTML 只能自己看<br/>下一步：讓全世界都能用一個網址打開你的網頁</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 2：GitHub 帳號 + 建立 Repository (slides 12-19)
      ══════════════════════════════════════ -->
-
 <!-- ══ 12: Chapter poster — Round 2 ══ -->
-<div class="slide poster overlay-heavy" data-act="R2：GitHub帳號+repo" data-index="12"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:40</p>
-  <h1 style="color:#fff;font-size:2.8rem;">GitHub 帳號<br><span style="color:#93c5fd;">+ 建立 Repository</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">像雲端資料夾，但有時光機</p>
+<div class="slide poster overlay-heavy" data-act="R2：GitHub帳號+repo" data-index="12" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:40</p>
+<h1 style="color:#fff;font-size:2.8rem;">GitHub 帳號<br/><span style="color:#93c5fd;">+ 建立 Repository</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">像雲端資料夾，但有時光機</p>
 </div>
-
 <!-- ══ 13: GitHub 是什麼 ══ -->
 <div class="slide dataviz" data-act="R2：GitHub帳號+repo" data-index="13">
-  <h2>GitHub 是什麼</h2>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>程式碼倉庫</h3>
-      <p>全世界最大的開源程式碼平台<br>2 億個專案在上面</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1">
-      <h3>免費網站空間</h3>
-      <p>GitHub Pages 讓你<br>免費發布靜態網頁</p>
-    </div>
-    <div class="card accent-top-green fragment" data-order="2">
-      <h3>版本時光機</h3>
-      <p>每次修改都記錄<br>隨時回到任何版本</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="3" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">不需要會寫程式也能用 GitHub<br>今天你只需要會上傳檔案和按按鈕</p>
-  </div>
+<h2>GitHub 是什麼</h2>
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>程式碼倉庫</h3>
+<p>全世界最大的開源程式碼平台<br/>2 億個專案在上面</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1">
+<h3>免費網站空間</h3>
+<p>GitHub Pages 讓你<br/>免費發布靜態網頁</p>
+</div>
+<div class="card accent-top-green fragment" data-order="2">
+<h3>版本時光機</h3>
+<p>每次修改都記錄<br/>隨時回到任何版本</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">不需要會寫程式也能用 GitHub<br/>今天你只需要會上傳檔案和按按鈕</p>
+</div>
+</div>
 <!-- ══ 14: 註冊帳號 ══ -->
 <div class="slide dataviz" data-act="R2：GitHub帳號+repo" data-index="14">
-  <h2>註冊 GitHub 帳號</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>打開 github.com</strong>
-        <p>點右上角「Sign up」</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>填寫 Email + 密碼 + 使用者名稱</strong>
-        <p>使用者名稱會出現在你的網址裡 — 建議簡短、英文</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>Email 驗證</strong>
-        <p>到信箱點驗證連結</p>
-      </div>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="3" style="padding:.8rem 1.2rem;">
-    <div class="label">命名建議</div>
-    <p>使用者名稱 = 你的網址前綴：<span class="hl-blue">username</span>.github.io<br>取一個專業、好記的名字</p>
-  </div>
+<h2>註冊 GitHub 帳號</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>打開 github.com</strong>
+<p>點右上角「Sign up」</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>填寫 Email + 密碼 + 使用者名稱</strong>
+<p>使用者名稱會出現在你的網址裡 — 建議簡短、英文</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>Email 驗證</strong>
+<p>到信箱點驗證連結</p>
+</div>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="3" style="padding:.8rem 1.2rem;">
+<div class="label">命名建議</div>
+<p>使用者名稱 = 你的網址前綴：<span class="hl-blue">username</span>.github.io<br/>取一個專業、好記的名字</p>
+</div>
+</div>
 <!-- ══ 15: 建立 Repository ══ -->
 <div class="slide dataviz" data-act="R2：GitHub帳號+repo" data-index="15">
-  <h2>建立 Repository</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>點右上角「+」→ New repository</strong>
-        <p>Repository = 專案倉庫</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>填寫 Repository name</strong>
-        <p>例如 my-website — 用英文 + 連字號</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>勾選「Add a README file」</strong>
-        <p>這會自動建立第一個檔案</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>點「Create repository」</strong>
-        <p>你的專案倉庫就建好了</p>
-      </div>
-    </div>
-  </div>
+<h2>建立 Repository</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>點右上角「+」→ New repository</strong>
+<p>Repository = 專案倉庫</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>填寫 Repository name</strong>
+<p>例如 my-website — 用英文 + 連字號</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>勾選「Add a README file」</strong>
+<p>這會自動建立第一個檔案</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>點「Create repository」</strong>
+<p>你的專案倉庫就建好了</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 16: repo 命名注意事項 ══ -->
 <div class="slide dataviz" data-act="R2：GitHub帳號+repo" data-index="16">
-  <h2>Repository 命名規則</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">會出問題的名稱</div>
-      <ul>
-        <li>我的網站（中文）</li>
-        <li>my website（有空格）</li>
-        <li>My_Website!（特殊字元）</li>
-      </ul>
-      <p style="margin-top:.5rem;color:var(--red);">→ URL 會亂碼或無法存取</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">正確的命名</div>
-      <ul>
-        <li>my-website</li>
-        <li>portfolio-2026</li>
-        <li>personal-brand</li>
-      </ul>
-      <p style="margin-top:.5rem;color:var(--green);">→ 英文 + 連字號，簡短好記</p>
-    </div>
-  </div>
+<h2>Repository 命名規則</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">會出問題的名稱</div>
+<ul>
+<li>我的網站（中文）</li>
+<li>my website（有空格）</li>
+<li>My_Website!（特殊字元）</li>
+</ul>
+<p style="margin-top:.5rem;color:var(--red);">→ URL 會亂碼或無法存取</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">正確的命名</div>
+<ul>
+<li>my-website</li>
+<li>portfolio-2026</li>
+<li>personal-brand</li>
+</ul>
+<p style="margin-top:.5rem;color:var(--green);">→ 英文 + 連字號，簡短好記</p>
+</div>
+</div>
+</div>
 <!-- ══ 17: 認識 repo 頁面 ══ -->
 <div class="slide dataviz" data-act="R2：GitHub帳號+repo" data-index="17">
-  <h2>認識 Repository 頁面</h2>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>檔案列表</h3>
-      <p>像資料夾一樣<br>列出所有檔案</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1">
-      <h3>README.md</h3>
-      <p>專案說明文件<br>自動顯示在頁面下方</p>
-    </div>
-    <div class="card accent-top-green fragment" data-order="2">
-      <h3>Settings</h3>
-      <p>Pages 部署、權限<br>各種進階設定</p>
-    </div>
-  </div>
-  <div class="quote-box fragment" data-order="3" style="margin-top:1rem;">
-    <div class="quote-text">Repository = 像 Google Drive 但有時光機</div>
-    <div class="quote-src">每次修改都會被記錄，永遠可以回溯</div>
-  </div>
+<h2>認識 Repository 頁面</h2>
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>檔案列表</h3>
+<p>像資料夾一樣<br/>列出所有檔案</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1">
+<h3>README.md</h3>
+<p>專案說明文件<br/>自動顯示在頁面下方</p>
+</div>
+<div class="card accent-top-green fragment" data-order="2">
+<h3>Settings</h3>
+<p>Pages 部署、權限<br/>各種進階設定</p>
+</div>
+</div>
+<div class="quote-box fragment" data-order="3" style="margin-top:1rem;">
+<div class="quote-text">Repository = 像 Google Drive 但有時光機</div>
+<div class="quote-src">每次修改都會被記錄，永遠可以回溯</div>
+</div>
+</div>
 <!-- ══ 18: Round 2 操作計時 ══ -->
 <div class="slide dataviz" data-act="R2：GitHub帳號+repo" data-index="18">
-  <h2>操作計時</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat">
-      <div class="num">10</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">完成註冊 + 建立第一個 Repository</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="0">
-    <div class="label">已有帳號的同學</div>
-    <p>直接建 repo<br>幫還沒完成的同學看看卡在哪一步</p>
-  </div>
+<h2>操作計時</h2>
+<div style="text-align:center;margin:1rem 0;">
+<div class="big-stat">
+<div class="num">10</div>
+<div class="unit">分鐘</div>
+<div class="caption">完成註冊 + 建立第一個 Repository</div>
 </div>
-
+</div>
+<div class="info-box note fragment" data-order="0">
+<div class="label">已有帳號的同學</div>
+<p>直接建 repo<br/>幫還沒完成的同學看看卡在哪一步</p>
+</div>
+</div>
 <!-- ══ 19: Round 2 小結 ══ -->
 <div class="slide dataviz" data-act="R2：GitHub帳號+repo" data-index="19">
-  <h2>Round 2 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>倉庫建好了</h3>
-    <p>你有了一個雲端專案空間<br>接下來要把 Round 1 做的網頁放上去</p>
-  </div>
+<h2>Round 2 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>倉庫建好了</h3>
+<p>你有了一個雲端專案空間<br/>接下來要把 Round 1 做的網頁放上去</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 3：上傳 + 部署 GitHub Pages (slides 20-30)
      ══════════════════════════════════════ -->
-
 <!-- ══ 20: Chapter poster — Round 3 ══ -->
-<div class="slide poster overlay-heavy" data-act="R3：上傳+Pages部署" data-index="20"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:40–1:05</p>
-  <h1 style="color:#fff;font-size:2.8rem;">上傳檔案<br><span style="color:#93c5fd;">部署 GitHub Pages</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">你的網站即將上線</p>
+<div class="slide poster overlay-heavy" data-act="R3：上傳+Pages部署" data-index="20" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:40–1:05</p>
+<h1 style="color:#fff;font-size:2.8rem;">上傳檔案<br/><span style="color:#93c5fd;">部署 GitHub Pages</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">你的網站即將上線</p>
 </div>
-
 <!-- ══ 21: 上傳檔案 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="21">
-  <h2>上傳 index.html</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>在 repo 頁面點「Add file」→「Upload files」</strong>
-        <p>進入上傳介面</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>把 index.html 拖進去</strong>
-        <p>或點「choose your files」選取</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>寫 Commit message</strong>
-        <p>例如「第一版個人網頁」— 描述這次上傳了什麼</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>點「Commit changes」</strong>
-        <p>檔案上傳完成</p>
-      </div>
-    </div>
-  </div>
+<h2>上傳 index.html</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>在 repo 頁面點「Add file」→「Upload files」</strong>
+<p>進入上傳介面</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>把 index.html 拖進去</strong>
+<p>或點「choose your files」選取</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>寫 Commit message</strong>
+<p>例如「第一版個人網頁」— 描述這次上傳了什麼</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>點「Commit changes」</strong>
+<p>檔案上傳完成</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 22: Commit Message 說明 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="22">
-  <h2>Commit Message 是什麼</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">不好的 Message</div>
-      <ul>
-        <li>update</li>
-        <li>fix</li>
-        <li>asdf</li>
-        <li>（空白）</li>
-      </ul>
-      <p style="margin-top:.5rem;color:var(--red);">→ 三個月後你不知道自己改了什麼</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">好的 Message</div>
-      <ul>
-        <li>新增個人品牌網頁</li>
-        <li>修改首屏標語和配色</li>
-        <li>加入技能列表區塊</li>
-      </ul>
-      <p style="margin-top:.5rem;color:var(--green);">→ 每筆紀錄都是一個清楚的存檔點</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="2" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">Commit = 存檔點<br>Message = 存檔說明 — 未來的你會感謝現在的你</p>
-  </div>
+<h2>Commit Message 是什麼</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">不好的 Message</div>
+<ul>
+<li>update</li>
+<li>fix</li>
+<li>asdf</li>
+<li>（空白）</li>
+</ul>
+<p style="margin-top:.5rem;color:var(--red);">→ 三個月後你不知道自己改了什麼</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">好的 Message</div>
+<ul>
+<li>新增個人品牌網頁</li>
+<li>修改首屏標語和配色</li>
+<li>加入技能列表區塊</li>
+</ul>
+<p style="margin-top:.5rem;color:var(--green);">→ 每筆紀錄都是一個清楚的存檔點</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="2" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">Commit = 存檔點<br/>Message = 存檔說明 — 未來的你會感謝現在的你</p>
+</div>
+</div>
 <!-- ══ 23: 部署 Pages ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="23">
-  <h2>啟用 GitHub Pages</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>進入 Settings 頁籤</strong>
-        <p>在 repo 頁面上方的選項列</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>左側選「Pages」</strong>
-        <p>找到 GitHub Pages 設定區</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>Source 選「Deploy from a branch」→ main → Save</strong>
-        <p>告訴 GitHub 從哪個分支部署</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>等 1-2 分鐘</strong>
-        <p>GitHub 正在建置你的網站</p>
-      </div>
-    </div>
-  </div>
+<h2>啟用 GitHub Pages</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>進入 Settings 頁籤</strong>
+<p>在 repo 頁面上方的選項列</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>左側選「Pages」</strong>
+<p>找到 GitHub Pages 設定區</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>Source 選「Deploy from a branch」→ main → Save</strong>
+<p>告訴 GitHub 從哪個分支部署</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>等 1-2 分鐘</strong>
+<p>GitHub 正在建置你的網站</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 24: 網站上線 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="24">
-  <h2>你的網站上線了</h2>
-  <div class="browser-mock fragment" data-order="0">
-    <div class="browser-bar">
-      <div class="dot dot-r"></div>
-      <div class="dot dot-y"></div>
-      <div class="dot dot-g"></div>
-      <span class="url-text">https://username.github.io/my-website/</span>
-    </div>
-    <div class="browser-body">
-      <div style="font-size:1.8rem;font-weight:900;color:var(--g900);">你的個人品牌網頁</div>
-      <p style="color:var(--g600);margin-top:.5rem;">全世界都能用這個網址看到</p>
-      <div style="margin-top:1rem;">
-        <span style="background:var(--blue);color:#fff;padding:.4rem 1.2rem;border-radius:100px;font-size:.85rem;">聯絡我 →</span>
-      </div>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="padding:1rem 1.5rem;">
-    <div class="label">測試方式</div>
-    <p>用手機掃網址 → 確認手機版也能正常顯示<br>把連結傳給朋友 → 他們也能打開</p>
-  </div>
+<h2>你的網站上線了</h2>
+<div class="browser-mock fragment" data-order="0">
+<div class="browser-bar">
+<div class="dot dot-r"></div>
+<div class="dot dot-y"></div>
+<div class="dot dot-g"></div>
+<span class="url-text">https://username.github.io/my-website/</span>
 </div>
-
+<div class="browser-body">
+<div style="font-size:1.8rem;font-weight:900;color:var(--g900);">你的個人品牌網頁</div>
+<p style="color:var(--g600);margin-top:.5rem;">全世界都能用這個網址看到</p>
+<div style="margin-top:1rem;">
+<span style="background:var(--blue);color:#fff;padding:.4rem 1.2rem;border-radius:100px;font-size:.85rem;">聯絡我 →</span>
+</div>
+</div>
+</div>
+<div class="info-box success fragment" data-order="1" style="padding:1rem 1.5rem;">
+<div class="label">測試方式</div>
+<p>用手機掃網址 → 確認手機版也能正常顯示<br/>把連結傳給朋友 → 他們也能打開</p>
+</div>
+</div>
 <!-- ══ 25: 網址格式 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="25">
-  <h2>GitHub Pages 網址格式</h2>
-  <div class="code-block fragment" data-order="0" style="text-align:center;">
-    <pre style="font-size:1.1rem;line-height:2;">https://<span style="color:var(--blue);font-weight:700;">username</span>.github.io/<span style="color:var(--green);font-weight:700;">repo-name</span>/</pre>
-  </div>
-  <div class="stat-grid fragment" data-order="1" style="grid-template-columns:1fr 1fr;max-width:600px;">
-    <div class="stat-box">
-      <div class="val" style="font-size:1.5rem;color:var(--blue);">username</div>
-      <div class="label">你的 GitHub 帳號名稱</div>
-    </div>
-    <div class="stat-box">
-      <div class="val" style="font-size:1.5rem;color:var(--green);">repo-name</div>
-      <div class="label">你建立的 Repository 名稱</div>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="2" style="padding:.8rem 1.2rem;">
-    <div class="label">專業技巧</div>
-    <p>如果 repo 名稱取為 <span class="hl-blue">username.github.io</span><br>網址會變成 https://username.github.io/ — 更短更專業</p>
-  </div>
+<h2>GitHub Pages 網址格式</h2>
+<div class="code-block fragment" data-order="0" style="text-align:center;">
+<pre style="font-size:1.1rem;line-height:2;">https://<span style="color:var(--blue);font-weight:700;">username</span>.github.io/<span style="color:var(--green);font-weight:700;">repo-name</span>/</pre>
 </div>
-
+<div class="stat-grid fragment" data-order="1" style="grid-template-columns:1fr 1fr;max-width:600px;">
+<div class="stat-box">
+<div class="val" style="font-size:1.5rem;color:var(--blue);">username</div>
+<div class="label">你的 GitHub 帳號名稱</div>
+</div>
+<div class="stat-box">
+<div class="val" style="font-size:1.5rem;color:var(--green);">repo-name</div>
+<div class="label">你建立的 Repository 名稱</div>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="2" style="padding:.8rem 1.2rem;">
+<div class="label">專業技巧</div>
+<p>如果 repo 名稱取為 <span class="hl-blue">username.github.io</span><br/>網址會變成 https://username.github.io/ — 更短更專業</p>
+</div>
+</div>
 <!-- ══ 26: 常見問題 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="26">
-  <h2>部署常見問題</h2>
-  <div class="card-grid" style="margin-top:.5rem;">
-    <div class="card accent-top-red fragment" data-order="0" style="min-width:220px;">
-      <h3>404 找不到頁面</h3>
-      <p>檔案沒命名 index.html<br>→ GitHub 找不到入口</p>
-    </div>
-    <div class="card accent-top-red fragment" data-order="1" style="min-width:220px;">
-      <h3>頁面一片空白</h3>
-      <p>Pages 還沒 build 完<br>→ 等 1-2 分鐘再刷新</p>
-    </div>
-    <div class="card accent-top-red fragment" data-order="2" style="min-width:220px;">
-      <h3>顯示 README 而非網頁</h3>
-      <p>index.html 沒在根目錄<br>→ 放在 repo 最外層</p>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="3" style="padding:.8rem 1.2rem;">
-    <div class="label">確認清單</div>
-    <p>1. 檔名是 index.html（不是 Index.html）<br>2. 檔案在 repo 根目錄<br>3. Pages Source 已設為 main branch</p>
-  </div>
+<h2>部署常見問題</h2>
+<div class="card-grid" style="margin-top:.5rem;">
+<div class="card accent-top-red fragment" data-order="0" style="min-width:220px;">
+<h3>404 找不到頁面</h3>
+<p>檔案沒命名 index.html<br/>→ GitHub 找不到入口</p>
 </div>
-
+<div class="card accent-top-red fragment" data-order="1" style="min-width:220px;">
+<h3>頁面一片空白</h3>
+<p>Pages 還沒 build 完<br/>→ 等 1-2 分鐘再刷新</p>
+</div>
+<div class="card accent-top-red fragment" data-order="2" style="min-width:220px;">
+<h3>顯示 README 而非網頁</h3>
+<p>index.html 沒在根目錄<br/>→ 放在 repo 最外層</p>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="3" style="padding:.8rem 1.2rem;">
+<div class="label">確認清單</div>
+<p>1. 檔名是 index.html（不是 Index.html）<br/>2. 檔案在 repo 根目錄<br/>3. Pages Source 已設為 main branch</p>
+</div>
+</div>
 <!-- ══ 27: 跟 GAS 比較 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="27">
-  <h2>跟 M1-4 GAS 網頁比較</h2>
-  <div class="compare-two">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">M1-4 GAS 網頁</div>
-      <ul>
-        <li>網址超長（script.google.com/...）</li>
-        <li>載入速度慢</li>
-        <li>受 Google 限制（6 分鐘上限）</li>
-        <li>沒有版本紀錄</li>
-      </ul>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">M2-1 GitHub Pages</div>
-      <ul>
-        <li>網址短（username.github.io）</li>
-        <li>載入速度快</li>
-        <li>完全自己控制</li>
-        <li>每次修改都有紀錄</li>
-      </ul>
-    </div>
-  </div>
+<h2>跟 M1-4 GAS 網頁比較</h2>
+<div class="compare-two">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">M1-4 GAS 網頁</div>
+<ul>
+<li>網址超長（script.google.com/...）</li>
+<li>載入速度慢</li>
+<li>受 Google 限制（6 分鐘上限）</li>
+<li>沒有版本紀錄</li>
+</ul>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">M2-1 GitHub Pages</div>
+<ul>
+<li>網址短（username.github.io）</li>
+<li>載入速度快</li>
+<li>完全自己控制</li>
+<li>每次修改都有紀錄</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 28: 經典 GitHub Pages 網站 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="28">
-  <h2>GitHub Pages 真實案例</h2>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>個人履歷</h3>
-      <p>用 HTML 做線上履歷<br>面試時直接附網址</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1">
-      <h3>作品集</h3>
-      <p>設計師、工程師<br>展示專案成果</p>
-    </div>
-    <div class="card accent-top-green fragment" data-order="2">
-      <h3>技術文件</h3>
-      <p>開源專案的說明網站<br>教學文件、API 文件</p>
-    </div>
-  </div>
-  <div class="info-box blue fragment" data-order="3" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">這些網站全部免費架設、免費維護<br>你今天做的事情跟他們一模一樣</p>
-  </div>
+<h2>GitHub Pages 真實案例</h2>
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>個人履歷</h3>
+<p>用 HTML 做線上履歷<br/>面試時直接附網址</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1">
+<h3>作品集</h3>
+<p>設計師、工程師<br/>展示專案成果</p>
+</div>
+<div class="card accent-top-green fragment" data-order="2">
+<h3>技術文件</h3>
+<p>開源專案的說明網站<br/>教學文件、API 文件</p>
+</div>
+</div>
+<div class="info-box blue fragment" data-order="3" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">這些網站全部免費架設、免費維護<br/>你今天做的事情跟他們一模一樣</p>
+</div>
+</div>
 <!-- ══ 29: 操作計時 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="29">
-  <h2>操作計時</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat">
-      <div class="num">15</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">上傳檔案 + 啟用 Pages + 確認上線</div>
-    </div>
-  </div>
-  <div class="flow fragment" data-order="0" style="margin:.6rem 0;">
-    <div class="flow-box accent">Upload files</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">Commit</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">Settings → Pages</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">手機打開</div>
-  </div>
+<h2>操作計時</h2>
+<div style="text-align:center;margin:1rem 0;">
+<div class="big-stat">
+<div class="num">15</div>
+<div class="unit">分鐘</div>
+<div class="caption">上傳檔案 + 啟用 Pages + 確認上線</div>
 </div>
-
+</div>
+<div class="flow fragment" data-order="0" style="margin:.6rem 0;">
+<div class="flow-box accent">Upload files</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">Commit</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">Settings → Pages</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">手機打開</div>
+</div>
+</div>
 <!-- ══ 30: Round 3 小結 ══ -->
 <div class="slide dataviz" data-act="R3：上傳+Pages部署" data-index="30">
-  <h2>Round 3 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>你的網站上線了</h3>
-    <p>從 AI 聊天 → 存檔 → 上傳 GitHub → 全世界可見<br>全程瀏覽器操作，零行終端機指令</p>
-  </div>
+<h2>Round 3 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>你的網站上線了</h3>
+<p>從 AI 聊天 → 存檔 → 上傳 GitHub → 全世界可見<br/>全程瀏覽器操作，零行終端機指令</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 4：修改 + 版本概念 (slides 31-38)
      ══════════════════════════════════════ -->
-
 <!-- ══ 31: Chapter poster — Round 4 ══ -->
-<div class="slide poster overlay-heavy" data-act="R4：修改+版本" data-index="31"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:05–1:25</p>
-  <h1 style="color:#fff;font-size:2.8rem;">修改 + 重新上傳<br><span style="color:#93c5fd;">版本控制概念</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">每次上傳都是一個存檔點，永不丟失</p>
+<div class="slide poster overlay-heavy" data-act="R4：修改+版本" data-index="31" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:05–1:25</p>
+<h1 style="color:#fff;font-size:2.8rem;">修改 + 重新上傳<br/><span style="color:#93c5fd;">版本控制概念</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">每次上傳都是一個存檔點，永不丟失</p>
 </div>
-
 <!-- ══ 32: 修改操作 ══ -->
 <div class="slide dataviz" data-act="R4：修改+版本" data-index="32">
-  <h2>繼續用 AI 修改網頁</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>回到 AI 對話，繼續修改</strong>
-        <p>「加一個作品集區塊」「改掉配色」「加上動畫效果」</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>把新版存成 index.html</strong>
-        <p>覆蓋本機的舊檔案</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>GitHub → Upload files → 上傳新版</strong>
-        <p>寫有意義的 Commit message</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>等 build → 刷新 → 看到更新</strong>
-        <p>你的網站已經是新版了</p>
-      </div>
-    </div>
-  </div>
+<h2>繼續用 AI 修改網頁</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>回到 AI 對話，繼續修改</strong>
+<p>「加一個作品集區塊」「改掉配色」「加上動畫效果」</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>在 Canvas / Artifacts 內驗收新版</strong>
+<p>用 Publish / Share 確認這一版可用</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>同步到 GitHub 的 index.html</strong>
+<p>用網頁介面編輯或上傳工具匯出的版本</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>Commit → 等 build → 用 Pages URL 驗收</strong>
+<p>公開網址看到更新，才算同步完成</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 33: Commits 歷史 ══ -->
 <div class="slide dataviz" data-act="R4：修改+版本" data-index="33">
-  <h2>查看 Commit 歷史</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>在 repo 頁面點「Commits」</strong>
-        <p>看到所有上傳紀錄的時間線</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>你應該能看到 2 筆 commit</strong>
-        <p>第一次上傳 + 這次修改</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>點舊的 commit → 看到之前的版本</strong>
-        <p>時光機 — 任何時間點的內容都還在</p>
-      </div>
-    </div>
-  </div>
+<h2>查看 Commit 歷史</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>在 repo 頁面點「Commits」</strong>
+<p>看到所有上傳紀錄的時間線</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>你應該能看到 2 筆 commit</strong>
+<p>第一次上傳 + 這次修改</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>點舊的 commit → 看到之前的版本</strong>
+<p>時光機 — 任何時間點的內容都還在</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 34: 版本概念 ══ -->
 <div class="slide dataviz" data-act="R4：修改+版本" data-index="34">
-  <h2>Commit = 存檔點</h2>
-  <div class="flow fragment" data-order="0" style="margin:1rem 0;">
-    <div class="flow-box" style="min-width:130px;">
-      <div style="font-size:.7rem;color:var(--g400);">Commit 1</div>
+<h2>Commit = 存檔點</h2>
+<div class="flow fragment" data-order="0" style="margin:1rem 0;">
+<div class="flow-box" style="min-width:130px;">
+<div style="font-size:.7rem;color:var(--g400);">Commit 1</div>
       第一版上傳
     </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="min-width:130px;">
-      <div style="font-size:.7rem;color:var(--g400);">Commit 2</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:130px;">
+<div style="font-size:.7rem;color:var(--g400);">Commit 2</div>
       加作品集區塊
     </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent" style="min-width:130px;">
-      <div style="font-size:.7rem;color:var(--blue);">Commit 3</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent" style="min-width:130px;">
+<div style="font-size:.7rem;color:var(--blue);">Commit 3</div>
       改配色+動畫
     </div>
-  </div>
-  <div class="info-box success fragment" data-order="1">
-    <div class="label">版本控制的核心價值</div>
-    <p>每一筆 Commit 都是一個完整的存檔點<br>改壞了 → 回到上一個版本<br>想看變化 → 對比任意兩個版本</p>
-  </div>
-  <div class="info-box note fragment" data-order="2" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">這就是為什麼 GitHub 比 Google Drive 更適合做專案<br>不只存檔案，還記錄每一次的修改歷程</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1">
+<div class="label">版本控制的核心價值</div>
+<p>每一筆 Commit 都是一個完整的存檔點<br/>改壞了 → 回到上一個版本<br/>想看變化 → 對比任意兩個版本</p>
+</div>
+<div class="info-box note fragment" data-order="2" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">這就是為什麼 GitHub 比 Google Drive 更適合做專案<br/>不只存檔案，還記錄每一次的修改歷程</p>
+</div>
+</div>
 <!-- ══ 35: 再修改一次 ══ -->
 <div class="slide dataviz" data-act="R4：修改+版本" data-index="35">
-  <h2>再修改一次 — 累積 3 個 Commit</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat">
-      <div class="num">7</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">修改 → 上傳 → 看 Commit 歷史</div>
-    </div>
-  </div>
-  <div class="info-box blue fragment" data-order="0">
-    <div class="label">操作目標</div>
-    <p>累積 3 個 commit<br>回到 Commits 頁面 → 看到三筆紀錄 → 體會「時光機」</p>
-  </div>
+<h2>再修改一次 — 累積 3 個 Commit</h2>
+<div style="text-align:center;margin:1rem 0;">
+<div class="big-stat">
+<div class="num">7</div>
+<div class="unit">分鐘</div>
+<div class="caption">修改 → 上傳 → 看 Commit 歷史</div>
 </div>
-
+</div>
+<div class="info-box blue fragment" data-order="0">
+<div class="label">操作目標</div>
+<p>累積 3 個 commit<br/>回到 Commits 頁面 → 看到三筆紀錄 → 體會「時光機」</p>
+</div>
+</div>
 <!-- ══ 36: Diff 對比 ══ -->
 <div class="slide dataviz" data-act="R4：修改+版本" data-index="36">
-  <h2>查看修改差異（Diff）</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">在 Commit 詳情頁你會看到</div>
-    <pre style="font-size:.85rem;line-height:1.5;"><span style="color:var(--red);">- &lt;h1&gt;我的網頁&lt;/h1&gt;</span>
+<h2>查看修改差異（Diff）</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">在 Commit 詳情頁你會看到</div>
+<pre style="font-size:.85rem;line-height:1.5;"><span style="color:var(--red);">- &lt;h1&gt;我的網頁&lt;/h1&gt;</span>
 <span style="color:var(--green);">+ &lt;h1&gt;陳小明 — 數位行銷專家&lt;/h1&gt;</span>
 
 <span style="color:var(--red);">- background: #ffffff;</span>
 <span style="color:var(--green);">+ background: linear-gradient(135deg, #0B3C5D, #1A73E8);</span></pre>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;"><span style="color:var(--red);">紅色 = 被刪除的舊內容</span><br><span style="color:var(--green);">綠色 = 新加入的內容</span><br>一眼看出每次改了什麼</p>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;"><span style="color:var(--red);">紅色 = 被刪除的舊內容</span><br/><span style="color:var(--green);">綠色 = 新加入的內容</span><br/>一眼看出每次改了什麼</p>
+</div>
+</div>
 <!-- ══ 37: Round 4 小結 ══ -->
 <div class="slide dataviz" data-act="R4：修改+版本" data-index="37">
-  <h2>Round 4 小結</h2>
-  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);max-width:700px;">
-    <div class="stat-box fragment" data-order="0">
-      <div class="val">3+</div>
-      <div class="label">Commit 紀錄</div>
-    </div>
-    <div class="stat-box fragment" data-order="1">
-      <div class="val" style="font-size:1.8rem;">Diff</div>
-      <div class="label">對比修改差異</div>
-    </div>
-    <div class="stat-box fragment" data-order="2">
-      <div class="val" style="font-size:1.8rem;">回溯</div>
-      <div class="label">時光機功能</div>
-    </div>
-  </div>
-  <div class="bottom-line fragment" data-order="3" style="margin-top:1rem;">
-    <h3>版本控制 = 安全網</h3>
-    <p>改壞了永遠有退路，每次修改都被記錄</p>
-  </div>
+<h2>Round 4 小結</h2>
+<div class="stat-grid" style="grid-template-columns:repeat(3,1fr);max-width:700px;">
+<div class="stat-box fragment" data-order="0">
+<div class="val">3+</div>
+<div class="label">Commit 紀錄</div>
 </div>
-
+<div class="stat-box fragment" data-order="1">
+<div class="val" style="font-size:1.8rem;">Diff</div>
+<div class="label">對比修改差異</div>
+</div>
+<div class="stat-box fragment" data-order="2">
+<div class="val" style="font-size:1.8rem;">回溯</div>
+<div class="label">時光機功能</div>
+</div>
+</div>
+<div class="bottom-line fragment" data-order="3" style="margin-top:1rem;">
+<h3>版本控制 = 安全網</h3>
+<p>改壞了永遠有退路，每次修改都被記錄</p>
+</div>
+</div>
 <!-- ══ 38: transition ══ -->
 <div class="slide dataviz" data-act="R4：修改+版本" data-index="38">
-  <h2>到目前為止</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>AI 做了更好的網頁</strong>
-        <p>用四要素指令產出品牌網頁</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>GitHub 帳號 + Repository</strong>
-        <p>雲端專案空間已建立</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>網站上線 + 版本控制</strong>
-        <p>短網址、3+ commit、可回溯</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="3">
-      <div class="check-icon todo">?</div>
-      <div class="check-text">
-        <strong>但有一個問題還沒解決</strong>
-        <p>你的 repo 是 Public — 全世界都看得到裡面的東西</p>
-      </div>
-    </div>
-  </div>
+<h2>到目前為止</h2>
+<div class="checklist">
+<div class="check-item fragment" data-order="0">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>AI 做了更好的網頁</strong>
+<p>用四要素指令產出品牌網頁</p>
 </div>
-
+</div>
+<div class="check-item fragment" data-order="1">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>GitHub 帳號 + Repository</strong>
+<p>雲端專案空間已建立</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="2">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>網站上線 + 版本控制</strong>
+<p>短網址、3+ commit、可回溯</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="3">
+<div class="check-icon todo">?</div>
+<div class="check-text">
+<strong>但有一個問題還沒解決</strong>
+<p>你的 repo 是 Public — 全世界都看得到裡面的東西</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 5：Public vs Private (slides 39-47)
      ══════════════════════════════════════ -->
-
 <!-- ══ 39: Chapter poster — Round 5 ══ -->
-<div class="slide poster overlay-heavy" data-act="R5：Public vs Private" data-index="39"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:25–1:45</p>
-  <h1 style="color:#fff;font-size:2.8rem;">Public vs Private<br><span style="color:#93c5fd;">開放式廚房 vs 後廚</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">什麼該公開，什麼該保護</p>
+<div class="slide poster overlay-heavy" data-act="R5：Public vs Private" data-index="39" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:25–1:45</p>
+<h1 style="color:#fff;font-size:2.8rem;">Public vs Private<br/><span style="color:#93c5fd;">開放式廚房 vs 後廚</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">什麼該公開，什麼該保護</p>
 </div>
-
 <!-- ══ 40: Public 的意義 ══ -->
 <div class="slide dataviz" data-act="R5：Public vs Private" data-index="40">
-  <h2>Public Repository 意味著什麼</h2>
-  <div class="card-grid" style="margin-top:.5rem;">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>任何人都能看到程式碼</h3>
-      <p>打開你的 repo 網址<br>所有檔案一覽無遺</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="1">
-      <h3>GitHub Pages 免費</h3>
-      <p>Public repo 才能免費<br>使用 Pages 服務</p>
-    </div>
-    <div class="card accent-top-red fragment" data-order="2">
-      <h3>放在裡面的密碼會外洩</h3>
-      <p>API Key、Token<br>全世界都看得到</p>
-    </div>
-  </div>
+<h2>Public Repository 意味著什麼</h2>
+<div class="card-grid" style="margin-top:.5rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>任何人都能看到程式碼</h3>
+<p>打開你的 repo 網址<br/>所有檔案一覽無遺</p>
 </div>
-
+<div class="card accent-top-gold fragment" data-order="1">
+<h3>GitHub Pages 免費</h3>
+<p>Public repo 才能免費<br/>使用 Pages 服務</p>
+</div>
+<div class="card accent-top-red fragment" data-order="2">
+<h3>放在裡面的密碼會外洩</h3>
+<p>API Key、Token<br/>全世界都看得到</p>
+</div>
+</div>
+</div>
 <!-- ══ 41: 實驗 — 改 Private ══ -->
 <div class="slide dataviz" data-act="R5：Public vs Private" data-index="41">
-  <h2>實驗：改成 Private</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>Settings → Danger Zone → Change visibility</strong>
-        <p>把 repo 改成 Private</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>打開你的 Pages 網址</strong>
-        <p style="color:var(--red);font-weight:700;">404 — 網站消失了</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>改回 Public</strong>
-        <p>Pages 恢復正常</p>
-      </div>
-    </div>
-  </div>
-  <div class="info-box warning fragment" data-order="3" style="padding:.8rem 1.2rem;">
-    <div class="label">重要發現</div>
-    <p>GitHub Pages 免費版只支援 Public repo<br>Private repo 的 Pages 需要付費方案</p>
-  </div>
+<h2>實驗：改成 Private</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>Settings → Danger Zone → Change visibility</strong>
+<p>把 repo 改成 Private</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>打開你的 Pages 網址</strong>
+<p style="color:var(--red);font-weight:700;">404 — 網站消失了</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>改回 Public</strong>
+<p>Pages 恢復正常</p>
+</div>
+</div>
+</div>
+<div class="info-box warning fragment" data-order="3" style="padding:.8rem 1.2rem;">
+<div class="label">重要發現</div>
+<p>GitHub Pages 免費版只支援 Public repo<br/>Private repo 的 Pages 需要付費方案</p>
+</div>
+</div>
 <!-- ══ 42: Public vs Private 比較 ══ -->
 <div class="slide dataviz" data-act="R5：Public vs Private" data-index="42">
-  <h2>Public vs Private 比較</h2>
-  <div class="compare-two">
-    <div class="compare-col good fragment" data-order="0" style="background:var(--blue-lt);border-color:var(--blue);">
-      <div class="col-label" style="color:var(--blue);">PUBLIC — 開放式廚房</div>
-      <ul>
-        <li>全世界看得到程式碼</li>
-        <li>Pages 免費</li>
-        <li>適合：作品集、部落格、開源專案</li>
-      </ul>
-      <p style="margin-top:.5rem;font-size:.9rem;color:var(--blue);">展示用的內容放這裡</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">PRIVATE — 後廚</div>
-      <ul>
-        <li>只有被邀請的人看得到</li>
-        <li>Pages 免費版不支援</li>
-        <li>適合：有密碼的程式碼、未完成的專案</li>
-      </ul>
-      <p style="margin-top:.5rem;font-size:.9rem;color:var(--green);">有機敏資料的放這裡</p>
-    </div>
-  </div>
+<h2>Public vs Private 比較</h2>
+<div class="compare-two">
+<div class="compare-col good fragment" data-order="0" style="background:var(--blue-lt);border-color:var(--blue);">
+<div class="col-label" style="color:var(--blue);">PUBLIC — 開放式廚房</div>
+<ul>
+<li>全世界看得到程式碼</li>
+<li>Pages 免費</li>
+<li>適合：作品集、部落格、開源專案</li>
+</ul>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--blue);">展示用的內容放這裡</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">PRIVATE — 後廚</div>
+<ul>
+<li>只有被邀請的人看得到</li>
+<li>Pages 免費版不支援</li>
+<li>適合：有密碼的程式碼、未完成的專案</li>
+</ul>
+<p style="margin-top:.5rem;font-size:.9rem;color:var(--green);">有機敏資料的放這裡</p>
+</div>
+</div>
+</div>
 <!-- ══ 43: 邀請協作 ══ -->
 <div class="slide dataviz" data-act="R5：Public vs Private" data-index="43">
-  <h2>邀請同學協作</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>建一個新的 Private repo</strong>
-        <p>用來測試 Private 功能</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>Settings → Collaborators → 邀請同學</strong>
-        <p>輸入同學的 GitHub 帳號</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>同學接受邀請後可以看到 Private repo</strong>
-        <p>其他人依然看不到</p>
-      </div>
-    </div>
-  </div>
+<h2>邀請同學協作</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>建一個新的 Private repo</strong>
+<p>用來測試 Private 功能</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>Settings → Collaborators → 邀請同學</strong>
+<p>輸入同學的 GitHub 帳號</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>同學接受邀請後可以看到 Private repo</strong>
+<p>其他人依然看不到</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 44: 資安意識 ══ -->
 <div class="slide dataviz" data-act="R5：Public vs Private" data-index="44">
-  <h2>資安意識：密碼外洩的代價</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">在 GitHub 搜尋「API_KEY」<br>能找到多少外洩的密碼？</div>
-    <div class="quote-src">答案：數以萬計 — 而且被機器人 24 小時自動掃描</div>
-  </div>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top-red fragment" data-order="1" style="min-width:220px;">
-      <h3>真實案例</h3>
-      <p>AWS Key 推到 Public repo<br>→ 被機器人掃到<br>→ 帳單 $12,000 美元</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2" style="min-width:220px;">
-      <h3>防護原則</h3>
-      <p>有 API Key 的程式碼<br>一定要放 Private repo<br>或用其他方式保護</p>
-    </div>
-  </div>
+<h2>資安意識：密碼外洩的代價</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">在 GitHub 搜尋「API_KEY」<br/>能找到多少外洩的密碼？</div>
+<div class="quote-src">答案：數以萬計 — 而且被機器人 24 小時自動掃描</div>
 </div>
-
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top-red fragment" data-order="1" style="min-width:220px;">
+<h3>真實案例</h3>
+<p>AWS Key 推到 Public repo<br/>→ 被機器人掃到<br/>→ 帳單 $12,000 美元</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2" style="min-width:220px;">
+<h3>防護原則</h3>
+<p>有 API Key 的程式碼<br/>一定要放 Private repo<br/>或用其他方式保護</p>
+</div>
+</div>
+</div>
 <!-- ══ 45: 下一堂課銜接 ══ -->
 <div class="slide dataviz" data-act="R5：Public vs Private" data-index="45">
-  <h2>這個問題在 M2-2 會正式解決</h2>
-  <div class="flow fragment" data-order="0" style="margin:1rem 0;">
-    <div class="flow-box accent" style="min-width:150px;">
-      <div style="font-size:.7rem;color:var(--blue);">M2-1 今天</div>
+<h2>這個問題在 M2-2 會正式解決</h2>
+<div class="flow fragment" data-order="0" style="margin:1rem 0;">
+<div class="flow-box accent" style="min-width:150px;">
+<div style="font-size:.7rem;color:var(--blue);">M2-1 今天</div>
       知道 Public 有風險
     </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="min-width:150px;">
-      <div style="font-size:.7rem;color:var(--g400);">M2-2 下次</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:150px;">
+<div style="font-size:.7rem;color:var(--g400);">M2-2 下次</div>
       Secrets + .gitignore
     </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="min-width:150px;">
-      <div style="font-size:.7rem;color:var(--g400);">M2-3</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:150px;">
+<div style="font-size:.7rem;color:var(--g400);">M2-3</div>
       .env + IDE 權限
     </div>
-  </div>
-  <div class="info-box note fragment" data-order="1">
-    <div class="label">今天的結論</div>
-    <p>作品集、個人網頁 → Public 沒問題<br>有密碼的程式碼 → 絕對不能放 Public<br>具體怎麼保護 → M2-2 會教</p>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="1">
+<div class="label">今天的結論</div>
+<p>作品集、個人網頁 → Public 沒問題<br/>有密碼的程式碼 → 絕對不能放 Public<br/>具體怎麼保護 → M2-2 會教</p>
+</div>
+</div>
 <!-- ══ 46: 6 維度反思 ══ -->
 <div class="slide dataviz" data-act="R5：Public vs Private" data-index="46">
-  <h2>六維度反思</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">對比自己 M1-1 和 M2-1 的成果</p>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.5rem 0;">
-    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">1</div>
-      <div style="font-weight:700;font-size:.95rem;">網頁品質</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">2</div>
-      <div style="font-weight:700;font-size:.95rem;">GitHub 操作</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">3</div>
-      <div style="font-weight:700;font-size:.95rem;">部署流程</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">4</div>
-      <div style="font-weight:700;font-size:.95rem;">版本概念</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">5</div>
-      <div style="font-weight:700;font-size:.95rem;">Public vs Private</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">6</div>
-      <div style="font-weight:700;font-size:.95rem;">總體效果</div>
-    </div>
-  </div>
-  <div class="info-box note" style="padding:.8rem 1.2rem;margin-top:.3rem;">
-    <p style="font-size:.9rem;">M1-1 的你只會用 AI 聊天做 HTML<br>現在的你會部署、會版本控制、知道資安風險 — 差距在哪裡</p>
-  </div>
+<h2>六維度反思</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">對比自己 M1-1 和 M2-1 的成果</p>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.5rem 0;">
+<div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">1</div>
+<div style="font-weight:700;font-size:.95rem;">網頁品質</div>
 </div>
-
+<div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">2</div>
+<div style="font-weight:700;font-size:.95rem;">GitHub 操作</div>
+</div>
+<div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">3</div>
+<div style="font-weight:700;font-size:.95rem;">部署流程</div>
+</div>
+<div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">4</div>
+<div style="font-weight:700;font-size:.95rem;">版本概念</div>
+</div>
+<div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">5</div>
+<div style="font-weight:700;font-size:.95rem;">Public vs Private</div>
+</div>
+<div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">6</div>
+<div style="font-weight:700;font-size:.95rem;">總體效果</div>
+</div>
+</div>
+<div class="info-box note" style="padding:.8rem 1.2rem;margin-top:.3rem;">
+<p style="font-size:.9rem;">M1-1 的你只會用 AI 聊天做 HTML<br/>現在的你會部署、會版本控制、知道資安風險 — 差距在哪裡</p>
+</div>
+</div>
 <!-- ══ 47: Round 5 小結 ══ -->
 <div class="slide dataviz" data-act="R5：Public vs Private" data-index="47">
-  <h2>Round 5 小結</h2>
-  <div class="bottom-line fragment" data-order="0">
-    <h3>權限意識建立</h3>
-    <p>Public = 開放式廚房，Private = 後廚<br>知道什麼該公開、什麼該保護</p>
-  </div>
+<h2>Round 5 小結</h2>
+<div class="bottom-line fragment" data-order="0">
+<h3>權限意識建立</h3>
+<p>Public = 開放式廚房，Private = 後廚<br/>知道什麼該公開、什麼該保護</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 6：三階段回顧 (slides 48-56)
      ══════════════════════════════════════ -->
-
 <!-- ══ 48: Chapter poster — Round 6 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：三階段回顧" data-index="48"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:45–2:00</p>
-  <h1 style="color:#fff;font-size:2.8rem;">三階段回顧<br><span style="color:#93c5fd;">網頁發布升級史</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">從本機 HTML 到 GitHub Pages 的完整路徑</p>
+<div class="slide poster overlay-heavy" data-act="R6：三階段回顧" data-index="48" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:45–2:00</p>
+<h1 style="color:#fff;font-size:2.8rem;">三階段回顧<br/><span style="color:#93c5fd;">網頁發布升級史</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">從本機 HTML 到 GitHub Pages 的完整路徑</p>
 </div>
-
 <!-- ══ 49: 六輪回顧 ══ -->
 <div class="slide dataviz" data-act="R6：三階段回顧" data-index="49">
-  <h2>六輪回顧</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;max-width:650px;width:100%;margin:.6rem 0;">
-    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R1</div>
-      <div style="font-weight:700;font-size:.9rem;">AI做更好的網頁</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R2</div>
-      <div style="font-weight:700;font-size:.9rem;">GitHub帳號+repo</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R3</div>
-      <div style="font-weight:700;font-size:.9rem;">上傳+Pages</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R4</div>
-      <div style="font-weight:700;font-size:.9rem;">修改+版本</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R5</div>
-      <div style="font-weight:700;font-size:.9rem;">Public/Private</div>
-    </div>
-    <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R6</div>
-      <div style="font-weight:700;font-size:.9rem;">回顧</div>
-    </div>
-  </div>
-  <div class="stat-grid" style="margin-top:.6rem;">
-    <div class="stat-box">
-      <div class="val">0</div>
-      <div class="label">行終端機指令</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">1</div>
-      <div class="label">上線的網站</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">3+</div>
-      <div class="label">版本紀錄</div>
-    </div>
-  </div>
+<h2>六輪回顧</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;max-width:650px;width:100%;margin:.6rem 0;">
+<div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+<div style="font-size:.7rem;color:var(--g400);">R1</div>
+<div style="font-weight:700;font-size:.9rem;">AI做更好的網頁</div>
 </div>
-
+<div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+<div style="font-size:.7rem;color:var(--g400);">R2</div>
+<div style="font-weight:700;font-size:.9rem;">GitHub帳號+repo</div>
+</div>
+<div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+<div style="font-size:.7rem;color:var(--g400);">R3</div>
+<div style="font-weight:700;font-size:.9rem;">上傳+Pages</div>
+</div>
+<div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+<div style="font-size:.7rem;color:var(--g400);">R4</div>
+<div style="font-weight:700;font-size:.9rem;">修改+版本</div>
+</div>
+<div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+<div style="font-size:.7rem;color:var(--g400);">R5</div>
+<div style="font-weight:700;font-size:.9rem;">Public/Private</div>
+</div>
+<div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
+<div style="font-size:.7rem;color:var(--g400);">R6</div>
+<div style="font-weight:700;font-size:.9rem;">回顧</div>
+</div>
+</div>
+<div class="stat-grid" style="margin-top:.6rem;">
+<div class="stat-box">
+<div class="val">0</div>
+<div class="label">行終端機指令</div>
+</div>
+<div class="stat-box">
+<div class="val">1</div>
+<div class="label">上線的網站</div>
+</div>
+<div class="stat-box">
+<div class="val">3+</div>
+<div class="label">版本紀錄</div>
+</div>
+</div>
+</div>
 <!-- ══ 50: 三階段對比表 ══ -->
 <div class="slide dataviz" data-act="R6：三階段回顧" data-index="50">
-  <h2>三階段升級對比</h2>
-  <table class="compare-table fragment" data-order="0">
-    <tr>
-      <th></th>
-      <th>M1-1 HTML</th>
-      <th>M1-4 GAS 網頁</th>
-      <th class="highlight-col">M2-1 GitHub Pages</th>
-    </tr>
-    <tr>
-      <td>網址</td>
-      <td>無（本機檔案）</td>
-      <td>超長 GAS URL</td>
-      <td class="highlight-col"><strong>短網址 github.io</strong></td>
-    </tr>
-    <tr>
-      <td>修改方式</td>
-      <td>重新貼程式碼</td>
-      <td>重新部署</td>
-      <td class="highlight-col"><strong>上傳新版</strong></td>
-    </tr>
-    <tr>
-      <td>版本控制</td>
-      <td>無</td>
-      <td>無</td>
-      <td class="highlight-col"><strong>有（Commit）</strong></td>
-    </tr>
-    <tr>
-      <td>速度</td>
-      <td>即時（本機）</td>
-      <td>慢</td>
-      <td class="highlight-col"><strong>快</strong></td>
-    </tr>
-    <tr>
-      <td>控制權</td>
-      <td>完全</td>
-      <td>受 Google 限制</td>
-      <td class="highlight-col"><strong>完全</strong></td>
-    </tr>
-  </table>
-  <div class="info-box blue fragment" data-order="1" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">每一次升級都解決了前一階段的痛點<br>GitHub Pages 是目前為止最完整的方案</p>
-  </div>
+<h2>三階段升級對比</h2>
+<table class="compare-table fragment" data-order="0">
+<tr>
+<th></th>
+<th>M1-1 HTML</th>
+<th>M1-4 GAS 網頁</th>
+<th class="highlight-col">M2-1 GitHub Pages</th>
+</tr>
+<tr>
+<td>網址</td>
+<td>無（本機檔案）</td>
+<td>超長 GAS URL</td>
+<td class="highlight-col"><strong>短網址 github.io</strong></td>
+</tr>
+<tr>
+<td>修改方式</td>
+<td>重新貼程式碼</td>
+<td>重新部署</td>
+<td class="highlight-col"><strong>上傳新版</strong></td>
+</tr>
+<tr>
+<td>版本控制</td>
+<td>無</td>
+<td>無</td>
+<td class="highlight-col"><strong>有（Commit）</strong></td>
+</tr>
+<tr>
+<td>速度</td>
+<td>即時（本機）</td>
+<td>慢</td>
+<td class="highlight-col"><strong>快</strong></td>
+</tr>
+<tr>
+<td>控制權</td>
+<td>完全</td>
+<td>受 Google 限制</td>
+<td class="highlight-col"><strong>完全</strong></td>
+</tr>
+</table>
+<div class="info-box blue fragment" data-order="1" style="padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">每一次升級都解決了前一階段的痛點<br/>GitHub Pages 是目前為止最完整的方案</p>
 </div>
-
+</div>
 <!-- ══ 51: 三階段升級路線圖 ══ -->
 <div class="slide dataviz" data-act="R6：三階段回顧" data-index="51">
-  <h2>網頁發布升級路線</h2>
-  <div class="flow fragment" data-order="0" style="margin:1rem 0;">
-    <div class="flow-box" style="min-width:160px;">
-      <div style="font-size:.7rem;color:var(--g400);">M1-1</div>
-      HTML 存本機<br><span style="font-size:.8rem;color:var(--g400);">只能自己看</span>
-    </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="min-width:160px;">
-      <div style="font-size:.7rem;color:var(--g400);">M1-4</div>
-      GAS 網頁<br><span style="font-size:.8rem;color:var(--g400);">公開但有限制</span>
-    </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent" style="min-width:160px;">
-      <div style="font-size:.7rem;color:var(--blue);">M2-1 今天</div>
-      GitHub Pages<br><span style="font-size:.8rem;color:var(--blue);">短網址+版本控制</span>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="1">
-    <div class="label">升級完成</div>
-    <p>你的網頁部署能力已從「只能自己看」升級到「全世界可見、有版本控制」<br>而且全程沒有打過一行終端機指令</p>
-  </div>
+<h2>網頁發布升級路線</h2>
+<div class="flow fragment" data-order="0" style="margin:1rem 0;">
+<div class="flow-box" style="min-width:160px;">
+<div style="font-size:.7rem;color:var(--g400);">M1-1</div>
+      HTML 存本機<br/><span style="font-size:.8rem;color:var(--g400);">只能自己看</span>
 </div>
-
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:160px;">
+<div style="font-size:.7rem;color:var(--g400);">M1-4</div>
+      GAS 網頁<br/><span style="font-size:.8rem;color:var(--g400);">公開但有限制</span>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent" style="min-width:160px;">
+<div style="font-size:.7rem;color:var(--blue);">M2-1 今天</div>
+      GitHub Pages<br/><span style="font-size:.8rem;color:var(--blue);">短網址+版本控制</span>
+</div>
+</div>
+<div class="info-box success fragment" data-order="1">
+<div class="label">升級完成</div>
+<p>你的網頁部署能力已從「只能自己看」升級到「全世界可見、有版本控制」<br/>而且全程沒有打過一行終端機指令</p>
+</div>
+</div>
 <!-- ══ 52: 帶走清單 ══ -->
 <div class="slide dataviz" data-act="R6：三階段回顧" data-index="52">
-  <h2>帶走清單</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:800px;width:100%;margin:.6rem 0;">
-    <div class="card accent-top" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">GitHub Pages 網站</h3>
-      <p style="font-size:.85rem;">你的作品已上線<br>可分享的短網址</p>
-    </div>
-    <div class="card accent-top-gold" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">Commit 版本概念</h3>
-      <p style="font-size:.85rem;">每次修改都是存檔點<br>永不丟失</p>
-    </div>
-    <div class="card accent-top-green" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">Public vs Private</h3>
-      <p style="font-size:.85rem;">開放式廚房 vs 後廚<br>資安意識建立</p>
-    </div>
-    <div class="card accent-top-purple" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">三階段升級認知</h3>
-      <p style="font-size:.85rem;">本機 → GAS → GitHub<br>每層解決前層痛點</p>
-    </div>
-    <div class="card accent-top-orange" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">瀏覽器操作 GitHub</h3>
-      <p style="font-size:.85rem;">建 repo、上傳檔案<br>啟用 Pages、看 Commit</p>
-    </div>
-    <div class="card accent-top-red" style="padding:1rem;min-width:0;max-width:none;">
-      <h3 style="font-size:1rem;">Commit Message 習慣</h3>
-      <p style="font-size:.85rem;">寫清楚每次改了什麼<br>未來的自己會感謝你</p>
-    </div>
-  </div>
+<h2>帶走清單</h2>
+<div class="anchor-banner">
+<span class="anchor-label">本堂定位</span>
+<span class="anchor-text">GitHub Pages — 讓你的網頁永遠存在固定網址</span>
 </div>
-
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了<br/><em style="color:var(--g500);font-size:.85rem;">從「在別人地盤做東西」→ 擁有可發布、可演進的數位資產</em></p>
+<div class="insight-grid">
+<div class="insight-card fragment" data-order="0" style="--card-color:var(--green);">
+<div class="insight-before">從「網頁差不多就好」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">作品代表我的判斷</div>
+</div>
+<div class="insight-card fragment" data-order="1" style="--card-color:var(--blue);">
+<div class="insight-before">從「帳號只是登入用」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">身分也是發布節點</div>
+</div>
+<div class="insight-card fragment" data-order="2" style="--card-color:var(--gold);">
+<div class="insight-before">從「上傳完給人看」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">發布是資產落地</div>
+</div>
+<div class="insight-card fragment" data-order="3" style="--card-color:var(--purple);">
+<div class="insight-before">從「改壞就完了」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">版本讓嘗試有退路</div>
+</div>
+<div class="insight-card fragment" data-order="4" style="--card-color:var(--red);">
+<div class="insight-before">從「公開私密隨便選」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">可見性就是責任</div>
+</div>
+<div class="insight-card fragment" data-order="5" style="--card-color:var(--accent);">
+<div class="insight-before">從「我只是做頁面」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">我開始擁有地盤</div>
+</div>
+</div>
+</div>
 <!-- ══ 53: Stage 2 接下來 ══ -->
 <div class="slide dataviz" data-act="R6：三階段回顧" data-index="53">
-  <h2>Stage 2 接下來的路線</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num" style="background:var(--blue);">2-1</div>
-      <div class="step-content">
-        <strong style="color:var(--blue);">GitHub Pages（今天）</strong>
-        <p>上線、版本控制、Public vs Private</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num" style="background:var(--red);">2-2</div>
-      <div class="step-content">
-        <strong>GitHub 安全管理</strong>
-        <p>Secrets + .gitignore — 把 M1-4 的工具安全搬到 GitHub</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num" style="background:var(--purple);">2-3</div>
-      <div class="step-content">
-        <strong>進入 IDE</strong>
-        <p>首次使用 VS Code — AI 在終端機裡幫你下指令</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num" style="background:var(--green);">2-4</div>
-      <div class="step-content">
-        <strong>API 生態 + 免費額度</strong>
-        <p>在 IDE 裡串接 AI API — 從使用者變成開發者</p>
-      </div>
-    </div>
-  </div>
+<h2>Stage 2 接下來的路線</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num" style="background:var(--blue);">2-1</div>
+<div class="step-content">
+<strong style="color:var(--blue);">GitHub Pages（今天）</strong>
+<p>上線、版本控制、Public vs Private</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num" style="background:var(--red);">2-2</div>
+<div class="step-content">
+<strong>GitHub 安全管理</strong>
+<p>Secrets + .gitignore — 把 M1-4 的工具安全搬到 GitHub</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num" style="background:var(--purple);">2-3</div>
+<div class="step-content">
+<strong>進入 IDE</strong>
+<p>首次使用 VS Code — AI 在終端機裡幫你下指令</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num" style="background:var(--green);">2-4</div>
+<div class="step-content">
+<strong>API 生態 + 免費額度</strong>
+<p>在 IDE 裡串接 AI API — 從使用者變成開發者</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 54: 課後操作 ══ -->
 <div class="slide dataviz" data-act="R6：三階段回顧" data-index="54">
-  <h2>課後操作</h2>
-  <div class="info-box blue fragment" data-order="0">
-    <div class="label">實踐任務</div>
-    <p>把你的 GitHub Pages 網址分享到社群<br>請三個人打開看看，收集他們的回饋</p>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">進階挑戰</div>
-    <p>用 AI 再做一個完全不同主題的頁面<br>上傳到同一個 repo 或另建一個 repo<br>下堂課會用到你的 GitHub 帳號</p>
-  </div>
+<h2>課後操作</h2>
+<div class="info-box blue fragment" data-order="0">
+<div class="label">實踐任務</div>
+<p>把你的 GitHub Pages 網址分享到社群<br/>請三個人打開看看，收集他們的回饋</p>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">進階挑戰</div>
+<p>用 AI 再做一個完全不同主題的頁面<br/>上傳到同一個 repo 或另建一個 repo<br/>下堂課會用到你的 GitHub 帳號</p>
+</div>
+</div>
 <!-- ══ 55: 預告 M2-2 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：三階段回顧" data-index="55"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M2-2</p>
-  <h1 style="color:#fff;font-size:2.8rem;">你的網站上線了<br><span style="color:#93c5fd;">但密碼怎麼辦？</span></h1>
-  <p class="poster-subtitle" style="margin-top:1rem;">M1-4 的 GAS 工具要搬到 GitHub — 過程中必須學會安全管理</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Secrets</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">.gitignore</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">三層密碼管理</span>
-  </div>
-  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M2-1 完成</p>
+<div class="slide poster overlay-heavy" data-act="R6：三階段回顧" data-index="55" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M2-2</p>
+<h1 style="color:#fff;font-size:2.8rem;">你的網站上線了<br/><span style="color:#93c5fd;">但密碼怎麼辦？</span></h1>
+<p class="poster-subtitle" style="margin-top:1rem;">M1-4 的 GAS 工具要搬到 GitHub — 過程中必須學會安全管理</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Secrets</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">.gitignore</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">三層密碼管理</span>
 </div>
-
+<p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M2-1 完成</p>
+</div>
 </div><!-- end .slides -->
-
 <!-- ── Controls ── -->
 <div class="progress" id="progress"></div>
 <div class="slide-counter" id="counter">1 / 56</div>
 <div class="controls">
-  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
-  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+<button disabled="" id="prevBtn" onclick="navigate(-1)">‹</button>
+<button id="nextBtn" onclick="navigate(1)">›</button>
 </div>
-
 <!-- ── Chapter Menu ── -->
 <div class="chapter-menu" id="chapterMenu">
-  <div class="chapter-btn" onclick="toggleChapterMenu()">
-    <span class="chapter-icon">&#9670;</span>
-    <span id="chapterLabel">章節</span>
-    <span class="chapter-arrow">&#9650;</span>
-  </div>
-  <div class="chapter-list" id="chapterList"></div>
+<div class="chapter-btn" onclick="toggleChapterMenu()">
+<span class="chapter-icon">◆</span>
+<span id="chapterLabel">章節</span>
+<span class="chapter-arrow">▲</span>
 </div>
-
+<div class="chapter-list" id="chapterList"></div>
+</div>
 <script>
 (function(){
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -1720,8 +1672,92 @@ p,li{font-size:1.1rem;line-height:1.8;}
   // Init
   updateUI();
   window.navigate = navigate;
+  window.goTo = goTo;
   window.toggleChapterMenu = toggleChapterMenu;
 })();
 </script>
+
+<!-- VIBE_INJECT_START -->
+<style>
+  .code-block{position:relative;}
+  .code-block .copy-btn{
+    position:absolute;top:.35rem;right:.4rem;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    padding:.18rem .55rem;border:0;border-radius:4px;
+    background:rgba(15,157,138,.85);color:#fff;cursor:pointer;
+    opacity:.55;transition:opacity .15s,background .15s;
+    letter-spacing:.05em;z-index:5;
+  }
+  .code-block:hover .copy-btn,
+  .code-block .copy-btn:focus{opacity:1;}
+  .code-block .copy-btn.copied{background:rgba(52,211,153,.95);opacity:1;}
+  @media (hover:none){.code-block .copy-btn{opacity:.85;}}
+</style>
+<script>
+(function(){
+  /* ── copy button ── */
+  function addBtn(block){
+    if(block.querySelector('.copy-btn'))return;
+    var pre=block.querySelector('pre');
+    if(!pre)return;
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='✓ 已複製';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='複製';btn.classList.remove('copied');},1500);
+      };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text,done);});
+      }else{fallback(text,done);}
+    });
+    block.appendChild(btn);
+  }
+  function fallback(text,cb){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.top='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');cb();}catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ── hash router: #round-N jumps to first slide whose data-act matches "Round N：" or "RN：" ── */
+  function routeHash(){
+    var m=(window.location.hash||'').match(/^#round-(\d+)/i);
+    if(!m)return;
+    var n=m[1];
+    var patterns=[
+      new RegExp('^Round\\s*'+n+'[\u{ff1a}:\\s]','u'),
+      new RegExp('^R'+n+'[\u{ff1a}:\\s]','u'),
+    ];
+    var target=null;
+    var slides=document.querySelectorAll('.slide[data-act]');
+    for(var i=0;i<slides.length;i++){
+      if(target)break;
+      var act=slides[i].getAttribute('data-act')||'';
+      for(var j=0;j<patterns.length;j++){
+        if(patterns[j].test(act)){target=slides[i];break;}
+      }
+    }
+    if(target&&typeof window.goTo==='function'){
+      var idx=parseInt(target.getAttribute('data-index'),10);
+      window.goTo(idx);
+    }
+  }
+  window.addEventListener('hashchange',routeHash);
+
+  function init(){
+    document.querySelectorAll('.code-block').forEach(addBtn);
+    setTimeout(routeHash,80);  /* wait for slide system init */
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{init();}
+})();
+</script>
+<!-- VIBE_INJECT_END -->
+
 </body>
 </html>

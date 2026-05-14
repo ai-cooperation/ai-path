@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>M3-1 — MCP + Skills 擴展 AI 的能力 | Vibe Coding Stage 3</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;family=Fira+Code:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════
    M3-1: MCP + Skills — 擴展 AI 的能力
@@ -90,6 +91,22 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
 .flow-box.accent{border-color:var(--purple);background:var(--purple-lt);color:var(--purple);}
 .flow-arrow{color:var(--purple);font-size:1.5rem;font-weight:900;}
+
+/* arch-grid + lane + insight-grid + anchor-banner — common patterns from M1-1 */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
+.arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
+.arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
+.insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
+.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
+.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+.anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
 
 /* ── Info Boxes (white mode) ── */
 .info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
@@ -178,7 +195,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .controls button:hover{background:var(--purple);border-color:var(--purple);color:#fff;}
 .controls button:disabled{opacity:.25;cursor:default;}
-.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500,var(--g400));font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
 .module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--purple-lt);color:var(--purple);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(124,58,237,.2);}
 .module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
 
@@ -229,209 +246,194 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </style>
 </head>
 <body>
-
 <div class="module-title">Vibe Coding — Stage 3 · 造系統</div>
 <div class="module-badge">M3-1</div>
 <div class="slides">
-
 <!-- ══════════════════════════════════════
      開場 (slides 0-2)
      ══════════════════════════════════════ -->
-
 <!-- ══ 0: COVER ══ -->
-<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
-     style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 3 · 造系統</p>
-  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">MCP + Skills<br><span style="color:#C4B5FD;">擴展 AI 的能力</span></h1>
-  <p class="poster-subtitle" style="margin-top:1.2rem;">接上工具、教會技能 — 讓你的 AI 從助手變成專家</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M3-1</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走設定</span>
-  </div>
-  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0" style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
+<p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 3 · 造系統</p>
+<h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">MCP + Skills<br/><span style="color:#C4B5FD;">擴展 AI 的能力</span></h1>
+<p class="poster-subtitle" style="margin-top:1.2rem;">接上工具、教會技能 — 讓你的 AI 從助手變成專家</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M3-1</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走設定</span>
 </div>
-
+<p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
 <!-- ══ 1: 課前確認 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
-  <h2>課前確認</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon done">P</div>
-      <div class="check-text">
-        <strong>P3-1 ~ P3-5 已完成</strong>
-        <p>CLI 安裝、GitHub 帳號、終端機基本操作</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon done">C</div>
-      <div class="check-text">
-        <strong>Claude Code CLI 可正常啟動</strong>
-        <p>終端機輸入 claude 能進入對話介面</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon done">G</div>
-      <div class="check-text">
-        <strong>GitHub 帳號已登入</strong>
-        <p>gh auth status 顯示已認證</p>
-      </div>
-    </div>
-  </div>
+<h2>課前確認</h2>
+<div class="checklist">
+<div class="check-item fragment" data-order="0">
+<div class="check-icon done">P</div>
+<div class="check-text">
+<strong>P3-1 ~ P3-5 已完成</strong>
+<p>CLI 安裝、GitHub 帳號、終端機基本操作</p>
 </div>
-
+</div>
+<div class="check-item fragment" data-order="1">
+<div class="check-icon done">C</div>
+<div class="check-text">
+<strong>Claude Code CLI 可正常啟動</strong>
+<p>終端機輸入 claude 能進入對話介面</p>
+</div>
+</div>
+<div class="check-item fragment" data-order="2">
+<div class="check-icon done">G</div>
+<div class="check-text">
+<strong>GitHub 帳號已登入</strong>
+<p>gh auth status 顯示已認證</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 2: 六輪循環總覽 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="2">
-  <h2>六輪循環，逐層擴展</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-      <div style="font-weight:700;">CLI + CLAUDE.md</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-      <div style="font-weight:700;">MCP 前後差異</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-      <div style="font-weight:700;">Skills 技能卡</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-      <div style="font-weight:700;">社群 Skills + MCP</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-      <div style="font-weight:700;">MCP + Skills 組合</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-      <div style="font-weight:700;">AI 環境設定單</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;"><strong>這堂課的主軸</strong><br>從「用 AI」進入「配置 AI」<br>你的 AI 有多強，取決於你幫它接了什麼工具、教了什麼技能</p>
-  </div>
+<h2>六輪循環，逐層擴展</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+<div style="font-weight:700;">CLI + CLAUDE.md</div>
 </div>
-
+<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+<div style="font-weight:700;">MCP 前後差異</div>
+</div>
+<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+<div style="font-weight:700;">Skills 技能卡</div>
+</div>
+<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+<div style="font-weight:700;">社群 Skills + MCP</div>
+</div>
+<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+<div style="font-weight:700;">MCP + Skills 組合</div>
+</div>
+<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+<div style="font-weight:700;">AI 環境設定單</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;"><strong>這堂課的主軸</strong><br/>從「用 AI」進入「配置 AI」<br/>你的 AI 有多強，取決於你幫它接了什麼工具、教了什麼技能</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 1：CLI + CLAUDE.md (slides 3-10)
      ══════════════════════════════════════ -->
-
 <!-- ══ 3: Chapter poster — Round 1 ══ -->
-<div class="slide poster overlay-heavy" data-act="R1：CLI + CLAUDE.md" data-index="3"
-     style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
-  <h1 style="color:#fff;font-size:2.8rem;">CLI 初體驗<br><span style="color:#C4B5FD;">+ CLAUDE.md</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">AI 的備忘錄 — 每次啟動都先讀</p>
+<div class="slide poster overlay-heavy" data-act="R1：CLI + CLAUDE.md" data-index="3" style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
+<h1 style="color:#fff;font-size:2.8rem;">CLI 初體驗<br/><span style="color:#C4B5FD;">+ CLAUDE.md</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">AI 的備忘錄 — 每次啟動都先讀</p>
 </div>
-
 <!-- ══ 4: 啟動 CLI ══ -->
 <div class="slide dataviz" data-act="R1：CLI + CLAUDE.md" data-index="4">
-  <h2>操作：啟動 Claude Code CLI</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>打開終端機</strong>
-        <p>macOS: Terminal / iTerm<br>Windows: PowerShell / CMD</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>輸入 claude 啟動 CLI</strong>
-        <p>進入互動式對話介面</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>建立新的專案資料夾</strong>
-        <p>mkdir my-project && cd my-project && claude</p>
-      </div>
-    </div>
-  </div>
+<h2>操作：啟動 Claude Code CLI</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>打開終端機</strong>
+<p>macOS: Terminal / iTerm<br/>Windows: PowerShell / CMD</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>輸入 claude 啟動 CLI</strong>
+<p>進入互動式對話介面</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>建立新的專案資料夾</strong>
+<p>mkdir my-project &amp;&amp; cd my-project &amp;&amp; claude</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 5: 讓 AI 幫你建 CLAUDE.md ══ -->
 <div class="slide dataviz" data-act="R1：CLI + CLAUDE.md" data-index="5">
-  <h2>操作：讓 AI 幫你建 CLAUDE.md</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">在 CLI 中輸入</div>
-    <pre>幫我建一個 CLAUDE.md
+<h2>操作：讓 AI 幫你建 CLAUDE.md</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">在 CLI 中輸入</div>
+<pre>幫我建一個 CLAUDE.md
 我是 [你的職業]
 我的專案是 [簡述你的專案]
 我偏好 [你的工作偏好]</pre>
-  </div>
-  <div class="info-box purple fragment" data-order="1" style="margin-top:.6rem;">
-    <div class="label">AI 會做什麼</div>
-    <p>AI 會問你幾個問題<br>根據你的回答生成一份 CLAUDE.md 文件<br>放在專案根目錄</p>
-  </div>
 </div>
-
+<div class="info-box purple fragment" data-order="1" style="margin-top:.6rem;">
+<div class="label">AI 會做什麼</div>
+<p>AI 會問你幾個問題<br/>根據你的回答生成一份 CLAUDE.md 文件<br/>放在專案根目錄</p>
+</div>
+</div>
 <!-- ══ 6: 驗證 CLAUDE.md 效果 ══ -->
 <div class="slide dataviz" data-act="R1：CLI + CLAUDE.md" data-index="6">
-  <h2>驗證：退出重進，問同一個問題</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒有 CLAUDE.md</div>
-      <p>AI 從零開始<br>不知道你是誰<br>不知道專案脈絡<br>回答泛用、不精準</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">有 CLAUDE.md</div>
-      <p>AI 開場就「懂你了」<br>回答貼合你的專案<br>用你偏好的風格<br>省去重複解釋的時間</p>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="2" style="margin-top:.5rem;">
-    <p style="font-size:.95rem;">同一個 AI，有沒有 CLAUDE.md，回答品質明顯不同</p>
-  </div>
+<h2>驗證：退出重進，問同一個問題</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒有 CLAUDE.md</div>
+<p>AI 從零開始<br/>不知道你是誰<br/>不知道專案脈絡<br/>回答泛用、不精準</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">有 CLAUDE.md</div>
+<p>AI 開場就「懂你了」<br/>回答貼合你的專案<br/>用你偏好的風格<br/>省去重複解釋的時間</p>
+</div>
+</div>
+<div class="info-box success fragment" data-order="2" style="margin-top:.5rem;">
+<p style="font-size:.95rem;">同一個 AI，有沒有 CLAUDE.md，回答品質明顯不同</p>
+</div>
+</div>
 <!-- ══ 7: CLAUDE.md 是什麼 ══ -->
 <div class="slide dataviz" data-act="R1：CLI + CLAUDE.md" data-index="7">
-  <h2>CLAUDE.md = AI 的備忘錄</h2>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>每次啟動都先讀</h3>
-      <p>CLI 開啟時自動載入<br>不需要手動提醒</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1">
-      <h3>專案級記憶</h3>
-      <p>每個資料夾可以有<br>自己的 CLAUDE.md</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>可持續更新</h3>
-      <p>隨著專案演進<br>不斷補充新的脈絡</p>
-    </div>
-  </div>
+<h2>CLAUDE.md = AI 的備忘錄</h2>
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>每次啟動都先讀</h3>
+<p>CLI 開啟時自動載入<br/>不需要手動提醒</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>專案級記憶</h3>
+<p>每個資料夾可以有<br/>自己的 CLAUDE.md</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>可持續更新</h3>
+<p>隨著專案演進<br/>不斷補充新的脈絡</p>
+</div>
+</div>
+</div>
 <!-- ══ 8: 注意事項：寫太長 ══ -->
 <div class="slide dataviz" data-act="R1：CLI + CLAUDE.md" data-index="8">
-  <h2>注意：CLAUDE.md 寫太長</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">寫太長</div>
-      <p>塞了 2000 字的個人歷史<br>技術棧列了 30 項<br>AI 反而混亂<br>抓不到重點</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">精簡有效</div>
-      <p>角色 + 專案目的<br>偏好的技術棧<br>產出風格要求<br>100~300 字最理想</p>
-    </div>
-  </div>
-  <div class="quote-box fragment" data-order="2" style="margin-top:.5rem;">
-    <div class="quote-text">精簡才有效 — CLAUDE.md 是備忘錄，不是自傳</div>
-  </div>
+<h2>注意：CLAUDE.md 寫太長</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">寫太長</div>
+<p>塞了 2000 字的個人歷史<br/>技術棧列了 30 項<br/>AI 反而混亂<br/>抓不到重點</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">精簡有效</div>
+<p>角色 + 專案目的<br/>偏好的技術棧<br/>產出風格要求<br/>100~300 字最理想</p>
+</div>
+</div>
+<div class="quote-box fragment" data-order="2" style="margin-top:.5rem;">
+<div class="quote-text">精簡才有效 — CLAUDE.md 是備忘錄，不是自傳</div>
+</div>
+</div>
 <!-- ══ 9: CLAUDE.md 範例 ══ -->
 <div class="slide dataviz" data-act="R1：CLI + CLAUDE.md" data-index="9">
-  <h2>好的 CLAUDE.md 長什麼樣</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">CLAUDE.md 範例</div>
-    <pre># 專案：個人品牌網站
+<h2>好的 CLAUDE.md 長什麼樣</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">CLAUDE.md 範例</div>
+<pre># 專案：個人品牌網站
 - 技術：HTML + CSS + vanilla JS
 - 風格：簡約、白底、中文介面
 - 偏好：不用外部框架、手機優先
@@ -441,283 +443,265 @@ p,li{font-size:1.1rem;line-height:1.8;}
 - commit message 用中文
 - CSS 變數管理色彩
 - 先確認再動手，不要自己延伸</pre>
-  </div>
 </div>
-
+</div>
 <!-- ══ 10: Round 1 小結 ══ -->
 <div class="slide dataviz" data-act="R1：CLI + CLAUDE.md" data-index="10">
-  <h2>Round 1 小結</h2>
-  <div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
-    <h3 style="font-size:1.3rem;">CLAUDE.md = AI 的備忘錄</h3>
-    <p style="font-size:.95rem;">每次啟動 CLI 都先讀<br>精簡 100~300 字<br>專案級的持久記憶</p>
-  </div>
+<h2>Round 1 小結</h2>
+<div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
+<h3 style="font-size:1.3rem;">CLAUDE.md = AI 的備忘錄</h3>
+<p style="font-size:.95rem;">每次啟動 CLI 都先讀<br/>精簡 100~300 字<br/>專案級的持久記憶</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 2：MCP 前後差異 (slides 11-22)
      ══════════════════════════════════════ -->
-
 <!-- ══ 11: Chapter poster — Round 2 ══ -->
-<div class="slide poster overlay-heavy" data-act="R2：MCP 前後差異" data-index="11"
-     style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:45</p>
-  <h1 style="color:#fff;font-size:2.8rem;">沒有 MCP<br><span style="color:#C4B5FD;">vs 有 MCP</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">同一個 AI，接上工具前後的能力差距</p>
+<div class="slide poster overlay-heavy" data-act="R2：MCP 前後差異" data-index="11" style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:45</p>
+<h1 style="color:#fff;font-size:2.8rem;">沒有 MCP<br/><span style="color:#C4B5FD;">vs 有 MCP</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">同一個 AI，接上工具前後的能力差距</p>
 </div>
-
 <!-- ══ 12: 先問 AI 做不到的事 ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="12">
-  <h2>操作：先問 AI 做不到的事</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">在 CLI 中輸入</div>
-    <pre>幫我查 GitHub 上最近很紅的 Claude Code 專案</pre>
-  </div>
-  <div class="info-box warning fragment" data-order="1" style="margin-top:.6rem;">
-    <div class="label">結果</div>
-    <p>AI 做不到 — 它沒有連接 GitHub 的能力<br>只能用訓練資料中的記憶回答<br>資訊可能過時或不準確</p>
-  </div>
+<h2>操作：先問 AI 做不到的事</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">在 CLI 中輸入</div>
+<pre>幫我查 GitHub 上最近很紅的 Claude Code 專案</pre>
 </div>
-
+<div class="info-box warning fragment" data-order="1" style="margin-top:.6rem;">
+<div class="label">結果</div>
+<p>AI 做不到 — 它沒有連接 GitHub 的能力<br/>只能用訓練資料中的記憶回答<br/>資訊可能過時或不準確</p>
+</div>
+</div>
 <!-- ══ 13: MCP 是什麼 ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="13">
-  <h2>MCP = AI 的 USB 插槽</h2>
-  <div class="flow fragment" data-order="0" style="margin:.8rem 0;">
-    <div class="flow-box">AI 本體</div>
-    <div class="flow-arrow">+</div>
-    <div class="flow-box accent">MCP Server</div>
-    <div class="flow-arrow">=</div>
-    <div class="flow-box" style="border-color:var(--green);background:var(--green-lt);color:var(--green);">新能力</div>
-  </div>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="1">
-      <h3>Model Context Protocol</h3>
-      <p>Anthropic 提出的開放標準<br>讓 AI 連接外部工具和資料</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="2">
-      <h3>即插即用</h3>
-      <p>在 settings.json 加一段設定<br>重啟 CLI 就能使用</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="3">
-      <h3>生態系統</h3>
-      <p>社群持續開發新的 MCP server<br>能力不斷擴展</p>
-    </div>
-  </div>
+<h2>MCP = AI 的 USB 插槽</h2>
+<div class="flow fragment" data-order="0" style="margin:.8rem 0;">
+<div class="flow-box">AI 本體</div>
+<div class="flow-arrow">+</div>
+<div class="flow-box accent">MCP Server</div>
+<div class="flow-arrow">=</div>
+<div class="flow-box" style="border-color:var(--green);background:var(--green-lt);color:var(--green);">新能力</div>
 </div>
-
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="1">
+<h3>Model Context Protocol</h3>
+<p>Anthropic 提出的開放標準<br/>讓 AI 連接外部工具和資料</p>
+</div>
+<div class="card accent-top-blue fragment" data-order="2">
+<h3>即插即用</h3>
+<p>在 settings.json 加一段設定<br/>重啟 CLI 就能使用</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="3">
+<h3>生態系統</h3>
+<p>社群持續開發新的 MCP server<br/>能力不斷擴展</p>
+</div>
+</div>
+</div>
 <!-- ══ 14: 設定 GitHub MCP ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="14">
-  <h2>操作：設定 GitHub MCP</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">~/.claude/settings.json</div>
-    <pre>{
-  "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "你的 token"
-      }
-    }
-  }
-}</pre>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="margin-top:.4rem;padding:.8rem 1.2rem;">
-    <div class="label">注意</div>
-    <p>JSON 格式要精確 — 少一個逗號 CLI 就啟動失敗</p>
-  </div>
+<h2>操作：設定 GitHub MCP</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">GitHub 官方已經做好現成的，幾乎不用手動設定</p>
+<div class="flow fragment" data-order="0" style="margin:1.5rem 0;">
+<div class="flow-box">登入 GitHub</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">官方 MCP 頁面</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">點兩下</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">Claude Code 接上</div>
 </div>
-
+<div class="info-box tip fragment" data-order="1" style="margin-top:.6rem;padding:.8rem 1.2rem;">
+<div class="label">驗證</div>
+<p>在 Claude Code 輸入 <code>/mcp</code>，看到 github server connected 就完成</p>
+</div>
+<div class="info-box note fragment" data-order="2" style="margin-top:.6rem;padding:.8rem 1.2rem;">
+<div class="label">原理（一句話帶過）</div>
+<p>MCP = 給 AI 的「外掛接口」，讓 Claude 能直接讀 GitHub repo<br/>不用每次貼程式碼，Claude 直接看你的專案</p>
+</div>
+</div>
 <!-- ══ 15: 重啟後再問一次 ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="15">
-  <h2>驗證：重啟 CLI，問同一個問題</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒有 MCP</div>
-      <p style="font-size:.95rem;">「我無法直接存取 GitHub」<br>只能給你過時的建議<br>靠記憶猜測</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">接上 GitHub MCP</div>
-      <p style="font-size:.95rem;">直接搜尋 GitHub API<br>即時回傳 repo 列表<br>Stars、更新時間、描述一次到位</p>
-    </div>
-  </div>
-  <div class="quote-box fragment" data-order="2" style="margin-top:.5rem;">
-    <div class="quote-text">同一個 AI，接上 MCP 前後能力差很多</div>
-  </div>
+<h2>驗證：重啟 CLI，問同一個問題</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒有 MCP</div>
+<p style="font-size:.95rem;">「我無法直接存取 GitHub」<br/>只能給你過時的建議<br/>靠記憶猜測</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">接上 GitHub MCP</div>
+<p style="font-size:.95rem;">直接搜尋 GitHub API<br/>即時回傳 repo 列表<br/>Stars、更新時間、描述一次到位</p>
+</div>
+</div>
+<div class="quote-box fragment" data-order="2" style="margin-top:.5rem;">
+<div class="quote-text">同一個 AI，接上 MCP 前後能力差很多</div>
+</div>
+</div>
 <!-- ══ 16: 再接 Fetch MCP ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="16">
-  <h2>操作：再接 Fetch MCP</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">加入 settings.json 的 mcpServers</div>
-    <pre>"fetch": {
+<h2>操作：再接 Fetch MCP</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">加入 settings.json 的 mcpServers</div>
+<pre>"fetch": {
   "command": "npx",
   "args": ["-y", "@modelcontextprotocol/server-fetch"]
 }</pre>
-  </div>
-  <div class="info-box purple fragment" data-order="1" style="margin-top:.6rem;">
-    <div class="label">測試</div>
-    <p>「幫我抓這個網頁的內容摘要」<br>AI 直接存取 URL、讀取內容、產出摘要</p>
-  </div>
 </div>
-
+<div class="info-box purple fragment" data-order="1" style="margin-top:.6rem;">
+<div class="label">測試</div>
+<p>「幫我抓這個網頁的內容摘要」<br/>AI 直接存取 URL、讀取內容、產出摘要</p>
+</div>
+</div>
 <!-- ══ 17: 三個高頻 MCP ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="17">
-  <h2>三個高頻 MCP 效果</h2>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>GitHub</h3>
-      <p>搜尋 repo / issue / PR<br>讀取程式碼<br>提交 commit</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1">
-      <h3>Fetch</h3>
-      <p>抓取任意網頁內容<br>讀取 API 回應<br>擷取文件摘要</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>Brave Search</h3>
-      <p>即時網路搜尋<br>不受訓練資料限制<br>取得最新資訊</p>
-    </div>
-  </div>
+<h2>三個高頻 MCP 效果</h2>
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>GitHub</h3>
+<p>搜尋 repo / issue / PR<br/>讀取程式碼<br/>提交 commit</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>Fetch</h3>
+<p>抓取任意網頁內容<br/>讀取 API 回應<br/>擷取文件摘要</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>Brave Search</h3>
+<p>即時網路搜尋<br/>不受訓練資料限制<br/>取得最新資訊</p>
+</div>
+</div>
+</div>
 <!-- ══ 18: 注意事項：JSON 格式錯 ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="18">
-  <h2>注意：JSON 格式寫錯</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">常見錯誤</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">{ "github": { ... }<span style="color:var(--red);font-weight:700;">  &lt;-- 少了逗號</span><br>  "fetch": { ... } }</p>
-      <p style="margin-top:.5rem;">CLI 啟動直接失敗<br>沒有明確的錯誤提示</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">排查方法</div>
-      <p>用線上 JSON 驗證器檢查<br>或請 AI 幫你 debug<br>「我的 settings.json 啟動失敗，幫我檢查格式」</p>
-    </div>
-  </div>
+<h2>注意：JSON 格式寫錯</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">常見錯誤</div>
+<p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">{ "github": { ... }<span style="color:var(--red);font-weight:700;">  &lt;-- 少了逗號</span><br/>  "fetch": { ... } }</p>
+<p style="margin-top:.5rem;">CLI 啟動直接失敗<br/>沒有明確的錯誤提示</p>
 </div>
-
-<!-- ══ 19: settings.json 完整結構 ══ -->
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">排查方法</div>
+<p>用線上 JSON 驗證器檢查<br/>或請 AI 幫你 debug<br/>「我的 settings.json 啟動失敗，幫我檢查格式」</p>
+</div>
+</div>
+</div>
+<!-- ══ 19: MCP 設定放在哪裡 ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="19">
-  <h2>settings.json 完整結構</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">~/.claude/settings.json</div>
-    <pre>{
-  "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "..." }
-    },
-    "fetch": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-fetch"]
-    },
-    "brave-search": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
-      "env": { "BRAVE_API_KEY": "..." }
-    }
-  }
-}</pre>
-  </div>
-</div>
+<h2>MCP 設定放在哪裡</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">主線操作</div>
+<pre>claude mcp add --transport http github \
+  https://api.githubcopilot.com/mcp/ \
+  --header "Authorization: Bearer YOUR_GITHUB_PAT"
 
+/mcp</pre>
+</div>
+<div class="card-grid fragment" data-order="1" style="margin-top:.6rem;">
+<div class="card accent-top">
+<h3>新增 MCP</h3>
+<p>用 claude mcp add<br/>不要手寫整份 JSON</p>
+</div>
+<div class="card accent-top-blue">
+<h3>專案共享</h3>
+<p>需要團隊共用時<br/>放在專案 .mcp.json</p>
+</div>
+<div class="card accent-top-gold">
+<h3>個人設定</h3>
+<p>local / user scope<br/>由 Claude Code 管理在 ~/.claude.json</p>
+</div>
+</div>
+</div>
 <!-- ══ 20: MCP 的比喻 ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="20">
-  <h2>能力 = 能接上多少工具</h2>
-  <div class="flow fragment" data-order="0" style="margin:.6rem 0;">
-    <div class="flow-box">沒有 MCP 的 AI</div>
-    <div class="flow-arrow">=</div>
-    <div class="flow-box">很聰明，但被關在房間裡</div>
-  </div>
-  <div class="flow fragment" data-order="1" style="margin:.6rem 0;">
-    <div class="flow-box accent">有 MCP 的 AI</div>
-    <div class="flow-arrow">=</div>
-    <div class="flow-box accent">很聰明，而且可以出門辦事</div>
-  </div>
-  <div class="info-box purple fragment" data-order="2" style="margin-top:.8rem;">
-    <div class="label">核心概念</div>
-    <p>MCP = AI 的 USB 插槽<br>每多接一個 MCP server，AI 就多一種能力<br>你不需要換一個更聰明的 AI — 只需要給它更多工具</p>
-  </div>
+<h2>能力 = 能接上多少工具</h2>
+<div class="flow fragment" data-order="0" style="margin:.6rem 0;">
+<div class="flow-box">沒有 MCP 的 AI</div>
+<div class="flow-arrow">=</div>
+<div class="flow-box">很聰明，但被關在房間裡</div>
 </div>
-
+<div class="flow fragment" data-order="1" style="margin:.6rem 0;">
+<div class="flow-box accent">有 MCP 的 AI</div>
+<div class="flow-arrow">=</div>
+<div class="flow-box accent">很聰明，而且可以出門辦事</div>
+</div>
+<div class="info-box purple fragment" data-order="2" style="margin-top:.8rem;">
+<div class="label">核心概念</div>
+<p>MCP = AI 的 USB 插槽<br/>每多接一個 MCP server，AI 就多一種能力<br/>你不需要換一個更聰明的 AI — 只需要給它更多工具</p>
+</div>
+</div>
 <!-- ══ 21: Round 2 小結 ══ -->
 <div class="slide dataviz" data-act="R2：MCP 前後差異" data-index="21">
-  <h2>Round 2 小結</h2>
-  <div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
-    <h3 style="font-size:1.3rem;">MCP = AI 的 USB 插槽</h3>
-    <p style="font-size:.95rem;">能力不是固定的，而是可以擴展的<br>settings.json 就是你的工具清單<br>JSON 格式要精確 — 少一個逗號就掛掉</p>
-  </div>
+<h2>Round 2 小結</h2>
+<div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
+<h3 style="font-size:1.3rem;">MCP = AI 的 USB 插槽</h3>
+<p style="font-size:.95rem;">能力不是固定的，而是可以擴展的<br/>用 claude mcp add 新增工具<br/>用 /mcp 確認 server 是否 connected</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 3：Skills (slides 22-33)
      ══════════════════════════════════════ -->
-
 <!-- ══ 22: Chapter poster — Round 3 ══ -->
-<div class="slide poster overlay-heavy" data-act="R3：Skills 技能卡" data-index="22"
-     style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:10</p>
-  <h1 style="color:#fff;font-size:2.8rem;">Skills<br><span style="color:#C4B5FD;">寫一次，永遠可用</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">教 AI 一次，它就永遠會這個技能</p>
+<div class="slide poster overlay-heavy" data-act="R3：Skills 技能卡" data-index="22" style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:10</p>
+<h1 style="color:#fff;font-size:2.8rem;">Skills<br/><span style="color:#C4B5FD;">寫一次，永遠可用</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">教 AI 一次，它就永遠會這個技能</p>
 </div>
-
 <!-- ══ 23: 什麼是 Skill ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="23">
-  <h2>Skills = AI 的技能卡</h2>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>一個 .md 檔案</h3>
-      <p>純文字 Markdown<br>放在 ~/.claude/skills/ 下</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1">
-      <h3>教 AI 怎麼做</h3>
-      <p>定義操作流程<br>設定品質標準<br>指定產出格式</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>全域生效</h3>
-      <p>不限於單一專案<br>所有對話都能調用</p>
-    </div>
-  </div>
+<h2>Skills = AI 的技能卡</h2>
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>一個資料夾</h3>
+<p>每個 Skill 一個目錄<br/>裡面放 SKILL.md</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>教 AI 怎麼做</h3>
+<p>description 負責觸發<br/>內文定義流程與格式</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>全域生效</h3>
+<p>放在 ~/.claude/skills/<br/>Claude Code 可重複調用</p>
+</div>
+</div>
+</div>
 <!-- ══ 24: 操作：建第一個 Skill ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="24">
-  <h2>操作：建第一個 Skill</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>建立 Skill 檔案</strong>
-        <p>~/.claude/skills/translate-formal.md</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>寫入規則</strong>
-        <p>翻譯時使用正式書面語<br>保留專有名詞不翻<br>附原文對照</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>使用 Skill</strong>
-        <p>對 AI 說「用 translate-formal 翻譯這段」</p>
-      </div>
-    </div>
-  </div>
+<h2>操作：建第一個 Skill</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>建立 Skill 資料夾</strong>
+<p>~/.claude/skills/translate-formal/SKILL.md</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>寫入規則</strong>
+<p>翻譯時使用正式書面語<br/>保留專有名詞不翻<br/>附原文對照</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>使用 Skill</strong>
+<p>讓 description 自動觸發<br/>或輸入 /translate-formal</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 25: Skill 檔案範例 ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="25">
-  <h2>Skill 檔案長什麼樣</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">~/.claude/skills/translate-formal.md</div>
-    <pre># 正式翻譯 Skill
+<h2>Skill 檔案長什麼樣</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">~/.claude/skills/translate-formal/SKILL.md</div>
+<pre>---
+description: Translate English into formal Traditional Chinese
+---
+
+# 正式翻譯 Skill
 
 ## 規則
 - 使用正式書面語，避免口語化
@@ -728,30 +712,28 @@ p,li{font-size:1.1rem;line-height:1.8;}
 ## 格式
 - 中文翻譯
 - (原文: English original)</pre>
-  </div>
 </div>
-
+</div>
 <!-- ══ 26: 有無 Skill 對比 ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="26">
-  <h2>對比：有 Skill vs 沒有 Skill</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒有 Skill</div>
-      <p style="font-size:.95rem;">「MCP 讓 AI 可以連結外部工具」<br><br>風格隨機、口語化<br>專有名詞可能被硬翻<br>每次都要重新交代規則</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">有 translate-formal Skill</div>
-      <p style="font-size:.95rem;">「MCP 使 AI 具備連結外部工具之能力」<br>(原文: MCP enables AI to connect...)<br><br>正式書面語、專有名詞保留<br>格式一致、可重複產出</p>
-    </div>
-  </div>
+<h2>對比：有 Skill vs 沒有 Skill</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒有 Skill</div>
+<p style="font-size:.95rem;">「MCP 讓 AI 可以連結外部工具」<br/><br/>風格隨機、口語化<br/>專有名詞可能被硬翻<br/>每次都要重新交代規則</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">有 translate-formal Skill</div>
+<p style="font-size:.95rem;">「MCP 使 AI 具備連結外部工具之能力」<br/>(原文: MCP enables AI to connect...)<br/><br/>正式書面語、專有名詞保留<br/>格式一致、可重複產出</p>
+</div>
+</div>
+</div>
 <!-- ══ 27: 操作：建第二個 Skill ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="27">
-  <h2>操作：建一個你自己場景的 Skill</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">範例：會議紀錄 Skill</div>
-    <pre># 會議紀錄整理 Skill
+<h2>操作：建一個你自己場景的 Skill</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">範例：會議紀錄 Skill</div>
+<pre># 會議紀錄整理 Skill
 
 ## 規則
 - 摘要 3~5 條重點
@@ -761,187 +743,175 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 ## 格式
 - 會議日期 / 與會者 / 重點 / 待辦</pre>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;">
-    <div class="label">提示</div>
-    <p>想想你工作中「每次都要重新跟 AI 交代的事」<br>那就是該寫成 Skill 的候選</p>
-  </div>
 </div>
-
+<div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;">
+<div class="label">提示</div>
+<p>想想你工作中「每次都要重新跟 AI 交代的事」<br/>那就是該寫成 Skill 的候選</p>
+</div>
+</div>
 <!-- ══ 28: 注意事項：Skill 太通用 ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="28">
-  <h2>注意：Skill 太通用</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">太通用</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">「幫我寫好一點」</p>
-      <p style="margin-top:.5rem;">AI 不知道「好」的標準是什麼<br>產出不可預測</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">具體有標準</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">「正式書面語，保留專有名詞，附原文對照」</p>
-      <p style="margin-top:.5rem;">每一條都是可驗證的標準<br>產出穩定一致</p>
-    </div>
-  </div>
+<h2>注意：Skill 太通用</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">太通用</div>
+<p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">「幫我寫好一點」</p>
+<p style="margin-top:.5rem;">AI 不知道「好」的標準是什麼<br/>產出不可預測</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">具體有標準</div>
+<p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">「正式書面語，保留專有名詞，附原文對照」</p>
+<p style="margin-top:.5rem;">每一條都是可驗證的標準<br/>產出穩定一致</p>
+</div>
+</div>
+</div>
 <!-- ══ 29: 記憶機制五層 ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="29">
-  <h2>記憶機制總整理 — 五個層級</h2>
-  <table class="data-table fragment" data-order="0">
-    <thead>
-      <tr><th>層級</th><th>機制</th><th>範圍</th><th>學於</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><span class="hl-purple">對話級</span></td><td>聊天記錄</td><td>當次對話</td><td>M1-1</td></tr>
-      <tr><td><span class="hl-blue">助手級</span></td><td>GPT Instructions / Gem</td><td>該助手</td><td>M1-2</td></tr>
-      <tr><td><span class="hl-green">專案級</span></td><td>CLAUDE.md</td><td>該專案</td><td>M3-1</td></tr>
-      <tr><td><span class="hl-gold">全域級</span></td><td>Skills</td><td>所有專案</td><td>M3-1</td></tr>
-      <tr><td><span class="hl-orange">安全級</span></td><td>.env / Secrets</td><td>機密</td><td>M2-2 / M2-3</td></tr>
-    </tbody>
-  </table>
-  <div class="info-box purple fragment" data-order="1" style="margin-top:.5rem;">
-    <div class="label">完整圖景</div>
-    <p>從一次性對話到永久技能<br>五個層級組合起來就是你的「AI 配置」</p>
-  </div>
+<h2>記憶機制總整理 — 五個層級</h2>
+<table class="data-table fragment" data-order="0">
+<thead>
+<tr><th>層級</th><th>機制</th><th>範圍</th><th>學於</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="hl-purple">對話級</span></td><td>聊天記錄</td><td>當次對話</td><td>M1-1</td></tr>
+<tr><td><span class="hl-blue">助手級</span></td><td>GPT Instructions / Gem</td><td>該助手</td><td>M1-2</td></tr>
+<tr><td><span class="hl-green">專案級</span></td><td>CLAUDE.md</td><td>該專案</td><td>M3-1</td></tr>
+<tr><td><span class="hl-gold">全域級</span></td><td>Skills</td><td>所有專案</td><td>M3-1</td></tr>
+<tr><td><span class="hl-orange">安全級</span></td><td>.env / Secrets</td><td>機密</td><td>M2-2 / M2-3</td></tr>
+</tbody>
+</table>
+<div class="info-box purple fragment" data-order="1" style="margin-top:.5rem;">
+<div class="label">完整圖景</div>
+<p>從一次性對話到永久技能<br/>五個層級組合起來就是你的「AI 配置」</p>
 </div>
-
+</div>
 <!-- ══ 30: 層級關係圖 ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="30">
-  <h2>記憶的作用範圍</h2>
-  <div style="max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box fragment" data-order="0" style="border-color:var(--orange);background:var(--orange-lt);color:var(--orange);padding:1rem;margin-bottom:.5rem;text-align:center;">
-      <strong>安全級</strong> — .env / Secrets — 機密金鑰，不進版控
+<h2>記憶的作用範圍</h2>
+<div style="max-width:700px;width:100%;margin:.8rem 0;">
+<div class="flow-box fragment" data-order="0" style="border-color:var(--orange);background:var(--orange-lt);color:var(--orange);padding:1rem;margin-bottom:.5rem;text-align:center;">
+<strong>安全級</strong> — .env / Secrets — 機密金鑰，不進版控
     </div>
-    <div class="flow-box fragment" data-order="1" style="border-color:var(--gold);background:var(--gold-lt);color:#b07d00;padding:1rem;margin-bottom:.5rem;text-align:center;">
-      <strong>全域級</strong> — Skills — 所有專案都能用
+<div class="flow-box fragment" data-order="1" style="border-color:var(--gold);background:var(--gold-lt);color:#b07d00;padding:1rem;margin-bottom:.5rem;text-align:center;">
+<strong>全域級</strong> — Skills — 所有專案都能用
     </div>
-    <div class="flow-box fragment" data-order="2" style="border-color:var(--green);background:var(--green-lt);color:var(--green);padding:1rem;margin-bottom:.5rem;text-align:center;">
-      <strong>專案級</strong> — CLAUDE.md — 這個專案的脈絡
+<div class="flow-box fragment" data-order="2" style="border-color:var(--green);background:var(--green-lt);color:var(--green);padding:1rem;margin-bottom:.5rem;text-align:center;">
+<strong>專案級</strong> — CLAUDE.md — 這個專案的脈絡
     </div>
-    <div class="flow-box fragment" data-order="3" style="border-color:var(--blue);background:var(--blue-lt);color:var(--blue);padding:1rem;margin-bottom:.5rem;text-align:center;">
-      <strong>助手級</strong> — GPTs / Gems — 某個助手的設定
+<div class="flow-box fragment" data-order="3" style="border-color:var(--blue);background:var(--blue-lt);color:var(--blue);padding:1rem;margin-bottom:.5rem;text-align:center;">
+<strong>助手級</strong> — GPTs / Gems — 某個助手的設定
     </div>
-    <div class="flow-box fragment" data-order="4" style="border-color:var(--purple);background:var(--purple-lt);color:var(--purple);padding:1rem;text-align:center;">
-      <strong>對話級</strong> — 聊天紀錄 — 關掉就消失
+<div class="flow-box fragment" data-order="4" style="border-color:var(--purple);background:var(--purple-lt);color:var(--purple);padding:1rem;text-align:center;">
+<strong>對話級</strong> — 聊天紀錄 — 關掉就消失
     </div>
-  </div>
 </div>
-
+</div>
 <!-- ══ 31: Round 3 小結 ══ -->
 <div class="slide dataviz" data-act="R3：Skills 技能卡" data-index="31">
-  <h2>Round 3 小結</h2>
-  <div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
-    <h3 style="font-size:1.3rem;">Skills = AI 的技能卡</h3>
-    <p style="font-size:.95rem;">教一次，永遠會<br>要具體有標準，不要太通用<br>記憶五層：對話 → 助手 → 專案 → 全域 → 安全</p>
-  </div>
+<h2>Round 3 小結</h2>
+<div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
+<h3 style="font-size:1.3rem;">Skills = AI 的技能卡</h3>
+<p style="font-size:.95rem;">教一次，永遠會<br/>要具體有標準，不要太通用<br/>記憶五層：對話 → 助手 → 專案 → 全域 → 安全</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 4：社群 Skills + MCP (slides 32-40)
      ══════════════════════════════════════ -->
-
 <!-- ══ 32: Chapter poster — Round 4 ══ -->
-<div class="slide poster overlay-heavy" data-act="R4：社群 Skills + MCP" data-index="32"
-     style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:10–1:30</p>
-  <h1 style="color:#fff;font-size:2.8rem;">社群的力量<br><span style="color:#C4B5FD;">別人寫好的 Skills + MCP</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">不用全部自己寫 — 站在社群的肩膀上</p>
+<div class="slide poster overlay-heavy" data-act="R4：社群 Skills + MCP" data-index="32" style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:10–1:30</p>
+<h1 style="color:#fff;font-size:2.8rem;">社群的力量<br/><span style="color:#C4B5FD;">別人寫好的 Skills + MCP</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">不用全部自己寫 — 站在社群的肩膀上</p>
 </div>
-
 <!-- ══ 33: 導覽社群 Skills ══ -->
 <div class="slide dataviz" data-act="R4：社群 Skills + MCP" data-index="33">
-  <h2>操作：導覽社群 Skills 合集</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>講師篩選 5~8 個推薦 Skills</strong>
-        <p>commit-msg / code-review / translate / summarize 等</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>每人選 3 個安裝</strong>
-        <p>複製 .md 檔案到 ~/.claude/skills/</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>使用並對比</strong>
-        <p>有 Skill vs 沒有 Skill 的產出差異</p>
-      </div>
-    </div>
-  </div>
+<h2>操作：導覽社群 Skills 合集</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>講師篩選 5~8 個推薦 Skills</strong>
+<p>commit-msg / code-review / translate / summarize 等</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>每人選 3 個安裝</strong>
+<p>複製 .md 檔案到 ~/.claude/skills/</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>使用並對比</strong>
+<p>有 Skill vs 沒有 Skill 的產出差異</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 34: 推薦 Skills + MCP 合集 ══ -->
 <div class="slide dataviz" data-act="R4：社群 Skills + MCP" data-index="34">
-  <h2>推薦合集</h2>
-  <table class="data-table fragment" data-order="0">
-    <thead>
-      <tr><th>類型</th><th>名稱</th><th>功能</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><span class="hl-blue">MCP</span></td><td>GitHub</td><td>查 repo / issue / PR</td></tr>
-      <tr><td><span class="hl-blue">MCP</span></td><td>Fetch</td><td>抓網頁內容</td></tr>
-      <tr><td><span class="hl-blue">MCP</span></td><td>Brave Search</td><td>網路搜尋</td></tr>
-      <tr><td><span class="hl-purple">Skill</span></td><td>commit-msg</td><td>規範 commit message</td></tr>
-      <tr><td><span class="hl-purple">Skill</span></td><td>code-review</td><td>程式碼審查</td></tr>
-      <tr><td><span class="hl-purple">Skill</span></td><td>translate</td><td>翻譯</td></tr>
-    </tbody>
-  </table>
+<h2>推薦合集</h2>
+<table class="data-table fragment" data-order="0">
+<thead>
+<tr><th>類型</th><th>名稱</th><th>功能</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="hl-blue">MCP</span></td><td>GitHub</td><td>查 repo / issue / PR</td></tr>
+<tr><td><span class="hl-blue">MCP</span></td><td>Fetch</td><td>抓網頁內容</td></tr>
+<tr><td><span class="hl-blue">MCP</span></td><td>Brave Search</td><td>網路搜尋</td></tr>
+<tr><td><span class="hl-purple">Skill</span></td><td>commit-msg</td><td>規範 commit message</td></tr>
+<tr><td><span class="hl-purple">Skill</span></td><td>code-review</td><td>程式碼審查</td></tr>
+<tr><td><span class="hl-purple">Skill</span></td><td>translate</td><td>翻譯</td></tr>
+</tbody>
+</table>
 </div>
-
 <!-- ══ 35: MCP vs Skills 定位 ══ -->
 <div class="slide dataviz" data-act="R4：社群 Skills + MCP" data-index="35">
-  <h2>MCP vs Skills 的定位</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col fragment" data-order="0" style="background:var(--blue-lt);border:2px solid var(--blue);border-top:4px solid var(--blue);">
-      <div class="col-label" style="color:var(--blue);">MCP — 擴展「能做什麼」</div>
-      <p>接外部工具<br>連接 GitHub / 網頁 / 搜尋引擎<br>讓 AI「出門辦事」</p>
-    </div>
-    <div class="compare-col fragment" data-order="1" style="background:var(--purple-lt);border:2px solid var(--purple);border-top:4px solid var(--purple);">
-      <div class="col-label" style="color:var(--purple);">Skills — 擴展「怎麼做得好」</div>
-      <p>教方法和標準<br>控制品質和風格<br>讓 AI「做得專業」</p>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="2" style="margin-top:.5rem;">
-    <div class="label">互補關係</div>
-    <p>MCP 查 GitHub + Skill 教寫好 commit<br>MCP 抓網頁 + Skill 教如何摘要<br>工具 + 方法 = 完整能力</p>
-  </div>
+<h2>MCP vs Skills 的定位</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col fragment" data-order="0" style="background:var(--blue-lt);border:2px solid var(--blue);border-top:4px solid var(--blue);">
+<div class="col-label" style="color:var(--blue);">MCP — 擴展「能做什麼」</div>
+<p>接外部工具<br/>連接 GitHub / 網頁 / 搜尋引擎<br/>讓 AI「出門辦事」</p>
 </div>
-
+<div class="compare-col fragment" data-order="1" style="background:var(--purple-lt);border:2px solid var(--purple);border-top:4px solid var(--purple);">
+<div class="col-label" style="color:var(--purple);">Skills — 擴展「怎麼做得好」</div>
+<p>教方法和標準<br/>控制品質和風格<br/>讓 AI「做得專業」</p>
+</div>
+</div>
+<div class="info-box success fragment" data-order="2" style="margin-top:.5rem;">
+<div class="label">互補關係</div>
+<p>MCP 查 GitHub + Skill 教寫好 commit<br/>MCP 抓網頁 + Skill 教如何摘要<br/>工具 + 方法 = 完整能力</p>
+</div>
+</div>
 <!-- ══ 36: MCP Registry 導覽 ══ -->
 <div class="slide dataviz" data-act="R4：社群 Skills + MCP" data-index="36">
-  <h2>MCP Registry 導覽</h2>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0">
-      <h3>官方 Registry</h3>
-      <p>modelcontextprotocol<br>GitHub 組織下的官方 server</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1">
-      <h3>社群貢獻</h3>
-      <p>awesome-mcp-servers<br>社群精選的 MCP 合集</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2">
-      <h3>自建 MCP</h3>
-      <p>任何 CLI 或 API<br>都能包成 MCP server</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="3" style="margin-top:.5rem;">
-    <p style="font-size:.95rem;">選 MCP 就像選 App — 先看有沒有人在用、有沒有持續維護</p>
-  </div>
+<h2>MCP Registry 導覽</h2>
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>官方 Registry</h3>
+<p>modelcontextprotocol<br/>GitHub 組織下的官方 server</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>社群貢獻</h3>
+<p>awesome-mcp-servers<br/>社群精選的 MCP 合集</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>自建 MCP</h3>
+<p>任何 CLI 或 API<br/>都能包成 MCP server</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="margin-top:.5rem;">
+<p style="font-size:.95rem;">選 MCP 就像選 App — 先看有沒有人在用、有沒有持續維護</p>
+</div>
+</div>
 <!-- ══ 37: 大神的 Skills 庫組織 ══ -->
 <div class="slide dataviz" data-act="R4：社群 Skills + MCP" data-index="37">
-  <h2>大神的 Skills 庫組織方式</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">~/.claude/skills/ 目錄結構</div>
-    <pre>~/.claude/skills/
+<h2>大神的 Skills 庫組織方式</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">~/.claude/skills/ 目錄結構</div>
+<pre>~/.claude/skills/
 ├── translate-formal.md     # 正式翻譯
 ├── translate-casual.md     # 口語翻譯
 ├── code-review.md          # 程式碼審查
@@ -949,385 +919,357 @@ p,li{font-size:1.1rem;line-height:1.8;}
 ├── meeting-notes.md        # 會議紀錄
 ├── blog-writer.md          # 部落格寫作
 └── data-analysis.md        # 資料分析</pre>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;">
-    <div class="label">命名慣例</div>
-    <p>用 kebab-case（小寫 + 連字號）<br>名稱就是功能 — 一看就知道這個 Skill 做什麼</p>
-  </div>
 </div>
-
+<div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;">
+<div class="label">命名慣例</div>
+<p>用 kebab-case（小寫 + 連字號）<br/>名稱就是功能 — 一看就知道這個 Skill 做什麼</p>
+</div>
+</div>
 <!-- ══ 38: Round 4 小結 ══ -->
 <div class="slide dataviz" data-act="R4：社群 Skills + MCP" data-index="38">
-  <h2>Round 4 小結</h2>
-  <div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
-    <h3 style="font-size:1.3rem;">不用全部自己寫</h3>
-    <p style="font-size:.95rem;">MCP = 能做什麼（工具）<br>Skills = 怎麼做得好（方法）<br>社群生態讓你快速組裝出強大的 AI 配置</p>
-  </div>
+<h2>Round 4 小結</h2>
+<div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
+<h3 style="font-size:1.3rem;">不用全部自己寫</h3>
+<p style="font-size:.95rem;">MCP = 能做什麼（工具）<br/>Skills = 怎麼做得好（方法）<br/>社群生態讓你快速組裝出強大的 AI 配置</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 5：MCP + Skills 組合任務 (slides 39-47)
      ══════════════════════════════════════ -->
-
 <!-- ══ 39: Chapter poster — Round 5 ══ -->
-<div class="slide poster overlay-heavy" data-act="R5：組合任務" data-index="39"
-     style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:30–1:50</p>
-  <h1 style="color:#fff;font-size:2.8rem;">MCP + Skills<br><span style="color:#C4B5FD;">組合出擊</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">工具 + 方法的乘法效果</p>
+<div class="slide poster overlay-heavy" data-act="R5：組合任務" data-index="39" style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:30–1:50</p>
+<h1 style="color:#fff;font-size:2.8rem;">MCP + Skills<br/><span style="color:#C4B5FD;">組合出擊</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">工具 + 方法的乘法效果</p>
 </div>
-
 <!-- ══ 40: 組合任務說明 ══ -->
 <div class="slide dataviz" data-act="R5：組合任務" data-index="40">
-  <h2>案例任務</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:.8rem;">
-    <div class="quote-text">用 Claude Code 分析一個 GitHub repo 的程式碼品質<br>產出中文審查報告</div>
-  </div>
-  <div class="info-box purple fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">需要的組合</div>
-    <p>GitHub MCP — 讀取 repo 程式碼<br>code-review Skill — 定義審查標準和格式<br>translate Skill — 確保產出是正式中文</p>
-  </div>
+<h2>案例任務</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:.8rem;">
+<div class="quote-text">用 Claude Code 分析一個 GitHub repo 的程式碼品質<br/>產出中文審查報告</div>
 </div>
-
+<div class="info-box purple fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">需要的組合</div>
+<p>GitHub MCP — 讀取 repo 程式碼<br/>code-review Skill — 定義審查標準和格式<br/>translate Skill — 確保產出是正式中文</p>
+</div>
+</div>
 <!-- ══ 41: 沒有組合 vs 有組合 ══ -->
 <div class="slide dataviz" data-act="R5：組合任務" data-index="41">
-  <h2>沒有 MCP + Skills vs 有</h2>
-  <div class="compare-two" style="margin-top:.5rem;">
-    <div class="compare-col bad fragment" data-order="0">
-      <div class="col-label">沒有 MCP + Skills</div>
-      <p>「請提供程式碼，我來分析」<br><br>AI 無法自己讀 repo<br>你得手動貼程式碼<br>審查沒有統一標準<br>產出格式每次不同</p>
-    </div>
-    <div class="compare-col good fragment" data-order="1">
-      <div class="col-label">有 MCP + Skills</div>
-      <p>「已讀取 32 個檔案，以下是審查報告」<br><br>自動讀取整個 repo<br>按照 code-review 標準審查<br>中文正式書面語輸出<br>格式統一、可重複執行</p>
-    </div>
-  </div>
+<h2>沒有 MCP + Skills vs 有</h2>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col bad fragment" data-order="0">
+<div class="col-label">沒有 MCP + Skills</div>
+<p>「請提供程式碼，我來分析」<br/><br/>AI 無法自己讀 repo<br/>你得手動貼程式碼<br/>審查沒有統一標準<br/>產出格式每次不同</p>
 </div>
-
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label">有 MCP + Skills</div>
+<p>「已讀取 32 個檔案，以下是審查報告」<br/><br/>自動讀取整個 repo<br/>按照 code-review 標準審查<br/>中文正式書面語輸出<br/>格式統一、可重複執行</p>
+</div>
+</div>
+</div>
 <!-- ══ 42: 操作步驟 ══ -->
 <div class="slide dataviz" data-act="R5：組合任務" data-index="42">
-  <h2>操作：執行組合任務</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>選一個公開的 GitHub repo</strong>
-        <p>可以用講師提供的或自己找</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>在 CLI 中下達任務</strong>
-        <p>「分析 [repo URL] 的程式碼品質，<br>用 code-review 標準，產出中文報告」</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>觀察 AI 的行為</strong>
-        <p>它會呼叫 GitHub MCP 讀程式碼<br>套用 code-review Skill 的標準<br>用 translate Skill 的格式輸出</p>
-      </div>
-    </div>
-  </div>
+<h2>操作：執行組合任務</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>選一個公開的 GitHub repo</strong>
+<p>可以用講師提供的或自己找</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>在 CLI 中下達任務</strong>
+<p>「分析 [repo URL] 的程式碼品質，<br/>用 code-review 標準，產出中文報告」</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>觀察 AI 的行為</strong>
+<p>它會呼叫 GitHub MCP 讀程式碼<br/>套用 code-review Skill 的標準<br/>用 translate Skill 的格式輸出</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 43: 組合的乘法效果 ══ -->
 <div class="slide dataviz" data-act="R5：組合任務" data-index="43">
-  <h2>組合是乘法，不是加法</h2>
-  <div class="stat-grid fragment" data-order="0" style="grid-template-columns:repeat(3,1fr);max-width:700px;">
-    <div class="stat-box">
-      <div class="val">1x</div>
-      <div class="label">只有 AI 本體</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">3x</div>
-      <div class="label">+ MCP 工具</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">9x</div>
-      <div class="label">+ MCP + Skills</div>
-    </div>
-  </div>
-  <div class="info-box purple fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">核心洞察</div>
-    <p>「造 AI」不是開發 AI 模型<br>而是配置 AI 的能力<br>你的 AI 有多強，取決於你的配置有多完整</p>
-  </div>
+<h2>組合是乘法，不是加法</h2>
+<div class="stat-grid fragment" data-order="0" style="grid-template-columns:repeat(3,1fr);max-width:700px;">
+<div class="stat-box">
+<div class="val">1x</div>
+<div class="label">只有 AI 本體</div>
 </div>
-
+<div class="stat-box">
+<div class="val">3x</div>
+<div class="label">+ MCP 工具</div>
+</div>
+<div class="stat-box">
+<div class="val">9x</div>
+<div class="label">+ MCP + Skills</div>
+</div>
+</div>
+<div class="info-box purple fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">核心洞察</div>
+<p>「造 AI」不是開發 AI 模型<br/>而是配置 AI 的能力<br/>你的 AI 有多強，取決於你的配置有多完整</p>
+</div>
+</div>
 <!-- ══ 44: 更多組合範例 ══ -->
 <div class="slide dataviz" data-act="R5：組合任務" data-index="44">
-  <h2>更多 MCP + Skills 組合範例</h2>
-  <div class="card-grid" style="margin-top:.8rem;">
-    <div class="card accent-top fragment" data-order="0" style="min-width:220px;">
-      <h3>技術文件翻譯</h3>
-      <p>Fetch MCP 抓原文<br>+ translate Skill 翻譯<br>一鍵完成</p>
-    </div>
-    <div class="card accent-top-blue fragment" data-order="1" style="min-width:220px;">
-      <h3>每週技術週報</h3>
-      <p>GitHub MCP 讀 commit<br>+ summarize Skill 摘要<br>自動產出週報</p>
-    </div>
-    <div class="card accent-top-gold fragment" data-order="2" style="min-width:220px;">
-      <h3>競品分析</h3>
-      <p>Brave Search 搜資料<br>+ analysis Skill 框架<br>結構化分析報告</p>
-    </div>
-  </div>
+<h2>更多 MCP + Skills 組合範例</h2>
+<div class="card-grid" style="margin-top:.8rem;">
+<div class="card accent-top fragment" data-order="0" style="min-width:220px;">
+<h3>技術文件翻譯</h3>
+<p>Fetch MCP 抓原文<br/>+ translate Skill 翻譯<br/>一鍵完成</p>
 </div>
-
+<div class="card accent-top-blue fragment" data-order="1" style="min-width:220px;">
+<h3>每週技術週報</h3>
+<p>GitHub MCP 讀 commit<br/>+ summarize Skill 摘要<br/>自動產出週報</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2" style="min-width:220px;">
+<h3>競品分析</h3>
+<p>Brave Search 搜資料<br/>+ analysis Skill 框架<br/>結構化分析報告</p>
+</div>
+</div>
+</div>
 <!-- ══ 45: 注意事項：MCP 沒設好 ══ -->
 <div class="slide dataviz" data-act="R5：組合任務" data-index="45">
-  <h2>注意：MCP 沒設好，任務做不到</h2>
-  <div class="info-box warning fragment" data-order="0">
-    <div class="label">常見問題</div>
-    <p>GitHub MCP 的 token 過期 → AI 說「無法存取」<br>Fetch MCP 沒裝 → AI 說「我無法抓取網頁」<br>Skill 檔名打錯 → AI 找不到對應技能</p>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.5rem;">
-    <div class="label">排查順序</div>
-    <p>1. 確認 settings.json 格式正確<br>2. 確認 MCP server 能正常啟動<br>3. 確認 token / API key 有效<br>4. 確認 Skill 檔案在正確路徑</p>
-  </div>
+<h2>注意：MCP 沒設好，任務做不到</h2>
+<div class="info-box warning fragment" data-order="0">
+<div class="label">常見問題</div>
+<p>GitHub MCP 的 token 過期 → AI 說「無法存取」<br/>Fetch MCP 沒裝 → AI 說「我無法抓取網頁」<br/>Skill 檔名打錯 → AI 找不到對應技能</p>
 </div>
-
+<div class="info-box success fragment" data-order="1" style="margin-top:.5rem;">
+<div class="label">排查順序</div>
+<p>1. 確認 settings.json 格式正確<br/>2. 確認 MCP server 能正常啟動<br/>3. 確認 token / API key 有效<br/>4. 確認 Skill 檔案在正確路徑</p>
+</div>
+</div>
 <!-- ══ 46: Round 5 小結 ══ -->
 <div class="slide dataviz" data-act="R5：組合任務" data-index="46">
-  <h2>Round 5 小結</h2>
-  <div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
-    <h3 style="font-size:1.3rem;">造 AI = 配置 AI 的能力</h3>
-    <p style="font-size:.95rem;">不是用 AI，而是配置 AI<br>MCP + Skills 組合起來<br>你的 AI 就是你的專屬專家團隊</p>
-  </div>
+<h2>Round 5 小結</h2>
+<div class="bottom-line fragment" data-order="0" style="padding:1.5rem;">
+<h3 style="font-size:1.3rem;">造 AI = 配置 AI 的能力</h3>
+<p style="font-size:.95rem;">不是用 AI，而是配置 AI<br/>MCP + Skills 組合起來<br/>你的 AI 就是你的專屬專家團隊</p>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 6：AI 環境設定單 (slides 47-57)
      ══════════════════════════════════════ -->
-
 <!-- ══ 47: Chapter poster — Round 6 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：AI 環境設定單" data-index="47"
-     style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:50–2:00</p>
-  <h1 style="color:#fff;font-size:2.8rem;">你的 AI<br><span style="color:#C4B5FD;">環境設定單</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">回顧 + 帶走完整的 AI 配置</p>
+<div class="slide poster overlay-heavy" data-act="R6：AI 環境設定單" data-index="47" style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:50–2:00</p>
+<h1 style="color:#fff;font-size:2.8rem;">你的 AI<br/><span style="color:#C4B5FD;">環境設定單</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">回顧 + 帶走完整的 AI 配置</p>
 </div>
-
 <!-- ══ 48: 六維度反思 ══ -->
 <div class="slide dataviz" data-act="R6：AI 環境設定單" data-index="48">
-  <h2>六維度反思</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R1</div>
-      <div style="font-weight:700;font-size:.9rem;">CLI + CLAUDE.md</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R2</div>
-      <div style="font-weight:700;font-size:.9rem;">MCP 前後差異</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R3</div>
-      <div style="font-weight:700;font-size:.9rem;">Skills 技能卡</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R4</div>
-      <div style="font-weight:700;font-size:.9rem;">社群生態</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R5</div>
-      <div style="font-weight:700;font-size:.9rem;">MCP + Skills 組合</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R6</div>
-      <div style="font-weight:700;font-size:.9rem;">環境設定單</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;">每一輪都新增了一層能力<br>現在把它們整合成你的「AI 環境設定單」</p>
-  </div>
+<h2>六維度反思</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R1</div>
+<div style="font-weight:700;font-size:.9rem;">CLI + CLAUDE.md</div>
 </div>
-
+<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R2</div>
+<div style="font-weight:700;font-size:.9rem;">MCP 前後差異</div>
+</div>
+<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R3</div>
+<div style="font-weight:700;font-size:.9rem;">Skills 技能卡</div>
+</div>
+<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R4</div>
+<div style="font-weight:700;font-size:.9rem;">社群生態</div>
+</div>
+<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R5</div>
+<div style="font-weight:700;font-size:.9rem;">MCP + Skills 組合</div>
+</div>
+<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">R6</div>
+<div style="font-weight:700;font-size:.9rem;">環境設定單</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;">每一輪都新增了一層能力<br/>現在把它們整合成你的「AI 環境設定單」</p>
+</div>
+</div>
 <!-- ══ 49: ~/.claude/ 目錄結構 ══ -->
 <div class="slide dataviz" data-act="R6：AI 環境設定單" data-index="49">
-  <h2>你的 AI 環境設定單</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">~/.claude/ 完整結構</div>
-    <pre>~/.claude/
+<h2>你的 AI 環境設定單</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">~/.claude/ 完整結構</div>
+<pre>~/.claude/
 ├── CLAUDE.md          # AI 的備忘錄（全域）
 ├── settings.json      # MCP 設定 + 權限
 └── skills/            # 技能卡庫
     ├── translate.md
     ├── code-review.md
     └── your-work.md   # 你自己場景的 Skill</pre>
-  </div>
-  <div class="info-box purple fragment" data-order="1" style="margin-top:.6rem;">
-    <div class="label">加上專案級</div>
-    <p>每個專案根目錄的 CLAUDE.md 是專案級備忘錄<br>~/.claude/CLAUDE.md 是全域級備忘錄<br>兩者共存，專案級優先</p>
-  </div>
 </div>
-
+<div class="info-box purple fragment" data-order="1" style="margin-top:.6rem;">
+<div class="label">加上專案級</div>
+<p>每個專案根目錄的 CLAUDE.md 是專案級備忘錄<br/>~/.claude/CLAUDE.md 是全域級備忘錄<br/>兩者共存，專案級優先</p>
+</div>
+</div>
 <!-- ══ 50: 帶走清單 ══ -->
 <div class="slide dataviz" data-act="R6：AI 環境設定單" data-index="50">
-  <h2>今天帶走的東西</h2>
-  <div class="checklist">
-    <div class="check-item fragment" data-order="0">
-      <div class="check-icon done">1</div>
-      <div class="check-text">
-        <strong>CLI 操作能力</strong>
-        <p>終端機啟動 claude、基本對話操作</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="1">
-      <div class="check-icon done">2</div>
-      <div class="check-text">
-        <strong>CLAUDE.md 備忘錄</strong>
-        <p>至少一份專案級 CLAUDE.md</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="2">
-      <div class="check-icon done">3</div>
-      <div class="check-text">
-        <strong>MCP 設定</strong>
-        <p>settings.json 中至少有 1~2 個 MCP server</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="3">
-      <div class="check-icon done">4</div>
-      <div class="check-text">
-        <strong>3+ 個 Skills</strong>
-        <p>至少一個是自己場景的 Skill</p>
-      </div>
-    </div>
-    <div class="check-item fragment" data-order="4">
-      <div class="check-icon done">5</div>
-      <div class="check-text">
-        <strong>「經驗 → Skill」的習慣</strong>
-        <p>每次「又在重複交代 AI 同一件事」→ 寫成 Skill</p>
-      </div>
-    </div>
-  </div>
+<h2>帶走清單</h2>
+<div class="anchor-banner">
+<span class="anchor-label">本堂定位</span>
+<span class="anchor-text">Agent 的必備技能</span>
 </div>
-
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了<br/><em style="color:var(--g500);font-size:.85rem;">從「用通用 AI」→ 配置個人 AI 工作環境</em></p>
+<div class="insight-grid">
+<div class="insight-card fragment" data-order="0" style="--card-color:var(--green);">
+<div class="insight-before">從「每次都重講一遍」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">規則能變成環境</div>
+</div>
+<div class="insight-card fragment" data-order="1" style="--card-color:var(--blue);">
+<div class="insight-before">從「AI 只能看我貼的」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">工具延伸 AI 視野</div>
+</div>
+<div class="insight-card fragment" data-order="2" style="--card-color:var(--gold);">
+<div class="insight-before">從「技能靠臨場提示」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">能力可以被封裝</div>
+</div>
+<div class="insight-card fragment" data-order="3" style="--card-color:var(--purple);">
+<div class="insight-before">從「別人的我用不到」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">社群能力可被移植</div>
+</div>
+<div class="insight-card fragment" data-order="4" style="--card-color:var(--orange);">
+<div class="insight-before">從「任務只能一步步做」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">環境承接複合任務</div>
+</div>
+<div class="insight-card fragment" data-order="5" style="--card-color:var(--accent);">
+<div class="insight-before">從「AI 還是不懂我」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">專屬 AI 要被配置</div>
+</div>
+</div>
+</div>
 <!-- ══ 51: 注意事項總覽 ══ -->
 <div class="slide dataviz" data-act="R6：AI 環境設定單" data-index="51">
-  <h2>M3-1 注意事項總覽</h2>
-  <table class="data-table fragment" data-order="0">
-    <thead>
-      <tr><th>#</th><th>常見問題</th><th>學到什麼</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>CLAUDE.md 寫太長</td><td>精簡才有效</td></tr>
-      <tr><td>2</td><td>JSON 格式錯 CLI 掛掉</td><td>JSON 格式精確</td></tr>
-      <tr><td>3</td><td>Skill 太通用</td><td>要具體有標準</td></tr>
-      <tr><td>4</td><td>MCP 沒設好問題做不到</td><td>能力 = 工具配置</td></tr>
-      <tr><td>5</td><td>不知道社群有哪些資源</td><td>社群生態導覽</td></tr>
-    </tbody>
-  </table>
+<h2>M3-1 注意事項總覽</h2>
+<table class="data-table fragment" data-order="0">
+<thead>
+<tr><th>#</th><th>常見問題</th><th>學到什麼</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>CLAUDE.md 寫太長</td><td>精簡才有效</td></tr>
+<tr><td>2</td><td>JSON 格式錯 CLI 掛掉</td><td>JSON 格式精確</td></tr>
+<tr><td>3</td><td>Skill 太通用</td><td>要具體有標準</td></tr>
+<tr><td>4</td><td>MCP 沒設好問題做不到</td><td>能力 = 工具配置</td></tr>
+<tr><td>5</td><td>不知道社群有哪些資源</td><td>社群生態導覽</td></tr>
+</tbody>
+</table>
 </div>
-
 <!-- ══ 52: 從「用 AI」到「配置 AI」 ══ -->
 <div class="slide dataviz" data-act="R6：AI 環境設定單" data-index="52">
-  <h2>從「用 AI」到「配置 AI」</h2>
-  <div class="flow fragment" data-order="0" style="margin:.6rem 0;">
-    <div class="flow-box">Stage 1<br><span style="font-size:.8rem;font-weight:400;">用 AI</span></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">Stage 2<br><span style="font-size:.8rem;font-weight:400;">做產品</span></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">Stage 3<br><span style="font-size:.8rem;font-weight:400;">造系統</span></div>
-  </div>
-  <div class="info-box purple fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">Stage 3 的核心轉變</div>
-    <p>Stage 1~2 你在「用」AI<br>Stage 3 開始你在「造」自己的 AI 環境<br>這個環境會隨著你的經驗持續進化</p>
-  </div>
+<h2>從「用 AI」到「配置 AI」</h2>
+<div class="flow fragment" data-order="0" style="margin:.6rem 0;">
+<div class="flow-box">Stage 1<br/><span style="font-size:.8rem;font-weight:400;">用 AI</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Stage 2<br/><span style="font-size:.8rem;font-weight:400;">做產品</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">Stage 3<br/><span style="font-size:.8rem;font-weight:400;">造系統</span></div>
 </div>
-
+<div class="info-box purple fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">Stage 3 的核心轉變</div>
+<p>Stage 1~2 你在「用」AI<br/>Stage 3 開始你在「造」自己的 AI 環境<br/>這個環境會隨著你的經驗持續進化</p>
+</div>
+</div>
 <!-- ══ 53: 經驗 → Skill 的循環 ══ -->
 <div class="slide dataviz" data-act="R6：AI 環境設定單" data-index="53">
-  <h2>經驗 → Skill 的持續循環</h2>
-  <div class="flow fragment" data-order="0" style="margin:.8rem 0;">
-    <div class="flow-box accent">工作中遇到重複任務</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">寫成 Skill</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">AI 永遠會做</div>
-  </div>
-  <div class="flow fragment" data-order="1" style="margin:.4rem 0;">
-    <div class="flow-box accent">發現需要新工具</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">找 / 建 MCP</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">AI 能力擴展</div>
-  </div>
-  <div class="quote-box fragment" data-order="2" style="margin-top:.6rem;">
-    <div class="quote-text">你的 AI 會越來越像你的專屬團隊<br>因為你持續在「教」它</div>
-  </div>
+<h2>經驗 → Skill 的持續循環</h2>
+<div class="flow fragment" data-order="0" style="margin:.8rem 0;">
+<div class="flow-box accent">工作中遇到重複任務</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">寫成 Skill</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">AI 永遠會做</div>
 </div>
-
+<div class="flow fragment" data-order="1" style="margin:.4rem 0;">
+<div class="flow-box accent">發現需要新工具</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">找 / 建 MCP</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">AI 能力擴展</div>
+</div>
+<div class="quote-box fragment" data-order="2" style="margin-top:.6rem;">
+<div class="quote-text">你的 AI 會越來越像你的專屬團隊<br/>因為你持續在「教」它</div>
+</div>
+</div>
 <!-- ══ 54: 完整配置一覽 ══ -->
 <div class="slide dataviz" data-act="R6：AI 環境設定單" data-index="54">
-  <h2>完整配置一覽</h2>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:860px;width:100%;margin:.5rem 0;">
-    <div class="code-block fragment" data-order="0" style="margin:0;padding:1rem 1.2rem;">
-      <div class="code-label">記憶層</div>
-      <pre style="font-size:.8rem;line-height:1.5;">全域 CLAUDE.md
+<h2>完整配置一覽</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:860px;width:100%;margin:.5rem 0;">
+<div class="code-block fragment" data-order="0" style="margin:0;padding:1rem 1.2rem;">
+<div class="code-label">記憶層</div>
+<pre style="font-size:.8rem;line-height:1.5;">全域 CLAUDE.md
   → 你的通用偏好
 專案 CLAUDE.md
   → 專案脈絡
 Skills
   → 可重複調用的技能</pre>
-    </div>
-    <div class="code-block fragment" data-order="1" style="margin:0;padding:1rem 1.2rem;">
-      <div class="code-label">工具層</div>
-      <pre style="font-size:.8rem;line-height:1.5;">GitHub MCP
+</div>
+<div class="code-block fragment" data-order="1" style="margin:0;padding:1rem 1.2rem;">
+<div class="code-label">工具層</div>
+<pre style="font-size:.8rem;line-height:1.5;">GitHub MCP
   → 版控 + 程式碼
 Fetch MCP
   → 抓取網頁內容
 Brave Search MCP
   → 即時搜尋</pre>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="2" style="margin-top:.5rem;">
-    <p style="font-size:.95rem;">記憶層控制「品質」，工具層擴展「能力」<br>兩層疊加，AI 就是你的專屬專家</p>
-  </div>
 </div>
-
+</div>
+<div class="info-box success fragment" data-order="2" style="margin-top:.5rem;">
+<p style="font-size:.95rem;">記憶層控制「品質」，工具層擴展「能力」<br/>兩層疊加，AI 就是你的專屬專家</p>
+</div>
+</div>
 <!-- ══ 55: 今日金句 ══ -->
 <div class="slide dataviz" data-act="R6：AI 環境設定單" data-index="55">
-  <h2>今日金句</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1.5rem;border-left-color:var(--purple);">
-    <div class="quote-text" style="font-size:1.5rem;">你的 AI 有多強<br>取決於你幫它接了什麼工具<br>教了什麼技能</div>
-  </div>
+<h2>今日金句</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:1.5rem;border-left-color:var(--purple);">
+<div class="quote-text" style="font-size:1.5rem;">你的 AI 有多強<br/>取決於你幫它接了什麼工具<br/>教了什麼技能</div>
 </div>
-
+</div>
 <!-- ══ 56: 預告 M3-2 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：AI 環境設定單" data-index="56"
-     style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M3-2</p>
-  <h1 style="color:#fff;font-size:2.8rem;">你配置好了 AI 環境<br><span style="color:#C4B5FD;">但程式碼還是要從零開始寫</span></h1>
-  <p class="poster-subtitle" style="margin-top:1rem;">下一堂課的主題：站在巨人的肩膀上 — 大神專案 + 開源套用 + 風險辨識</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Clone</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Fork</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">風險辨識</span>
-  </div>
-  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M3-1 完成</p>
+<div class="slide poster overlay-heavy" data-act="R6：AI 環境設定單" data-index="56" style="background:linear-gradient(135deg,#2D1B69 0%,#5B21B6 40%,#7C3AED 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M3-2</p>
+<h1 style="color:#fff;font-size:2.8rem;">你配置好了 AI 環境<br/><span style="color:#C4B5FD;">但程式碼還是要從零開始寫</span></h1>
+<p class="poster-subtitle" style="margin-top:1rem;">下一堂課的主題：站在巨人的肩膀上 — 大神專案 + 開源套用 + 風險辨識</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Clone</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Fork</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">風險辨識</span>
 </div>
-
+<p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M3-1 完成</p>
+</div>
 </div><!-- end .slides -->
-
 <!-- ── Controls ── -->
 <div class="progress" id="progress"></div>
 <div class="slide-counter" id="counter">1 / 57</div>
 <div class="controls">
-  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
-  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+<button disabled="" id="prevBtn" onclick="navigate(-1)">‹</button>
+<button id="nextBtn" onclick="navigate(1)">›</button>
 </div>
-
 <!-- ── Chapter Menu ── -->
 <div class="chapter-menu" id="chapterMenu">
-  <div class="chapter-btn" onclick="toggleChapterMenu()">
-    <span class="chapter-icon">&#9672;</span>
-    <span id="chapterLabel">章節</span>
-    <span class="chapter-arrow">&#9650;</span>
-  </div>
-  <div class="chapter-list" id="chapterList"></div>
+<div class="chapter-btn" onclick="toggleChapterMenu()">
+<span class="chapter-icon">◈</span>
+<span id="chapterLabel">章節</span>
+<span class="chapter-arrow">▲</span>
 </div>
-
+<div class="chapter-list" id="chapterList"></div>
+</div>
 <script>
 (function(){
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -1455,8 +1397,92 @@ Brave Search MCP
   // Init
   updateUI();
   window.navigate = navigate;
+  window.goTo = goTo;
   window.toggleChapterMenu = toggleChapterMenu;
 })();
 </script>
+
+<!-- VIBE_INJECT_START -->
+<style>
+  .code-block{position:relative;}
+  .code-block .copy-btn{
+    position:absolute;top:.35rem;right:.4rem;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    padding:.18rem .55rem;border:0;border-radius:4px;
+    background:rgba(15,157,138,.85);color:#fff;cursor:pointer;
+    opacity:.55;transition:opacity .15s,background .15s;
+    letter-spacing:.05em;z-index:5;
+  }
+  .code-block:hover .copy-btn,
+  .code-block .copy-btn:focus{opacity:1;}
+  .code-block .copy-btn.copied{background:rgba(52,211,153,.95);opacity:1;}
+  @media (hover:none){.code-block .copy-btn{opacity:.85;}}
+</style>
+<script>
+(function(){
+  /* ── copy button ── */
+  function addBtn(block){
+    if(block.querySelector('.copy-btn'))return;
+    var pre=block.querySelector('pre');
+    if(!pre)return;
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='✓ 已複製';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='複製';btn.classList.remove('copied');},1500);
+      };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text,done);});
+      }else{fallback(text,done);}
+    });
+    block.appendChild(btn);
+  }
+  function fallback(text,cb){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.top='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');cb();}catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ── hash router: #round-N jumps to first slide whose data-act matches "Round N：" or "RN：" ── */
+  function routeHash(){
+    var m=(window.location.hash||'').match(/^#round-(\d+)/i);
+    if(!m)return;
+    var n=m[1];
+    var patterns=[
+      new RegExp('^Round\\s*'+n+'[\u{ff1a}:\\s]','u'),
+      new RegExp('^R'+n+'[\u{ff1a}:\\s]','u'),
+    ];
+    var target=null;
+    var slides=document.querySelectorAll('.slide[data-act]');
+    for(var i=0;i<slides.length;i++){
+      if(target)break;
+      var act=slides[i].getAttribute('data-act')||'';
+      for(var j=0;j<patterns.length;j++){
+        if(patterns[j].test(act)){target=slides[i];break;}
+      }
+    }
+    if(target&&typeof window.goTo==='function'){
+      var idx=parseInt(target.getAttribute('data-index'),10);
+      window.goTo(idx);
+    }
+  }
+  window.addEventListener('hashchange',routeHash);
+
+  function init(){
+    document.querySelectorAll('.code-block').forEach(addBtn);
+    setTimeout(routeHash,80);  /* wait for slide system init */
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{init();}
+})();
+</script>
+<!-- VIBE_INJECT_END -->
+
 </body>
 </html>

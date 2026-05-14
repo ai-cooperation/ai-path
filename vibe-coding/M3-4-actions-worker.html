@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>M3-4 — GitHub Actions + Cloudflare Worker | Vibe Coding Stage 3</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&amp;family=Fira+Code:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════════════════════════════════
    M3-4: GitHub Actions + Cloudflare Worker
@@ -89,6 +90,22 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
 .flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
 .flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
+
+/* arch-grid + lane + insight-grid + anchor-banner — common patterns from M1-1 */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
+.arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
+.arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
+.insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
+.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
+.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+.anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
 
 /* ── Info Boxes (white mode) ── */
 .info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
@@ -183,7 +200,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .controls button:hover{background:var(--green);border-color:var(--green);color:#fff;}
 .controls button:disabled{opacity:.25;cursor:default;}
-.slide-counter{position:fixed;bottom:1.5rem;right:5rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:500;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500,var(--g400));font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
 .module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--green-lt);color:var(--green);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(15,157,138,.2);}
 .module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
 
@@ -247,729 +264,682 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </style>
 </head>
 <body>
-
 <div class="module-title">Vibe Coding — Stage 3 · 造系統</div>
 <div class="module-badge">M3-4</div>
 <div class="slides">
-
 <!-- ══════════════════════════════════════
      開場 (slides 0-2)
      ══════════════════════════════════════ -->
-
 <!-- ══ 0: COVER ══ -->
-<div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 3 · 造系統</p>
-  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">GitHub Actions +<br><span style="color:#6ee7d4;">Cloudflare Worker</span></h1>
-  <p class="poster-subtitle" style="margin-top:1.2rem;">電腦關機也能跑 — 而且你永遠不止一個選項</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M3-4</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">2 小時</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">畢業</span>
-  </div>
-  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+<div class="slide poster overlay-heavy active" data-act="開場" data-index="0" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 3 · 造系統</p>
+<h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">GitHub Actions +<br/><span style="color:#6ee7d4;">Cloudflare Worker</span></h1>
+<p class="poster-subtitle" style="margin-top:1.2rem;">電腦關機也能跑 — 而且你永遠不止一個選項</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M3-4</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">2 小時</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">畢業</span>
 </div>
-
+<p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
 <!-- ══ 1: 課程教學循環 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
-  <h2>六輪循環，最後一堂</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-      <div style="font-weight:700;">三種自動化</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-      <div style="font-weight:700;">Actions 實作</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-      <div style="font-weight:700;">TG 通知閉環</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-      <div style="font-weight:700;">Worker 講師 Demo</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-      <div style="font-weight:700;">AI 系統藍圖</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-      <div style="font-weight:700;">畢業</div>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;"><strong>這堂課的核心問題</strong><br>你的系統什麼時候需要「自動跑」？<br>而且 — 你永遠不止一種選擇</p>
-  </div>
+<h2>六輪循環，最後一堂</h2>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
+<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
+<div style="font-weight:700;">三種自動化</div>
 </div>
-
+<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
+<div style="font-weight:700;">Actions 實作</div>
+</div>
+<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
+<div style="font-weight:700;">TG 通知閉環</div>
+</div>
+<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
+<div style="font-weight:700;">Worker 講師 Demo</div>
+</div>
+<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
+<div style="font-weight:700;">AI 系統藍圖</div>
+</div>
+<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
+<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
+<div style="font-weight:700;">畢業</div>
+</div>
+</div>
+<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;"><strong>這堂課的核心問題</strong><br/>你的系統什麼時候需要「自動跑」？<br/>而且 — 你永遠不止一種選擇</p>
+</div>
+</div>
 <!-- ══ 2: 回顧 M3-3 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="2">
-  <h2>M3-3 回顧：spec.md 與四元素架構</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">spec.md</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">UI</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">資料</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">邏輯</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">外部服務</div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">M3-3 你帶走的能力</div>
-    <p>用 spec.md 讓 AI 理解你的系統全貌<br>四元素拆解讓複雜系統變可控</p>
-  </div>
-  <div class="info-box blue fragment" data-order="2" style="margin-top:.5rem;">
-    <div class="label">今天的問題</div>
-    <p>系統做好了 — 但你不可能 24 小時盯著電腦<br>如何讓系統在你關機後繼續運行？</p>
-  </div>
+<h2>M3-3 回顧：spec.md 與四元素架構</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">spec.md</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">UI</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">資料</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">邏輯</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">外部服務</div>
 </div>
-
+<div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">M3-3 你帶走的能力</div>
+<p>用 spec.md 讓 AI 理解你的系統全貌<br/>四元素拆解讓複雜系統變可控</p>
+</div>
+<div class="info-box blue fragment" data-order="2" style="margin-top:.5rem;">
+<div class="label">今天的問題</div>
+<p>系統做好了 — 但你不可能 24 小時盯著電腦<br/>如何讓系統在你關機後繼續運行？</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 1：三種自動化 (slides 3-10)
      ══════════════════════════════════════ -->
-
 <!-- ══ 3: Chapter poster — Round 1 ══ -->
-<div class="slide poster overlay-heavy" data-act="R1：三種自動化" data-index="3"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:15</p>
-  <h1 style="color:#fff;font-size:2.8rem;">你的系統<br><span style="color:#6ee7d4;">什麼時候需要自動跑</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">三種自動化機制，對應三種真實需求</p>
+<div class="slide poster overlay-heavy" data-act="R1：三種自動化" data-index="3" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:15</p>
+<h1 style="color:#fff;font-size:2.8rem;">你的系統<br/><span style="color:#6ee7d4;">什麼時候需要自動跑</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">三種自動化機制，對應三種真實需求</p>
 </div>
-
 <!-- ══ 4: 案例一 ══ -->
 <div class="slide dataviz" data-act="R1：三種自動化" data-index="4">
-  <h2>真實案例 1：每日新聞 Pipeline</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">每天早上 9 點</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">自動收集新聞</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">AI 摘要</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">推送 TG</div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
-    <div class="label">觸發方式</div>
-    <p>定時排程 — 不管有沒有新聞，時間到就執行<br>就像每天早上的鬧鐘</p>
-  </div>
-  <div class="stat-grid fragment" data-order="2" style="grid-template-columns:repeat(3,1fr);max-width:600px;">
-    <div class="stat-box">
-      <div class="val">3</div>
-      <div class="label">次/天</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">0</div>
-      <div class="label">人力介入</div>
-    </div>
-    <div class="stat-box">
-      <div class="val">365</div>
-      <div class="label">天不間斷</div>
-    </div>
-  </div>
+<h2>真實案例 1：每日新聞 Pipeline</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">每天早上 9 點</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">自動收集新聞</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">AI 摘要</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">推送 TG</div>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
+<div class="label">觸發方式</div>
+<p>定時排程 — 不管有沒有新聞，時間到就執行<br/>就像每天早上的鬧鐘</p>
+</div>
+<div class="stat-grid fragment" data-order="2" style="grid-template-columns:repeat(3,1fr);max-width:600px;">
+<div class="stat-box">
+<div class="val">3</div>
+<div class="label">次/天</div>
+</div>
+<div class="stat-box">
+<div class="val">0</div>
+<div class="label">人力介入</div>
+</div>
+<div class="stat-box">
+<div class="val">365</div>
+<div class="label">天不間斷</div>
+</div>
+</div>
+</div>
 <!-- ══ 5: 案例二 ══ -->
 <div class="slide dataviz" data-act="R1：三種自動化" data-index="5">
-  <h2>真實案例 2：表單觸發 AI 分析</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">有人提交表單</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">自動觸發 AI</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">分析結果</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">存 Google Sheet</div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
-    <div class="label">觸發方式</div>
-    <p>事件觸發 — 不是時間到了才做，而是有人做了什麼才啟動<br>就像有人打電話給你才接</p>
-  </div>
+<h2>真實案例 2：表單觸發 AI 分析</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">有人提交表單</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">自動觸發 AI</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">分析結果</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">存 Google Sheet</div>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
+<div class="label">觸發方式</div>
+<p>事件觸發 — 不是時間到了才做，而是有人做了什麼才啟動<br/>就像有人打電話給你才接</p>
+</div>
+</div>
 <!-- ══ 6: 案例三 ══ -->
 <div class="slide dataviz" data-act="R1：三種自動化" data-index="6">
-  <h2>真實案例 3：自動週報 + 通知</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">每週五</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">AI 產出週報</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">Commit 到 GitHub</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">TG 通知</div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
-    <div class="label">觸發方式</div>
-    <p>AI 排程 — Claude /schedule 設定後<br>AI 自己決定什麼時候執行、執行什麼</p>
-  </div>
+<h2>真實案例 3：自動週報 + 通知</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">每週五</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">AI 產出週報</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Commit 到 GitHub</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">TG 通知</div>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
+<div class="label">觸發方式</div>
+<p>AI 排程 — Claude /schedule 設定後<br/>AI 自己決定什麼時候執行、執行什麼</p>
+</div>
+</div>
 <!-- ══ 7: 三種機制比較 ══ -->
 <div class="slide dataviz" data-act="R1：三種自動化" data-index="7">
-  <h2>三種自動化機制</h2>
-  <div class="card-grid fragment" data-order="0">
-    <div class="card accent-top">
-      <h3>定時排程 Cron</h3>
-      <p>像鬧鐘<br>時間到就執行<br>不管外界變化</p>
-      <p style="margin-top:.5rem;font-size:.85rem;color:var(--green);font-weight:700;">GitHub Actions</p>
-    </div>
-    <div class="card accent-top-blue">
-      <h3>事件觸發 Event</h3>
-      <p>像電話<br>有人做了某件事才啟動<br>即時回應</p>
-      <p style="margin-top:.5rem;font-size:.85rem;color:var(--blue);font-weight:700;">Cloudflare Worker</p>
-    </div>
-    <div class="card accent-top-purple">
-      <h3>AI 排程 /schedule</h3>
-      <p>像智慧助理<br>AI 自己決定何時執行<br>自主判斷</p>
-      <p style="margin-top:.5rem;font-size:.85rem;color:var(--purple);font-weight:700;">Claude /schedule</p>
-    </div>
-  </div>
+<h2>三種自動化機制</h2>
+<div class="card-grid fragment" data-order="0">
+<div class="card accent-top">
+<h3>定時排程 Cron</h3>
+<p>像鬧鐘<br/>時間到就執行<br/>不管外界變化</p>
+<p style="margin-top:.5rem;font-size:.85rem;color:var(--green);font-weight:700;">GitHub Actions</p>
 </div>
-
+<div class="card accent-top-blue">
+<h3>事件觸發 Event</h3>
+<p>像電話<br/>有人做了某件事才啟動<br/>即時回應</p>
+<p style="margin-top:.5rem;font-size:.85rem;color:var(--blue);font-weight:700;">Cloudflare Worker</p>
+</div>
+<div class="card accent-top-purple">
+<h3>AI 排程 /schedule</h3>
+<p>像智慧助理<br/>AI 自己決定何時執行<br/>自主判斷</p>
+<p style="margin-top:.5rem;font-size:.85rem;color:var(--purple);font-weight:700;">Claude /schedule</p>
+</div>
+</div>
+</div>
 <!-- ══ 8: 鬧鐘 vs 電話 ══ -->
 <div class="slide dataviz" data-act="R1：三種自動化" data-index="8">
-  <h2>排程 vs 事件驅動</h2>
-  <div class="compare-two fragment" data-order="0">
-    <div class="compare-col good">
-      <div class="col-label">排程（鬧鐘）</div>
-      <p style="font-weight:700;">固定時間執行</p>
-      <ul style="margin-top:.5rem;">
-        <li>每天 9 點收新聞</li>
-        <li>每週五產報告</li>
-        <li>每月 1 號備份</li>
-      </ul>
-      <p style="margin-top:.5rem;font-size:.9rem;">不管有沒有事，時間到就做</p>
-    </div>
-    <div class="compare-col good" style="background:var(--blue-lt);border-color:var(--blue);border-top-color:var(--blue);">
-      <div class="col-label" style="color:var(--blue);">事件驅動（電話）</div>
-      <p style="font-weight:700;">有事才執行</p>
-      <ul style="margin-top:.5rem;">
-        <li>有人提交表單</li>
-        <li>有人打 API</li>
-        <li>有人 push 程式碼</li>
-      </ul>
-      <p style="margin-top:.5rem;font-size:.9rem;">沒事不消耗資源，有事即時回應</p>
-    </div>
-  </div>
+<h2>排程 vs 事件驅動</h2>
+<div class="compare-two fragment" data-order="0">
+<div class="compare-col good">
+<div class="col-label">排程（鬧鐘）</div>
+<p style="font-weight:700;">固定時間執行</p>
+<ul style="margin-top:.5rem;">
+<li>每天 9 點收新聞</li>
+<li>每週五產報告</li>
+<li>每月 1 號備份</li>
+</ul>
+<p style="margin-top:.5rem;font-size:.9rem;">不管有沒有事，時間到就做</p>
 </div>
-
+<div class="compare-col good" style="background:var(--blue-lt);border-color:var(--blue);border-top-color:var(--blue);">
+<div class="col-label" style="color:var(--blue);">事件驅動（電話）</div>
+<p style="font-weight:700;">有事才執行</p>
+<ul style="margin-top:.5rem;">
+<li>有人提交表單</li>
+<li>有人打 API</li>
+<li>有人 push 程式碼</li>
+</ul>
+<p style="margin-top:.5rem;font-size:.9rem;">沒事不消耗資源，有事即時回應</p>
+</div>
+</div>
+</div>
 <!-- ══ 9: Round 1 小結 ══ -->
 <div class="slide dataviz" data-act="R1：三種自動化" data-index="9">
-  <h2>Round 1 小結</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">自動化的本質是把「人盯著」變成「系統自己跑」<br>接下來用 GitHub Actions 實作第一種：定時排程</div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">三個關鍵字</div>
-    <p>Cron = 鬧鐘 / Event = 電話 / /schedule = 智慧助理</p>
-  </div>
+<h2>Round 1 小結</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">自動化的本質是把「人盯著」變成「系統自己跑」<br/>接下來用 GitHub Actions 實作第一種：定時排程</div>
 </div>
-
+<div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">三個關鍵字</div>
+<p>Cron = 鬧鐘 / Event = 電話 / /schedule = 智慧助理</p>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 2：GitHub Actions 實作 (slides 10-21)
      ══════════════════════════════════════ -->
-
 <!-- ══ 10: Chapter poster — Round 2 ══ -->
-<div class="slide poster overlay-heavy" data-act="R2：Actions 實作" data-index="10"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:15–0:45</p>
-  <h1 style="color:#fff;font-size:2.8rem;">GitHub Actions<br><span style="color:#6ee7d4;">實作排程</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">在 M3-3 的專案裡加上自動化 Workflow</p>
+<div class="slide poster overlay-heavy" data-act="R2：Actions 實作" data-index="10" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:15–0:45</p>
+<h1 style="color:#fff;font-size:2.8rem;">GitHub Actions<br/><span style="color:#6ee7d4;">實作排程</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">在 M3-3 的專案裡加上自動化 Workflow</p>
 </div>
-
 <!-- ══ 11: 操作指令 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="11">
-  <h2>操作指令</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">對 AI 說</div>
-    <pre>幫我建 GitHub Actions workflow
+<h2>操作指令</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">對 AI 說</div>
+<pre>幫我建 GitHub Actions workflow
 每天早上 9 點執行 Python 腳本
 把結果 commit 到 repo</pre>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">前提</div>
-    <p>在 M3-3 的專案裡操作<br>AI 會在你的專案中生成 .github/workflows/daily.yml</p>
-  </div>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">前提</div>
+<p>在 M3-3 的專案裡操作<br/>AI 會在你的專案中生成 .github/workflows/daily.yml</p>
+</div>
+</div>
 <!-- ══ 12: AI 生成的 workflow ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="12">
-  <h2>AI 生成的 Workflow 結構</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">.github/workflows/daily.yml</div>
-    <pre>name: Daily Script
+<h2>AI 生成的 Workflow 結構</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">給概念用，不用抄 — 4 個區塊串起來</p>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">.github/workflows/daily.yml（精簡）</div>
+<pre>name: Daily Script
 
 on:
   schedule:
-    - cron: '0 1 * * *'    # UTC 01:00 = 台灣 09:00
-  workflow_dispatch:          # 手動觸發按鈕
+    - cron: '0 1 * * *'    # 每天台灣 09:00 跑
+  workflow_dispatch:        # 手動觸發按鈕
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-      - run: pip install -r requirements.txt
-      - run: python main.py
-      - run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add .
-          git commit -m "auto: daily update" || true
-          git push</pre>
-  </div>
+      - run: python main.py</pre>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<p style="font-size:.95rem;">下一頁拆解這 4 個區塊在做什麼</p>
+</div>
+</div>
 <!-- ══ 13: Workflow 結構拆解 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="13">
-  <h2>Workflow 四個區塊</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>name</strong>
-        <p>Workflow 的名稱，顯示在 Actions 頁面</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>on</strong>
-        <p>觸發條件 — schedule / push / workflow_dispatch</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>jobs</strong>
-        <p>要執行的任務 — 在什麼環境跑什麼指令</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>steps</strong>
-        <p>具體步驟 — checkout / setup / run / commit</p>
-      </div>
-    </div>
-  </div>
+<h2>Workflow 四個區塊</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>name</strong>
+<p>Workflow 的名稱，顯示在 Actions 頁面</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>on</strong>
+<p>觸發條件 — schedule / push / workflow_dispatch</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>jobs</strong>
+<p>要執行的任務 — 在什麼環境跑什麼指令</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>steps</strong>
+<p>具體步驟 — checkout / setup / run / commit</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 14: Cron 時區 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="14">
-  <h2>Cron 時區：UTC vs 台灣</h2>
-  <div class="compare-two fragment" data-order="0">
-    <div class="compare-col bad">
-      <div class="col-label">常見錯誤</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">cron: '0 9 * * *'</p>
-      <p style="margin-top:.5rem;">以為是台灣 9 點<br>實際是 UTC 9 點 = 台灣 17 點</p>
-    </div>
-    <div class="compare-col good">
-      <div class="col-label">正確寫法</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">cron: '0 1 * * *'</p>
-      <p style="margin-top:.5rem;">UTC 1 點 = 台灣 9 點<br>台灣時間 - 8 = UTC 時間</p>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <div class="label">記法</div>
-    <p>台灣想要幾點跑，減 8 就是 cron 要填的數字<br>台灣 9 點 → 9-8 = 1 → cron: '0 1 * * *'</p>
-  </div>
+<h2>Cron 時區：UTC vs 台灣</h2>
+<div class="compare-two fragment" data-order="0">
+<div class="compare-col bad">
+<div class="col-label">常見錯誤</div>
+<p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">cron: '0 9 * * *'</p>
+<p style="margin-top:.5rem;">以為是台灣 9 點<br/>實際是 UTC 9 點 = 台灣 17 點</p>
 </div>
-
+<div class="compare-col good">
+<div class="col-label">正確寫法</div>
+<p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">cron: '0 1 * * *'</p>
+<p style="margin-top:.5rem;">UTC 1 點 = 台灣 9 點<br/>台灣時間 - 8 = UTC 時間</p>
+</div>
+</div>
+<div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<div class="label">記法</div>
+<p>台灣想要幾點跑，減 8 就是 cron 要填的數字<br/>台灣 9 點 → 9-8 = 1 → cron: '0 1 * * *'</p>
+</div>
+</div>
 <!-- ══ 15: API Key 放 Secrets ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="15">
-  <h2>API Key 放 GitHub Secrets</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>Settings → Secrets → Actions</strong>
-        <p>在 GitHub repo 的設定頁面找到 Secrets</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>New repository secret</strong>
-        <p>名稱填 API_KEY，值填你的 Key</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>Workflow 中引用</strong>
-        <p style="font-family:'Fira Code',monospace;">${{ secrets.API_KEY }}</p>
-      </div>
-    </div>
-  </div>
-  <div class="info-box warning fragment" data-order="3" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <div class="label">絕對不要</div>
-    <p>把 API Key 直接寫在 YAML 或程式碼裡<br>Public repo 全世界都看得到你的 Key</p>
-  </div>
+<h2>API Key 放 GitHub Secrets</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>Settings → Secrets → Actions</strong>
+<p>在 GitHub repo 的設定頁面找到 Secrets</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>New repository secret</strong>
+<p>名稱填 API_KEY，值填你的 Key</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>Workflow 中引用</strong>
+<p style="font-family:'Fira Code',monospace;">${{ secrets.API_KEY }}</p>
+</div>
+</div>
+</div>
+<div class="info-box warning fragment" data-order="3" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<div class="label">絕對不要</div>
+<p>把 API Key 直接寫在 YAML 或程式碼裡<br/>Public repo 全世界都看得到你的 Key</p>
+</div>
+</div>
 <!-- ══ 16: Secrets 在 YAML 裡的用法 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="16">
-  <h2>Secrets 在 YAML 中的引用</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">Workflow 中引用 Secret</div>
-    <pre>steps:
+<h2>Secrets 在 YAML 中的引用</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">Workflow 中引用 Secret</div>
+<pre>steps:
   - run: python main.py
     env:
       API_KEY: ${{ secrets.API_KEY }}
       TG_TOKEN: ${{ secrets.TG_TOKEN }}</pre>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="label">機制</div>
-    <p>Secret 在 log 裡會自動被遮蔽成 ***<br>即使 workflow 出錯，也不會洩漏你的 Key</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">機制</div>
+<p>Secret 在 log 裡會自動被遮蔽成 ***<br/>即使 workflow 出錯，也不會洩漏你的 Key</p>
+</div>
+</div>
 <!-- ══ 17: Push 觸發 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="17">
-  <h2>Push → 觀察 Actions</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>git push</strong>
-        <p>把 workflow 檔案推上 GitHub</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>Actions 頁面</strong>
-        <p>打開 GitHub → Actions → 看到你的 Workflow</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>手動觸發</strong>
-        <p>按 Run workflow → 看 Log → 確認成功</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>檢查結果</strong>
-        <p>回 repo → 看新 commit → 由 github-actions 自動提交</p>
-      </div>
-    </div>
-  </div>
+<h2>Push → 觀察 Actions</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>git push</strong>
+<p>把 workflow 檔案推上 GitHub</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>Actions 頁面</strong>
+<p>打開 GitHub → Actions → 看到你的 Workflow</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>手動觸發</strong>
+<p>按 Run workflow → 看 Log → 確認成功</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>檢查結果</strong>
+<p>回 repo → 看新 commit → 由 github-actions 自動提交</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 18: YAML 縮排注意事項 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="18">
-  <h2>注意：YAML 縮排</h2>
-  <div class="compare-two fragment" data-order="0">
-    <div class="compare-col bad">
-      <div class="col-label">錯誤</div>
-      <pre style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;white-space:pre;">jobs:
+<h2>注意：YAML 縮排</h2>
+<div class="compare-two fragment" data-order="0">
+<div class="compare-col bad">
+<div class="col-label">錯誤</div>
+<pre style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;white-space:pre;">jobs:
 run:
   runs-on: ubuntu-latest</pre>
-      <p style="margin-top:.5rem;">run 沒縮排 → YAML 解析失敗</p>
-    </div>
-    <div class="compare-col good">
-      <div class="col-label">正確</div>
-      <pre style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;white-space:pre;">jobs:
+<p style="margin-top:.5rem;">run 沒縮排 → YAML 解析失敗</p>
+</div>
+<div class="compare-col good">
+<div class="col-label">正確</div>
+<pre style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;white-space:pre;">jobs:
   run:
     runs-on: ubuntu-latest</pre>
-      <p style="margin-top:.5rem;">每層縮排 2 格，層次分明</p>
-    </div>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">YAML 格式敏感 — 一個空格的差異就會讓 workflow 完全不跑<br>讓 AI 幫你生成，出錯就貼 error log 給 AI 修</p>
-  </div>
+<p style="margin-top:.5rem;">每層縮排 2 格，層次分明</p>
 </div>
-
+</div>
+<div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">YAML 格式敏感 — 一個空格的差異就會讓 workflow 完全不跑<br/>讓 AI 幫你生成，出錯就貼 error log 給 AI 修</p>
+</div>
+</div>
 <!-- ══ 19: 免費額度 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="19">
-  <h2>GitHub Actions 免費額度</h2>
-  <div class="compare-two fragment" data-order="0">
-    <div class="compare-col good">
-      <div class="col-label">PUBLIC REPO</div>
-      <div class="big-stat" style="margin:.5rem 0;">
-        <div class="num" style="font-size:2.5rem;">無限</div>
-        <div class="unit">分鐘/月</div>
-      </div>
-      <p style="font-size:.9rem;text-align:center;">完全免費<br>不限次數</p>
-    </div>
-    <div class="compare-col good" style="background:var(--blue-lt);border-color:var(--blue);border-top-color:var(--blue);">
-      <div class="col-label" style="color:var(--blue);">PRIVATE REPO</div>
-      <div class="big-stat" style="margin:.5rem 0;">
-        <div class="num" style="font-size:2.5rem;color:var(--blue);">2,000</div>
-        <div class="unit">分鐘/月</div>
-      </div>
-      <p style="font-size:.9rem;text-align:center;">免費帳號額度<br>每天跑一次綽綽有餘</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">學習階段建議用 Public repo — 無限額度<br>有敏感內容才需要 Private</p>
-  </div>
+<h2>GitHub Actions 免費額度</h2>
+<div class="compare-two fragment" data-order="0">
+<div class="compare-col good">
+<div class="col-label">PUBLIC REPO</div>
+<div class="big-stat" style="margin:.5rem 0;">
+<div class="num" style="font-size:2.5rem;">無限</div>
+<div class="unit">分鐘/月</div>
 </div>
-
+<p style="font-size:.9rem;text-align:center;">完全免費<br/>不限次數</p>
+</div>
+<div class="compare-col good" style="background:var(--blue-lt);border-color:var(--blue);border-top-color:var(--blue);">
+<div class="col-label" style="color:var(--blue);">PRIVATE REPO</div>
+<div class="big-stat" style="margin:.5rem 0;">
+<div class="num" style="font-size:2.5rem;color:var(--blue);">2,000</div>
+<div class="unit">分鐘/月</div>
+</div>
+<p style="font-size:.9rem;text-align:center;">免費帳號額度<br/>每天跑一次綽綽有餘</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">學習階段建議用 Public repo — 無限額度<br/>有敏感內容才需要 Private</p>
+</div>
+</div>
 <!-- ══ 20: 講師實際案例 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="20">
-  <h2>講師的真實 Actions</h2>
-  <div class="card-grid fragment" data-order="0">
-    <div class="card accent-top">
-      <h3>SecondBrain<br>每日巡檢</h3>
-      <p>每天自動掃描知識庫<br>編譯 wiki + 推送 Notion<br>有異常發 TG 告警</p>
-    </div>
-    <div class="card accent-top-blue">
-      <h3>AI 新聞<br>Pipeline</h3>
-      <p>每天 3 次自動收集<br>AI 摘要 + 配圖<br>發布到 GitHub Pages</p>
-    </div>
-    <div class="card accent-top-gold">
-      <h3>論文收集<br>Pipeline</h3>
-      <p>每日搜 Scholar + PubMed<br>自動建 BibTeX<br>推送摘要到 Notion</p>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">這些全部是 GitHub Actions + Python 腳本<br>跟你剛才做的結構完全一樣</p>
-  </div>
+<h2>講師的真實 Actions</h2>
+<div class="card-grid fragment" data-order="0">
+<div class="card accent-top">
+<h3>SecondBrain<br/>每日巡檢</h3>
+<p>每天自動掃描知識庫<br/>編譯 wiki + 推送 Notion<br/>有異常發 TG 告警</p>
 </div>
-
+<div class="card accent-top-blue">
+<h3>AI 新聞<br/>Pipeline</h3>
+<p>每天 3 次自動收集<br/>AI 摘要 + 配圖<br/>發布到 GitHub Pages</p>
+</div>
+<div class="card accent-top-gold">
+<h3>論文收集<br/>Pipeline</h3>
+<p>每日搜 Scholar + PubMed<br/>自動建 BibTeX<br/>推送摘要到 Notion</p>
+</div>
+</div>
+<div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">這些全部是 GitHub Actions + Python 腳本<br/>跟你剛才做的結構完全一樣</p>
+</div>
+</div>
 <!-- ══ 21: Round 2 小結 ══ -->
 <div class="slide dataviz" data-act="R2：Actions 實作" data-index="21">
-  <h2>Round 2 小結</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">Push 完不用管，GitHub 自動跑<br>你關掉電腦，Actions 依然準時執行</div>
-  </div>
-  <div class="checklist fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="check-item">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>Workflow YAML 已建立</strong>
-        <p>.github/workflows/daily.yml</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>API Key 放 Secrets</strong>
-        <p>不寫在程式碼裡</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>手動觸發成功</strong>
-        <p>Actions 頁面看到綠燈</p>
-      </div>
-    </div>
-  </div>
+<h2>Round 2 小結</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">Push 完不用管，GitHub 自動跑<br/>你關掉電腦，Actions 依然準時執行</div>
 </div>
-
+<div class="checklist fragment" data-order="1" style="margin-top:.8rem;">
+<div class="check-item">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>Workflow YAML 已建立</strong>
+<p>.github/workflows/daily.yml</p>
+</div>
+</div>
+<div class="check-item">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>API Key 放 Secrets</strong>
+<p>不寫在程式碼裡</p>
+</div>
+</div>
+<div class="check-item">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>手動觸發成功</strong>
+<p>Actions 頁面看到綠燈</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 3：TG 通知閉環 (slides 22-29)
      ══════════════════════════════════════ -->
-
 <!-- ══ 22: Chapter poster — Round 3 ══ -->
-<div class="slide poster overlay-heavy" data-act="R3：TG 通知閉環" data-index="22"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:00</p>
-  <h1 style="color:#fff;font-size:2.8rem;">通知閉環<br><span style="color:#6ee7d4;">不需要你盯著</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">成功通知你，失敗也告警你</p>
+<div class="slide poster overlay-heavy" data-act="R3：TG 通知閉環" data-index="22" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:45–1:00</p>
+<h1 style="color:#fff;font-size:2.8rem;">通知閉環<br/><span style="color:#6ee7d4;">不需要你盯著</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">成功通知你，失敗也告警你</p>
 </div>
-
 <!-- ══ 23: 閉環概念 ══ -->
 <div class="slide dataviz" data-act="R3：TG 通知閉環" data-index="23">
-  <h2>什麼是「閉環」</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">排程觸發</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">腳本執行</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">成功/失敗</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">TG 通知你</div>
-  </div>
-  <div class="compare-two fragment" data-order="1" style="margin-top:1rem;">
-    <div class="compare-col bad">
-      <div class="col-label">沒有閉環</div>
-      <p>Actions 跑完了<br>你不知道跑沒跑<br>失敗了也沒人告訴你</p>
-    </div>
-    <div class="compare-col good">
-      <div class="col-label">有閉環</div>
-      <p>成功 → 手機收到結果<br>失敗 → 手機收到告警<br>不需要開電腦就知道狀況</p>
-    </div>
-  </div>
+<h2>什麼是「閉環」</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">排程觸發</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">腳本執行</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">成功/失敗</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">TG 通知你</div>
 </div>
-
+<div class="compare-two fragment" data-order="1" style="margin-top:1rem;">
+<div class="compare-col bad">
+<div class="col-label">沒有閉環</div>
+<p>Actions 跑完了<br/>你不知道跑沒跑<br/>失敗了也沒人告訴你</p>
+</div>
+<div class="compare-col good">
+<div class="col-label">有閉環</div>
+<p>成功 → 手機收到結果<br/>失敗 → 手機收到告警<br/>不需要開電腦就知道狀況</p>
+</div>
+</div>
+</div>
 <!-- ══ 24: 操作 — 加通知 ══ -->
 <div class="slide dataviz" data-act="R3：TG 通知閉環" data-index="24">
-  <h2>在 Workflow 加上 TG 通知</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">成功時推送結果</div>
-    <pre>- name: Notify Success
+<h2>在 Workflow 加上 TG 通知</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">成功時推送結果</div>
+<pre>- name: Notify Success
   if: success()
   run: |
     curl -s -X POST \
       "https://api.telegram.org/bot${{ secrets.TG_TOKEN }}/sendMessage" \
       -d chat_id=${{ secrets.TG_CHAT_ID }} \
       -d text="Daily update done"</pre>
-  </div>
-  <div class="code-block fragment" data-order="1" style="margin-top:.5rem;">
-    <div class="code-label">失敗時推送告警</div>
-    <pre>- name: Notify Failure
+</div>
+<div class="code-block fragment" data-order="1" style="margin-top:.5rem;">
+<div class="code-label">失敗時推送告警</div>
+<pre>- name: Notify Failure
   if: failure()
   run: |
     curl -s -X POST \
       "https://api.telegram.org/bot${{ secrets.TG_TOKEN }}/sendMessage" \
       -d chat_id=${{ secrets.TG_CHAT_ID }} \
       -d text="ALERT: Daily update failed"</pre>
-  </div>
 </div>
-
+</div>
 <!-- ══ 25: Token 放 Secrets ══ -->
 <div class="slide dataviz" data-act="R3：TG 通知閉環" data-index="25">
-  <h2>TG Token 也放 Secrets</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>TG_TOKEN</strong>
-        <p>Telegram Bot 的 Token — 從 @BotFather 取得</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>TG_CHAT_ID</strong>
-        <p>你的 Chat ID — 發訊息給 @userinfobot 取得</p>
-      </div>
-    </div>
-  </div>
-  <div class="info-box warning fragment" data-order="2" style="margin-top:.8rem;">
-    <div class="label">注意事項</div>
-    <p>TG Token 寫在 YAML 裡 → Public repo 全世界看得到<br>別人可以用你的 Bot 發垃圾訊息</p>
-  </div>
+<h2>TG Token 也放 Secrets</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>TG_TOKEN</strong>
+<p>Telegram Bot 的 Token — 從 @BotFather 取得</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>TG_CHAT_ID</strong>
+<p>你的 Chat ID — 發訊息給 @userinfobot 取得</p>
+</div>
+</div>
+</div>
+<div class="info-box warning fragment" data-order="2" style="margin-top:.8rem;">
+<div class="label">注意事項</div>
+<p>TG Token 寫在 YAML 裡 → Public repo 全世界看得到<br/>別人可以用你的 Bot 發垃圾訊息</p>
+</div>
+</div>
 <!-- ══ 26: 觸發驗證 ══ -->
 <div class="slide dataviz" data-act="R3：TG 通知閉環" data-index="26">
-  <h2>驗證：觸發 → 手機收到</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>Push 更新後的 Workflow</strong>
-        <p>包含 TG 通知的 YAML 推上去</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>Actions → Run workflow</strong>
-        <p>手動觸發一次</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>打開手機 Telegram</strong>
-        <p>看到 Bot 推送的訊息 → 閉環完成</p>
-      </div>
-    </div>
-  </div>
-  <div class="bottom-line fragment" data-order="3" style="margin-top:.6rem;padding:1rem;">
-    <h3 style="font-size:1.2rem;">全自動閉環</h3>
-    <p style="font-size:.95rem;">從 Actions 觸發到手機收到通知<br>全程不需要你開電腦</p>
-  </div>
+<h2>驗證：觸發 → 手機收到</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>Push 更新後的 Workflow</strong>
+<p>包含 TG 通知的 YAML 推上去</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>Actions → Run workflow</strong>
+<p>手動觸發一次</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>打開手機 Telegram</strong>
+<p>看到 Bot 推送的訊息 → 閉環完成</p>
+</div>
+</div>
+</div>
+<div class="bottom-line fragment" data-order="3" style="margin-top:.6rem;padding:1rem;">
+<h3 style="font-size:1.2rem;">全自動閉環</h3>
+<p style="font-size:.95rem;">從 Actions 觸發到手機收到通知<br/>全程不需要你開電腦</p>
+</div>
+</div>
 <!-- ══ 27: Round 3 小結 ══ -->
 <div class="slide dataviz" data-act="R3：TG 通知閉環" data-index="27">
-  <h2>Round 3 小結</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">閉環 = 不需要你盯著<br>有結果通知你，有問題也告警你</div>
-  </div>
-  <div class="flow fragment" data-order="1" style="margin-top:1rem;">
-    <div class="flow-box accent">排程</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">執行</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">Commit</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">通知</div>
-  </div>
+<h2>Round 3 小結</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">閉環 = 不需要你盯著<br/>有結果通知你，有問題也告警你</div>
 </div>
-
+<div class="flow fragment" data-order="1" style="margin-top:1rem;">
+<div class="flow-box accent">排程</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">執行</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">Commit</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">通知</div>
+</div>
+</div>
 <!-- ══════════════════════════════════════
      Round 4：Cloudflare Worker 講師 Demo (slides 28-36)
      ══════════════════════════════════════ -->
-
 <!-- ══ 28: Chapter poster — Round 4 ══ -->
-<div class="slide poster overlay-heavy" data-act="R4：Worker 講師 Demo" data-index="28"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:00–1:25</p>
-  <h1 style="color:#fff;font-size:2.8rem;">Cloudflare Worker<br><span style="color:#6ee7d4;">第二個選擇</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">講師展示 — 理解差異，不用動手</p>
+<div class="slide poster overlay-heavy" data-act="R4：Worker 講師 Demo" data-index="28" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:00–1:25</p>
+<h1 style="color:#fff;font-size:2.8rem;">Cloudflare Worker<br/><span style="color:#6ee7d4;">第二個選擇</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">講師展示 — 理解差異，不用動手</p>
 </div>
-
 <!-- ══ 29: 為什麼需要第二個選擇 ══ -->
 <div class="slide dataviz" data-act="R4：Worker 講師 Demo" data-index="29">
-  <h2>為什麼需要第二個選擇</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>GAS 有六分鐘限制</strong>
-        <p>M1-3 學的 Google Apps Script，複雜任務跑不完</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>Actions 是排程型的</strong>
-        <p>適合定時跑，不適合即時回應 HTTP 請求</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>Worker 補上即時回應的缺口</strong>
-        <p>有人打你的網址 → 毫秒內回應</p>
-      </div>
-    </div>
-  </div>
+<h2>為什麼需要第二個選擇</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>GAS 有六分鐘限制</strong>
+<p>M1-3 學的 Google Apps Script，複雜任務跑不完</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>Actions 是排程型的</strong>
+<p>適合定時跑，不適合即時回應 HTTP 請求</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>Worker 補上即時回應的缺口</strong>
+<p>有人打你的網址 → 毫秒內回應</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 30: Demo 1 — 瀏覽器打開 ══ -->
 <div class="slide dataviz" data-act="R4：Worker 講師 Demo" data-index="30">
-  <h2>Demo：瀏覽器打開 → 即時回應</h2>
-  <div class="flow fragment" data-order="0">
-    <div class="flow-box">打開網址</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">Worker 收到請求</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">毫秒回應</div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
-    <div class="label">講師展示</div>
-    <p>已部署好的 Cloudflare Worker<br>瀏覽器輸入網址 → 看到即時回應的結果<br>跟 M1-4 的 GAS doGet 概念相同</p>
-  </div>
-  <div class="info-box blue fragment" data-order="2" style="margin-top:.5rem;">
-    <div class="label">關鍵差異</div>
-    <p>GAS doGet 跑在 Google 的伺服器<br>Worker 跑在離你最近的 Cloudflare 邊緣節點 — 更快</p>
-  </div>
+<h2>Demo：瀏覽器打開 → 即時回應</h2>
+<div class="flow fragment" data-order="0">
+<div class="flow-box">打開網址</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Worker 收到請求</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">毫秒回應</div>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
+<div class="label">講師展示</div>
+<p>已部署好的 Cloudflare Worker<br/>瀏覽器輸入網址 → 看到即時回應的結果<br/>跟 M1-4 的 GAS doGet 概念相同</p>
+</div>
+<div class="info-box blue fragment" data-order="2" style="margin-top:.5rem;">
+<div class="label">關鍵差異</div>
+<p>GAS doGet 跑在 Google 的伺服器<br/>Worker 跑在離你最近的 Cloudflare 邊緣節點 — 更快</p>
+</div>
+</div>
 <!-- ══ 31: Demo 2 — Worker 程式碼 ══ -->
 <div class="slide dataviz" data-act="R4：Worker 講師 Demo" data-index="31">
-  <h2>Worker 程式碼結構</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">index.js — 跟 GAS 的 doGet 一樣簡單</div>
-    <pre>export default {
+<h2>Worker 程式碼結構</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">index.js — 跟 GAS 的 doGet 一樣簡單</div>
+<pre>export default {
   async fetch(request) {
     const url = new URL(request.url)
 
@@ -983,616 +953,597 @@ run:
     return new Response('Not Found', { status: 404 })
   }
 }</pre>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">GAS 用 doGet/doPost，Worker 用 fetch<br>概念完全相同 — 收到請求，回傳結果</p>
-  </div>
 </div>
-
+<div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">GAS 用 doGet/doPost，Worker 用 fetch<br/>概念完全相同 — 收到請求，回傳結果</p>
+</div>
+</div>
 <!-- ══ 32: Demo 3 — 部署方式 ══ -->
 <div class="slide dataviz" data-act="R4：Worker 講師 Demo" data-index="32">
-  <h2>部署方式：一行指令</h2>
-  <div class="code-block fragment" data-order="0">
-    <div class="code-label">透過 IDE 用 CLI 部署</div>
-    <pre>npx wrangler deploy</pre>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
-    <div class="label">講師展示</div>
-    <p>wrangler 是 Cloudflare 的 CLI 工具<br>一行指令把程式碼推到全球 300+ 個邊緣節點<br>不需要管伺服器、不需要開 port</p>
-  </div>
-  <div class="info-box tip fragment" data-order="2" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">這段是講師示範<br>你需要理解的是：部署可以很簡單，一行搞定</p>
-  </div>
+<h2>部署方式：一行指令</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">透過 IDE 用 CLI 部署</div>
+<pre>npx wrangler deploy</pre>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:1rem;">
+<div class="label">講師展示</div>
+<p>wrangler 是 Cloudflare 的 CLI 工具<br/>一行指令把程式碼推到全球 300+ 個邊緣節點<br/>不需要管伺服器、不需要開 port</p>
+</div>
+<div class="info-box tip fragment" data-order="2" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">這段是講師示範<br/>你需要理解的是：部署可以很簡單，一行搞定</p>
+</div>
+</div>
 <!-- ══ 33: GAS vs Worker vs Actions 比較表 ══ -->
 <div class="slide dataviz" data-act="R4：Worker 講師 Demo" data-index="33">
-  <h2>GAS vs Worker vs Actions</h2>
-  <table class="data-table fragment" data-order="0">
-    <thead>
-      <tr><th></th><th>GAS</th><th>Cloudflare Worker</th><th>GitHub Actions</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>觸發</td><td>表單/時間/HTTP</td><td>HTTP Request</td><td>時間/Push/手動</td></tr>
-      <tr><td>限制</td><td>6 分鐘</td><td>10ms CPU（免費）</td><td>6 小時</td></tr>
-      <tr><td>部署</td><td>手動</td><td>IDE + CLI</td><td>自動</td></tr>
-      <tr><td>免費</td><td>無限（有速率限制）</td><td>10 萬次/天</td><td>Public 無限</td></tr>
-      <tr><td>適合</td><td>Google 生態</td><td>API Proxy/邊緣</td><td>CI/CD/排程</td></tr>
-    </tbody>
-  </table>
+<h2>GAS vs Worker vs Actions</h2>
+<table class="data-table fragment" data-order="0">
+<thead>
+<tr><th></th><th>GAS</th><th>Cloudflare Worker</th><th>GitHub Actions</th></tr>
+</thead>
+<tbody>
+<tr><td>觸發</td><td>表單/時間/HTTP</td><td>HTTP Request</td><td>時間/Push/手動</td></tr>
+<tr><td>限制</td><td>6 分鐘</td><td>10ms CPU（免費）</td><td>6 小時</td></tr>
+<tr><td>部署</td><td>手動</td><td>IDE + CLI</td><td>自動</td></tr>
+<tr><td>免費</td><td>無限（有速率限制）</td><td>10 萬次/天</td><td>Public 無限</td></tr>
+<tr><td>適合</td><td>Google 生態</td><td>API Proxy/邊緣</td><td>CI/CD/排程</td></tr>
+</tbody>
+</table>
 </div>
-
 <!-- ══ 34: 什麼時候用哪個 ══ -->
 <div class="slide dataviz" data-act="R4：Worker 講師 Demo" data-index="34">
-  <h2>什麼時候用哪個</h2>
-  <div class="card-grid fragment" data-order="0">
-    <div class="card accent-top-gold">
-      <h3>GAS</h3>
-      <p>你的資料在 Google<br>Sheet / Form / Gmail<br>簡單自動化</p>
-    </div>
-    <div class="card accent-top-blue">
-      <h3>Worker</h3>
-      <p>需要即時回應<br>API Proxy<br>邊緣運算</p>
-    </div>
-    <div class="card accent-top">
-      <h3>Actions</h3>
-      <p>定時排程任務<br>CI/CD 部署<br>長時間運算</p>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">不是選最好的，而是選最適合你場景的<br>三個工具解決不同問題</p>
-  </div>
+<h2>什麼時候用哪個</h2>
+<div class="card-grid fragment" data-order="0">
+<div class="card accent-top-gold">
+<h3>GAS</h3>
+<p>你的資料在 Google<br/>Sheet / Form / Gmail<br/>簡單自動化</p>
 </div>
-
+<div class="card accent-top-blue">
+<h3>Worker</h3>
+<p>需要即時回應<br/>API Proxy<br/>邊緣運算</p>
+</div>
+<div class="card accent-top">
+<h3>Actions</h3>
+<p>定時排程任務<br/>CI/CD 部署<br/>長時間運算</p>
+</div>
+</div>
+<div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">不是選最好的，而是選最適合你場景的<br/>三個工具解決不同問題</p>
+</div>
+</div>
 <!-- ══ 35: Worker CPU 限制注意事項 ══ -->
 <div class="slide dataviz" data-act="R4：Worker 講師 Demo" data-index="35">
-  <h2>注意：Worker 免費版 CPU 10ms</h2>
-  <div class="info-box warning fragment" data-order="0">
-    <div class="label">免費版限制</div>
-    <p>CPU 時間只有 10ms — 不是 10 秒，是 10 毫秒<br>只適合輕量運算（轉發請求、格式轉換）<br>不適合跑 AI 推論或大量資料處理</p>
-  </div>
-  <div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;">
-    <div class="label">解法</div>
-    <p>Worker 當入口（收請求、轉發）<br>重運算交給後端 API 或 Actions</p>
-  </div>
+<h2>注意：Worker 免費版 CPU 10ms</h2>
+<div class="info-box warning fragment" data-order="0">
+<div class="label">免費版限制</div>
+<p>CPU 時間只有 10ms — 不是 10 秒，是 10 毫秒<br/>只適合輕量運算（轉發請求、格式轉換）<br/>不適合跑 AI 推論或大量資料處理</p>
 </div>
-
+<div class="info-box tip fragment" data-order="1" style="margin-top:.5rem;">
+<div class="label">解法</div>
+<p>Worker 當入口（收請求、轉發）<br/>重運算交給後端 API 或 Actions</p>
+</div>
+</div>
 <!-- ══ 36: Round 4 小結 ══ -->
 <div class="slide dataviz" data-act="R4：Worker 講師 Demo" data-index="36">
-  <h2>Round 4 小結</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">永遠有第二個選擇<br>GAS 六分鐘限制 → Actions 排程 → Worker 即時回應<br>工具是為你服務的，不是你被工具綁住</div>
-  </div>
+<h2>Round 4 小結</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">永遠有第二個選擇<br/>GAS 六分鐘限制 → Actions 排程 → Worker 即時回應<br/>工具是為你服務的，不是你被工具綁住</div>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 5：AI 系統藍圖 + 三階段全景 (slides 37-51)
      ══════════════════════════════════════ -->
-
 <!-- ══ 37: Chapter poster — Round 5 ══ -->
-<div class="slide poster overlay-heavy" data-act="R5：AI 系統藍圖" data-index="37"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:25–1:45</p>
-  <h1 style="color:#fff;font-size:2.8rem;">我的 AI<br><span style="color:#6ee7d4;">系統藍圖</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">把三個 Stage 學到的能力串成一張圖</p>
+<div class="slide poster overlay-heavy" data-act="R5：AI 系統藍圖" data-index="37" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:25–1:45</p>
+<h1 style="color:#fff;font-size:2.8rem;">我的 AI<br/><span style="color:#6ee7d4;">系統藍圖</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">把三個 Stage 學到的能力串成一張圖</p>
 </div>
-
 <!-- ══ 38: 系統藍圖全景 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="38">
-  <h2>AI 系統藍圖</h2>
-  <div class="flow fragment" data-order="0" style="margin:.5rem 0;">
-    <div class="flow-box">資訊來源</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">收集<br><span style="font-size:.75rem;color:var(--g400);">Actions</span></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">處理<br><span style="font-size:.75rem;color:var(--g400);">AI</span></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">儲存<br><span style="font-size:.75rem;color:var(--g400);">GitHub/Sheet</span></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box">查詢<br><span style="font-size:.75rem;color:var(--g400);">Pages/Worker</span></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">通知<br><span style="font-size:.75rem;">TG</span></div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <div class="label">操作</div>
-    <p>每人畫出自己的 AI 系統藍圖<br>用這個架構填入你的專案 — 你的資訊來源是什麼？要做什麼處理？存在哪裡？</p>
-  </div>
+<h2>AI 系統藍圖</h2>
+<div class="flow fragment" data-order="0" style="margin:.5rem 0;">
+<div class="flow-box">資訊來源</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">收集<br/><span style="font-size:.75rem;color:var(--g400);">Actions</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">處理<br/><span style="font-size:.75rem;color:var(--g400);">AI</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">儲存<br/><span style="font-size:.75rem;color:var(--g400);">GitHub/Sheet</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">查詢<br/><span style="font-size:.75rem;color:var(--g400);">Pages/Worker</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">通知<br/><span style="font-size:.75rem;">TG</span></div>
 </div>
-
+<div class="info-box note fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<div class="label">操作</div>
+<p>每人畫出自己的 AI 系統藍圖<br/>用這個架構填入你的專案 — 你的資訊來源是什麼？要做什麼處理？存在哪裡？</p>
+</div>
+</div>
 <!-- ══ 39: 操作引導 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="39">
-  <h2>畫你的藍圖</h2>
-  <div class="step-list">
-    <div class="step fragment" data-order="0">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <strong>資訊來源</strong>
-        <p>新聞 / 論文 / 表單 / 社群 / API</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="1">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <strong>收集方式</strong>
-        <p>Actions 排程 / Worker 接收 / GAS 觸發</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="2">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <strong>AI 處理</strong>
-        <p>摘要 / 分類 / 翻譯 / 分析</p>
-      </div>
-    </div>
-    <div class="step fragment" data-order="3">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <strong>儲存 → 查詢 → 通知</strong>
-        <p>GitHub/Sheet → Pages/Worker → TG/Email</p>
-      </div>
-    </div>
-  </div>
+<h2>畫你的藍圖</h2>
+<div class="step-list">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>資訊來源</strong>
+<p>新聞 / 論文 / 表單 / 社群 / API</p>
 </div>
-
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>收集方式</strong>
+<p>Actions 排程 / Worker 接收 / GAS 觸發</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>AI 處理</strong>
+<p>摘要 / 分類 / 翻譯 / 分析</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>儲存 → 查詢 → 通知</strong>
+<p>GitHub/Sheet → Pages/Worker → TG/Email</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 40: 三階段能力棧標題 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="40">
-  <h2>三階段能力棧：你學到了什麼</h2>
-  <p style="color:var(--g600);font-size:1rem;margin-bottom:.5rem;">從 M1-1 到 M3-4，十二堂課堆疊出完整的 AI 系統能力</p>
-  <div class="stat-grid fragment" data-order="0" style="grid-template-columns:repeat(3,1fr);max-width:700px;">
-    <div class="stat-box">
-      <div class="val" style="font-size:1.8rem;">Stage 1</div>
-      <div class="label">用 AI</div>
-    </div>
-    <div class="stat-box">
-      <div class="val" style="font-size:1.8rem;color:var(--blue);">Stage 2</div>
-      <div class="label">做產品</div>
-    </div>
-    <div class="stat-box">
-      <div class="val" style="font-size:1.8rem;color:var(--purple);">Stage 3</div>
-      <div class="label">造系統</div>
-    </div>
-  </div>
+<h2>三階段能力棧：你學到了什麼</h2>
+<p style="color:var(--g600);font-size:1rem;margin-bottom:.5rem;">從 M1-1 到 M3-4，十二堂課堆疊出完整的 AI 系統能力</p>
+<div class="stat-grid fragment" data-order="0" style="grid-template-columns:repeat(3,1fr);max-width:700px;">
+<div class="stat-box">
+<div class="val" style="font-size:1.8rem;">Stage 1</div>
+<div class="label">用 AI</div>
 </div>
-
+<div class="stat-box">
+<div class="val" style="font-size:1.8rem;color:var(--blue);">Stage 2 · 串 AI</div>
+<div class="label">把 AI 接進產品與流程</div>
+</div>
+<div class="stat-box">
+<div class="val" style="font-size:1.8rem;color:var(--purple);">Stage 3</div>
+<div class="label">造系統</div>
+</div>
+</div>
+</div>
 <!-- ══ 41: 能力棧表格 Part 1 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="41">
-  <h2>能力棧（上）</h2>
-  <table class="data-table fragment" data-order="0">
-    <thead>
-      <tr><th>能力</th><th>工具</th><th>學於</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>做作品</td><td>AI 聊天 / IDE / CLI</td><td>M1-1, M2-3, M3-1</td></tr>
-      <tr><td>封裝助手</td><td>GPT / Gem / Project</td><td>M1-2</td></tr>
-      <tr><td>圖文生成</td><td>Gemini Gem 多模態</td><td>M1-2</td></tr>
-      <tr><td>自動化</td><td>GAS 觸發器 / Actions</td><td>M1-3, M3-4</td></tr>
-      <tr><td>做網頁</td><td>GAS / GitHub Pages</td><td>M1-4, M2-1</td></tr>
-    </tbody>
-  </table>
+<h2>能力棧（上）</h2>
+<table class="data-table fragment" data-order="0">
+<thead>
+<tr><th>能力</th><th>工具</th><th>學於</th></tr>
+</thead>
+<tbody>
+<tr><td>做作品</td><td>AI 聊天 / IDE / CLI</td><td>M1-1, M2-3, M3-1</td></tr>
+<tr><td>封裝助手</td><td>GPT / Gem / Project</td><td>M1-2</td></tr>
+<tr><td>圖文生成</td><td>Gemini Gem 多模態</td><td>M1-2</td></tr>
+<tr><td>自動化</td><td>GAS 觸發器 / Actions</td><td>M1-3, M3-4</td></tr>
+<tr><td>做網頁</td><td>GAS / GitHub Pages</td><td>M1-4, M2-1</td></tr>
+</tbody>
+</table>
 </div>
-
 <!-- ══ 42: 能力棧表格 Part 2 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="42">
-  <h2>能力棧（下）</h2>
-  <table class="data-table fragment" data-order="0">
-    <thead>
-      <tr><th>能力</th><th>工具</th><th>學於</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>安全</td><td>.env / Secrets / Proxy</td><td>M2-2, M2-3</td></tr>
-      <tr><td>API 串接</td><td>Groq / Gemini / CF</td><td>M1-4, M2-4</td></tr>
-      <tr><td>AI 擴展</td><td>MCP / Skills / CLAUDE.md</td><td>M3-1</td></tr>
-      <tr><td>架構</td><td>spec.md / 四元素</td><td>M2-2, M3-3</td></tr>
-      <tr><td>24/7 運轉</td><td>Actions / Worker</td><td>M3-4</td></tr>
-    </tbody>
-  </table>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">十種能力，十二堂課<br>每一層都是前一層的延伸</p>
-  </div>
+<h2>能力棧（下）</h2>
+<table class="data-table fragment" data-order="0">
+<thead>
+<tr><th>能力</th><th>工具</th><th>學於</th></tr>
+</thead>
+<tbody>
+<tr><td>安全</td><td>.env / Secrets / Proxy</td><td>M2-2, M2-3</td></tr>
+<tr><td>API 串接</td><td>Groq / Gemini / CF</td><td>M1-4, M2-4</td></tr>
+<tr><td>AI 擴展</td><td>MCP / Skills / CLAUDE.md</td><td>M3-1</td></tr>
+<tr><td>架構</td><td>spec.md / 四元素</td><td>M2-2, M3-3</td></tr>
+<tr><td>24/7 運轉</td><td>Actions / Worker</td><td>M3-4</td></tr>
+</tbody>
+</table>
+<div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<p style="font-size:.9rem;">十種能力，十二堂課<br/>每一層都是前一層的延伸</p>
 </div>
-
+</div>
 <!-- ══ 43: 你永遠有選擇 — 標題 ══ -->
-<div class="slide poster overlay-heavy" data-act="R5：AI 系統藍圖" data-index="43"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <h1 style="color:#fff;font-size:3rem;">你永遠<br><span style="color:#6ee7d4;">有選擇</span></h1>
-  <p class="poster-subtitle" style="margin-top:1rem;">學習不是只學一種工具<br>而是讓自己永遠有選擇</p>
+<div class="slide poster overlay-heavy" data-act="R5：AI 系統藍圖" data-index="43" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<h1 style="color:#fff;font-size:3rem;">你永遠<br/><span style="color:#6ee7d4;">有選擇</span></h1>
+<p class="poster-subtitle" style="margin-top:1rem;">學習不是只學一種工具<br/>而是讓自己永遠有選擇</p>
 </div>
-
 <!-- ══ 44: 你永遠有選擇 — 做網頁 / 存資料 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="44">
-  <h2>你永遠有選擇（一）</h2>
-  <div class="card-grid fragment" data-order="0" style="max-width:1100px;">
-    <div class="card accent-top" style="max-width:320px;">
-      <h3>做網頁</h3>
-      <p>AI 聊天<br>GAS doGet<br>GitHub Pages</p>
-    </div>
-    <div class="card accent-top-blue" style="max-width:320px;">
-      <h3>存資料</h3>
-      <p>localStorage<br>Google Sheet<br>Firebase</p>
-    </div>
-    <div class="card accent-top-gold" style="max-width:320px;">
-      <h3>部署</h3>
-      <p>GAS<br>GitHub Pages<br>Cloudflare Worker</p>
-    </div>
-  </div>
+<h2>你永遠有選擇（一）</h2>
+<div class="card-grid fragment" data-order="0" style="max-width:1100px;">
+<div class="card accent-top" style="max-width:320px;">
+<h3>做網頁</h3>
+<p>AI 聊天<br/>GAS doGet<br/>GitHub Pages</p>
 </div>
-
+<div class="card accent-top-blue" style="max-width:320px;">
+<h3>存資料</h3>
+<p>localStorage<br/>Google Sheet<br/>Firebase</p>
+</div>
+<div class="card accent-top-gold" style="max-width:320px;">
+<h3>部署</h3>
+<p>GAS<br/>GitHub Pages<br/>Cloudflare Worker</p>
+</div>
+</div>
+</div>
 <!-- ══ 45: 你永遠有選擇 — 自動化 / 通知 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="45">
-  <h2>你永遠有選擇（二）</h2>
-  <div class="card-grid fragment" data-order="0" style="max-width:1100px;">
-    <div class="card accent-top-purple" style="max-width:320px;">
-      <h3>自動化</h3>
-      <p>GAS 觸發器<br>GitHub Actions<br>Claude /schedule</p>
-    </div>
-    <div class="card accent-top-orange" style="max-width:320px;">
-      <h3>通知</h3>
-      <p>Telegram Bot<br>Email</p>
-    </div>
-    <div class="card accent-top" style="max-width:320px;">
-      <h3>AI API</h3>
-      <p>Gemini<br>Groq<br>HuggingFace<br>Cloudflare AI</p>
-    </div>
-  </div>
+<h2>你永遠有選擇（二）</h2>
+<div class="card-grid fragment" data-order="0" style="max-width:1100px;">
+<div class="card accent-top-purple" style="max-width:320px;">
+<h3>自動化</h3>
+<p>GAS 觸發器<br/>GitHub Actions<br/>Claude /schedule</p>
 </div>
-
+<div class="card accent-top-orange" style="max-width:320px;">
+<h3>通知</h3>
+<p>Telegram Bot<br/>Email</p>
+</div>
+<div class="card accent-top" style="max-width:320px;">
+<h3>AI API</h3>
+<p>Gemini<br/>Groq<br/>HuggingFace<br/>Cloudflare AI</p>
+</div>
+</div>
+</div>
 <!-- ══ 46: 你永遠有選擇 — 工具鏈 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="46">
-  <h2>你永遠有選擇（三）</h2>
-  <div class="card-grid fragment" data-order="0" style="max-width:800px;">
-    <div class="card accent-top-blue" style="max-width:350px;">
-      <h3>IDE</h3>
-      <p>VS Code<br>Cursor<br>Windsurf</p>
-    </div>
-    <div class="card accent-top" style="max-width:350px;">
-      <h3>CLI</h3>
-      <p>Claude Code<br>Codex<br>Gemini CLI</p>
-    </div>
-  </div>
-  <div class="bottom-line fragment" data-order="1" style="margin-top:1rem;padding:1.2rem;">
-    <h3 style="font-size:1.2rem;">選擇的本質</h3>
-    <p style="font-size:.95rem;">不是每個都要精通<br>而是知道有哪些選項，需要時能找到路</p>
-  </div>
+<h2>你永遠有選擇（三）</h2>
+<div class="card-grid fragment" data-order="0" style="max-width:800px;">
+<div class="card accent-top-blue" style="max-width:350px;">
+<h3>IDE</h3>
+<p>VS Code<br/>Cursor<br/>Windsurf</p>
 </div>
-
+<div class="card accent-top" style="max-width:350px;">
+<h3>CLI</h3>
+<p>Claude Code<br/>Codex<br/>Gemini CLI</p>
+</div>
+</div>
+<div class="bottom-line fragment" data-order="1" style="margin-top:1rem;padding:1.2rem;">
+<h3 style="font-size:1.2rem;">選擇的本質</h3>
+<p style="font-size:.95rem;">不是每個都要精通<br/>而是知道有哪些選項，需要時能找到路</p>
+</div>
+</div>
 <!-- ══ 47: Round 5 小結 ══ -->
 <div class="slide dataviz" data-act="R5：AI 系統藍圖" data-index="47">
-  <h2>Round 5 小結</h2>
-  <div class="quote-box fragment" data-order="0">
-    <div class="quote-text">你不是只會一種工具的人<br>你是有系統藍圖、有多種選擇的人</div>
-  </div>
+<h2>Round 5 小結</h2>
+<div class="quote-box fragment" data-order="0">
+<div class="quote-text">你不是只會一種工具的人<br/>你是有系統藍圖、有多種選擇的人</div>
 </div>
-
+</div>
 <!-- ══════════════════════════════════════
      Round 6：畢業 (slides 48-60)
      ══════════════════════════════════════ -->
-
 <!-- ══ 48: Chapter poster — Round 6 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：畢業" data-index="48"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:45–2:00</p>
-  <h1 style="color:#fff;font-size:2.8rem;">畢業<br><span style="color:#6ee7d4;">與新的開始</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">六維度反思 + 三階段回顧 + 下一步</p>
+<div class="slide poster overlay-heavy" data-act="R6：畢業" data-index="48" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:45–2:00</p>
+<h1 style="color:#fff;font-size:2.8rem;">畢業<br/><span style="color:#6ee7d4;">與新的開始</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">六維度反思 + 三階段回顧 + 下一步</p>
 </div>
-
 <!-- ══ 49: 六維度反思 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="49">
-  <h2>六維度反思</h2>
-  <div class="theme-grid fragment" data-order="0">
-    <div class="theme-card">
-      <div class="t-name">最有收穫的一堂</div>
-      <div class="t-desc">哪一堂課改變了你的做事方式</div>
-    </div>
-    <div class="theme-card">
-      <div class="t-name">最挫折的一次</div>
-      <div class="t-desc">踩過最深的坑是什麼</div>
-    </div>
-    <div class="theme-card">
-      <div class="t-name">最意外的發現</div>
-      <div class="t-desc">原本沒預期能做到的事</div>
-    </div>
-    <div class="theme-card">
-      <div class="t-name">最想繼續深入的</div>
-      <div class="t-desc">哪個方向讓你最有動力</div>
-    </div>
-    <div class="theme-card">
-      <div class="t-name">學到的思維轉變</div>
-      <div class="t-desc">跟開課前相比，想法有什麼不同</div>
-    </div>
-    <div class="theme-card">
-      <div class="t-name">想對自己說的話</div>
-      <div class="t-desc">完成這十二堂課的你</div>
-    </div>
-  </div>
+<h2>六維度反思</h2>
+<div class="theme-grid fragment" data-order="0">
+<div class="theme-card">
+<div class="t-name">最有收穫的一堂</div>
+<div class="t-desc">哪一堂課改變了你的做事方式</div>
 </div>
-
+<div class="theme-card">
+<div class="t-name">最挫折的一次</div>
+<div class="t-desc">踩過最深的坑是什麼</div>
+</div>
+<div class="theme-card">
+<div class="t-name">最意外的發現</div>
+<div class="t-desc">原本沒預期能做到的事</div>
+</div>
+<div class="theme-card">
+<div class="t-name">最想繼續深入的</div>
+<div class="t-desc">哪個方向讓你最有動力</div>
+</div>
+<div class="theme-card">
+<div class="t-name">學到的思維轉變</div>
+<div class="t-desc">跟開課前相比，想法有什麼不同</div>
+</div>
+<div class="theme-card">
+<div class="t-name">想對自己說的話</div>
+<div class="t-desc">完成這十二堂課的你</div>
+</div>
+</div>
+</div>
 <!-- ══ 50: Stage 1 回顧 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="50">
-  <h2>Stage 1 回顧：用 AI</h2>
-  <div class="card-grid fragment" data-order="0" style="max-width:900px;">
-    <div class="card accent-top" style="max-width:250px;">
-      <h3>M1-1</h3>
-      <p>AI 聊天做作品<br>Prompt 四要素<br>指令品質 = 產出品質</p>
-    </div>
-    <div class="card accent-top" style="max-width:250px;">
-      <h3>M1-2</h3>
-      <p>封裝 AI 助手<br>GPTs / Gems<br>圖文多模態生成</p>
-    </div>
-    <div class="card accent-top" style="max-width:250px;">
-      <h3>M1-3</h3>
-      <p>AI 自動化流程<br>GAS 觸發器<br>表單 → AI → Sheet</p>
-    </div>
-    <div class="card accent-top" style="max-width:250px;">
-      <h3>M1-4</h3>
-      <p>AI 做網頁<br>GAS doGet 部署<br>API 串接初體驗</p>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <div class="label">Stage 1 帶走的核心</div>
-    <p>會用 AI 產出作品，會做網頁，會接 API，會設自動化</p>
-  </div>
+<h2>Stage 1 回顧：用 AI</h2>
+<div class="card-grid fragment" data-order="0" style="max-width:900px;">
+<div class="card accent-top" style="max-width:250px;">
+<h3>M1-1</h3>
+<p>AI 聊天做作品<br/>Prompt 四要素<br/>指令品質 = 產出品質</p>
 </div>
-
+<div class="card accent-top" style="max-width:250px;">
+<h3>M1-2</h3>
+<p>封裝 AI 助手<br/>GPTs / Gems<br/>圖文多模態生成</p>
+</div>
+<div class="card accent-top" style="max-width:250px;">
+<h3>M1-3</h3>
+<p>AI 自動化流程<br/>GAS 觸發器<br/>表單 → AI → Sheet</p>
+</div>
+<div class="card accent-top" style="max-width:250px;">
+<h3>M1-4</h3>
+<p>AI 做網頁<br/>GAS doGet 部署<br/>API 串接初體驗</p>
+</div>
+</div>
+<div class="info-box success fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<div class="label">Stage 1 帶走的核心</div>
+<p>會用 AI 產出作品，會做網頁，會接 API，會設自動化</p>
+</div>
+</div>
 <!-- ══ 51: Stage 2 回顧 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="51">
-  <h2>Stage 2 回顧：做產品</h2>
-  <div class="card-grid fragment" data-order="0" style="max-width:900px;">
-    <div class="card accent-top-blue" style="max-width:250px;">
-      <h3>M2-1</h3>
-      <p>GitHub Pages<br>版本控制<br>正式部署</p>
-    </div>
-    <div class="card accent-top-blue" style="max-width:250px;">
-      <h3>M2-2</h3>
-      <p>.env / .gitignore<br>安全三件套<br>架構拆分</p>
-    </div>
-    <div class="card accent-top-blue" style="max-width:250px;">
-      <h3>M2-3</h3>
-      <p>IDE + AI<br>Cursor / Windsurf<br>AI 不是萬能的</p>
-    </div>
-    <div class="card accent-top-blue" style="max-width:250px;">
-      <h3>M2-4</h3>
-      <p>API 批量串接<br>Groq / Gemini<br>Rate Limit 實戰</p>
-    </div>
-  </div>
-  <div class="info-box blue fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <div class="label">Stage 2 帶走的核心</div>
-    <p>會部署產品、會保護密鑰、會用 IDE、會串 API</p>
-  </div>
+<h2>Stage 2 · 串 AI 回顧</h2>
+<div class="card-grid fragment" data-order="0" style="max-width:900px;">
+<div class="card accent-top-blue" style="max-width:250px;">
+<h3>M2-1</h3>
+<p>GitHub Pages<br/>版本控制<br/>正式部署</p>
 </div>
-
+<div class="card accent-top-blue" style="max-width:250px;">
+<h3>M2-2</h3>
+<p>.env / .gitignore<br/>安全三件套<br/>架構拆分</p>
+</div>
+<div class="card accent-top-blue" style="max-width:250px;">
+<h3>M2-3</h3>
+<p>IDE + AI<br/>Cursor / Windsurf<br/>AI 不是萬能的</p>
+</div>
+<div class="card accent-top-blue" style="max-width:250px;">
+<h3>M2-4</h3>
+<p>API 批量串接<br/>Groq / Gemini<br/>Rate Limit 實戰</p>
+</div>
+</div>
+<div class="info-box blue fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
+<div class="label">Stage 2 · 串 AI 帶走的核心</div>
+<p>會部署產品、會保護密鑰、會用 IDE、會串 API</p>
+</div>
+</div>
 <!-- ══ 52: Stage 3 回顧 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="52">
-  <h2>Stage 3 回顧：造系統</h2>
-  <div class="card-grid fragment" data-order="0" style="max-width:900px;">
-    <div class="card accent-top-purple" style="max-width:250px;">
-      <h3>M3-1</h3>
-      <p>CLI + MCP<br>Skills / CLAUDE.md<br>AI 能力擴展</p>
-    </div>
-    <div class="card accent-top-purple" style="max-width:250px;">
-      <h3>M3-2</h3>
-      <p>開源社群<br>供應鏈安全<br>站在巨人肩上</p>
-    </div>
-    <div class="card accent-top-purple" style="max-width:250px;">
-      <h3>M3-3</h3>
-      <p>spec.md<br>四元素架構<br>系統設計思維</p>
-    </div>
-    <div class="card accent-top-purple" style="max-width:250px;">
-      <h3>M3-4</h3>
-      <p>Actions / Worker<br>通知閉環<br>24/7 自動運轉</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;border-left-color:var(--purple);">
-    <div class="label" style="color:var(--purple);">Stage 3 帶走的核心</div>
-    <p>會用 CLI 擴展 AI、會讀開源、會寫 spec、會讓系統自動跑</p>
-  </div>
+<h2>Stage 3 回顧：造系統</h2>
+<div class="card-grid fragment" data-order="0" style="max-width:900px;">
+<div class="card accent-top-purple" style="max-width:250px;">
+<h3>M3-1</h3>
+<p>CLI + MCP<br/>Skills / CLAUDE.md<br/>AI 能力擴展</p>
 </div>
-
+<div class="card accent-top-purple" style="max-width:250px;">
+<h3>M3-2</h3>
+<p>開源社群<br/>供應鏈安全<br/>站在巨人肩上</p>
+</div>
+<div class="card accent-top-purple" style="max-width:250px;">
+<h3>M3-3</h3>
+<p>spec.md<br/>四元素架構<br/>系統設計思維</p>
+</div>
+<div class="card accent-top-purple" style="max-width:250px;">
+<h3>M3-4</h3>
+<p>Actions / Worker<br/>通知閉環<br/>24/7 自動運轉</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;border-left-color:var(--purple);">
+<div class="label" style="color:var(--purple);">Stage 3 帶走的核心</div>
+<p>會用 CLI 擴展 AI、會讀開源、會寫 spec、會讓系統自動跑</p>
+</div>
+</div>
 <!-- ══ 53: 三階段一張圖 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="53">
-  <h2>三階段：完整的能力堆疊</h2>
-  <div class="flow fragment" data-order="0" style="margin:.3rem 0;">
-    <div class="flow-box accent" style="padding:1rem 1.5rem;">
-      <div style="font-size:.8rem;color:var(--g400);">Stage 1</div>
-      <div style="font-weight:700;">用 AI</div>
-    </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="padding:1rem 1.5rem;border-color:var(--blue);background:var(--blue-lt);color:var(--blue);">
-      <div style="font-size:.8rem;color:var(--g400);">Stage 2</div>
-      <div style="font-weight:700;">做產品</div>
-    </div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box" style="padding:1rem 1.5rem;border-color:var(--purple);background:var(--purple-lt);color:var(--purple);">
-      <div style="font-size:.8rem;color:var(--g400);">Stage 3</div>
-      <div style="font-weight:700;">造系統</div>
-    </div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
-    <p style="font-size:1rem;text-align:center;"><strong>你從「用 AI 聊天」走到「讓 AI 系統 24/7 自動運轉」</strong><br>這不是終點，是起點</p>
-  </div>
+<h2>三階段：完整的能力堆疊</h2>
+<div class="flow fragment" data-order="0" style="margin:.3rem 0;">
+<div class="flow-box accent" style="padding:1rem 1.5rem;">
+<div style="font-size:.8rem;color:var(--g400);">Stage 1</div>
+<div style="font-weight:700;">用 AI</div>
 </div>
-
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="padding:1rem 1.5rem;border-color:var(--blue);background:var(--blue-lt);color:var(--blue);">
+<div style="font-size:.8rem;color:var(--g400);">Stage 2 · 串 AI</div>
+<div style="font-weight:700;">把 AI 接進產品與流程</div>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="padding:1rem 1.5rem;border-color:var(--purple);background:var(--purple-lt);color:var(--purple);">
+<div style="font-size:.8rem;color:var(--g400);">Stage 3</div>
+<div style="font-weight:700;">造系統</div>
+</div>
+</div>
+<div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
+<p style="font-size:1rem;text-align:center;"><strong>你從「用 AI 聊天」走到「讓 AI 系統 24/7 自動運轉」</strong><br/>這不是終點，是起點</p>
+</div>
+</div>
 <!-- ══ 54: 你帶走的資產 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="54">
-  <h2>你帶走的資產</h2>
-  <div class="card-grid fragment" data-order="0" style="max-width:900px;">
-    <div class="card accent-top">
-      <h3>CLAUDE.md</h3>
-      <p>你的 AI 行為規範<br>每次對話都帶著你的標準</p>
-    </div>
-    <div class="card accent-top-blue">
-      <h3>Skills 庫</h3>
-      <p>你自己寫的 AI 技能<br>可復用、可分享</p>
-    </div>
-    <div class="card accent-top-purple">
-      <h3>GitHub Profile</h3>
-      <p>你的專案、你的程式碼<br>你的作品集</p>
-    </div>
-  </div>
-  <div class="info-box note fragment" data-order="1" style="margin-top:.5rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;">這些不是課程給你的 — 是你自己建立的<br>課程結束後它們依然屬於你</p>
-  </div>
+<h2>帶走清單</h2>
+<div class="anchor-banner">
+<span class="anchor-label">本堂定位</span>
+<span class="anchor-text">持續運作的開始</span>
 </div>
-
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了<br/><em style="color:var(--g500);font-size:.85rem;">從「我做事」→ 我設計系統持續做事</em></p>
+<div class="insight-grid">
+<div class="insight-card fragment" data-order="0" style="--card-color:var(--green);">
+<div class="insight-before">從「自動化都差不多」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">節奏決定系統型態</div>
+</div>
+<div class="insight-card fragment" data-order="1" style="--card-color:var(--blue);">
+<div class="insight-before">從「我按下去才會動」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">事件可以接手行動</div>
+</div>
+<div class="insight-card fragment" data-order="2" style="--card-color:var(--gold);">
+<div class="insight-before">從「有跑就算好了」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">閉環才讓人放心</div>
+</div>
+<div class="insight-card fragment" data-order="3" style="--card-color:var(--purple);">
+<div class="insight-before">從「雲端只是主機」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">邊緣能成為執行者</div>
+</div>
+<div class="insight-card fragment" data-order="4" style="--card-color:var(--orange);">
+<div class="insight-before">從「作品是一個工具」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">作品可以長成系統</div>
+</div>
+<div class="insight-card fragment" data-order="5" style="--card-color:var(--accent);">
+<div class="insight-before">從「課程到此結束」</div>
+<div class="insight-arrow">↓</div>
+<div class="insight-after">我能設計運作世界</div>
+</div>
+</div>
+</div>
 <!-- ══ 55: M3-4 注意事項總覽 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="55">
-  <h2>M3-4 注意事項總覽</h2>
-  <table class="data-table fragment" data-order="0">
-    <thead>
-      <tr><th>#</th><th>常見問題</th><th>學到什麼</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>YAML 縮排錯</td><td>YAML 格式敏感</td></tr>
-      <tr><td>2</td><td>cron 時區 UTC</td><td>時區意識</td></tr>
-      <tr><td>3</td><td>Worker CPU 10ms 限制</td><td>免費版限制</td></tr>
-      <tr><td>4</td><td>TG Token 寫在 YAML</td><td>GitHub Secrets</td></tr>
-      <tr><td>5</td><td>Public vs Private 額度差</td><td>repo 可見性選擇</td></tr>
-    </tbody>
-  </table>
+<h2>M3-4 注意事項總覽</h2>
+<table class="data-table fragment" data-order="0">
+<thead>
+<tr><th>#</th><th>常見問題</th><th>學到什麼</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>YAML 縮排錯</td><td>YAML 格式敏感</td></tr>
+<tr><td>2</td><td>cron 時區 UTC</td><td>時區意識</td></tr>
+<tr><td>3</td><td>Worker CPU 10ms 限制</td><td>免費版限制</td></tr>
+<tr><td>4</td><td>TG Token 寫在 YAML</td><td>GitHub Secrets</td></tr>
+<tr><td>5</td><td>Public vs Private 額度差</td><td>repo 可見性選擇</td></tr>
+</tbody>
+</table>
 </div>
-
 <!-- ══ 56: M3-4 帶走清單 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="56">
-  <h2>M3-4 你帶走的</h2>
-  <div class="checklist fragment" data-order="0">
-    <div class="check-item">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>GitHub Actions 排程 Workflow</strong>
-        <p>電腦關機也能定時執行</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>Cloudflare Worker 概念</strong>
-        <p>即時回應 HTTP 請求的第二選項</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>TG 通知閉環</strong>
-        <p>成功通知、失敗告警，不需盯著</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>AI 系統藍圖</strong>
-        <p>資訊 → 收集 → 處理 → 儲存 → 查詢 → 通知</p>
-      </div>
-    </div>
-    <div class="check-item">
-      <div class="check-icon done">&#10003;</div>
-      <div class="check-text">
-        <strong>「永遠有選擇」的認知</strong>
-        <p>不被單一工具綁住</p>
-      </div>
-    </div>
-  </div>
+<h2>M3-4 你帶走的</h2>
+<div class="checklist fragment" data-order="0">
+<div class="check-item">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>GitHub Actions 排程 Workflow</strong>
+<p>電腦關機也能定時執行</p>
 </div>
-
+</div>
+<div class="check-item">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>Cloudflare Worker 概念</strong>
+<p>即時回應 HTTP 請求的第二選項</p>
+</div>
+</div>
+<div class="check-item">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>TG 通知閉環</strong>
+<p>成功通知、失敗告警，不需盯著</p>
+</div>
+</div>
+<div class="check-item">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>AI 系統藍圖</strong>
+<p>資訊 → 收集 → 處理 → 儲存 → 查詢 → 通知</p>
+</div>
+</div>
+<div class="check-item">
+<div class="check-icon done">✓</div>
+<div class="check-text">
+<strong>「永遠有選擇」的認知</strong>
+<p>不被單一工具綁住</p>
+</div>
+</div>
+</div>
+</div>
 <!-- ══ 57: 學習是帶入門 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="57">
-  <h2>學習是帶入門</h2>
-  <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
-    <div class="quote-text">學習是帶入門<br>讓你永遠有選擇的機會和權力</div>
-  </div>
-  <div class="info-box success fragment" data-order="1" style="margin-top:1rem;">
-    <p style="font-size:1rem;">基礎已掌握<br>接下來選你想深入的方向</p>
-  </div>
+<h2>學習是帶入門</h2>
+<div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
+<div class="quote-text">學習是帶入門<br/>讓你永遠有選擇的機會和權力</div>
 </div>
-
+<div class="info-box success fragment" data-order="1" style="margin-top:1rem;">
+<p style="font-size:1rem;">基礎已掌握<br/>接下來選你想深入的方向</p>
+</div>
+</div>
 <!-- ══ 58: 應用模組預告 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="58">
-  <h2>應用模組預告</h2>
-  <p style="color:var(--g600);font-size:1rem;margin-bottom:.5rem;">基礎課程畢業後，選擇你想深入的方向</p>
-  <div class="card-grid fragment" data-order="0" style="max-width:900px;">
-    <div class="card accent-top" style="max-width:280px;">
-      <h3>A-1<br>知識系統</h3>
-      <p>SecondBrain<br>個人知識庫<br>自動收集 + 編譯 + 推送</p>
-    </div>
-    <div class="card accent-top-blue" style="max-width:280px;">
-      <h3>A-2<br>學術研究</h3>
-      <p>Paper Pipeline<br>論文收集 + 分析<br>文獻圖譜 + 寫作輔助</p>
-    </div>
-    <div class="card accent-top-purple" style="max-width:280px;">
-      <h3>A-3<br>AI Agent</h3>
-      <p>OpenClaw / Hermes<br>多 Agent 系統<br>自主決策 + 協作</p>
-    </div>
-  </div>
+<h2>應用模組預告</h2>
+<p style="color:var(--g600);font-size:1rem;margin-bottom:.5rem;">基礎課程畢業後，選擇你想深入的方向</p>
+<div class="card-grid fragment" data-order="0" style="max-width:900px;">
+<div class="card accent-top" style="max-width:280px;">
+<h3>A-1<br/>知識系統</h3>
+<p>SecondBrain<br/>個人知識庫<br/>自動收集 + 編譯 + 推送</p>
 </div>
-
+<div class="card accent-top-blue" style="max-width:280px;">
+<h3>A-2<br/>學術研究</h3>
+<p>Paper Pipeline<br/>論文收集 + 分析<br/>文獻圖譜 + 寫作輔助</p>
+</div>
+<div class="card accent-top-purple" style="max-width:280px;">
+<h3>A-3<br/>AI Agent</h3>
+<p>OpenClaw / Hermes<br/>多 Agent 系統<br/>自主決策 + 協作</p>
+</div>
+</div>
+</div>
 <!-- ══ 59: 應用模組選擇 ══ -->
 <div class="slide dataviz" data-act="R6：畢業" data-index="59">
-  <h2>選擇你的方向</h2>
-  <div class="info-box note fragment" data-order="0">
-    <div class="label">不需要全選</div>
-    <p>選一個最有動力的方向開始<br>基礎課程教的技能在每個方向都用得上</p>
-  </div>
-  <div class="compare-two fragment" data-order="1" style="margin-top:.8rem;">
-    <div class="compare-col good">
-      <div class="col-label">你已經有的</div>
-      <ul>
-        <li>Prompt 工程</li>
-        <li>API 串接</li>
-        <li>GitHub + Actions</li>
-        <li>spec.md 架構</li>
-        <li>MCP / Skills</li>
-        <li>通知閉環</li>
-      </ul>
-    </div>
-    <div class="compare-col good" style="background:var(--purple-lt);border-color:var(--purple);border-top-color:var(--purple);">
-      <div class="col-label" style="color:var(--purple);">應用模組會加上</div>
-      <ul>
-        <li>領域專業知識</li>
-        <li>進階系統整合</li>
-        <li>真實場景實戰</li>
-        <li>獨立專案產出</li>
-      </ul>
-    </div>
-  </div>
+<h2>選擇你的方向</h2>
+<div class="info-box note fragment" data-order="0">
+<div class="label">不需要全選</div>
+<p>選一個最有動力的方向開始<br/>基礎課程教的技能在每個方向都用得上</p>
 </div>
-
+<div class="compare-two fragment" data-order="1" style="margin-top:.8rem;">
+<div class="compare-col good">
+<div class="col-label">你已經有的</div>
+<ul>
+<li>Prompt 工程</li>
+<li>API 串接</li>
+<li>GitHub + Actions</li>
+<li>spec.md 架構</li>
+<li>MCP / Skills</li>
+<li>通知閉環</li>
+</ul>
+</div>
+<div class="compare-col good" style="background:var(--purple-lt);border-color:var(--purple);border-top-color:var(--purple);">
+<div class="col-label" style="color:var(--purple);">應用模組會加上</div>
+<ul>
+<li>領域專業知識</li>
+<li>進階系統整合</li>
+<li>真實場景實戰</li>
+<li>獨立專案產出</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- ══ 60: 畢業頁 ══ -->
-<div class="slide poster overlay-heavy" data-act="R6：畢業" data-index="60"
-     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);letter-spacing:.12em;margin-bottom:1rem;">Vibe Coding 基礎課程</p>
-  <h1 style="color:#fff;font-size:3.2rem;line-height:1.2;">畢業<span style="color:#6ee7d4;">快樂</span></h1>
-  <p class="poster-subtitle" style="margin-top:1.2rem;">從 AI 聊天做作品，到讓 AI 系統 24/7 自動運轉</p>
-  <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Stage 1 · 用 AI</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Stage 2 · 做產品</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Stage 3 · 造系統</span>
-  </div>
-  <div style="margin-top:1.5rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(110,231,212,.2);border:1px solid rgba(110,231,212,.3);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#6ee7d4;">A-1 知識系統</span>
-    <span style="background:rgba(110,231,212,.2);border:1px solid rgba(110,231,212,.3);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#6ee7d4;">A-2 學術研究</span>
-    <span style="background:rgba(110,231,212,.2);border:1px solid rgba(110,231,212,.3);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#6ee7d4;">A-3 AI Agent</span>
-  </div>
-  <p style="color:rgba(255,255,255,.35);margin-top:3rem;font-size:.85rem;">M3-4 完成 · 基礎課程結業</p>
+<div class="slide poster overlay-heavy" data-act="R6：畢業" data-index="60" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<p style="font-size:1rem;color:rgba(255,255,255,.45);letter-spacing:.12em;margin-bottom:1rem;">Vibe Coding 基礎課程</p>
+<h1 style="color:#fff;font-size:3.2rem;line-height:1.2;">畢業<span style="color:#6ee7d4;">快樂</span></h1>
+<p class="poster-subtitle" style="margin-top:1.2rem;">從 AI 聊天做作品，到讓 AI 系統 24/7 自動運轉</p>
+<div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Stage 1 · 用 AI</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Stage 2 · 串 AI</span>
+<span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Stage 3 · 造系統</span>
 </div>
-
+<div style="margin-top:1.5rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+<span style="background:rgba(110,231,212,.2);border:1px solid rgba(110,231,212,.3);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#6ee7d4;">A-1 知識系統</span>
+<span style="background:rgba(110,231,212,.2);border:1px solid rgba(110,231,212,.3);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#6ee7d4;">A-2 學術研究</span>
+<span style="background:rgba(110,231,212,.2);border:1px solid rgba(110,231,212,.3);border-radius:100px;padding:.3rem 1rem;font-size:.85rem;color:#6ee7d4;">A-3 AI Agent</span>
+</div>
+<p style="color:rgba(255,255,255,.35);margin-top:3rem;font-size:.85rem;">M3-4 完成 · 基礎課程結業</p>
+</div>
 </div><!-- end .slides -->
-
 <!-- ── Controls ── -->
 <div class="progress" id="progress"></div>
 <div class="slide-counter" id="counter">1 / 61</div>
 <div class="controls">
-  <button id="prevBtn" onclick="navigate(-1)" disabled>&#8249;</button>
-  <button id="nextBtn" onclick="navigate(1)">&#8250;</button>
+<button disabled="" id="prevBtn" onclick="navigate(-1)">‹</button>
+<button id="nextBtn" onclick="navigate(1)">›</button>
 </div>
-
 <!-- ── Chapter Menu ── -->
 <div class="chapter-menu" id="chapterMenu">
-  <div class="chapter-btn" onclick="toggleChapterMenu()">
-    <span class="chapter-icon">&#9672;</span>
-    <span id="chapterLabel">章節</span>
-    <span class="chapter-arrow">&#9650;</span>
-  </div>
-  <div class="chapter-list" id="chapterList"></div>
+<div class="chapter-btn" onclick="toggleChapterMenu()">
+<span class="chapter-icon">◈</span>
+<span id="chapterLabel">章節</span>
+<span class="chapter-arrow">▲</span>
 </div>
-
+<div class="chapter-list" id="chapterList"></div>
+</div>
 <script>
 (function(){
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -1722,8 +1673,92 @@ run:
   // Init
   updateUI();
   window.navigate = navigate;
+  window.goTo = goTo;
   window.toggleChapterMenu = toggleChapterMenu;
 })();
 </script>
+
+<!-- VIBE_INJECT_START -->
+<style>
+  .code-block{position:relative;}
+  .code-block .copy-btn{
+    position:absolute;top:.35rem;right:.4rem;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    padding:.18rem .55rem;border:0;border-radius:4px;
+    background:rgba(15,157,138,.85);color:#fff;cursor:pointer;
+    opacity:.55;transition:opacity .15s,background .15s;
+    letter-spacing:.05em;z-index:5;
+  }
+  .code-block:hover .copy-btn,
+  .code-block .copy-btn:focus{opacity:1;}
+  .code-block .copy-btn.copied{background:rgba(52,211,153,.95);opacity:1;}
+  @media (hover:none){.code-block .copy-btn{opacity:.85;}}
+</style>
+<script>
+(function(){
+  /* ── copy button ── */
+  function addBtn(block){
+    if(block.querySelector('.copy-btn'))return;
+    var pre=block.querySelector('pre');
+    if(!pre)return;
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(e){
+      e.stopPropagation();
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='✓ 已複製';btn.classList.add('copied');
+        setTimeout(function(){btn.textContent='複製';btn.classList.remove('copied');},1500);
+      };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){fallback(text,done);});
+      }else{fallback(text,done);}
+    });
+    block.appendChild(btn);
+  }
+  function fallback(text,cb){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.top='-9999px';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');cb();}catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  /* ── hash router: #round-N jumps to first slide whose data-act matches "Round N：" or "RN：" ── */
+  function routeHash(){
+    var m=(window.location.hash||'').match(/^#round-(\d+)/i);
+    if(!m)return;
+    var n=m[1];
+    var patterns=[
+      new RegExp('^Round\\s*'+n+'[\u{ff1a}:\\s]','u'),
+      new RegExp('^R'+n+'[\u{ff1a}:\\s]','u'),
+    ];
+    var target=null;
+    var slides=document.querySelectorAll('.slide[data-act]');
+    for(var i=0;i<slides.length;i++){
+      if(target)break;
+      var act=slides[i].getAttribute('data-act')||'';
+      for(var j=0;j<patterns.length;j++){
+        if(patterns[j].test(act)){target=slides[i];break;}
+      }
+    }
+    if(target&&typeof window.goTo==='function'){
+      var idx=parseInt(target.getAttribute('data-index'),10);
+      window.goTo(idx);
+    }
+  }
+  window.addEventListener('hashchange',routeHash);
+
+  function init(){
+    document.querySelectorAll('.code-block').forEach(addBtn);
+    setTimeout(routeHash,80);  /* wait for slide system init */
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init);
+  }else{init();}
+})();
+</script>
+<!-- VIBE_INJECT_END -->
+
 </body>
 </html>

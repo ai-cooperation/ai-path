@@ -513,13 +513,406 @@ p,li{font-size:1.1rem;line-height:1.8;}
      Round 2：拍菜單建表單 (slides 11-21)
      ══════════════════════════════════════ -->
 <!-- ══ 11: Chapter poster — Round 2 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 2：拍菜單建表單" data-index="11" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<!-- ══════════════════════════════════════
+     Round 2 — 個人 GAS 網站 (NEW · 11 slides)
+     ══════════════════════════════════════ -->
+
+<!-- ══ R2-Poster ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 2：個人 GAS 網站" data-index="11" style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#0F9D8A 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:15–0:55</p>
+<h1 style="color:#fff;font-size:2.8rem;">個人 GAS 網站<br/><span style="color:#6ee7d4;">從 M1-1 個人頁加上互動</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">先看 GAS 能做什麼，再決定你要做什麼</p>
+</div>
+
+<!-- ══ R2-1: GAS 不只能做個人網頁 ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="12">
+<h2>GAS 不只能做個人網頁</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.6rem;">M1-1 你做了個人頁，但 GAS 後端能做的事還多得多</p>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0">
+<h3>會什麼了</h3>
+<p>M1-1 的 HTML 介紹頁<br/>靜態內容、無後端</p>
+</div>
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>能升級什麼</h3>
+<p>同一份頁面，<br/>加入互動 + 後端 + 資料收集</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>升級的路徑</h3>
+<p>HTML 移植到 GAS<br/>+ 加 CTA 表單<br/>+ 寫入 Sheet</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="margin-top:.8rem;">
+<p style="font-size:.95rem;">在進實作之前，先看一個真實的 GAS 應用範例。</p>
+</div>
+</div>
+
+<!-- ══ R2-2: 範例 — 淨零碳模擬考 ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="13">
+<h2>範例：淨零碳管理師模擬考</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">用 GAS 部署的真實應用，與個人介紹頁性質完全不同</p>
+<div class="flow" style="margin:1.2rem 0;flex-wrap:wrap;">
+<div class="flow-box accent" style="min-width:140px;">綠色 header<br/><span style="font-size:.7rem;font-weight:400;color:var(--g600);">考試識別</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:140px;">題庫顯示<br/><span style="font-size:.7rem;font-weight:400;color:var(--g600);">20 題單選</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box" style="min-width:140px;">計時<br/><span style="font-size:.7rem;font-weight:400;color:var(--g600);">已用時間</span></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent" style="min-width:140px;">即時計分<br/><span style="font-size:.7rem;font-weight:400;color:var(--g600);">結果記錄</span></div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.8rem;">
+<div class="label">現場體驗</div>
+<p style="font-size:.92rem;">掃 QR code 進去點點看 — 這整個系統是 GAS 部署的，沒有後端伺服器。</p>
+</div>
+</div>
+
+<!-- ══ R2-3: 解構 — 四個能力分區 ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="14">
+<h2>解構：這個系統的 GAS 後端做了什麼</h2>
+<div class="card-grid" style="margin-top:.6rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>題庫管理</h3>
+<p style="font-size:.88rem;">Sheet 存題目<br/>隨機抽 20 題<br/>分類標籤</p>
+</div>
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>狀態追蹤</h3>
+<p style="font-size:.88rem;">計時器<br/>答題進度<br/>已答 / 未答記錄</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>判斷邏輯</h3>
+<p style="font-size:.88rem;">比對正解<br/>即時計分<br/>顯示對錯</p>
+</div>
+<div class="card accent-top-orange fragment" data-order="3">
+<h3>資料記錄</h3>
+<p style="font-size:.88rem;">答題記錄寫 Sheet<br/>分數累積<br/>個人追蹤</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="4" style="margin-top:.6rem;">
+<p style="font-size:.9rem;">四個能力分區，<strong>每一區都從 Sheet 讀寫資料</strong>。整個系統的後端 = Sheet。</p>
+</div>
+</div>
+
+<!-- ══ R2-4: 啟發 — 你可以做什麼 ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="15">
+<h2>啟發：你可以做什麼</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">相同架構（前端表單 + Sheet 後端）可以套用到很多場景</p>
+<div class="card-grid">
+<div class="card accent-top fragment" data-order="0">
+<h3>諮詢預約</h3>
+<p style="font-size:.88rem;">日期 + 主題 + 聯絡方式<br/>寫入 Sheet 等回覆</p>
+</div>
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>活動報名</h3>
+<p style="font-size:.88rem;">姓名 + 人數 + 場次<br/>名額限制計算</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>興趣調查</h3>
+<p style="font-size:.88rem;">領域 + 程度 + 想學什麼<br/>分類統計</p>
+</div>
+<div class="card accent-top-orange fragment" data-order="3">
+<h3>意見回饋</h3>
+<p style="font-size:.88rem;">滿意度 + 改善建議<br/>累積成資料庫</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="4">
+<h3>簽到系統</h3>
+<p style="font-size:.88rem;">姓名 + 時間 + 地點<br/>無紙化簽到</p>
+</div>
+<div class="card fragment" data-order="5" style="border-top:4px solid var(--g400);">
+<h3>... 你想做的</h3>
+<p style="font-size:.88rem;">只要符合<br/>「表單收 → Sheet 存 → 顯示／通知」<br/>都做得到</p>
+</div>
+</div>
+</div>
+
+<!-- ══ R2-5: 第一階段任務說明 ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="16">
+<h2>第一階段任務</h2>
+<div class="info-box success" style="max-width:820px;margin:1.5rem auto;padding:1.2rem 1.8rem;">
+<div class="label" style="font-size:1rem;">本輪要完成的事</div>
+<p style="font-size:1.05rem;line-height:1.8;">把你的 M1-1 個人頁，搬到 GAS 上部署成網站，<br/>並加上<strong>一個你選的 CTA 應用</strong>（不限定要是個人介紹頁）。</p>
+</div>
+<div class="flow" style="margin:1.2rem 0;">
+<div class="flow-box accent">M1-1 HTML</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">移植到 GAS</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">加 CTA 表單</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box accent">串 Sheet</div>
+</div>
+<div class="info-box note fragment" data-order="0" style="margin-top:.8rem;">
+<p style="font-size:.92rem;">三個步驟，<strong>完全交給 AI 引導</strong>。你只需要描述要做什麼，AI 負責產出程式碼。</p>
+</div>
+</div>
+
+<!-- ══ R2-6: Step 1 — 移植 HTML ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="17">
+<h2>Step 1 — 把 M1-1 HTML 移植到 GAS</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">把這段貼進 AI 對話</div>
+<pre>請把以下 HTML 部署成 Google Apps Script 網頁
+
+[貼上 M1-1 你做的個人頁完整 HTML]
+
+請給我完整的 Code.gs 和 index.html
+告訴我每一步怎麼貼進 GAS Editor、怎麼部署、怎麼拿到網址</pre>
+</div>
+<div class="info-box success fragment" data-order="1" style="margin-top:.8rem;">
+<div class="label">AI 會引導你</div>
+<p style="font-size:.92rem;">建立 GAS 專案 → 貼 Code.gs → 建立 index.html → 部署 → 取得網址<br/>不需要你看懂程式碼，AI 會說明每一步在做什麼。</p>
+</div>
+</div>
+
+<!-- ══ R2-7: Step 2 — 加 CTA ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="18">
+<h2>Step 2 — 加上你選的 CTA</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">挑前一張的場景之一，描述給 AI</p>
+<div class="card-grid" style="max-width:920px;">
+<div class="card accent-top fragment" data-order="0">
+<h3>諮詢預約 prompt</h3>
+<p style="font-size:.85rem;font-family:'Fira Code',monospace;">加一個諮詢預約表單<br/>欄位：日期、主題、姓名、email<br/>提交後顯示「已收到」</p>
+</div>
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>興趣調查 prompt</h3>
+<p style="font-size:.85rem;font-family:'Fira Code',monospace;">加一個興趣調查問卷<br/>三題單選 + 一個開放問答<br/>提交後感謝頁</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>活動報名 prompt</h3>
+<p style="font-size:.85rem;font-family:'Fira Code',monospace;">加一個活動報名表單<br/>姓名、人數、場次選擇<br/>限額 50 人</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="margin-top:.6rem;">
+<p style="font-size:.9rem;">AI 會把 CTA 表單加到你的 HTML 裡，繼續引導你部署。</p>
+</div>
+</div>
+
+<!-- ══ R2-8: Step 3 — 串 Sheet ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="19">
+<h2>Step 3 — 串 Sheet 收資料</h2>
+<div class="code-block fragment" data-order="0">
+<div class="code-label">繼續跟 AI 對話</div>
+<pre>表單送出後，把資料寫進 Google Sheet
+請告訴我：
+1. 怎麼建立要存資料的 Sheet
+2. 怎麼把 Sheet ID 給 GAS
+3. 怎麼授權（看到警告畫面該怎麼處理）
+4. 怎麼測試表單真的有寫進去</pre>
+</div>
+<div class="info-box success fragment" data-order="1" style="margin-top:.6rem;">
+<div class="label">AI 引導四件事</div>
+<p style="font-size:.9rem;">doPost 接送出資料 → SpreadsheetApp 打開 Sheet → appendRow 寫入 → 重新部署 → 學員提交一筆測試。</p>
+</div>
+<div class="info-box warning fragment" data-order="2" style="margin-top:.6rem;padding:.7rem 1.2rem;">
+<div class="label">授權那關</div>
+<p style="font-size:.88rem;">第一次部署會看到「未經 Google 驗證」警告 — 因為這是你自己的腳本操作你自己的 Sheet，安全。下一個 Round 會深入討論。</p>
+</div>
+</div>
+
+<!-- ══ R2-9: 帶走物驗收 + 班群分享 ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="20">
+<h2>帶走物驗收 + 班群分享</h2>
+<div class="step-list" style="max-width:780px;">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>確認你的 GAS 網站可開啟</strong>
+<p style="font-size:.92rem;">用手機開一次（不是用你的電腦），確認別人也看得到</p>
+</div>
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>確認 CTA 表單能提交</strong>
+<p style="font-size:.92rem;">自己提交一筆測試資料，確認有寫進 Sheet</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>網址貼到班群</strong>
+<p style="font-size:.92rem;">看 3 個同學的 CTA 設計，挑一個你想學的設計或 prompt 寫法</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ══ R2-10: Round 2 小結 ══ -->
+<div class="slide dataviz" data-act="Round 2：個人 GAS 網站" data-index="21">
+<h2>Round 2 小結</h2>
+<div class="bottom-line" data-order="0">
+<h3>你做了什麼：把靜態頁變成有後端的應用</h3>
+<p>M1-1 的 HTML 是給人看的靜態內容。<br/>
+Round 2 之後，同一份頁面變成可以收資料、寫 Sheet 的完整應用。<br/>
+<strong>架構（前端表單 → GAS 後端 → Sheet 資料）會在 R4 / R5 / M1-4 繼續用。</strong></p>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     Round 3 — 分享 + GEM 助手（NEW · 7 slides）
+     ══════════════════════════════════════ -->
+
+<!-- ══ R3-Poster ══ -->
+<div class="slide poster overlay-heavy" data-act="Round 3：分享 + GEM 助手" data-index="22" style="background:linear-gradient(135deg,#1e1b4b 0%,#4c1d95 40%,#7c3aed 100%);">
+<p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:55–1:15</p>
+<h1 style="color:#fff;font-size:2.8rem;">學別人的 prompt<br/><span style="color:#c4b5fd;">建你自己的 prompt 助手</span></h1>
+<p class="poster-subtitle" style="margin-top:.8rem;">把 R2 的經驗，固化成可重複使用的工具</p>
+</div>
+
+<!-- ══ R3-1: 學別人的 prompt ══ -->
+<div class="slide dataviz" data-act="Round 3：分享 + GEM 助手" data-index="23">
+<h2>從同學作品中可以學三件事</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">R2 大家做完之後，回頭看 prompt 怎麼寫的</p>
+<div class="card-grid">
+<div class="card accent-top-purple fragment" data-order="0">
+<h3>寫法結構</h3>
+<p style="font-size:.88rem;">同學怎麼開頭、<br/>怎麼分段、<br/>怎麼下需求</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="1">
+<h3>用詞精確度</h3>
+<p style="font-size:.88rem;">「加表單」vs「加意見回饋表單，含...」<br/>差別在 AI 產出品質</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="2">
+<h3>補充細節的時機</h3>
+<p style="font-size:.88rem;">什麼時候該一次給全部？<br/>什麼時候該分段對話？</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="3" style="margin-top:.8rem;">
+<p style="font-size:.92rem;">R2 大家用同一個 AI，但 prompt 寫法不同 → <strong>產出差距很大</strong>。差距來自 prompt 結構。</p>
+</div>
+</div>
+
+<!-- ══ R3-2: 為什麼建 GAS prompt 助手 ══ -->
+<div class="slide dataviz" data-act="Round 3：分享 + GEM 助手" data-index="24">
+<h2>為什麼建 GAS prompt 專用助手</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">GAS 相關需求有共同骨架，可以固化成範本</p>
+<div class="card-grid" style="margin-top:.5rem;">
+<div class="card accent-top fragment" data-order="0">
+<h3>環境</h3>
+<p style="font-size:.85rem;">在 GAS Editor / 部署環境<br/>哪些 API 可用</p>
+</div>
+<div class="card accent-top-blue fragment" data-order="1">
+<h3>服務</h3>
+<p style="font-size:.85rem;">SpreadsheetApp / MailApp<br/>HtmlService / UrlFetchApp</p>
+</div>
+<div class="card accent-top-gold fragment" data-order="2">
+<h3>觸發</h3>
+<p style="font-size:.85rem;">doGet / doPost<br/>觸發器 / 排程</p>
+</div>
+<div class="card accent-top-orange fragment" data-order="3">
+<h3>授權</h3>
+<p style="font-size:.85rem;">Scopes 設定<br/>第一次授權流程</p>
+</div>
+<div class="card accent-top-purple fragment" data-order="4">
+<h3>錯誤處理</h3>
+<p style="font-size:.85rem;">try / catch<br/>執行記錄 / Logger</p>
+</div>
+</div>
+<div class="info-box note fragment" data-order="5" style="margin-top:.6rem;">
+<p style="font-size:.9rem;"><strong>五個槽位</strong>。GAS prompt 助手 = 自動帶這五個槽位的範本生成器。</p>
+</div>
+</div>
+
+<!-- ══ R3-3: 操作 — 打開 Gemini 建 Gem ══ -->
+<div class="slide dataviz" data-act="Round 3：分享 + GEM 助手" data-index="25">
+<h2>操作：打開 Gemini，建一個 Gem</h2>
+<div class="step-list" style="max-width:780px;">
+<div class="step fragment" data-order="0">
+<div class="step-num">1</div>
+<div class="step-content">
+<strong>打開 Gemini → Gems 管理員</strong>
+<p style="font-size:.92rem;">左下角「Explore Gems」→「New Gem」</p>
+</div>
+</div>
+<div class="step fragment" data-order="1">
+<div class="step-num">2</div>
+<div class="step-content">
+<strong>命名「GAS 助手」</strong>
+<p style="font-size:.92rem;">命名清楚，之後在 Gem 列表找得到</p>
+</div>
+</div>
+<div class="step fragment" data-order="2">
+<div class="step-num">3</div>
+<div class="step-content">
+<strong>貼入 Instructions</strong>
+<p style="font-size:.92rem;">下一張提供範本，可以直接複製</p>
+</div>
+</div>
+<div class="step fragment" data-order="3">
+<div class="step-num">4</div>
+<div class="step-content">
+<strong>儲存 + 開始對話</strong>
+<p style="font-size:.92rem;">未來所有 GAS 需求都在這個 Gem 裡問</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ══ R3-4: Gem Instructions 範本 ══ -->
+<div class="slide dataviz" data-act="Round 3：分享 + GEM 助手" data-index="26">
+<h2>Gem Instructions 範本</h2>
+<div class="code-block fragment" data-order="0" style="font-size:.78rem;">
+<div class="code-label">複製貼上即可使用</div>
+<pre>你是 Google Apps Script 教學助手，協助無程式背景的學員。
+
+當學員提出 GAS 需求時，你的回答必須涵蓋：
+
+1. 用到的 Google 服務（SpreadsheetApp / MailApp / 等）
+2. 觸發方式（doGet / doPost / 觸發器 / 手動執行）
+3. 完整可貼上的 Code.gs 程式碼
+4. 如果有 HTML，給完整的 index.html
+5. 部署步驟（每一步說明）
+6. 第一次授權的處理方式
+7. 如何驗證有跑成功
+
+回答時用繁體中文，每段加上「為什麼」的說明。
+不要假設學員會看程式碼，每個關鍵變數都加註解。</pre>
+</div>
+<div class="info-box note fragment" data-order="1" style="margin-top:.6rem;">
+<p style="font-size:.9rem;">這個 Instructions 把 R3-2 的<strong>五個槽位</strong>變成自動規範。未來每次問 GAS，輸出格式都一致。</p>
+</div>
+</div>
+
+<!-- ══ R3-5: 對比 — 用 Gem 助手 vs 直接問 ══ -->
+<div class="slide dataviz" data-act="Round 3：分享 + GEM 助手" data-index="27">
+<h2>對比：用 Gem 助手 vs 直接問</h2>
+<p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">同一個需求，輸出差異一目瞭然</p>
+<div class="compare-two" style="margin-top:.5rem;">
+<div class="compare-col fragment" data-order="0">
+<div class="col-label" style="color:var(--g600);">直接問 Gemini</div>
+<p style="font-size:.88rem;">「幫我做表單寫 Sheet」</p>
+<p style="font-size:.85rem;color:var(--g600);margin-top:.5rem;">→ 給一段 code<br/>→ 沒講授權<br/>→ 沒講部署<br/>→ 沒講驗證</p>
+</div>
+<div class="compare-col good fragment" data-order="1">
+<div class="col-label" style="color:var(--green);">用 GAS 助手 Gem</div>
+<p style="font-size:.88rem;">「幫我做表單寫 Sheet」</p>
+<p style="font-size:.85rem;color:var(--g600);margin-top:.5rem;">→ 完整 Code.gs + index.html<br/>→ 授權說明<br/>→ 部署步驟<br/>→ 驗證方式<br/>→ 每段為什麼</p>
+</div>
+</div>
+<div class="info-box success fragment" data-order="2" style="margin-top:.6rem;">
+<p style="font-size:.92rem;">差別不是 AI 變聰明，是<strong>你把規格固化進 Instructions</strong>。每次都不用重新講一遍。</p>
+</div>
+</div>
+
+<!-- ══ R3-6: Round 3 小結 ══ -->
+<div class="slide dataviz" data-act="Round 3：分享 + GEM 助手" data-index="28">
+<h2>Round 3 小結</h2>
+<div class="bottom-line" data-order="0">
+<h3>你的個人 prompt 生產線</h3>
+<p>R2 你跑過一次完整流程，知道 GAS 需要哪些東西。<br/>
+R3 把這份「知道」固化成 Gem 助手，<strong>未來每次需求都自動帶完整規格</strong>。<br/>
+這個方法不只用在 GAS — 任何重複出現的需求類型，都可以建專屬 Gem。</p>
+</div>
+</div>
+
+
+<div class="slide poster overlay-heavy" data-act="Round 4：飲料點單系統" data-index="29" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
 <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:15–0:35</p>
 <h1 style="color:#fff;font-size:2.8rem;">拍一張菜單<br/><span style="color:#6ee7d4;">AI 變成表單</span></h1>
 <p class="poster-subtitle" style="margin-top:.8rem;">一張照片 + 兩步 AI = 可用的系統</p>
 </div>
 <!-- ══ 12: 素材選項 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="12">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="30">
 <h2>選一個素材開始</h2>
 <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">用手機拍一張你身邊的實體素材，AI 幫你變成數位表單</p>
 <div class="card-grid" style="max-width:1100px;">
@@ -550,7 +943,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 13: Step 1 — AI 讀圖 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="13">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="31">
 <h2>Step 1 — 讓 AI 讀懂菜單</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">丟給 AI 的指令</div>
@@ -568,7 +961,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 14: Step 2 — AI 寫 GAS ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="14">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="32">
 <h2>Step 2 — AI 寫 GAS 建表單</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">接續上一步，告訴 AI</div>
@@ -583,7 +976,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 15: Step 3 — 貼進 GAS 執行 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="15">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="33">
 <h2>Step 3 — 貼進去、授權、執行</h2>
 <div class="step-list">
 <div class="step fragment" data-order="0">
@@ -617,7 +1010,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 16: 授權畫面說明 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="16">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="34">
 <h2>授權畫面看起來很可怕？</h2>
 <div class="compare-two" style="margin-top:1rem;">
 <div class="compare-col bad fragment" data-order="0">
@@ -635,7 +1028,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 17: 發到班群 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="17">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="35">
 <h2>把連結丟到班群</h2>
 <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
 <div class="quote-text">大家真的來點飲料</div>
@@ -654,7 +1047,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 18: 串了兩個能力 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="18">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="36">
 <h2>串了兩個 AI 能力</h2>
 <div class="card-grid" style="margin-top:1rem;max-width:600px;">
 <div class="card accent-top fragment" data-order="0" style="min-width:220px;">
@@ -671,7 +1064,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 19: 注意事項 R2 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="19">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="37">
 <h2>Round 2 常見問題</h2>
 <div class="step-list">
 <div class="step fragment" data-order="0">
@@ -698,7 +1091,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 20: 概念引出 R2 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="20">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="38">
 <h2>概念引出</h2>
 <div class="card-grid" style="margin-top:1rem;max-width:600px;">
 <div class="card accent-top fragment" data-order="0" style="min-width:220px;">
@@ -712,7 +1105,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 21: Round 2 小結 ══ -->
-<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="21">
+<div class="slide dataviz" data-act="Round 4：飲料點單系統" data-index="39">
 <h2>Round 2 小結</h2>
 <div class="bottom-line">
 <h3>一張照片就能啟動自動化</h3>
@@ -723,13 +1116,13 @@ p,li{font-size:1.1rem;line-height:1.8;}
      Round 3：觸發器 + Sheet (slides 22-31)
      ══════════════════════════════════════ -->
 <!-- ══ 22: Chapter poster — Round 3 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 3：觸發器+Sheet" data-index="22" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<div class="slide poster overlay-heavy" data-act="Round 5：系統升級 + 除錯" data-index="40" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
 <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:35–0:55</p>
 <h1 style="color:#fff;font-size:2.8rem;">逐步加需求<br/><span style="color:#6ee7d4;">看 AI 怎麼長出系統</span></h1>
 <p class="poster-subtitle" style="margin-top:.8rem;">no-code 精神：你說 → AI 寫 → 你驗證<br/>每加一個需求，就回 GAS 看 AI 怎麼套用</p>
 </div>
 <!-- ══ 23: no-code 的循環 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="23">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="41">
 <h2>no-code 的循環</h2>
 <div class="flow" style="margin:1rem 0;">
 <div class="flow-box accent" style="font-size:.9rem;">在 Prompt<br/>加一個需求</div>
@@ -746,7 +1139,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 24: Step 1 — 第一版 prompt ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="24">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="42">
 <h2>Step 1 — 第一版需求</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">跟 AI 說</div>
@@ -760,7 +1153,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 25: Step 2 — 加觸發條件 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="25">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="43">
 <h2>Step 2 — 加上「自動」這個需求</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">繼續跟 AI 說</div>
@@ -775,7 +1168,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 26: Step 3 — 加時間戳 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="26">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="44">
 <h2>Step 3 — 加上「時間紀錄」這個需求</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">再加一個</div>
@@ -788,7 +1181,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 27: Step 4 — 驗證 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="27">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="45">
 <h2>Step 4 — 完整跑一次驗證</h2>
 <div class="flow fragment" data-order="0">
 <div class="flow-box">填一次表單</div>
@@ -805,7 +1198,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 27: 自動化三要素 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="27">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="45">
 <h2>自動化三要素</h2>
 <div class="card-grid" style="margin-top:1rem;">
 <div class="card accent-top fragment" data-order="0">
@@ -826,7 +1219,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 28: 注意事項 — 觸發器 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="28">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="46">
 <h2>Round 3 常見問題</h2>
 <div class="compare-two" style="margin-top:1rem;">
 <div class="compare-col bad fragment" data-order="0">
@@ -840,7 +1233,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 29: 注意事項 — 欄位名稱 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="29">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="47">
 <h2>注意：欄位名稱對不上</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">常見情境</div>
@@ -854,7 +1247,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 30: 執行記錄教學 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="30">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="48">
 <h2>學會看執行記錄</h2>
 <div class="step-list">
 <div class="step fragment" data-order="0">
@@ -881,7 +1274,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 31: Round 3 小結 ══ -->
-<div class="slide dataviz" data-act="Round 3：觸發器+Sheet" data-index="31">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="49">
 <h2>Round 3 小結 — 你拼出了什麼</h2>
 <div class="flow" style="margin:1rem 0;">
 <div class="flow-box accent" style="font-size:.9rem;">Step 1<br/>表單接 Sheet</div>
@@ -901,13 +1294,13 @@ p,li{font-size:1.1rem;line-height:1.8;}
      Round 4：三步除錯法 (slides 32-40)
      ══════════════════════════════════════ -->
 <!-- ══ 32: Chapter poster — Round 4 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 4：三步除錯法" data-index="32" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<div class="slide poster overlay-heavy" data-act="Round 5：系統升級 + 除錯" data-index="50" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
 <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 0:55–1:15</p>
 <h1 style="color:#fff;font-size:2.8rem;">三步除錯法<br/><span style="color:#6ee7d4;">Error 不是失敗</span></h1>
 <p class="poster-subtitle" style="margin-top:.8rem;">R3 過程中你一定遇過紅字錯誤<br/>這 20 分鐘把處理錯誤的肌肉練起來</p>
 </div>
 <!-- ══ 33: R3 自然會遇到的錯誤 ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="33">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="51">
 <h2>R3 你大概遇過這些</h2>
 <div class="card-grid" style="margin-top:.8rem;">
 <div class="card accent-top fragment" data-order="0" style="border-top-color:var(--red);">
@@ -928,7 +1321,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 34: 三步除錯法 ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="34">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="52">
 <h2>三步除錯法</h2>
 <div class="card-grid" style="margin-top:1rem;">
 <div class="card accent-top fragment" data-order="0">
@@ -946,7 +1339,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 35: 除錯節奏 ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="35">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="53">
 <h2>來回 2-3 次就能修好</h2>
 <div class="flow fragment" data-order="0">
 <div class="flow-box" style="border-color:var(--red);color:var(--red);">Error</div>
@@ -962,7 +1355,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 36: 你不需要看程式碼 ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="36">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="54">
 <h2>你不需要看懂程式碼</h2>
 <div class="compare-two" style="margin-top:1rem;">
 <div class="compare-col bad fragment" data-order="0">
@@ -984,7 +1377,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 37: 從哪裡複製 log ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="37">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="55">
 <h2>執行記錄在哪裡複製</h2>
 <div style="max-width:840px;width:100%;background:#fff;border:1px solid var(--g200);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.08);overflow:hidden;margin-top:.5rem;">
 <div style="background:var(--offwhite);padding:.5rem .9rem;border-bottom:1px solid var(--g200);font-size:.78rem;color:var(--g600);">
@@ -1014,7 +1407,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 38: 貼給 AI 的 prompt ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="38">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="56">
 <h2>貼給 AI 的格式</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">直接複製貼上</div>
@@ -1028,7 +1421,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 38b: 預先要求 AI 多寫 Logger ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="38">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="56">
 <h2>進階：在 prompt 裡預先要求好除錯資訊</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">在每個需求 prompt 後面加這句</div>
@@ -1042,7 +1435,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 39: 概念引出 R4 ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="39">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="57">
 <h2>Error-driven Development</h2>
 <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
 <div class="quote-text">錯誤不是失敗<br/>是進步的訊號</div>
@@ -1053,7 +1446,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 40: Round 4 小結 — 關卡 ══ -->
-<div class="slide dataviz" data-act="Round 4：三步除錯法" data-index="40">
+<div class="slide dataviz" data-act="Round 5：系統升級 + 除錯" data-index="58">
 <h2>Round 4 關卡 — 你打通了嗎</h2>
 <div class="checklist" style="max-width:720px;">
 <div class="check-item fragment" data-order="0">
@@ -1087,13 +1480,13 @@ p,li{font-size:1.1rem;line-height:1.8;}
      Round 5：三平台比較 (slides 41-48)
      ══════════════════════════════════════ -->
 <!-- ══ 41: Chapter poster — Round 5 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 5：三平台比較" data-index="41" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 預告 M1-4" data-index="59" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
 <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:15–1:35</p>
 <h1 style="color:#fff;font-size:2.8rem;">三平台<br/><span style="color:#6ee7d4;">寫 GAS 比較</span></h1>
 <p class="poster-subtitle" style="margin-top:.8rem;">同一個任務問三個 AI<br/>看哪一個的回答方式最適合你的習慣</p>
 </div>
 <!-- ══ 42: 操作指令 ══ -->
-<div class="slide dataviz" data-act="Round 5：三平台比較" data-index="42">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="60">
 <h2>操作：同一個需求，三個平台</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">統一需求</div>
@@ -1111,7 +1504,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 43: 比較結果 ══ -->
-<div class="slide dataviz" data-act="Round 5：三平台比較" data-index="43">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="61">
 <h2>三平台 GAS 輸出的常見差異</h2>
 <div class="card-grid" style="margin-top:1rem;">
 <div class="card accent-top-gold fragment" data-order="0">
@@ -1132,7 +1525,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 44: 適合場景 ══ -->
-<div class="slide dataviz" data-act="Round 5：三平台比較" data-index="44">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="62">
 <h2>怎麼選 — 看你自己的習慣</h2>
 <table class="data-table fragment" data-order="0">
 <thead>
@@ -1161,7 +1554,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 45: 幻覺問題 ══ -->
-<div class="slide dataviz" data-act="Round 5：三平台比較" data-index="45">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="63">
 <h2>注意：AI 幻覺</h2>
 <div class="info-box warning fragment" data-order="0">
 <div class="label">實際案例</div>
@@ -1173,7 +1566,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 46: 驗證方法 ══ -->
-<div class="slide dataviz" data-act="Round 5：三平台比較" data-index="46">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="64">
 <h2>怎麼驗證 AI 寫的程式碼</h2>
 <div class="step-list">
 <div class="step fragment" data-order="0">
@@ -1200,7 +1593,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 47: 概念引出 R5 ══ -->
-<div class="slide dataviz" data-act="Round 5：三平台比較" data-index="47">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="65">
 <h2>概念引出</h2>
 <div class="quote-box fragment" data-order="0" style="margin-top:1rem;">
 <div class="quote-text">不是「哪個 AI 最強」<br/>是「這個任務哪個 AI 最適合」</div>
@@ -1210,7 +1603,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 48: Round 5 小結 ══ -->
-<div class="slide dataviz" data-act="Round 5：三平台比較" data-index="48">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="66">
 <h2>Round 5 小結</h2>
 <div class="bottom-line">
 <h3>選對工具比選最強工具重要</h3>
@@ -1221,13 +1614,13 @@ p,li{font-size:1.1rem;line-height:1.8;}
      Round 6：回顧 + 下一步預告 (slides 49-57)
      ══════════════════════════════════════ -->
 <!-- ══ 49: Chapter poster — Round 6 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 下一步預告" data-index="49" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 預告 M1-4" data-index="67" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
 <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 1:35–1:45</p>
 <h1 style="color:#fff;font-size:2.8rem;">回顧<br/><span style="color:#6ee7d4;">銜接下一堂</span></h1>
 <p class="poster-subtitle" style="margin-top:.8rem;">盤點收穫，看見下一步</p>
 </div>
 <!-- ══ 50: 六維反思 ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧 + 下一步預告" data-index="50">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="68">
 <h2>六維度自評</h2>
 <div class="theme-grid" style="margin-top:.8rem;">
 <div class="theme-card fragment" data-order="0">
@@ -1257,7 +1650,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 51: 今天做到了什麼 ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧 + 下一步預告" data-index="51">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="69">
 <h2>今天做到了什麼</h2>
 <div class="checklist">
 <div class="check-item">
@@ -1291,7 +1684,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 52: GAS 的邊界 ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧 + 下一步預告" data-index="52">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="70">
 <h2>GAS 做到了，但也有邊界</h2>
 <div class="compare-two" style="margin-top:1rem;">
 <div class="compare-col good">
@@ -1305,7 +1698,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 53: 下一堂銜接點 1 ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧 + 下一步預告" data-index="53">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="71">
 <h2>下一堂會用：doGet() 可以做網頁</h2>
 <div class="code-block fragment" data-order="0">
 <div class="code-label">GAS 有一個隱藏功能</div>
@@ -1322,7 +1715,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 54: 下一堂銜接點 2 ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧 + 下一步預告" data-index="54">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="72">
 <h2>下一堂會用：GAS 串外部 API</h2>
 <div class="flow fragment" data-order="0">
 <div class="flow-box">GAS</div>
@@ -1344,7 +1737,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 55: 故事線延續 ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧 + 下一步預告" data-index="55">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="73">
 <h2>故事線延續</h2>
 <div class="flow fragment" data-order="0" style="flex-wrap:wrap;">
 <div class="flow-box">一張飲料菜單</div>
@@ -1363,7 +1756,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 56: 帶走清單 ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧 + 下一步預告" data-index="56">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="74">
 <h2>帶走清單</h2>
 <div class="anchor-banner">
 <span class="anchor-label">本堂定位</span>
@@ -1404,7 +1797,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 57: 注意事項總覽 ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧 + 下一步預告" data-index="57">
+<div class="slide dataviz" data-act="Round 6：回顧 + 預告 M1-4" data-index="75">
 <h2>M1-3 注意事項總覽</h2>
 <table class="data-table">
 <thead>
@@ -1424,7 +1817,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </table>
 </div>
 <!-- ══ 58: M1-4 預告 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 下一步預告" data-index="58" style="background:linear-gradient(135deg,#0B3C5D 0%,#3b1f7c 50%,#7C3AED 100%);">
+<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 預告 M1-4" data-index="76" style="background:linear-gradient(135deg,#0B3C5D 0%,#3b1f7c 50%,#7C3AED 100%);">
 <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">NEXT UP</p>
 <h1 style="color:#fff;font-size:2.8rem;">M1-4<br/><span style="color:#c4b5fd;">GAS 串接 API + 網頁 + TG Bot</span></h1>
 <p class="poster-subtitle" style="margin-top:.8rem;">你的第一個對外服務 — 有網頁、有 AI、有通知</p>
@@ -1435,7 +1828,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 </div>
 <!-- ══ 59: 結尾頁 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 下一步預告" data-index="59" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+<div class="slide poster overlay-heavy" data-act="Round 6：回顧 + 預告 M1-4" data-index="77" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
 <h1 style="color:#fff;font-size:2.6rem;">AI 幫你寫程式<br/><span style="color:#6ee7d4;">你只需要說需求</span></h1>
 <p class="poster-subtitle" style="margin-top:1.2rem;">一張菜單 → 團購表單 → 自動統計 → 下一堂加通知</p>
 <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M1-3 完成</p>
@@ -1443,7 +1836,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div><!-- end .slides -->
 <!-- ── Controls ── -->
 <div class="progress" id="progress"></div>
-<div class="slide-counter" id="counter">1 / 60</div>
+<div class="slide-counter" id="counter">1 / 78</div>
 <div class="controls">
 <button disabled="" id="prevBtn" onclick="navigate(-1)">‹</button>
 <button id="nextBtn" onclick="navigate(1)">›</button>

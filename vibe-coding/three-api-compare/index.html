@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三家 AI API 比較器 | Vibe Coding M2-4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#fff; --offwhite:#F8F9FA; --g100:#E8EAED; --g200:#DADCE0;
+  --g400:#9AA0A6; --g500:#80868B; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --green:#0F9D8A; --green-lt:#E6F4F1; --green-dk:#0B7A6B;
+  --navy:#0B3C5D; --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --orange:#E8710A;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{font-family:'Noto Sans TC',sans-serif;color:var(--g900);background:#F2F4F7;min-height:100vh;font-size:16px;line-height:1.65;}
+
+/* Header */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0d2a44 50%,var(--green) 100%);color:#fff;padding:2rem 1.2rem 1.5rem;text-align:center;}
+.hero h1{font-size:1.8rem;font-weight:900;margin-bottom:.4rem;}
+.hero .sub{font-size:.95rem;color:rgba(255,255,255,.8);}
+.hero .badges{margin-top:.8rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;}
+.hero .badges span{background:rgba(255,255,255,.15);padding:.2rem .8rem;border-radius:100px;font-size:.78rem;font-weight:600;}
+
+/* Container */
+.wrap{max-width:1280px;margin:0 auto;padding:1.5rem 1.2rem;}
+
+/* Settings panel */
+.settings{background:#fff;border:1px solid var(--g200);border-radius:14px;margin-bottom:1.2rem;overflow:hidden;}
+.settings-toggle{padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:#fff;}
+.settings-toggle:hover{background:var(--offwhite);}
+.settings-toggle .title{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:.5rem;}
+.settings-toggle .status{font-size:.82rem;color:var(--g500);}
+.settings-toggle .status.ok{color:var(--green);font-weight:600;}
+.settings-toggle .arrow{transition:transform .2s;color:var(--g400);}
+.settings.open .arrow{transform:rotate(180deg);}
+.settings-body{display:none;padding:0 1.4rem 1.2rem;border-top:1px solid var(--g100);}
+.settings.open .settings-body{display:block;}
+.key-row{display:grid;grid-template-columns:140px 1fr;gap:1rem;align-items:start;padding:.8rem 0;border-bottom:1px solid var(--offwhite);}
+.key-row:last-child{border-bottom:none;}
+.key-row label{font-size:.92rem;font-weight:600;color:var(--g800);padding-top:.5rem;}
+.key-row label .where{display:block;font-size:.72rem;color:var(--g500);font-weight:400;margin-top:.15rem;}
+.key-row label .where a{color:var(--blue);text-decoration:none;}
+.key-row label .where a:hover{text-decoration:underline;}
+.key-row label .where a::after{content:" ↗";font-size:.65rem;opacity:.7;}
+.key-inputs{display:grid;grid-template-columns:1fr;gap:.4rem;}
+.model-picker{display:flex;gap:.4rem;}
+.model-picker input{flex:1;}
+.model-picker button{background:var(--blue-lt);color:var(--blue);border:1px solid rgba(26,115,232,.3);padding:.4rem .7rem;border-radius:8px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.model-picker button:hover{background:var(--blue);color:#fff;}
+.model-picker button:disabled{opacity:.5;cursor:not-allowed;}
+.model-list{display:none;background:var(--offwhite);border:1px solid var(--g200);border-radius:8px;padding:.5rem;max-height:180px;overflow-y:auto;margin-top:.3rem;}
+.model-list.show{display:block;}
+.model-list .ml-header{font-size:.72rem;color:var(--g500);padding:.2rem .4rem .4rem;font-weight:600;}
+.model-list .ml-item{padding:.4rem .55rem;border-radius:5px;cursor:pointer;font-family:'Fira Code',monospace;font-size:.78rem;color:var(--g800);display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+.model-list .ml-item:hover{background:var(--green-lt);color:var(--green);}
+.model-list .ml-item.active{background:var(--green);color:#fff;}
+.model-list .ml-item .ctx{font-size:.68rem;color:var(--g500);}
+.model-list .ml-item:hover .ctx{color:#fff;opacity:.85;}
+.model-list .ml-item .rec{display:inline-block;background:var(--gold);color:#fff;font-size:.6rem;padding:.05rem .3rem;border-radius:3px;font-weight:700;margin-right:.3rem;letter-spacing:.05em;}
+.model-list .ml-item.recommended{background:var(--gold-lt);}
+.model-list .ml-item.recommended:hover{background:var(--gold);color:#fff;}
+.model-list .ml-loading{padding:.5rem;color:var(--g500);font-size:.82rem;text-align:center;}
+.model-list .ml-error{padding:.5rem;color:var(--red);font-size:.82rem;background:var(--red-lt);border-radius:5px;}
+.input-with-hint{position:relative;}
+.input-with-hint .hint{position:absolute;top:.55rem;left:.7rem;font-size:.7rem;color:var(--g500);font-weight:600;letter-spacing:.05em;background:#fff;padding:0 .3rem;}
+.input-with-hint input{padding-left:3.5rem !important;}
+.input-with-hint .hint.model{left:.7rem;}
+.input-with-hint input.model-input{padding-left:4rem !important;}
+.key-row input{padding:.55rem .7rem;border:1.5px solid var(--g200);border-radius:8px;font-family:'Fira Code',monospace;font-size:.85rem;background:#fff;color:var(--g900);width:100%;}
+.key-row input:focus{outline:none;border-color:var(--green);}
+.key-row input.has-value{background:var(--green-lt);border-color:var(--green);}
+.settings-note{background:var(--gold-lt);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:.85rem;color:var(--g800);margin-top:.5rem;line-height:1.7;}
+.settings-note strong{color:#b07d00;}
+
+/* Question input */
+.question-card{background:#fff;border:1px solid var(--g200);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.2rem;}
+.question-card label{font-size:.92rem;font-weight:700;color:var(--g800);margin-bottom:.5rem;display:block;}
+.question-card textarea{width:100%;padding:.8rem 1rem;border:1.5px solid var(--g200);border-radius:10px;font-family:inherit;font-size:1rem;line-height:1.65;resize:vertical;min-height:80px;background:var(--offwhite);}
+.question-card textarea:focus{outline:none;border-color:var(--green);background:#fff;}
+
+.suggestions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.7rem;}
+.suggestion{background:var(--green-lt);color:var(--green);border:1px solid rgba(15,157,138,.2);padding:.35rem .85rem;border-radius:100px;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .15s;}
+.suggestion:hover{background:var(--green);color:#fff;}
+
+.ask-btn{margin-top:1rem;background:var(--green);color:#fff;border:none;padding:.9rem 2rem;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:background .15s;}
+.ask-btn:hover{background:var(--green-dk);}
+.ask-btn:disabled{background:var(--g400);cursor:not-allowed;}
+
+/* Results grid */
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+@media(max-width:900px){.results{grid-template-columns:1fr;}}
+
+.result-card{background:#fff;border:1px solid var(--g200);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-height:300px;}
+.result-card .head{padding:.8rem 1.1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--g100);}
+.result-card .head .platform{font-size:1.05rem;font-weight:900;}
+.result-card .head .model{font-family:'Fira Code',monospace;font-size:.72rem;color:var(--g500);margin-top:.1rem;}
+.result-card.groq .head{background:linear-gradient(90deg,#f97316 0%,#fb923c 100%);color:#fff;}
+.result-card.gemini .head{background:linear-gradient(90deg,#1a73e8 0%,#4285f4 100%);color:#fff;}
+.result-card.openrouter .head{background:linear-gradient(90deg,#7c3aed 0%,#9333ea 100%);color:#fff;}
+.result-card.groq .head .model,.result-card.gemini .head .model,.result-card.openrouter .head .model{color:rgba(255,255,255,.8);}
+.result-card .body{padding:1rem 1.1rem;flex:1;font-size:.92rem;line-height:1.75;color:var(--g800);white-space:pre-wrap;word-break:break-word;overflow-y:auto;}
+.result-card .body.empty{color:var(--g400);font-style:italic;}
+.result-card .body.error{color:var(--red);background:var(--red-lt);}
+.result-card .footer{padding:.6rem 1.1rem;background:var(--offwhite);border-top:1px solid var(--g100);font-size:.78rem;color:var(--g500);display:flex;gap:1rem;}
+.result-card .footer .stat{display:flex;gap:.3rem;align-items:center;}
+.result-card .footer .stat strong{color:var(--g800);font-family:'Fira Code',monospace;}
+
+/* Loading state */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--g200);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Footer */
+.page-footer{text-align:center;padding:2rem 1rem;font-size:.85rem;color:var(--g500);}
+.page-footer a{color:var(--green);text-decoration:none;}
+.page-footer a:hover{text-decoration:underline;}
+
+/* Mobile */
+@media(max-width:600px){
+  .hero h1{font-size:1.5rem;}
+  .key-row{grid-template-columns:1fr;gap:.4rem;}
+  .key-row label .where{margin-top:0;}
+  .wrap{padding:1rem .8rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>三家 AI API 比較器</h1>
+  <p class="sub">同一個問題 問三家 看回應風格 速度 字數差別</p>
+  <div class="badges">
+    <span>Vibe Coding M2-4 教學範例</span>
+    <span>Groq · Gemini · OpenRouter</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- Settings -->
+  <div class="settings" id="settings">
+    <div class="settings-toggle" onclick="toggleSettings()">
+      <div>
+        <div class="title">設定 API Keys</div>
+        <div class="status" id="keyStatus">尚未設定 點開貼上你的 Keys</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="settings-body">
+      <div class="key-row">
+        <label>Groq<span class="where"><a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a></span></label>
+        <div class="key-inputs">
+          <input type="password" id="groqKey" placeholder="API Key 例 gsk_..." onchange="saveKeys()">
+          <div class="model-picker">
+            <input type="text" id="groqModel" placeholder="模型 例 llama-3.3-70b-versatile" onchange="saveKeys()">
+            <button onclick="loadModels('groq')">確認 列出可用模型</button>
+          </div>
+          <div class="model-list" id="groqModelList"></div>
+        </div>
+      </div>
+      <div class="key-row">
+        <label>Google AI Studio<span class="where"><a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a></span></label>
+        <div class="key-inputs">
+          <input type="password" id="geminiKey" placeholder="API Key 例 AIzaSy..." onchange="saveKeys()">
+          <div class="model-picker">
+            <input type="text" id="geminiModel" placeholder="模型 例 gemini-3-flash-preview" onchange="saveKeys()">
+            <button onclick="loadModels('gemini')">確認 列出可用模型</button>
+          </div>
+          <div class="model-list" id="geminiModelList"></div>
+        </div>
+      </div>
+      <div class="key-row">
+        <label>OpenRouter<span class="where"><a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a></span></label>
+        <div class="key-inputs">
+          <input type="password" id="openrouterKey" placeholder="API Key 例 sk-or-..." onchange="saveKeys()">
+          <div class="model-picker">
+            <input type="text" id="openrouterModel" placeholder="模型 例 deepseek/deepseek-r1:free" onchange="saveKeys()">
+            <button onclick="loadModels('openrouter')">確認 列出免費模型</button>
+          </div>
+          <div class="model-list" id="openrouterModelList"></div>
+        </div>
+      </div>
+      <div class="settings-note">
+        <strong>安全提醒</strong>　Keys 只存在你瀏覽器的 localStorage 不會上傳任何伺服器　關掉這個分頁 Keys 仍會記住　共用電腦記得用完按下方清除
+        <div style="margin-top:.5rem;">
+          <button onclick="clearKeys()" style="background:#fff;border:1px solid var(--g200);color:var(--g800);padding:.3rem .8rem;border-radius:6px;font-size:.78rem;cursor:pointer;">清除所有 Keys</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question -->
+  <div class="question-card">
+    <label for="q">輸入你的問題</label>
+    <textarea id="q" placeholder="例：用 50 字解釋什麼是 vibe coding"></textarea>
+    <div class="suggestions">
+      <div class="suggestion" onclick="setQ(this)">用 50 字解釋什麼是 vibe coding</div>
+      <div class="suggestion" onclick="setQ(this)">幫我用三點摘要量子電腦的核心概念</div>
+      <div class="suggestion" onclick="setQ(this)">寫一段 100 字的咖啡店行銷文案</div>
+      <div class="suggestion" onclick="setQ(this)">為什麼 ESG 報告越來越重要</div>
+      <div class="suggestion" onclick="setQ(this)">用台灣大學生能懂的話解釋 AI agent</div>
+    </div>
+    <button class="ask-btn" onclick="askAll()" id="askBtn">
+      <span id="askText">問三家</span>
+    </button>
+  </div>
+
+  <!-- Results -->
+  <div class="results">
+    <div class="result-card groq">
+      <div class="head">
+        <div>
+          <div class="platform">Groq</div>
+          <div class="model" id="groqModelLabel">llama-3.3-70b-versatile</div>
+        </div>
+      </div>
+      <div class="body empty" id="groqBody">問題還沒送出</div>
+      <div class="footer">
+        <div class="stat"><span>速度</span><strong id="groqTime">—</strong></div>
+        <div class="stat"><span>字數</span><strong id="groqChars">—</strong></div>
+      </div>
+    </div>
+
+    <div class="result-card gemini">
+      <div class="head">
+        <div>
+          <div class="platform">Gemini</div>
+          <div class="model" id="geminiModelLabel">gemini-3-flash-preview</div>
+        </div>
+      </div>
+      <div class="body empty" id="geminiBody">問題還沒送出</div>
+      <div class="footer">
+        <div class="stat"><span>速度</span><strong id="geminiTime">—</strong></div>
+        <div class="stat"><span>字數</span><strong id="geminiChars">—</strong></div>
+      </div>
+    </div>
+
+    <div class="result-card openrouter">
+      <div class="head">
+        <div>
+          <div class="platform">OpenRouter</div>
+          <div class="model" id="openrouterModelLabel">deepseek/deepseek-r1:free</div>
+        </div>
+      </div>
+      <div class="body empty" id="openrouterBody">問題還沒送出</div>
+      <div class="footer">
+        <div class="stat"><span>速度</span><strong id="openrouterTime">—</strong></div>
+        <div class="stat"><span>字數</span><strong id="openrouterChars">—</strong></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="page-footer">
+  Vibe Coding · Stage 2 · M2-4 教學範例 ·
+  <a href="https://aipath.cooperation.tw/vibe-coding/" target="_blank">課程首頁</a>
+</div>
+
+<script>
+const STORAGE_KEY = 'three-api-keys-v2';
+
+// 預設模型 已實測可用（可在 UI 輸入框覆寫）
+const DEFAULT_MODELS = {
+  groq: 'llama-3.3-70b-versatile',
+  gemini: 'gemini-3-flash-preview',
+  openrouter: 'openai/gpt-oss-120b:free'
+};
+
+// 推薦模型（已實測穩定 + 一個備援 列出時自動排最上面）
+const RECOMMENDED = {
+  groq: ['llama-3.3-70b-versatile','llama-3.1-8b-instant'],
+  gemini: ['gemini-3-flash-preview','gemini-2.5-flash'],
+  openrouter: ['openai/gpt-oss-120b:free','meta-llama/llama-3.3-70b-instruct:free']
+};
+
+// 移除 reasoning 模型的思考區塊 例如 <think>...</think>
+function cleanResponse(text){
+  if(!text) return '';
+  return text
+    .replace(/<think>[\s\S]*?<\/think>/g, '')
+    .replace(/<thinking>[\s\S]*?<\/thinking>/g, '')
+    .replace(/<reasoning>[\s\S]*?<\/reasoning>/g, '')
+    .trim();
+}
+
+// Load saved keys + models on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  if(saved.groq) document.getElementById('groqKey').value = saved.groq;
+  if(saved.gemini) document.getElementById('geminiKey').value = saved.gemini;
+  if(saved.openrouter) document.getElementById('openrouterKey').value = saved.openrouter;
+  document.getElementById('groqModel').value = saved.groqModel || DEFAULT_MODELS.groq;
+  document.getElementById('geminiModel').value = saved.geminiModel || DEFAULT_MODELS.gemini;
+  document.getElementById('openrouterModel').value = saved.openrouterModel || DEFAULT_MODELS.openrouter;
+  updateKeyVisuals();
+  updateKeyStatus();
+  updateModelLabels();
+});
+
+function toggleSettings(){
+  document.getElementById('settings').classList.toggle('open');
+}
+
+function saveKeys(){
+  const keys = {
+    groq: document.getElementById('groqKey').value.trim(),
+    gemini: document.getElementById('geminiKey').value.trim(),
+    openrouter: document.getElementById('openrouterKey').value.trim(),
+    groqModel: document.getElementById('groqModel').value.trim() || DEFAULT_MODELS.groq,
+    geminiModel: document.getElementById('geminiModel').value.trim() || DEFAULT_MODELS.gemini,
+    openrouterModel: document.getElementById('openrouterModel').value.trim() || DEFAULT_MODELS.openrouter
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
+  updateKeyVisuals();
+  updateKeyStatus();
+  updateModelLabels();
+}
+
+function updateModelLabels(){
+  document.getElementById('groqModelLabel').textContent = document.getElementById('groqModel').value.trim() || DEFAULT_MODELS.groq;
+  document.getElementById('geminiModelLabel').textContent = document.getElementById('geminiModel').value.trim() || DEFAULT_MODELS.gemini;
+  document.getElementById('openrouterModelLabel').textContent = document.getElementById('openrouterModel').value.trim() || DEFAULT_MODELS.openrouter;
+}
+
+function clearKeys(){
+  if(!confirm('確定清除所有 Keys？')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  ['groqKey','geminiKey','openrouterKey'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('groqModel').value = DEFAULT_MODELS.groq;
+  document.getElementById('geminiModel').value = DEFAULT_MODELS.gemini;
+  document.getElementById('openrouterModel').value = DEFAULT_MODELS.openrouter;
+  updateKeyVisuals();
+  updateKeyStatus();
+  updateModelLabels();
+}
+
+function updateKeyVisuals(){
+  ['groqKey','geminiKey','openrouterKey'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.toggle('has-value', !!el.value.trim());
+  });
+}
+
+function updateKeyStatus(){
+  const keys = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const have = ['groq','gemini','openrouter'].filter(k => keys[k]);
+  const status = document.getElementById('keyStatus');
+  if(have.length === 0){
+    status.textContent = '尚未設定 點開貼上你的 Keys';
+    status.classList.remove('ok');
+  } else if(have.length === 3){
+    status.textContent = '三家 Keys 都設好了';
+    status.classList.add('ok');
+  } else {
+    status.textContent = `已設定 ${have.length}/3 家 ・ ${have.join(' · ')}`;
+    status.classList.remove('ok');
+  }
+}
+
+function setQ(el){
+  document.getElementById('q').value = el.textContent;
+}
+
+async function askAll(){
+  const q = document.getElementById('q').value.trim();
+  if(!q){ alert('請先輸入問題'); return; }
+
+  const keys = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const have = ['groq','gemini','openrouter'].filter(k => keys[k]);
+  if(have.length === 0){
+    alert('請先在上方設定至少一家 API Key');
+    document.getElementById('settings').classList.add('open');
+    return;
+  }
+
+  const btn = document.getElementById('askBtn');
+  const txt = document.getElementById('askText');
+  btn.disabled = true;
+  txt.innerHTML = '<span class="spinner"></span> 三家並行中...';
+
+  // Reset all
+  ['groq','gemini','openrouter'].forEach(p => {
+    setBody(p, '等待回應...', false, false);
+    document.getElementById(p + 'Time').textContent = '—';
+    document.getElementById(p + 'Chars').textContent = '—';
+  });
+
+  // Run in parallel
+  await Promise.all([
+    keys.groq ? callGroq(q, keys.groq) : setBody('groq','尚未設定 Key', false, true),
+    keys.gemini ? callGemini(q, keys.gemini) : setBody('gemini','尚未設定 Key', false, true),
+    keys.openrouter ? callOpenRouter(q, keys.openrouter) : setBody('openrouter','尚未設定 Key', false, true)
+  ]);
+
+  btn.disabled = false;
+  txt.textContent = '再問一次';
+}
+
+function setBody(p, txt, loading, error){
+  const el = document.getElementById(p + 'Body');
+  if(error){
+    // 加上錯誤類型友善提示
+    const tip = getErrorTip(p, txt);
+    el.innerHTML = `<div style="color:var(--red);font-size:.85rem;margin-bottom:.5rem;">${escapeHtml(txt)}</div>` +
+      (tip ? `<div style="background:var(--gold-lt);border-left:3px solid var(--gold);padding:.5rem .7rem;border-radius:0 6px 6px 0;color:var(--g800);font-size:.85rem;line-height:1.6;">${tip}</div>` : '');
+  } else {
+    el.textContent = txt;
+  }
+  el.classList.toggle('empty', loading || (error && !txt));
+  el.classList.toggle('error', !!error);
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function getErrorTip(platform, msg){
+  const m = String(msg).toLowerCase();
+  if(m.includes('limit: 0') || m.includes('quota') && platform==='gemini'){
+    return `<strong>建議</strong>　你的 Google 帳號這個模型沒有 free tier 額度<br>點上方「確認 列出可用模型」改試 <code>gemini-1.5-flash</code>（多數帳號仍免費 15 RPM）`;
+  }
+  if(m.includes('rate limit') || m.includes('too many') || m.includes('429')){
+    return `<strong>建議</strong>　遇到 RPM 速度限制 等 30 秒再試<br>或上方換另一個 ★ 推薦免費模型`;
+  }
+  if(m.includes('not found') || m.includes('no endpoint')){
+    return `<strong>建議</strong>　這個模型 ID 不存在或下架了<br>點「確認 列出免費模型」挑一個現在還活著的`;
+  }
+  if(m.includes('unauthorized') || m.includes('401') || m.includes('403') || m.includes('invalid')){
+    return `<strong>建議</strong>　API Key 無效 確認貼到正確平台<br>或回 ${platform === 'groq' ? 'console.groq.com' : platform === 'gemini' ? 'aistudio.google.com' : 'openrouter.ai'} 重產一把`;
+  }
+  return '';
+}
+
+function getModel(p){
+  const el = document.getElementById(p + 'Model');
+  return (el.value.trim() || DEFAULT_MODELS[p]);
+}
+
+// 查詢可用模型 + 列出免費的
+async function loadModels(platform){
+  const keyEl = document.getElementById(platform + 'Key');
+  const key = keyEl.value.trim();
+  const listEl = document.getElementById(platform + 'ModelList');
+  if(!key){ alert('請先貼上 API Key'); keyEl.focus(); return; }
+  listEl.classList.add('show');
+  listEl.innerHTML = '<div class="ml-loading"><span class="spinner"></span> 載入可用模型中...</div>';
+  try{
+    let models = [];
+    if(platform === 'groq'){
+      const res = await fetch('https://api.groq.com/openai/v1/models', {
+        headers:{'Authorization':'Bearer '+key}
+      });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+      models = (data.data || [])
+        .filter(m => m.active !== false)
+        .map(m => ({id: m.id, ctx: m.context_window ? (m.context_window/1000).toFixed(0)+'k' : '—'}));
+    } else if(platform === 'gemini'){
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`);
+      const data = await res.json();
+      if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+      models = (data.models || [])
+        .filter(m => (m.supportedGenerationMethods||[]).includes('generateContent'))
+        .map(m => ({id: m.name.replace(/^models\//,''), ctx: m.inputTokenLimit ? (m.inputTokenLimit/1000).toFixed(0)+'k' : '—'}));
+    } else if(platform === 'openrouter'){
+      const res = await fetch('https://openrouter.ai/api/v1/models', {
+        headers:{'Authorization':'Bearer '+key}
+      });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+      // 只列免費 prompt 跟 completion 都是 0
+      models = (data.data || [])
+        .filter(m => parseFloat(m.pricing?.prompt||'0')===0 && parseFloat(m.pricing?.completion||'0')===0)
+        .map(m => ({id: m.id, ctx: m.context_length ? (m.context_length/1000).toFixed(0)+'k' : '—'}));
+    }
+    if(models.length === 0){
+      listEl.innerHTML = '<div class="ml-error">沒有找到可用模型</div>';
+      return;
+    }
+    const currentModel = getModel(platform);
+    const recList = RECOMMENDED[platform] || [];
+    // 把推薦模型排前面
+    models.sort((a,b) => {
+      const aRec = recList.includes(a.id) ? 0 : 1;
+      const bRec = recList.includes(b.id) ? 0 : 1;
+      return aRec - bRec || a.id.localeCompare(b.id);
+    });
+    const label = platform === 'openrouter' ? `${models.length} 個免費模型` : `${models.length} 個可用模型`;
+    listEl.innerHTML = '<div class="ml-header">★ 推薦模型輸出較穩 reasoning 模型的 &lt;think&gt; 區塊會自動隱藏 ・ ' + label + '</div>' +
+      models.map(m => {
+        const rec = recList.includes(m.id) ? '<span class="rec">★ 推薦</span>' : '';
+        const cls = recList.includes(m.id) ? 'recommended' : '';
+        const active = m.id===currentModel ? 'active' : '';
+        return `<div class="ml-item ${cls} ${active}" onclick="pickModel('${platform}','${m.id}')"><span>${rec}${m.id}</span><span class="ctx">${m.ctx} ctx</span></div>`;
+      }).join('');
+  }catch(e){
+    listEl.innerHTML = '<div class="ml-error">錯誤: ' + e.message + '</div>';
+  }
+}
+
+function pickModel(platform, modelId){
+  document.getElementById(platform + 'Model').value = modelId;
+  saveKeys();
+  // Update active state in list
+  const list = document.getElementById(platform + 'ModelList');
+  list.querySelectorAll('.ml-item').forEach(item => {
+    item.classList.toggle('active', item.textContent.startsWith(modelId));
+  });
+}
+
+const MAX_TOKENS = 2500;
+const TIMEOUT_MS = 90000;
+
+function makeAbortable(){
+  const ac = new AbortController();
+  const timer = setTimeout(() => ac.abort(new Error('Timeout '+TIMEOUT_MS+'ms')), TIMEOUT_MS);
+  return {signal: ac.signal, clear: () => clearTimeout(timer)};
+}
+
+function appendTruncationNote(text, reason){
+  const truncFlags = ['MAX_TOKENS','length','content_filter'];
+  if(truncFlags.includes(reason)){
+    return text + '\n\n[輸出達到上限被截斷 可重問要求更精簡]';
+  }
+  return text;
+}
+
+async function callGroq(q, key){
+  const t0 = performance.now();
+  const ab = makeAbortable();
+  try{
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},
+      signal: ab.signal,
+      body: JSON.stringify({
+        model: getModel('groq'),
+        messages:[{role:'user', content: q}],
+        max_tokens: MAX_TOKENS
+      })
+    });
+    ab.clear();
+    const data = await res.json();
+    console.log('[Groq]', data);
+    if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+    const raw = data.choices?.[0]?.message?.content || '(空回應)';
+    const finish = data.choices?.[0]?.finish_reason;
+    let ans = cleanResponse(raw);
+    ans = appendTruncationNote(ans, finish);
+    setBody('groq', ans, false, false);
+    showStats('groq', performance.now()-t0, ans.length);
+  }catch(e){
+    ab.clear();
+    const msg = e.name === 'AbortError' ? '逾時 90 秒沒回應 可能模型卡住' : e.message;
+    setBody('groq', '錯誤: ' + msg, false, true);
+  }
+}
+
+async function callGemini(q, key){
+  const t0 = performance.now();
+  const ab = makeAbortable();
+  try{
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${getModel('gemini')}:generateContent?key=${encodeURIComponent(key)}`;
+    const res = await fetch(url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      signal: ab.signal,
+      body: JSON.stringify({
+        contents:[{parts:[{text: q}]}],
+        generationConfig:{maxOutputTokens: MAX_TOKENS}
+      })
+    });
+    ab.clear();
+    const data = await res.json();
+    console.log('[Gemini]', data);
+    if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '(空回應)';
+    const finish = data.candidates?.[0]?.finishReason;
+    let ans = cleanResponse(raw);
+    ans = appendTruncationNote(ans, finish);
+    setBody('gemini', ans, false, false);
+    showStats('gemini', performance.now()-t0, ans.length);
+  }catch(e){
+    ab.clear();
+    const msg = e.name === 'AbortError' ? '逾時 90 秒沒回應 可能模型卡住' : e.message;
+    setBody('gemini', '錯誤: ' + msg, false, true);
+  }
+}
+
+async function callOpenRouter(q, key){
+  const t0 = performance.now();
+  const ab = makeAbortable();
+  try{
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method:'POST',
+      headers:{
+        'Authorization':'Bearer '+key,
+        'Content-Type':'application/json',
+        'HTTP-Referer': window.location.origin,
+        'X-Title': 'three-api-compare'
+      },
+      signal: ab.signal,
+      body: JSON.stringify({
+        model: getModel('openrouter'),
+        messages:[{role:'user', content: q}],
+        max_tokens: MAX_TOKENS
+      })
+    });
+    ab.clear();
+    const data = await res.json();
+    console.log('[OpenRouter]', data);
+    if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+    const choice = data.choices?.[0];
+    // gpt-oss 系列可能把 thinking 放 reasoning 欄位 content 卻空
+    let raw = choice?.message?.content || '';
+    if(!raw && choice?.message?.reasoning){
+      raw = '(模型只回了 reasoning 沒回 content 試另一個模型)';
+    }
+    if(!raw) raw = '(空回應 可能 max_tokens 不夠 或模型異常)';
+    const finish = choice?.finish_reason;
+    let ans = cleanResponse(raw);
+    ans = appendTruncationNote(ans, finish);
+    setBody('openrouter', ans, false, false);
+    showStats('openrouter', performance.now()-t0, ans.length);
+  }catch(e){
+    ab.clear();
+    const msg = e.name === 'AbortError' ? '逾時 90 秒沒回應 可能模型卡住' : e.message;
+    setBody('openrouter', '錯誤: ' + msg, false, true);
+  }
+}
+
+function showStats(p, ms, chars){
+  document.getElementById(p + 'Time').textContent = (ms/1000).toFixed(2) + 's';
+  document.getElementById(p + 'Chars').textContent = chars + ' 字';
+}
+</script>
+</body>
+</html>

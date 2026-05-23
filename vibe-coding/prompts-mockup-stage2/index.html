@@ -1,0 +1,3356 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stage 2 Prompt 模板庫 — Vibe Coding 上線你的網頁</title>
+  <style>
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --border: #e2e2dd;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #c15f3c;
+      --accent-hover: #a04a2b;
+      --accent-soft: #f7e9e3;
+      --code-bg: #1a1a1a;
+      --code-text: #f4f4f0;
+      --ok: #2d7a3e;
+      --warn: #b58105;
+      --err: #c0392b;
+      --tag-bg: #ececea;
+      --lv1: #9a9a9a;
+      --lv2: #0F9D8A;
+      --lv3: #8e6bbf;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    /* Header */
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .page-header .lead {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .stage-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-right: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Filter */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .filter-btn {
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--text);
+    }
+    .filter-btn:hover { background: var(--accent-soft); }
+    .filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Reset bar */
+    .reset-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .reset-bar .unlock-count {
+      color: var(--accent-hover);
+      font-weight: 500;
+    }
+    .reset-btn {
+      background: #fff;
+      color: var(--muted);
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .reset-btn:hover {
+      background: #f4f3f0;
+      color: var(--text);
+    }
+
+    /* Intro card — Stage 2 主軸觀念 */
+    .intro-card {
+      background: linear-gradient(135deg, #fff7f1 0%, #fff 60%);
+      border: 1px solid var(--accent);
+      border-left: 5px solid var(--accent);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+    .intro-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .intro-badge {
+      background: var(--accent);
+      color: #fff;
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .intro-card h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .intro-lead {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+    .core-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .core-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      position: relative;
+    }
+    .core-item .num {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 2px 6px rgba(193,95,60,0.3);
+    }
+    .core-item h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .core-item .core-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    @media (max-width: 600px) {
+      .core-grid { grid-template-columns: 1fr; }
+    }
+
+    /* LV 階段條 */
+    .lv-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 16px;
+      align-items: stretch;
+      font-size: 12px;
+    }
+
+    /* LV 三階段 prompt 對照範例(在 intro card 內) */
+    .lv-examples {
+      margin-top: 20px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .lv-examples-header {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 10px;
+      letter-spacing: 0.03em;
+    }
+    .lv-example {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px dashed #eee;
+    }
+    .lv-example:last-child { border-bottom: none; }
+    .lv-tag-mini {
+      flex-shrink: 0;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      margin-top: 1px;
+    }
+    .lv-tag-mini.lv1-bg { background: var(--lv1); }
+    .lv-tag-mini.lv2-bg { background: var(--lv2); }
+    .lv-tag-mini.lv3-bg { background: var(--lv3); }
+    .lv-example-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .lv-example-prompt {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+      background: #1a1a1a;
+      color: #f4f4f0;
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-family: "JetBrains Mono", "Menlo", monospace;
+      margin-bottom: 4px;
+    }
+    .lv-example-note {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .lv-pill {
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lv-pill.lv1 { background: var(--lv1); flex: 25; }
+    .lv-pill.lv2 { background: var(--lv2); flex: 36; }
+    .lv-pill.lv3 { background: var(--lv3); flex: 31; }
+
+    /* Tag — LV color */
+    .tag-lv1 { background: #e5e5e5; color: #555; }
+    .tag-lv2 { background: #d1ebe6; color: #0d6e60; }
+    .tag-lv3 { background: #e6dcf2; color: #5d4683; }
+
+    /* Lock state */
+    .lock-state {
+      background: #fff7f1;
+      border: 2px dashed var(--accent);
+      border-radius: 10px;
+      padding: 24px 20px;
+      margin-top: 16px;
+      text-align: center;
+    }
+    .lock-hint {
+      color: var(--text);
+      font-size: 15px;
+      margin-bottom: 6px;
+      line-height: 1.7;
+    }
+    .lock-hint small {
+      color: var(--muted);
+      font-size: 13px;
+      display: block;
+      margin-top: 4px;
+    }
+    .unlock-btn {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 12px;
+    }
+    .unlock-btn:hover { background: var(--accent-hover); }
+
+    .pin-input-wrap {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .pin-input {
+      width: 140px;
+      padding: 10px 14px;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      font-size: 18px;
+      font-family: "JetBrains Mono", monospace;
+      text-align: center;
+      letter-spacing: 0.4em;
+      background: #fff;
+    }
+    .pin-input:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+    .pin-submit {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .pin-cancel {
+      background: #fff;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .pin-error {
+      color: var(--err);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    /* Relock per card */
+    .relock-btn {
+      margin-top: 16px;
+      background: transparent;
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .relock-btn:hover {
+      background: #f4f3f0;
+      color: var(--text);
+    }
+
+    /* Inline step list */
+    .step-list-inline {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px 18px;
+      background: #f8f7f5;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    .step-list-inline .step-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .step-list-inline .step-num-sm {
+      background: var(--muted);
+      color: #fff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 16px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Task card */
+    .task {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .task.hidden { display: none; }
+    .task-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      background: var(--tag-bg);
+      color: var(--muted);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .tag.accent {
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+    }
+    .task h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .task .desc {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 18px;
+    }
+    .task h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 20px 0 10px;
+    }
+    .task .prereq {
+      background: #fdf6e3;
+      border-left: 3px solid var(--warn);
+      padding: 10px 14px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* Tip callout */
+    .tip-callout {
+      background: #fff7e8;
+      border: 1px solid #f0c419;
+      border-left: 4px solid #d97706;
+      padding: 12px 14px;
+      font-size: 14px;
+      margin-top: 14px;
+      border-radius: 0 6px 6px 0;
+      line-height: 1.7;
+    }
+    .tip-callout .tip-title {
+      display: inline-block;
+      background: #d97706;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-right: 6px;
+      letter-spacing: 0.05em;
+    }
+    .tip-callout .tip-fix-prompt {
+      background: #1a1a1a;
+      color: #f4f4f0;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-family: "JetBrains Mono", "Menlo", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 8px 0;
+      white-space: pre-wrap;
+    }
+
+    /* Prompt block */
+    .prompt-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .prompt-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 20px 20px 20px 20px;
+      border-radius: 10px;
+      font-family: "JetBrains Mono", "Menlo", "Consolas", monospace;
+      font-size: 14px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 6px 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover { background: var(--accent-hover); }
+    .copy-btn.copied { background: var(--ok); }
+    .copy-hint {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .copy-hint .fill-in {
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+    }
+
+    /* Expected output */
+    .expected {
+      background: #f4f7f2;
+      border-left: 3px solid var(--ok);
+      padding: 12px 16px;
+      font-size: 14px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 16px;
+    }
+    .expected strong { color: var(--ok); }
+
+    /* Mini mockup ・ premium 升級配色(P3-A) */
+    .mini-mock {
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(15, 157, 138, 0.18);
+      border-radius: 10px;
+      overflow: hidden;
+      font-size: 12px;
+      box-shadow:
+        0 1px 2px rgba(15, 60, 93, 0.04),
+        0 8px 24px rgba(15, 157, 138, 0.06);
+      backdrop-filter: blur(4px);
+    }
+    .mini-mock .mock-bar {
+      background: linear-gradient(90deg, #0B3C5D 0%, #0F9D8A 100%);
+      padding: 5px 10px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.95);
+    }
+    .mini-mock .mock-bar .dot {
+      background: rgba(255, 255, 255, 0.35) !important;
+    }
+    .mini-mock .mock-bar .url {
+      color: rgba(255, 255, 255, 0.85) !important;
+    }
+    .mini-mock .mock-bar .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #bbb;
+    }
+    .mini-mock .mock-bar .url {
+      margin-left: 6px;
+      flex: 1;
+      font-size: 10px;
+      color: #888;
+    }
+    .mini-mock .mock-body { padding: 10px 12px; }
+    .mini-mock .mock-caption {
+      font-size: 10px;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 4px;
+      padding: 0 12px 8px;
+    }
+    .mini-mock table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    .mini-mock th {
+      background: #f4f7f2;
+      padding: 4px 8px;
+      text-align: left;
+      border-bottom: 1px solid #d1e7e2;
+      color: var(--ok);
+      font-weight: 600;
+    }
+    .mini-mock td {
+      padding: 3px 8px;
+      border-bottom: 1px solid #f0f0ec;
+    }
+
+    /* Mock — IDE chat 模式 */
+    .mock-ide {
+      display: grid;
+      grid-template-columns: 110px 1fr 160px;
+      gap: 1px;
+      background: #ddd;
+      font-size: 10px;
+    }
+    .mock-ide > div {
+      background: #fff;
+      padding: 6px 8px;
+      min-height: 110px;
+    }
+    .mock-ide .ide-files {
+      background: #f4f3f0;
+      font-family: "JetBrains Mono", monospace;
+      color: #444;
+      line-height: 1.7;
+    }
+    .mock-ide .ide-files .file { padding-left: 8px; }
+    .mock-ide .ide-files .file.new { color: var(--ok); font-weight: 600; }
+    .mock-ide .ide-files .file.changed { color: var(--accent); }
+    .mock-ide .ide-edit {
+      font-family: "JetBrains Mono", monospace;
+      color: #222;
+      line-height: 1.5;
+      font-size: 9px;
+      overflow: hidden;
+    }
+    .mock-ide .ide-edit .ln {
+      color: #999;
+      display: inline-block;
+      width: 18px;
+      text-align: right;
+      margin-right: 6px;
+    }
+    .mock-ide .ide-edit .hl {
+      background: #d8f0c8;
+      padding: 0 2px;
+    }
+    .mock-ide .ide-chat {
+      background: #fafafa;
+      font-size: 9px;
+      color: #444;
+      line-height: 1.5;
+    }
+    .mock-ide .ide-chat .role-user {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .mock-ide .ide-chat .role-ai {
+      color: var(--ok);
+      font-weight: 600;
+    }
+    .mock-ide .ide-chat .msg {
+      margin: 2px 0 6px;
+      color: #333;
+    }
+
+    /* Mock — commit history */
+    .mock-commits {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      padding: 8px 10px;
+    }
+    .mock-commits .row {
+      display: flex;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f0ec;
+      align-items: center;
+    }
+    .mock-commits .row:last-child { border-bottom: none; }
+    .mock-commits .sha {
+      color: var(--accent);
+      width: 50px;
+    }
+    .mock-commits .msg { flex: 1; }
+    .mock-commits .msg.bad { color: var(--err); text-decoration: line-through; opacity: 0.7; }
+    .mock-commits .msg.good { color: #222; }
+    .mock-commits .badge {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+    .mock-commits .badge.bad { background: #fbe5e2; color: var(--err); }
+    .mock-commits .badge.good { background: #e3f1e6; color: var(--ok); }
+
+    /* Mock — GitHub repo file */
+    .mock-gh-file {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      padding: 10px 12px;
+    }
+    .mock-gh-file .gh-header {
+      color: #555;
+      font-size: 9px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 4px;
+    }
+    .mock-gh-file .line {
+      display: flex;
+      gap: 8px;
+      padding: 1px 0;
+    }
+    .mock-gh-file .ln {
+      color: #aaa;
+      width: 18px;
+      text-align: right;
+    }
+    .mock-gh-file .leak {
+      background: #fbe5e2;
+      color: var(--err);
+      padding: 0 4px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+    .mock-gh-file .alert {
+      background: #fff3cd;
+      color: var(--err);
+      padding: 4px 8px;
+      margin-top: 6px;
+      border-radius: 4px;
+      font-size: 9px;
+      border: 1px solid #f0c419;
+    }
+
+    /* Mock — Profile page */
+    .mock-profile {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 12px;
+      padding: 12px;
+      align-items: start;
+    }
+    .mock-profile .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0F9D8A, #0B3C5D);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 28px;
+    }
+    .mock-profile .readme {
+      background: #fff;
+      padding: 8px 10px;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+    .mock-profile .readme h4 {
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #222;
+    }
+    .mock-profile .readme .bio {
+      color: #555;
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+    .mock-profile .readme .skill-row {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .mock-profile .readme .skill {
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-size: 9px;
+    }
+
+    /* Mock — agy chat steps */
+    .mock-chat-steps {
+      padding: 8px 10px;
+      font-size: 10px;
+    }
+    .mock-chat-steps .step {
+      display: flex;
+      gap: 8px;
+      padding: 4px 0;
+      align-items: flex-start;
+    }
+    .mock-chat-steps .step-marker {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--ok);
+      color: #fff;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+    }
+    .mock-chat-steps .step-marker.pending {
+      background: #fff;
+      border: 2px dashed var(--accent);
+      color: var(--accent);
+    }
+    .mock-chat-steps .step-marker.user {
+      background: var(--accent);
+    }
+    .mock-chat-steps .step-text {
+      flex: 1;
+      line-height: 1.5;
+      color: #333;
+    }
+    .mock-chat-steps .step-text .ai-line {
+      color: #555;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9px;
+      background: #f4f3f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    /* Mock — 3-tier architecture flow */
+    .mock-tier {
+      padding: 12px 14px;
+      font-size: 10px;
+    }
+    .mock-tier .tier-row {
+      display: grid;
+      grid-template-columns: 1fr 30px 1fr 30px 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    .mock-tier .tier-box {
+      background: #fff;
+      border: 1.5px solid;
+      border-radius: 8px;
+      padding: 8px 6px;
+      text-align: center;
+      font-size: 9px;
+      line-height: 1.4;
+    }
+    .mock-tier .tier-box.t1 { border-color: #0F9D8A; }
+    .mock-tier .tier-box.t2 { border-color: #c15f3c; }
+    .mock-tier .tier-box.t3 { border-color: #6b6b6b; }
+    .mock-tier .tier-box .label {
+      font-weight: 700;
+      color: #222;
+      font-size: 10px;
+      margin-bottom: 3px;
+    }
+    .mock-tier .tier-box .sub {
+      color: #666;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 8px;
+    }
+    .mock-tier .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .mock-tier .legend {
+      margin-top: 8px;
+      font-size: 9px;
+      color: #666;
+      text-align: center;
+    }
+
+    /* Mock — slide thumbnails */
+    .mock-slides {
+      padding: 8px 10px;
+    }
+    .mock-slides .thumb-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .mock-slides .thumb {
+      background: linear-gradient(135deg, #0F9D8A 0%, #0B3C5D 100%);
+      color: #fff;
+      padding: 6px 4px;
+      border-radius: 3px;
+      font-size: 8px;
+      text-align: center;
+      aspect-ratio: 16/10;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      line-height: 1.3;
+    }
+    .mock-slides .thumb .t-num {
+      font-size: 7px;
+      opacity: 0.7;
+      margin-bottom: 2px;
+    }
+    .mock-slides .thumb .t-title {
+      font-weight: 700;
+      font-size: 9px;
+    }
+    .mock-slides .thumb.cover {
+      background: #1a1a1a;
+    }
+    .mock-slides .thumb.qa {
+      background: linear-gradient(135deg, #8e6bbf, #5d4683);
+    }
+
+    /* Mock — markdown preview */
+    .mock-md {
+      padding: 10px 12px;
+      font-size: 10px;
+      line-height: 1.7;
+      color: #333;
+      font-family: "Georgia", serif;
+    }
+    .mock-md h4 {
+      font-size: 13px;
+      font-family: -apple-system, sans-serif;
+      color: #0F9D8A;
+      border-bottom: 1px solid #d1ebe6;
+      padding-bottom: 3px;
+      margin: 6px 0 4px;
+    }
+    .mock-md h5 {
+      font-size: 11px;
+      font-family: -apple-system, sans-serif;
+      color: #0B3C5D;
+      margin: 5px 0 3px;
+    }
+    .mock-md p { margin-bottom: 4px; font-size: 10px; }
+    .mock-md ul { margin: 3px 0 6px 16px; font-size: 10px; }
+    .mock-md li { line-height: 1.6; }
+    .mock-md .data-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      font-size: 9px;
+      background: #f4f7f2;
+      border: 1px solid #d1e7e2;
+      border-radius: 3px;
+      margin: 4px 0;
+    }
+    .mock-md .data-table > div {
+      padding: 3px 6px;
+      border-right: 1px solid #d1e7e2;
+      border-bottom: 1px solid #d1e7e2;
+    }
+    .mock-md .data-table > div:nth-child(3n) { border-right: none; }
+    .mock-md .data-table .h {
+      background: #d1ebe6;
+      color: #0d6e60;
+      font-weight: 600;
+    }
+
+    /* Mock — card */
+    .mock-card-share {
+      padding: 10px 12px;
+    }
+    .mock-card-share .share-card {
+      background: linear-gradient(135deg, #0F9D8A 0%, #0B3C5D 100%);
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .mock-card-share .share-card .share-title {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .mock-card-share .share-card .share-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 10px;
+      line-height: 1.8;
+    }
+    .mock-card-share .share-card .share-list li {
+      padding-left: 14px;
+      position: relative;
+    }
+    .mock-card-share .share-card .share-list li::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      color: #fff;
+      opacity: 0.7;
+    }
+
+    /* Mock — multi-page site */
+    .mock-multi-page {
+      padding: 8px 10px;
+    }
+    .mock-multi-page .navbar-mini {
+      background: #0F9D8A;
+      color: #fff;
+      padding: 4px 8px;
+      display: flex;
+      gap: 12px;
+      font-size: 9px;
+      border-radius: 3px 3px 0 0;
+    }
+    .mock-multi-page .navbar-mini span { font-weight: 600; }
+    .mock-multi-page .navbar-mini span.active {
+      background: rgba(255,255,255,0.2);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .mock-multi-page .page-body {
+      background: #fff;
+      padding: 8px 10px;
+      border: 1px solid #eee;
+      border-top: none;
+      font-size: 9px;
+      color: #444;
+      line-height: 1.6;
+      min-height: 60px;
+    }
+    .mock-multi-page .pinned-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .mock-multi-page .pinned-card {
+      background: #f4f7f2;
+      border: 1px solid #d1e7e2;
+      padding: 4px 6px;
+      border-radius: 3px;
+      font-size: 8px;
+      color: #0d6e60;
+    }
+
+    /* Mock — drink order app */
+    .mock-drink {
+      padding: 10px;
+      font-size: 9px;
+    }
+    .mock-drink .phone {
+      background: #fff;
+      border: 2px solid #222;
+      border-radius: 14px;
+      padding: 8px;
+      max-width: 180px;
+      margin: 0 auto;
+    }
+    .mock-drink .drink-header {
+      background: #0F9D8A;
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 6px 6px 0 0;
+      font-weight: 700;
+      font-size: 10px;
+      text-align: center;
+    }
+    .mock-drink .drink-list {
+      padding: 4px 0;
+      font-size: 9px;
+      line-height: 1.7;
+    }
+    .mock-drink .drink-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 6px;
+      border-bottom: 1px solid #eee;
+    }
+    .mock-drink .drink-row span:last-child {
+      color: #0F9D8A;
+      font-weight: 600;
+    }
+    .mock-drink .drink-cta {
+      background: #c15f3c;
+      color: #fff;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* Mock — skill registered */
+    .mock-skill {
+      padding: 10px 12px;
+      font-size: 10px;
+    }
+    .mock-skill .skill-card {
+      background: #f4f7f2;
+      border: 1px solid #d1e7e2;
+      border-left: 3px solid var(--ok);
+      padding: 8px 10px;
+      border-radius: 4px;
+    }
+    .mock-skill .skill-card .skill-name {
+      font-weight: 700;
+      color: var(--ok);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+    .mock-skill .skill-card .skill-trigger {
+      font-size: 9px;
+      color: #444;
+      font-family: "JetBrains Mono", monospace;
+      background: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-top: 3px;
+    }
+    .mock-skill .next-call {
+      margin-top: 8px;
+      background: #1a1a1a;
+      color: #f4f4f0;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9px;
+    }
+
+    /* Mock — agent log */
+    .mock-agent {
+      padding: 8px 10px;
+      font-size: 9px;
+      font-family: "JetBrains Mono", monospace;
+      background: #1a1a1a;
+      color: #f4f4f0;
+      line-height: 1.7;
+    }
+    .mock-agent .ag-step {
+      display: flex;
+      gap: 6px;
+      padding: 2px 0;
+    }
+    .mock-agent .ag-step .ck { color: var(--ok); width: 12px; }
+    .mock-agent .ag-step .ck.pending { color: #999; }
+    .mock-agent .ag-step .ck.running { color: var(--accent); }
+    .mock-agent .ag-substep {
+      padding-left: 18px;
+      color: #999;
+      font-size: 8px;
+    }
+
+    /* Mock — CS panel */
+    .mock-cs {
+      padding: 8px 10px;
+      font-size: 9px;
+    }
+    .mock-cs .cs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .mock-cs .cs-input {
+      background: #f4f3f0;
+      padding: 6px 8px;
+      border-radius: 4px;
+    }
+    .mock-cs .cs-result {
+      background: #fff;
+      border: 1px solid #d1e7e2;
+      padding: 6px 8px;
+      border-radius: 4px;
+    }
+    .mock-cs .cs-tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-size: 8px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .mock-cs .cs-tag.pre { background: #d1ebe6; color: #0d6e60; }
+    .mock-cs .cs-tag.after { background: #fbf2d8; color: var(--warn); }
+    .mock-cs .cs-tag.cmpl { background: #fbe5e2; color: var(--err); }
+
+    /* Final challenge arch tree */
+    .arch-tree {
+      background: #1a1a1a;
+      color: #f4f4f0;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-family: "JetBrains Mono", "Menlo", "Consolas", monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 8px 0 10px;
+    }
+    .scenario-card {
+      background: #fdfaf6;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+    .scenario-line {
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 6px 0;
+      color: var(--text);
+    }
+    .scenario-line strong { color: var(--accent-hover); }
+
+    /* Troubleshoot table */
+    details {
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    details[open] { background: #fefdfb; }
+    summary {
+      padding: 12px 18px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 15px;
+      background: #f8f7f5;
+      list-style: none;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: "▸ ";
+      display: inline-block;
+      transition: transform 0.2s;
+      margin-right: 4px;
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+    .troubleshoot { padding: 16px 18px; }
+    .troubleshoot table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .troubleshoot th, .troubleshoot td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .troubleshoot th {
+      background: #f4f3f0;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .troubleshoot tr:last-child td { border-bottom: none; }
+    .troubleshoot code {
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+    }
+    .troubleshoot .rescue-line {
+      background: #f0eee9;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      color: var(--text);
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1a1a1a;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .footer a { color: var(--muted); }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container { padding: 20px 14px 60px; }
+      .page-header h1 { font-size: 22px; }
+      .task { padding: 20px 18px; }
+      .task h2 { font-size: 18px; }
+      .prompt-block { font-size: 13px; padding: 16px; padding-top: 48px; }
+      .copy-btn { top: 10px; right: 10px; }
+      .mock-ide { grid-template-columns: 1fr; }
+      .mock-tier .tier-row { grid-template-columns: 1fr; gap: 6px; }
+      .mock-tier .arrow { transform: rotate(90deg); }
+
+      /* PIN UI 手機版防跑版 */
+      .pin-input-wrap {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 6px;
+        width: 100%;
+        padding: 0 8px;
+      }
+      .pin-input {
+        width: 100%;
+        font-size: 16px;
+        letter-spacing: 0.2em;
+        padding: 10px;
+      }
+      .pin-submit, .pin-cancel {
+        padding: 10px 12px;
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      /* troubleshoot 表格手機版改卡片堆疊 */
+      .troubleshoot table,
+      .troubleshoot thead,
+      .troubleshoot tbody,
+      .troubleshoot tr,
+      .troubleshoot td {
+        display: block;
+        width: 100%;
+      }
+      .troubleshoot thead { display: none; }
+      .troubleshoot tr {
+        background: #f8f7f5;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+      }
+      .troubleshoot td {
+        padding: 4px 0;
+        border-bottom: none;
+        font-size: 13px;
+      }
+      .troubleshoot td:first-child {
+        font-weight: 600;
+        color: var(--accent-hover);
+        margin-bottom: 4px;
+      }
+      .troubleshoot td:first-child::before {
+        content: "看到的問題:";
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 11px;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 2px;
+      }
+      .troubleshoot td:last-child::before {
+        content: "貼回 AI 的句子:";
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 11px;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 6px;
+        margin-bottom: 2px;
+      }
+      .troubleshoot .rescue-line {
+        font-size: 13px;
+        line-height: 1.7;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="page-header">
+      <span class="stage-badge">Stage 2</span>
+      <h1 style="display:inline-block;vertical-align:middle;">上線你的網頁 ・ Prompt 模板庫</h1>
+      <p class="lead" style="margin-top:12px;">找到你正在做的 task → 自己先試試 → 真的卡住輸入老師給的 4 位密碼解鎖看完整 prompt → 複製貼到 agy/Claude Code 跑。</p>
+      <div class="filter-bar" id="filter">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="M2-1">M2-1 GitHub 平台</button>
+        <button class="filter-btn" data-filter="M2-2">M2-2 IDE 工具</button>
+        <button class="filter-btn" data-filter="M2-3">M2-3 部署上線</button>
+        <button class="filter-btn" data-filter="M2-4">M2-4 API + agent</button>
+        <button class="filter-btn" data-filter="final">結業挑戰</button>
+      </div>
+      <div class="reset-bar">
+        <span>已解鎖 <span class="unlock-count" id="unlock-count">0</span> 張卡</span>
+        <button class="reset-btn" id="reset-all-btn">全部鎖回去再練</button>
+      </div>
+    </header>
+
+    <!-- ════════════════════════════════════════
+         Stage 2 主軸觀念前導區塊
+         ════════════════════════════════════════ -->
+    <aside class="intro-card">
+      <div class="intro-header">
+        <span class="intro-badge">先讀這個</span>
+        <h2>Stage 2 在做什麼</h2>
+      </div>
+      <p class="intro-lead">Stage 1 你會用 AI 做出東西了。Stage 2 把東西放上網有自己的網址,讓別人能直接打開看。記住這四個觀念,作業就跑得起來。</p>
+      <div class="core-grid">
+        <div class="core-item">
+          <div class="num">1</div>
+          <h3>vibe coding 精神</h3>
+          <p class="core-desc">不被基礎設施卡住創作流。設一次 SSH/clasp,以後一句話就能 push 跟部署。</p>
+        </div>
+        <div class="core-item">
+          <div class="num">2</div>
+          <h3>IDE 是 AI 的手</h3>
+          <p class="core-desc">瀏覽器只看,IDE 是 AI 直接改檔 push 部署。agy/Claude Code 可以下指令操作你的電腦。</p>
+        </div>
+        <div class="core-item">
+          <div class="num">3</div>
+          <h3>三層架構</h3>
+          <p class="core-desc">GitHub Pages 前端 + GAS Web App 後端代理 + Gemini API。Key 永遠在後端不曝光。</p>
+        </div>
+        <div class="core-item">
+          <div class="num">4</div>
+          <h3>LV1 / LV2 / LV3</h3>
+          <p class="core-desc">每個作品三個階段:能跑(LV1)→ 完成主要功能(LV2)→ 上線可分享(LV3)。</p>
+        </div>
+      </div>
+      <div class="lv-row">
+        <div class="lv-pill lv1">LV1 ・ 能跑就好 25%</div>
+        <div class="lv-pill lv2">LV2 ・ 主功能完整 36%</div>
+        <div class="lv-pill lv3">LV3 ・ 上線可分享 31%</div>
+      </div>
+
+      <!-- LV1/LV2/LV3 三階段 prompt 對照 — 以飲料點餐為例 -->
+      <div class="lv-examples">
+        <div class="lv-examples-header">三階段長什麼樣 ・ 拿 M1-3 飲料點餐為例</div>
+        <div class="lv-example">
+          <span class="lv-tag-mini lv1-bg">LV1</span>
+          <div class="lv-example-body">
+            <div class="lv-example-prompt">幫我把 M1-3 飲料點餐網頁 commit + push 上 GitHub 開好 Pages 給我網址</div>
+            <div class="lv-example-note">能上線就好 ・ 30 分鐘可做完 ・ 自己看得到</div>
+          </div>
+        </div>
+        <div class="lv-example">
+          <span class="lv-tag-mini lv2-bg">LV2</span>
+          <div class="lv-example-body">
+            <div class="lv-example-prompt">把它改成資料存在使用者的瀏覽器 加結帳算總金額 加 LINE 分享按鈕 push 上去</div>
+            <div class="lv-example-note">主要功能完整 ・ 一節課做完 ・ 可以給朋友試用</div>
+          </div>
+        </div>
+        <div class="lv-example">
+          <span class="lv-tag-mini lv3-bg">LV3</span>
+          <div class="lv-example-body">
+            <div class="lv-example-prompt">加自訂網址 cooperation.tw/drink-order 加店家 Logo 跟營業時間 結帳完自動通知我 Telegram 開放分享給客人下單</div>
+            <div class="lv-example-note">上線可分享 ・ 兩節課做完 ・ 真的能營業用</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+
+      <!-- ════════════════════════════════════════
+           M2-1 GitHub 平台 — 3 案例
+           ════════════════════════════════════════ -->
+
+      <!-- M2-1-R4 commit message 寫人話 -->
+      <article class="task" data-tags="M2-1">
+        <div class="task-meta">
+          <span class="tag accent">M2-1</span>
+          <span class="tag">Round 4</span>
+          <span class="tag">寫法範例庫</span>
+        </div>
+        <h2>R4 ・ 讓 IDE 幫你寫好 commit 訊息再 push</h2>
+        <p class="desc">改完一輪檔案後,不要自己想「我剛改了什麼」。叫 AI 看 git diff 自己寫一句白話的 commit 訊息,然後 commit + push 上 GitHub。三個月後翻紀錄看得懂。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 已建立 GitHub repo,在 agy / Claude Code 裡打開資料夾,剛改過至少一個檔案還沒 commit。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m21-r4" data-copy="幫我看 git diff 寫一句白話中文的 commit 訊息 動詞開頭 不超過 15 字 不要寫 update / fix 這種看不出做了什麼的 然後 commit + push 上 GitHub 完成後告訴我這次 commit 的訊息">複製</button>
+          <pre class="prompt-block" id="m21-r4">幫我看我剛才改了哪些檔案哪幾行
+
+用一句白話中文寫 commit 訊息 動詞開頭 15 字以內
+例如 加什麼 / 改什麼 / 換什麼 / 修什麼
+不要寫 update / fix / 改一下 / 改一些 這種看不出做了什麼的
+
+然後 commit 跟 push 上 GitHub
+完成後告訴我這次 commit 的訊息是什麼
+我去 GitHub 看 commit history 確認</pre>
+        </div>
+        <p class="copy-hint" style="font-size:12px;color:#888;">複製按鈕複製的是精煉一句話版(給 AI 跑),上面顯示的是完整版含反面範例(給你讀理解)。</p>
+
+        <div class="expected">
+          <strong>跑完之後 commit history 會長這樣:</strong>
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/你/my-first-page/commits</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-commits">
+                <div class="row"><span class="sha">a3f2c8d</span><span class="msg good">加深色模式切換按鈕</span><span class="badge good">good</span></div>
+                <div class="row"><span class="sha">9b1e44a</span><span class="msg good">換 hero 標題 + 加自我介紹段落</span><span class="badge good">good</span></div>
+                <div class="row"><span class="sha">e87d2c1</span><span class="msg bad">update</span><span class="badge bad">bad</span></div>
+                <div class="row"><span class="sha">5a9c33f</span><span class="msg bad">fix</span><span class="badge bad">bad</span></div>
+              </div>
+            </div>
+            <div class="mock-caption">三個月後翻 commit history,只有「加深色模式」看得懂改了什麼,「update / fix」完全沒線索</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示</span>
+          AI 寫出來的 commit 訊息你不滿意?可以這樣補一句:
+          <pre class="tip-fix-prompt">這次 commit 訊息我不喜歡
+我這次主要是 [加了深色模式按鈕 / 修首頁圖跑版 / ...]
+請用這個重點重寫 commit 訊息 再 push 一次</pre>
+        </div>
+      </article>
+
+      <!-- M2-1-R5 故意 commit 假 API Key -->
+      <article class="task" data-tags="M2-1">
+        <div class="task-meta">
+          <span class="tag accent">M2-1</span>
+          <span class="tag">Round 5</span>
+          <span class="tag">教學素材</span>
+          <span class="tag">M2-4 會用到</span>
+        </div>
+        <h2>R5 ・ 故意 commit 假 API Key(教學伏筆)</h2>
+        <p class="desc">這張卡的目的是「先犯錯」。把一段假 API Key code 貼進 index.html commit 上去 — 觀察 GitHub 多快會通知你 secret 外洩。M2-4 學員會用 IDE 把這條 Key 清掉。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 已有 my-first-page repo。這是<strong>假 Key</strong>,不是真的 — 機器人會掃到但不會真的有人盜用。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m21-r5">複製</button>
+          <pre class="prompt-block" id="m21-r5">我在做 Stage 2 的安全教學示範
+請幫我做這幾件事
+
+1. 在 index.html 裡面加一段 JavaScript
+   裡面放兩個假的 API Key 像這樣
+   FAKE_API_KEY 設成 "sk-proj-FAKE1234567890abcdefghij"
+   FAKE_GH_TOKEN 設成 "ghp_FAKEabcdefg1234567890hijklmn"
+   旁邊寫個註解 說這是教學用假 Key 之後會清掉
+
+2. 幫我 commit 訊息寫「教學示範 故意放假 Key」
+   然後 push 上 GitHub
+
+3. 完成後告訴我
+   等 5-10 分鐘後我要去 GitHub repo 頁面
+   看 Secret scanning alert 黃色警示條有沒有跳
+   也會收到 GitHub 寄的 email</pre>
+        </div>
+
+        <div class="expected">
+          <strong>觀察結果:</strong> 5-10 分鐘內 GitHub 會寄 email 告訴你「Secret scanning alert」,repo 頁面也會出現黃色警示條。這就是為什麼真實 Key 永遠不能寫在程式碼裡。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/你/my-first-page/blob/main/index.html</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-gh-file">
+                <div class="gh-header">index.html ・ 已被機器人掃描</div>
+                <div class="line"><span class="ln">12</span><span>&lt;script&gt;</span></div>
+                <div class="line"><span class="ln">13</span><span>const FAKE_API_KEY = <span class="leak">"sk-proj-FAKE1234..."</span>;</span></div>
+                <div class="line"><span class="ln">14</span><span>const FAKE_GH_TOKEN = <span class="leak">"ghp_FAKEabcde..."</span>;</span></div>
+                <div class="line"><span class="ln">15</span><span>&lt;/script&gt;</span></div>
+                <div class="alert">Secret scanning alert ・ 偵測到 2 筆可能的 secret 外洩,請立刻 revoke</div>
+              </div>
+            </div>
+            <div class="mock-caption">機器人會把可能的 Key 標紅圈,寄信通知,並在 repo 頁面顯示警示 — M2-4 R2 教你怎麼用 IDE 一句話清掉</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">為什麼這樣設計</span>
+          先讓你「感受到」洩漏的可怕,M2-4 R2 你會學會建一個 <code>check-secrets</code> skill 自動掃整個 repo。沒踩過洩漏的雷,學員不會認真做安全檢查。
+        </div>
+      </article>
+
+      <!-- M2-1-LV3 Profile README -->
+      <article class="task" data-tags="M2-1">
+        <div class="task-meta">
+          <span class="tag accent">M2-1</span>
+          <span class="tag tag-lv3">LV3</span>
+          <span class="tag">個人品牌</span>
+        </div>
+        <h2>LV3 ・ Profile README 個性化</h2>
+        <p class="desc">GitHub 用戶名同名的 repo(例如你叫 alanchen 就建 alanchen/alanchen)裡放一個 README.md,會顯示在你個人首頁最上方 — 等於 GitHub 上的名片。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 知道自己的 GitHub username。建一個跟 username 完全一樣的 repo(public),裡面放 README.md。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m21-lv3">複製</button>
+          <pre class="prompt-block" id="m21-lv3">幫我寫 GitHub Profile 的 README.md
+
+我是 [你的工作 — 例如 顧問 / 老師 / 行銷企劃]
+擅長 [三個技能 — 例如 用 AI 做網頁 / 帶工作坊 / 整理大量 Excel 資料]
+最近在做的事 [一句話 — 例如 在學用 AI 做客戶提案頁]
+聯絡方式 [Email 跟 LinkedIn 網址]
+
+風格
+- 簡潔有個人特色 一眼看出我是做什麼的
+- 一句話自我介紹 像名片正面那種
+- 不要放一大堆 emoji 不要列一長串技能圖示
+- 不要太花俏
+
+完成後請幫我
+- 建一個跟我 GitHub 帳號名同名的 repo
+- 把 README.md 放進去
+- push 上 GitHub
+- 告訴我 GitHub 個人首頁網址 我去看</pre>
+        </div>
+        <p class="copy-hint">把 <span class="fill-in">[ ... ]</span> 填空後再貼到 AI。每個 <span class="fill-in">[ ]</span> 都是你的個人資訊。</p>
+
+        <div class="expected">
+          <strong>預期 GitHub 個人首頁長這樣:</strong>
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/alanchen</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-profile">
+                <div class="avatar">AC</div>
+                <div class="readme">
+                  <h4>陳光 ・ ESG 顧問</h4>
+                  <div class="bio">「幫品牌把永續報告寫得有人想看」</div>
+                  <div>擅長 ESG 簡報設計、AI 提效流程、客戶提案頁</div>
+                  <div style="margin-top:4px;">最近在學 vibe coding 做客戶簡報頁</div>
+                  <div class="skill-row">
+                    <span class="skill">ESG</span>
+                    <span class="skill">AI 提效</span>
+                    <span class="skill">簡報設計</span>
+                  </div>
+                  <div style="margin-top:6px;color:#888;font-size:9px;">alan@email.com ・ linkedin.com/in/alanchen</div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-caption">大頭像左側,README 渲染右側,3 秒就能讓人記住你是做什麼的</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示</span>
+          很多人 README 寫得太長(列 20 個 badge / 一堆動畫 GIF)反而沒人看完。一句話 bio + 3 個技能 + 一句最近在做什麼,這個比例最好。
+        </div>
+      </article>
+
+      <!-- ════════════════════════════════════════
+           M2-2 IDE 工具 — 9 案例
+           ════════════════════════════════════════ -->
+
+      <!-- M2-2-R3-A LV1 改 HTML 第一句 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 3</span>
+          <span class="tag tag-lv1">LV1</span>
+          <span class="tag">IDE 第一句</span>
+        </div>
+        <h2>R3-A ・ 在 IDE 對 AI 說第一句</h2>
+        <p class="desc">M1-1 在瀏覽器跟 AI 對話,Stage 2 在 IDE 跟 AI 對話 — 差別是 AI 能直接改你電腦的檔。最簡單的開場:讓 AI 改一行顏色。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 已安裝 agy(或 Claude Code),在裝有 my-first-page 的資料夾打開 IDE。看得到檔案樹左邊 + 編輯區中間 + 對話 Chat 右邊。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r3a">複製</button>
+          <pre class="prompt-block" id="m22-r3a">幫我把 index.html 第一個 h1 改成綠色 #0F9D8A</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期 IDE 介面變化:</strong>
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ ~/my-first-page</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-ide">
+                <div class="ide-files">
+                  📁 my-first-page<br>
+                  <span class="file changed">● index.html</span><br>
+                  <span class="file">styles.css</span><br>
+                  <span class="file">README.md</span>
+                </div>
+                <div class="ide-edit">
+                  <div><span class="ln">6</span>&lt;body&gt;</div>
+                  <div><span class="ln">7</span>  &lt;header&gt;</div>
+                  <div><span class="ln">8</span>    &lt;h1 <span class="hl">style="color:#0F9D8A"</span>&gt;我的網頁&lt;/h1&gt;</div>
+                  <div><span class="ln">9</span>  &lt;/header&gt;</div>
+                  <div><span class="ln">10</span>  &lt;main&gt;...</div>
+                </div>
+                <div class="ide-chat">
+                  <div class="role-user">你</div>
+                  <div class="msg">把 index.html 第一個 h1 改成綠色</div>
+                  <div class="role-ai">agy</div>
+                  <div class="msg">已改 index.html line 8,加了 style="color:#0F9D8A"。要看效果可以打開瀏覽器或按 Preview。</div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-caption">左側檔案樹標紅點(改過),中間編輯區第 8 行高亮新加的 style,右側 Chat 報告做了什麼</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示</span>
+          如果頁面有多個 h1,AI 可能改錯位置,補一句指定:
+          <pre class="tip-fix-prompt">第一個 h1 是 hero 區的「我的網頁」標題
+不是 footer 那個 — 改錯了的話請改回來</pre>
+        </div>
+      </article>
+
+      <!-- M2-2-R3-B-1 深色模式 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 3</span>
+          <span class="tag tag-lv1">LV1</span>
+          <span class="tag">變化 1</span>
+        </div>
+        <h2>R3-B-1 ・ 加深色模式切換按鈕</h2>
+        <p class="desc">改 HTML 第二題 — 加深色模式。讓網頁有質感,也學 AI 怎麼處理「狀態切換」這種需要邏輯的需求。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> R3-A 已完成。網頁能正常顯示,h1 是綠色。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r3b1">複製</button>
+          <pre class="prompt-block" id="m22-r3b1">幫我幫這個網頁加深色模式切換按鈕
+
+按一下 body 顏色翻轉
+按鈕放右上角 用文字「深色模式」「淺色模式」切換
+深色 主色維持綠 #0F9D8A 背景改深灰 #1a1a1a 文字白
+把切換選擇記下來 下次打開還是這個模式</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期效果:</strong> 右上角出現切換按鈕,按下去整個網頁背景翻黑、文字翻白,綠色主色維持。重新整理保持上次選的模式。
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示</span>
+          按一下沒反應?多半是 JS 沒寫進來。叫 AI 印 console.log 確認:
+          <pre class="tip-fix-prompt">按鈕按下去沒反應 主控台也沒訊息
+請在 toggle function 第一行加 console.log("toggle clicked")
+我再試一次看 console</pre>
+        </div>
+      </article>
+
+      <!-- M2-2-R3-B-2 自我介紹段落 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 3</span>
+          <span class="tag tag-lv1">LV1</span>
+          <span class="tag">變化 2</span>
+        </div>
+        <h2>R3-B-2 ・ 加自我介紹區塊</h2>
+        <p class="desc">改 HTML 第三題 — 加一個含大頭像 + 介紹 + 技能標籤的區塊。練 AI 怎麼處理「結構化內容」。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 已有 index.html 基本骨架。準備一張你自己的大頭照(或先用 placeholder 圖)。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r3b2">複製</button>
+          <pre class="prompt-block" id="m22-r3b2">在我的網頁加一個自我介紹區塊
+
+含
+- 一張圓形大頭像 (用 https://placehold.co/200x200 先頂住)
+- 一段 100 字介紹 (請先用 [我是 ___ 擅長 ___] 樣板給我填)
+- 三個技能標籤 (圓角 hover 變綠)
+
+配色跟原網頁一致
+位置放在 hero 區下方</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期效果:</strong> hero 下方多一塊自我介紹,左圓形頭像右文字 + 技能標籤。手機版會堆疊成上下。
+        </div>
+      </article>
+
+      <!-- M2-2-R3-B-3 聯絡按鈕 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 3</span>
+          <span class="tag tag-lv1">LV1</span>
+          <span class="tag">變化 3</span>
+        </div>
+        <h2>R3-B-3 ・ 加聯絡 CTA 按鈕</h2>
+        <p class="desc">改 HTML 第四題 — 加一個「聯絡我」按鈕,點下去開 mailto 寄信。學 AI 怎麼處理「動作觸發」。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 已有自我介紹區塊。把你想用的聯絡 email 想好。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r3b3">複製</button>
+          <pre class="prompt-block" id="m22-r3b3">網頁底部加一個聯絡 CTA 按鈕
+
+按下去開 mailto: 寄信給我 [你的 email]
+主旨預填「來自網頁的訊息」
+按鈕用主綠 #0F9D8A 圓角 hover 變深綠
+位置 sticky 滾到底會吸附在右下角</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期效果:</strong> 右下角有個吸附的綠色「聯絡我」按鈕,捲動時不消失。點下去自動打開 email 程式(macOS 是 Mail / Windows 是預設信件 app)填好主旨跟收件人。
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示</span>
+          手機上點按鈕沒反應?手機沒裝 Mail app 會跳「找不到應用程式」。可以叫 AI 改成提示「複製信箱」:
+          <pre class="tip-fix-prompt">手機點按鈕跳「找不到 mail app」
+請改成 hover 時 tooltip 顯示信箱
+按下去 navigator.clipboard.writeText 複製信箱
+順便顯示 toast 「信箱已複製」</pre>
+        </div>
+      </article>
+
+      <!-- M2-2-R4-A LV2 PDF→md 起點 + 四要素 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 4</span>
+          <span class="tag tag-lv2">LV2</span>
+          <span class="tag">PDF → markdown</span>
+        </div>
+        <h2>R4-A ・ 讓 IDE 把 PDF 整理成 markdown</h2>
+        <p class="desc">這是 M2-2 的主菜 — 用 IDE 處理大檔案。瀏覽器版的 AI 看 PDF 有上限,IDE 可以一次處理幾十頁的文件。先學起點 prompt,再學 M1-1 四要素優化版。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 找一份你想分析的 PDF(10-30 頁最好上手),例如永續報告書、政府開放資料、行業白皮書,丟到 my-first-page 資料夾。
+        </div>
+
+        <h3>起點 Prompt(一行)</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r4a-start">複製</button>
+          <pre class="prompt-block" id="m22-r4a-start">幫我讀 paper.pdf 整理成 report.md</pre>
+        </div>
+        <p class="copy-hint">這句會跑,但結果通常是「全文照抄」沒有重點。看出差別後再用下面四要素版重做。</p>
+
+        <h3 style="color:var(--accent);">用 M1-1 四要素優化版(推薦)</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r4a-full">複製</button>
+          <pre class="prompt-block" id="m22-r4a-full">幫我讀 paper.pdf 整理成 report.md
+
+角色 我是 [你的職位 — 例如 ESG 顧問],
+     客戶看這份要做策略決策
+
+任務 摘要重點 不要照抄全文
+     找出核心發現 + 關鍵數據 + 可行動建議
+
+格式 三層架構
+     1. 核心發現 (3 點 每點 50 字內)
+     2. 數據洞察 (含 1 張數據表)
+     3. 行動建議 (3 條 每條一個動詞開頭)
+
+限制 保留原文關鍵術語 不要意譯
+     原文有英文專有名詞保留英文
+     報告長度 1 頁 A4 印得下</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期產出:</strong> report.md 渲染後是有結構的三層報告,不是流水帳。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ report.md 預覽</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-md">
+                <h4>核心發現</h4>
+                <ul>
+                  <li>2025 年永續報告書數量年增 38%,中小企業佔比首超 50%</li>
+                  <li>SASB 與 IFRS S1/S2 雙軌揭露成主流,獨採 GRI 比例下滑</li>
+                  <li>第三方驗證需求暴增,Limited Assurance 為主流選項</li>
+                </ul>
+                <h4>數據洞察</h4>
+                <div class="data-table">
+                  <div class="h">年度</div><div class="h">發行家數</div><div class="h">YoY</div>
+                  <div>2023</div><div>1,247</div><div>+12%</div>
+                  <div>2024</div><div>1,524</div><div>+22%</div>
+                  <div>2025</div><div>2,103</div><div>+38%</div>
+                </div>
+                <h4>行動建議</h4>
+                <ul>
+                  <li>建立 IFRS S2 揭露能力 因為金管會 2026 起強制</li>
+                  <li>導入第三方驗證 因為投資人開始質疑可信度</li>
+                  <li>對標 SASB 業別指標 因為國際買家會查</li>
+                </ul>
+              </div>
+            </div>
+            <div class="mock-caption">三層結構清楚,有數據表,行動建議都是動詞開頭 — 客戶看了能決策</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ PDF 太大跑不動</span>
+          PDF 超過 50 頁 IDE 會吃力,先拆段:
+          <pre class="tip-fix-prompt">paper.pdf 太大跑不動
+請先抓 前 30 頁(目錄+前言+第 1 章)
+做核心發現摘要 之後我再餵後面章節</pre>
+          <strong style="margin-top:8px;display:inline-block;">PDF 是掃描檔不能複製文字?</strong> 叫 AI 先 OCR:
+          <pre class="tip-fix-prompt">paper.pdf 是掃描檔
+請用 pdftotext 或 OCR 工具
+先轉成純文字檔 paper.txt
+再做後續摘要</pre>
+        </div>
+      </article>
+
+      <!-- M2-2-R4-B PDF→簡報大綱 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 4</span>
+          <span class="tag tag-lv2">LV2</span>
+          <span class="tag">變化 1 簡報大綱</span>
+        </div>
+        <h2>R4-B ・ PDF 變化 1:簡報大綱</h2>
+        <p class="desc">同一份 PDF,目標換成「做 8 頁簡報」。給上司提案、給客戶 pitch 用。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> R4-A 已試過,知道怎麼餵 PDF。準備用同一份 PDF 或換一份新的。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r4b">複製</button>
+          <pre class="prompt-block" id="m22-r4b">幫我把 paper.pdf 轉成 8 頁簡報大綱
+
+格式 markdown 每頁用 # 標題
+每頁 1 個主標題 + 3 個 bullet
+重點 不要文字牆 一個 bullet 一句話
+
+8 頁建議結構
+1. 封面 (報告標題 + 1 句副標)
+2. 為什麼這個議題重要 (3 點)
+3. 現況數據 (3 個關鍵數字)
+4. 三大發現 (3 點)
+5. 案例對照 (3 個產業範例)
+6. 行動建議 (3 條)
+7. 風險與限制 (3 點)
+8. 總結 + 聯絡資訊
+
+我之後用簡報工具做成可投影的簡報檔</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期產出:</strong> slides-outline.md 是 8 頁的結構化內容,每頁標題 + 3 bullet。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">slides-outline.md ・ 預覽縮圖</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-slides">
+                <div class="thumb-row">
+                  <div class="thumb cover"><div class="t-num">1 ・ 封面</div><div class="t-title">2025 永續報告趨勢</div></div>
+                  <div class="thumb"><div class="t-num">2 ・ 為什麼重要</div><div class="t-title">三大趨勢</div></div>
+                  <div class="thumb"><div class="t-num">3 ・ 現況</div><div class="t-title">關鍵數字</div></div>
+                  <div class="thumb"><div class="t-num">4 ・ 發現</div><div class="t-title">三大主軸</div></div>
+                </div>
+                <div class="thumb-row" style="margin-top:6px;">
+                  <div class="thumb"><div class="t-num">5 ・ 案例</div><div class="t-title">產業對照</div></div>
+                  <div class="thumb"><div class="t-num">6 ・ 建議</div><div class="t-title">行動清單</div></div>
+                  <div class="thumb"><div class="t-num">7 ・ 風險</div><div class="t-title">限制</div></div>
+                  <div class="thumb qa"><div class="t-num">8 ・ 總結</div><div class="t-title">Q&amp;A</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-caption">8 頁縮圖示意 — 每頁標題明確,可以直接拿去做 PowerPoint / Keynote / Google Slides 任何簡報軟體</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- M2-2-R4-C PDF→報告格式 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 4</span>
+          <span class="tag tag-lv2">LV2</span>
+          <span class="tag">變化 2 報告格式</span>
+        </div>
+        <h2>R4-C ・ PDF 變化 2:正式報告</h2>
+        <p class="desc">變化 1 是 8 頁簡報。變化 2 換成 4-5 頁的正式報告 — 適合寄客戶結案、學術送審、董事會簡報用。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 同一份 PDF 來源。決定報告給誰看(客戶 / 學術 / 內部高層)— 這影響語氣。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r4c">複製</button>
+          <pre class="prompt-block" id="m22-r4c">幫我把 paper.pdf 整理成正式報告 report-formal.md
+
+讀者 [客戶高層 / 學術評審 / 董事會 — 三選一]
+結構
+- 摘要 (一段 100 字 客戶 30 秒讀完抓得到重點)
+- 第 1 章 現況分析 (200 字 + 1 個重點數據表)
+- 第 2 章 三大發現 (200 字 + 條列)
+- 第 3 章 建議方向 (200 字 + 行動清單)
+- 結論 (一段 50 字)
+- 附錄 (參考資料原始連結)
+
+語氣
+- 正式但不繞口 不要學究腔
+- 數據都標出處頁碼
+- 不要用 emoji
+- 不要堆冗詞「值得注意的是」「我們可以發現」</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期產出:</strong> report-formal.md 是 4-5 頁的正式報告,結構固定,可以直接複製貼到 Word / Pages / Google Docs 排版。
+        </div>
+      </article>
+
+      <!-- M2-2-R4-D PDF→摘要卡片 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 4</span>
+          <span class="tag tag-lv2">LV2</span>
+          <span class="tag">變化 3 摘要卡片</span>
+        </div>
+        <h2>R4-D ・ PDF 變化 3:社群分享卡</h2>
+        <p class="desc">變化 3 換成「給沒空看的人」的版本 — 50 字 / 200 字 / 500 字三種長度,直接貼 LinkedIn / Line 群組 / 報告通訊。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 同一份 PDF 來源。決定要哪個長度(50 / 200 / 500)。
+        </div>
+
+        <h3>給 AI 的 Prompt(三長度都拿)</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r4d">複製</button>
+          <pre class="prompt-block" id="m22-r4d">幫我用三種長度摘要 paper.pdf
+
+50 字版 (給 Line 群組 / TG 分享用 短到一眼讀完)
+200 字版 (給 LinkedIn 貼文用 含 3 個重點 bullet)
+500 字版 (給內部信件 / 周報用 含背景 + 重點 + 建議)
+
+風格
+- 第一句要鉤子 抓人想往下讀
+- 不要學術術語 用人話
+- 結尾留問句或行動引導
+
+把三個版本都列出來 我選一個用</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期產出:</strong> AI 給你三個版本長度的卡片,可以直接貼到對應平台。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">LinkedIn ・ 發文預覽</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-card-share">
+                <div class="share-card">
+                  <div class="share-title">2025 永續報告書三大變化</div>
+                  <ul class="share-list">
+                    <li>發行家數年增 38% 中小企業首次過半</li>
+                    <li>SASB + IFRS S1/S2 雙軌揭露成主流</li>
+                    <li>第三方驗證需求暴增 投資人開始質疑可信度</li>
+                  </ul>
+                  <div style="font-size:9px;margin-top:8px;opacity:0.85;">資料來源:2025 ESG 報告趨勢白皮書 ・ 完整版見留言</div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-caption">200 字版範例 ・ 適合 LinkedIn 貼文 ・ 50 字版可用於 Line 群組 / 500 字版可用於內部信件</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- M2-2-R5-A md → HTML 簡報 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 5</span>
+          <span class="tag tag-lv3">LV3</span>
+          <span class="tag">輸出格式 1 HTML 簡報</span>
+        </div>
+        <h2>R5-A ・ md 轉 HTML 簡報</h2>
+        <p class="desc">R4 把 PDF 變 md,R5 把 md 變成可以分享的最終格式。最酷的是 HTML 簡報 — 一個檔案打開就是簡報,還能放上網。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> R4 已產出 slides-outline.md 或 report.md。決定簡報用途(自己練講 / 給客戶 / 投標)。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r5a">複製</button>
+          <pre class="prompt-block" id="m22-r5a">把 slides-outline.md 做成一個 HTML 簡報 檔名 slides.html
+
+要求
+- 一頁一個區塊 滿版顯示 比例 16:9
+- 第一頁是封面 最後一頁是問答
+- 配色用主綠 #0F9D8A 配深藍 #0B3C5D 加漸層
+- 中文字體看起來好看不要鋸齒
+- 按鍵盤左右鍵可以翻頁
+- 右下角顯示目前第幾頁 共幾頁
+- 不要放動畫不要放 emoji
+
+做成一個 HTML 檔就好 我直接用瀏覽器打開就能看
+做完幫我 commit + push 上 GitHub
+告訴我線上網址</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期產出:</strong> 一個 slides.html 檔,瀏覽器打開全螢幕 → 鍵盤翻頁 → 線上網址可分享給別人。
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ 想要更專業的簡報</span>
+          做出來覺得太陽春,叫 AI 升級加轉場跟講者備註:
+          <pre class="tip-fix-prompt">這版簡報我想要更專業一點
+請幫我加
+- 換頁淡入淡出的轉場效果
+- 每頁下方一個講者備註區只給我看不給觀眾看
+- 全螢幕模式按 F 鍵切換
+保留我原本的配色不要動 重做後給我新網址</pre>
+        </div>
+      </article>
+
+      <!-- M2-2-R5-B md → PDF 報告 -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 5</span>
+          <span class="tag tag-lv3">LV3</span>
+          <span class="tag">輸出格式 2 PDF</span>
+        </div>
+        <h2>R5-B ・ md 轉 PDF 報告</h2>
+        <p class="desc">寄客戶 / 投標 / 學術送審還是 PDF 最通用。AI 可以幫你做封面 + 目錄 + 頁碼,還能處理中文字體。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 已有 report.md 或 report-formal.md。電腦沒裝什麼工具沒關係,AI 會自動幫你裝齊。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r5b">複製</button>
+          <pre class="prompt-block" id="m22-r5b">把 report.md 轉成 PDF 檔 檔名 report.pdf
+
+要求
+- A4 直式
+- 含封面 (寫標題 / 副標 / 我的名字 / 日期)
+- 含目錄
+- 加頁碼放右下角
+- 加頁眉 左邊報告標題 右邊我的名字
+- 中文字體用系統內建 顯示要清楚不能變方框
+
+我電腦是 [macOS / Windows]
+你判斷用哪個工具最穩定 自己選
+如果我電腦沒裝那個工具 你先幫我裝
+
+完成後跟我說 PDF 檔放在哪個位置
+我點兩下打開檢查</pre>
+        </div>
+        <p class="copy-hint">把 <span class="fill-in">[macOS / Windows]</span> 換成你的電腦系統。AI 會挑適合那個系統的工具。</p>
+
+        <div class="expected">
+          <strong>預期產出:</strong> 一個 report.pdf 檔,雙擊打開有封面、目錄、頁碼、頁眉,中文清楚不變方框。
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ PDF 中文變方框</span>
+          打開 PDF 中文字變方框,叫 AI 換中文字體再做一次:
+          <pre class="tip-fix-prompt">PDF 打開中文字全變方框
+請改用我電腦系統有的中文字體
+macOS 用蘋方 PingFang TC
+Windows 用微軟正黑體 Microsoft JhengHei
+重做一次 PDF 給我</pre>
+        </div>
+      </article>
+
+      <!-- M2-2-R5-C md → pptx -->
+      <article class="task" data-tags="M2-2">
+        <div class="task-meta">
+          <span class="tag accent">M2-2</span>
+          <span class="tag">Round 5</span>
+          <span class="tag tag-lv3">LV3</span>
+          <span class="tag">輸出格式 3 pptx</span>
+        </div>
+        <h2>R5-C ・ md 轉 PowerPoint 檔</h2>
+        <p class="desc">給不會打開 HTML 的人(老闆 / 客戶 / 政府窗口)還是要 pptx。AI 幫你出一份可繼續編輯的 PowerPoint 檔。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 已有 slides-outline.md。電腦有 Python(沒裝 AI 會教安裝)。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m22-r5c">複製</button>
+          <pre class="prompt-block" id="m22-r5c">把 slides-outline.md 做成 PowerPoint 檔 檔名 slides.pptx
+
+要求
+- 16:9 寬螢幕比例
+- 每個大標題一張投影片
+- 配色用主綠 #0F9D8A 配深藍 #0B3C5D
+- 字體用中文好看的 標題粗一點 內文中等大小
+- 第一頁封面寫 大標 / 副標 / 我的名字 / 日期
+- 最後一頁是問答頁 加我的聯絡方式
+
+我電腦是 [macOS / Windows]
+你判斷用什麼方式最穩 自己選 沒裝的工具先幫我裝
+
+完成後跟我說檔案放在哪
+我用 PowerPoint / Keynote / Google Slides 打開繼續調</pre>
+        </div>
+        <p class="copy-hint">把 <span class="fill-in">[macOS / Windows]</span> 換成你的電腦系統。</p>
+
+        <div class="expected">
+          <strong>預期產出:</strong> 一個 slides.pptx 檔,可用 PowerPoint / Keynote / Google Slides 打開繼續調整圖文。
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ 寄給同事字體變宋體</span>
+          自己 Mac 打開漂亮,寄給 Windows 同事字體變宋體。叫 AI 改成跨系統字體:
+          <pre class="tip-fix-prompt">pptx 寄給 Windows 同事打開字體變難看
+請改用兩邊都有的字體
+中文用 微軟正黑體 (Microsoft JhengHei)
+這樣 Mac 跟 Windows 打開都好看 重做一次</pre>
+        </div>
+      </article>
+
+      <!-- ════════════════════════════════════════
+           M2-3 IDE + GitHub 部署 — 4 案例
+           ════════════════════════════════════════ -->
+
+      <!-- M2-3-R2 SSH key 一句話 -->
+      <article class="task" data-tags="M2-3">
+        <div class="task-meta">
+          <span class="tag accent">M2-3</span>
+          <span class="tag">Round 2</span>
+          <span class="tag">SSH 一句話</span>
+          <span class="tag">vibe coding 精神</span>
+        </div>
+        <h2>R2 ・ 一句話讓 IDE 幫你設好 SSH key</h2>
+        <p class="desc">傳統教學會教你開 terminal 下 ssh-keygen 一堆指令 — 但 vibe coding 不該被基礎設施卡住。設 SSH key 也是一句話搞定:讓 IDE 帶你跑。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> agy / Claude Code 已開啟,在你的個人資料夾(不是 my-first-page 內部 — 因為 ssh key 是電腦級不是 repo 級)。GitHub 帳號登入準備好。
+        </div>
+
+        <h3>給 AI 的 Prompt(一行就夠)</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m23-r2">複製</button>
+          <pre class="prompt-block" id="m23-r2">帶我設定 GitHub SSH key 直接下指令
+每個步驟完成後告訴我下一步</pre>
+        </div>
+        <p class="copy-hint">兩行就夠。AI 會在 Chat 裡一步一步帶,每步等你確認再做下一步。</p>
+
+        <div class="expected">
+          <strong>預期 IDE 跑的流程:</strong>
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ SSH 設定流程</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-chat-steps">
+                <div class="step">
+                  <div class="step-marker">1</div>
+                  <div class="step-text">產生 SSH key pair (在 ~/.ssh/)<div class="ai-line">ssh-keygen -t ed25519 -C "alan@email.com"</div></div>
+                </div>
+                <div class="step">
+                  <div class="step-marker">2</div>
+                  <div class="step-text">複製公鑰到剪貼簿<div class="ai-line">pbcopy &lt; ~/.ssh/id_ed25519.pub</div></div>
+                </div>
+                <div class="step">
+                  <div class="step-marker user">3</div>
+                  <div class="step-text">換你動作:打開 github.com/settings/keys 貼上公鑰<div class="ai-line">title: "MacBook Pro 2025"</div></div>
+                </div>
+                <div class="step">
+                  <div class="step-marker">4</div>
+                  <div class="step-text">測試連線(回到 IDE 確認)<div class="ai-line">ssh -T git@github.com → Hi alanchen! 表示成功</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-caption">4 步驟 ・ 第 3 步換你貼到 GitHub 網頁 ・ 其他 3 步 AI 都直接幫你跑</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ 私鑰絕不外流</span>
+          ~/.ssh/ 裡的 id_ed25519 (沒 .pub 那個) 是私鑰,永遠不上傳、不複製給別人、不貼任何網站。只有 id_ed25519.pub 公鑰才能貼 GitHub。
+        </div>
+
+        <details>
+          <summary>跑失敗時怎麼救?</summary>
+          <div class="troubleshoot">
+            <table>
+              <thead><tr><th style="width:38%">你看到什麼</th><th>把這句貼回 AI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>ssh-keygen 跳「Permission denied」</td>
+                  <td><span class="rescue-line">ssh-keygen 跳 permission denied。請檢查 ~/.ssh 資料夾是否存在,沒有就 mkdir ~/.ssh && chmod 700 ~/.ssh,再重跑</span></td>
+                </tr>
+                <tr>
+                  <td>貼到 GitHub 後 ssh -T 還是說 access denied</td>
+                  <td><span class="rescue-line">貼公鑰後測試還是 access denied。請確認:(1) GitHub Settings → SSH keys 真的看到那把 key (2) ssh-add ~/.ssh/id_ed25519 加進 agent (3) git remote -v 是不是 SSH 格式 git@github.com:... 而不是 https://...</span></td>
+                </tr>
+                <tr>
+                  <td>已經有 id_ed25519 不知道要不要覆蓋</td>
+                  <td><span class="rescue-line">~/.ssh 已經有 id_ed25519。請列出現有的 key 並驗證能不能用,如果能用就不要覆蓋,直接用現有的 .pub 貼到 GitHub</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </article>
+
+      <!-- M2-3-R3 LV1 第一次 push -->
+      <article class="task" data-tags="M2-3">
+        <div class="task-meta">
+          <span class="tag accent">M2-3</span>
+          <span class="tag">Round 3</span>
+          <span class="tag tag-lv1">LV1</span>
+          <span class="tag">第一次 push</span>
+        </div>
+        <h2>R3 ・ 在 IDE 一句話 push 上 GitHub</h2>
+        <p class="desc">SSH 設好之後最爽的時刻 — 不用記 git add / commit / push 三條指令。一句中文 AI 就幫你跑完。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> R2 SSH 已設好。my-first-page 已建好 GitHub repo。git remote 已連到 GitHub (git remote -v 看得到 origin)。剛改完一個檔案準備上傳。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m23-r3">複製</button>
+          <pre class="prompt-block" id="m23-r3">幫我把 slides.html commit 跟 push 上 GitHub
+commit message 寫「加上 M2-2 簡報」</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期效果:</strong> AI 自動跑 git add slides.html → git commit -m "加上 M2-2 簡報" → git push,Chat 顯示三步完成 + GitHub 網址。重新整理 GitHub repo 頁面看得到新 commit。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ 推送結果</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-agent">
+                <div class="ag-step"><span class="ck">✓</span><span>git add slides.html</span></div>
+                <div class="ag-step"><span class="ck">✓</span><span>git commit -m "加上 M2-2 簡報"</span></div>
+                <div class="ag-substep">[main a3f2c8d] 加上 M2-2 簡報 ・ 1 file changed</div>
+                <div class="ag-step"><span class="ck">✓</span><span>git push origin main</span></div>
+                <div class="ag-substep">→ github.com/alanchen/my-first-page</div>
+                <div class="ag-step"><span class="ck">✓</span><span>完成 ・ 線上可查看</span></div>
+                <div class="ag-substep">https://alanchen.github.io/my-first-page/slides.html</div>
+              </div>
+            </div>
+            <div class="mock-caption">IDE 把三條 git 指令包成一句中文 ・ 完成後直接給你網址</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ commit message 別偷懶</span>
+          參照 M2-1 R4 的寫法 — 動詞 + 改了什麼。別寫「update」「fix」「asdfasdf」這三種未來會讓你後悔的寫法。
+        </div>
+
+        <details>
+          <summary>跑失敗時怎麼救?</summary>
+          <div class="troubleshoot">
+            <table>
+              <thead><tr><th style="width:38%">你看到什麼</th><th>把這句貼回 AI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>push 跳 rejected (non-fast-forward)</td>
+                  <td><span class="rescue-line">push 被拒絕說 non-fast-forward。代表遠端有別的 commit 我沒拉。請幫我 git pull --rebase 先同步遠端,再 push</span></td>
+                </tr>
+                <tr>
+                  <td>push 後 GitHub 沒看到新 commit</td>
+                  <td><span class="rescue-line">push 顯示成功但 GitHub 看不到。請確認 git branch 我在 main 分支 ・ git log 真的有新 commit ・ git remote -v 確認 origin 連到對的 repo</span></td>
+                </tr>
+                <tr>
+                  <td>GitHub Pages 還沒更新</td>
+                  <td><span class="rescue-line">push 成功但 alanchen.github.io 還是舊版。GitHub Pages build 要 1-2 分鐘,去 repo Actions 頁看 build status,完成才會生效</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </article>
+
+      <!-- M2-3-R4 LV2 多頁網站 -->
+      <article class="task" data-tags="M2-3">
+        <div class="task-meta">
+          <span class="tag accent">M2-3</span>
+          <span class="tag">Round 4</span>
+          <span class="tag tag-lv2">LV2</span>
+          <span class="tag">多頁網站</span>
+        </div>
+        <h2>R4 ・ 從一頁升級成多頁網站</h2>
+        <p class="desc">my-first-page 原本只有 index.html。升級成「首頁 + 簡報區 + 檔案區」三頁,加共用 navbar。這是個人作品集網站的基本架構。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> R3 已成功 push 過。my-first-page 有 index.html 跟 slides.html(M2-2 做的)。決定要不要加 files.html(放 PDF / md 檔下載)。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m23-r4">複製</button>
+          <pre class="prompt-block" id="m23-r4">幫我把 my-first-page 升級成多頁個人網站
+
+頁面架構
+- index.html  首頁  含 hero + 自我介紹 + Pinned 作品 3 個
+- slides.html 簡報區 列我做的所有簡報 含縮圖跟連結
+- files.html  檔案下載 提供 PDF / md / pptx 下載
+
+共用 navbar 三個分頁切換
+當前頁面 highlight 顯示
+手機版 navbar 收成漢堡選單
+
+設計風格
+- 配色 主綠 #0F9D8A 配深藍 #0B3C5D
+- 字體 Noto Sans TC
+- 手機 RWD 支援
+
+每頁底部加一個 footer
+含 © 我的名字 + GitHub 圖示 + email 圖示
+
+最後幫我 commit 跟 push 上 GitHub
+commit message「升級成多頁個人網站」</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期效果:</strong> 線上網址 alanchen.github.io/my-first-page 變成有三個頁面、共用 navbar 的個人網站。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">alanchen.github.io/my-first-page</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-multi-page">
+                <div class="navbar-mini">
+                  <span class="active">首頁</span>
+                  <span>簡報</span>
+                  <span>檔案</span>
+                </div>
+                <div class="page-body">
+                  <div style="font-weight:700;color:#0B3C5D;font-size:11px;">陳光 ・ ESG 顧問</div>
+                  <div style="color:#666;font-style:italic;font-size:9px;">「幫品牌把永續報告寫得有人想看」</div>
+                  <div style="margin-top:4px;font-size:9px;">Pinned 作品</div>
+                  <div class="pinned-row">
+                    <div class="pinned-card">2025 永續趨勢報告</div>
+                    <div class="pinned-card">客戶碳排試算工具</div>
+                    <div class="pinned-card">ESG 簡報範本庫</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-caption">三頁切換 ・ 當前頁面 navbar 高亮 ・ 桌機橫排 / 手機收成漢堡</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ navbar 切不過去</span>
+          多頁網站最常見的 bug 是 navbar 連結路徑寫錯。叫 AI 檢查:
+          <pre class="tip-fix-prompt">navbar 點簡報跳不過去 跳 404
+請確認 a href 路徑是相對路徑 例如 href="slides.html"
+不是 href="/slides.html" (絕對路徑會在 Pages 子目錄出問題)</pre>
+        </div>
+
+        <details>
+          <summary>跑失敗時怎麼救?</summary>
+          <div class="troubleshoot">
+            <table>
+              <thead><tr><th style="width:38%">你看到什麼</th><th>把這句貼回 AI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>三頁 navbar 樣式不一致</td>
+                  <td><span class="rescue-line">三頁的 navbar 樣式不一樣 排版有差。請把 navbar 抽出來放 partials/navbar.html 或統一寫在 styles.css 三頁都引用</span></td>
+                </tr>
+                <tr>
+                  <td>手機版 navbar 擠成一團</td>
+                  <td><span class="rescue-line">手機打開 navbar 三個分頁擠在一起。請加 media query (max-width:600px) 把 navbar 收成漢堡選單 點漢堡才展開</span></td>
+                </tr>
+                <tr>
+                  <td>GitHub Pages 部署後第二頁 404</td>
+                  <td><span class="rescue-line">首頁 OK 但點簡報跳 404。請確認 slides.html 真的有 commit + push (git status 看) 不是只在我本機存在</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </article>
+
+      <!-- M2-3-R5 LV3 飲料點餐升級 -->
+      <article class="task" data-tags="M2-3">
+        <div class="task-meta">
+          <span class="tag accent">M2-3</span>
+          <span class="tag">Round 5</span>
+          <span class="tag tag-lv3">LV3</span>
+          <span class="tag">飲料點餐升級</span>
+          <span class="tag">Stage 1 接續</span>
+        </div>
+        <h2>R5 ・ Stage 1 飲料點餐升級成 GitHub Pages 版</h2>
+        <p class="desc">M1-3 你用 GAS Web App 做了飲料點餐系統 — 但網址又長又怪不適合分享。Stage 2 升級:資料改存學員自己的瀏覽器、自訂網址、可放 GitHub Pages,變成可以隨時分享給朋友的網頁。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> M1-3 飲料點餐已能跑(GAS 版)。把 GAS 那邊的 index.html 內容複製下來 — 或叫 IDE 直接從 clasp 拉下來。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m23-r5">複製</button>
+          <pre class="prompt-block" id="m23-r5">幫我把這個飲料點餐網頁改版 放到 GitHub Pages 上線
+完成後給我網址
+
+原本網頁的程式碼在下面 (這是 M1-3 用 Google 試算表存資料的版本)
+[把你 M1-3 的 index.html 整段貼在這裡]
+
+我要的改版
+- 不再連 Google 試算表 改成資料存在使用者的瀏覽器裡
+  (這樣不用網路也能用 比較快)
+- 保留四個功能 加飲料 / 訂單列表 / 結帳 / 清空訂單
+- 結帳後算總金額
+- 加一個按鈕可以把訂單分享到 LINE
+- 配色維持原本的綠色不要動
+
+完成步驟
+1. 幫我建一個新的 GitHub repo 取名 drink-order
+2. 用 SSH 推上去 (M2-3 R2 設好的)
+3. 開 GitHub Pages 功能
+4. 等它部署好 給我最終網址</pre>
+        </div>
+        <p class="copy-hint">把 <span class="fill-in">[把你 M1-3 的 index.html 整段貼在這裡]</span> 換成 M1-2 你做的飲料點餐網頁的 code。</p>
+
+        <div class="expected">
+          <strong>預期效果:</strong> 線上網址 alanchen.github.io/drink-order 是新 repo,點開是飲料點餐介面,可以加、結帳、看訂單列表。資料存在學員自己的瀏覽器,重新整理還在。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">alanchen.github.io/drink-order</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-drink">
+                <div class="phone">
+                  <div class="drink-header">小光的飲料店</div>
+                  <div class="drink-list">
+                    <div class="drink-row"><span>珍珠奶茶 大</span><span>NT$ 65</span></div>
+                    <div class="drink-row"><span>四季春 中</span><span>NT$ 45</span></div>
+                    <div class="drink-row"><span>檸檬綠 大</span><span>NT$ 55</span></div>
+                  </div>
+                  <div class="drink-cta">結帳 NT$ 165</div>
+                  <div style="font-size:8px;color:#666;text-align:center;margin-top:4px;">3 筆訂單 ・ 已存在瀏覽器</div>
+                </div>
+              </div>
+            </div>
+            <div class="mock-caption">手機版預覽 ・ 結帳後資料留在自己的瀏覽器 ・ 點 LINE 分享按鈕直接傳訂單到群組</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ 跑起來資料沒存到</span>
+          結帳完重新整理發現訂單不見了。叫 AI 修:
+          <pre class="tip-fix-prompt">我加飲料 結帳後重新整理 訂單不見了
+請改成資料存在瀏覽器裡 重新整理還在
+原本連 Google 試算表的部分都拿掉 不要有任何 Google 試算表的程式碼殘留</pre>
+        </div>
+      </article>
+
+      <!-- ════════════════════════════════════════
+           M2-4 API + agent — 5 案例
+           ════════════════════════════════════════ -->
+
+      <!-- M2-4-R2 check-secrets skill -->
+      <article class="task" data-tags="M2-4">
+        <div class="task-meta">
+          <span class="tag accent">M2-4</span>
+          <span class="tag">Round 2</span>
+          <span class="tag">會記住的指令</span>
+          <span class="tag">M2-1 R5 配套</span>
+        </div>
+        <h2>R2 ・ 做一個會記住的安全檢查指令</h2>
+        <p class="desc">M2-1 R5 你故意 commit 假 Key 體驗洩漏感受。R2 教你做一個「會被 AI 記住」的安全檢查指令 — 以後一句「掃 API Key」AI 就自動跑一次整個資料夾的檢查。這是 vibe coding 的真實價值:設一次永久用。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> agy / Claude Code 已開啟。在 my-first-page 資料夾。M2-1 R5 故意洩漏的假 Key 可能已被你或 GitHub 清掉沒關係 — 下面的 prompt 第一段會自動補回去。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m24-r2">複製</button>
+          <pre class="prompt-block" id="m24-r2">這是兩階段任務 請依序做完
+
+階段一 先補回測試用的假 Key (M2-1 R5 教學素材可能已清掉)
+請檢查 index.html 裡面有沒有 sk- 或 ghp_ 開頭的假 Key
+如果沒有 幫我加回去這兩行
+  FAKE_API_KEY = "sk-proj-FAKE1234567890abcdefghij"
+  FAKE_GH_TOKEN = "ghp_FAKEabcdefg1234567890hijklmn"
+旁邊註解「教學用假 Key 等下用安全檢查清掉」
+有的話直接進階段二
+
+階段二 做一個會記住的安全檢查指令 取名 check-secrets
+
+以後我說「掃 API Key」「檢查 secret」「安全檢查」
+這三句任一句 你就自動跑這個檢查
+
+檢查要做的事
+1. 看我這個資料夾裡的所有檔案
+   找有沒有像下面這幾種開頭的 API Key
+   - sk- 開頭 (OpenAI / Anthropic 的)
+   - ghp_ 開頭 (GitHub 的)
+   - AIza 開頭 (Google 的)
+   - xoxb- 開頭 (Slack 的)
+2. 找到後一個一個列給我看 (告訴我在哪個檔案哪一行)
+3. 每一筆問我
+   - 這個是假 Key 要清掉嗎
+   - 還是是真 Key 要保留 (那要搬到 .env 檔案不能進 GitHub)
+4. 確認我的回答後 幫我改檔 + commit + push 上 GitHub
+5. 最後提醒我 .env 檔絕對不能上傳 GitHub
+
+建好之後立刻跑一次測試
+找出剛才階段一補回去的那兩條假 Key
+幫我把它們清掉 + commit「清掉教學用假 Key」+ push</pre>
+        </div>
+
+        <div class="expected">
+          <strong>預期產出:</strong> AI 記住這個指令,下次一句「掃 API Key」就會自動跑整個資料夾的檢查。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ 指令已建立</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-skill">
+                <div class="skill-card">
+                  <div class="skill-name">check-secrets ・ AI 已記住</div>
+                  <div>觸發句:檢查 secret / 掃 API Key / 安全檢查</div>
+                  <div>掃描範圍:整個資料夾 ・ 自動排除系統檔</div>
+                  <div class="skill-trigger">已存進 AI 的記憶區 ・ 換專案也能用</div>
+                </div>
+                <div style="margin-top:8px;color:#444;font-size:10px;">下次一句話就能跑:</div>
+                <div class="next-call">你 ：掃 API Key
+agy：檢查中... 找到 2 處可疑
+     → index.html:13  FAKE_API_KEY = "sk-proj-FAKE..."
+     → index.html:14  FAKE_GH_TOKEN = "ghp_FAKE..."
+     要清掉嗎?(yes / 移到 .env / 保留)</div>
+              </div>
+            </div>
+            <div class="mock-caption">指令一次建好 ・ 之後每個專案都能用 ・ 不用每次重新解釋掃什麼怎麼掃</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ 取名要短</span>
+          指令名取簡單兩個英文字以下才好觸發。check-secrets 比 verify-api-credentials-leakage 好用 100 倍。
+        </div>
+      </article>
+
+      <!-- M2-4-R3-A LV1 變體 A 含 Key (便利) -->
+      <article class="task" data-tags="M2-4">
+        <div class="task-meta">
+          <span class="tag accent">M2-4</span>
+          <span class="tag">Round 3</span>
+          <span class="tag tag-lv1">LV1 變體 A</span>
+          <span class="tag">三層架構</span>
+          <span class="tag">便利</span>
+        </div>
+        <h2>R3-A ・ 三層架構會議摘要器(變體 A 含 Key)</h2>
+        <p class="desc">M2-4 主菜 — 學完整三層架構:GitHub Pages 前端 → GAS Web App 後端 proxy → Gemini API。變體 A:Key 寫進 prompt 給 AI,便利但 chat 紀錄留下風險。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> (1) M2-3 SSH 已設好可 push (2) agy / Claude Code 開啟 (3) Google AI Studio 拿到 Gemini API Key (AIzaSy... 開頭) (4) Google 帳號可登入 script.google.com
+        </div>
+
+        <h3>給 AI 的 Prompt(變體 A:Key 直接放 prompt 裡)</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m24-r3a">複製</button>
+          <pre class="prompt-block" id="m24-r3a">做會議摘要器
+前端 index.html 用 SSH 登入放 GitHub Pages
+後端用 clasp 幫我設好 GAS 存 GEMINI_KEY
+key: AIzaSy你的 Key 整段貼這
+保護好 Key 避免上傳洩漏
+完成兩個部署 給我兩個網址
+完成後告訴我去哪裡確認 Key</pre>
+        </div>
+        <p class="copy-hint">把 <span class="fill-in">AIzaSy你的 Key 整段貼這</span> 換成你實際的 Gemini API Key。便利度高 — AI 直接幫你寫進 GAS 後台的安全設定區,不用手動貼。</p>
+
+        <div class="expected">
+          <strong>預期產出:</strong> agy 自動完成三件事:(1) 開 my-meeting-summary repo + 部署 GitHub Pages (2) 用 clasp 建 GAS Web App + 把 Key 存進 GAS 後台的安全設定區 (3) 前後端串好,給你兩個網址。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">三層架構流程</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-tier">
+                <div class="tier-row">
+                  <div class="tier-box t1">
+                    <div class="label">前端</div>
+                    <div>使用者貼會議逐字稿</div>
+                    <div class="sub">GitHub Pages</div>
+                    <div class="sub" style="color:#0F9D8A;margin-top:3px;">cooperation.tw/meeting-summarizer/</div>
+                  </div>
+                  <div class="arrow">→</div>
+                  <div class="tier-box t2">
+                    <div class="label">後端 proxy</div>
+                    <div>GAS Web App 收請求 加 Key 轉 Gemini</div>
+                    <div class="sub">script.google.com</div>
+                    <div class="sub" style="color:#c15f3c;margin-top:3px;">GEMINI_KEY 存 Properties</div>
+                  </div>
+                  <div class="arrow">→</div>
+                  <div class="tier-box t3">
+                    <div class="label">AI</div>
+                    <div>Gemini 摘要回傳</div>
+                    <div class="sub">generativelanguage.googleapis.com</div>
+                  </div>
+                </div>
+                <div class="legend">Key 永遠在 GAS 後台的安全設定區 ・ 前端網頁完全沒有 Key ・ 三層架構保證 Key 不外洩</div>
+              </div>
+            </div>
+            <div class="mock-caption">變體 A 便利:你貼 Key 給 AI 一句話三層全部設好 ・ 風險:Key 留在 IDE chat 紀錄(只在自己電腦)</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">trade-off ・ 為什麼有 A B 兩變體</span>
+          變體 A 便利但 Key 進過 prompt(chat 紀錄留下 — 只在你電腦)。變體 B(下一張卡)Key 你自己貼進 GAS UI — 多花 30 秒但 Key 從不離開你手。<br>
+          建議:第一次跑就用變體 A 學流程,熟悉後切變體 B 養成安全習慣。
+        </div>
+
+        <details>
+          <summary>跑失敗時怎麼救?</summary>
+          <div class="troubleshoot">
+            <table>
+              <thead><tr><th style="width:38%">你看到什麼</th><th>把這句貼回 AI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>GAS Web App 第一次點開要求授權</td>
+                  <td><span class="rescue-line">這不是 bug 是 Google 安全機制 ・ 第一次點 GAS Web App 網址會要求授權 (個人 Google 帳號 → Advanced → Go to 你的腳本) ・ 一次授權後永久通行</span></td>
+                </tr>
+                <tr>
+                  <td>clasp 找不到</td>
+                  <td><span class="rescue-line">terminal 跳 clasp not found ・ 請幫我裝:npm install -g @google/clasp ・ 裝完跑 clasp login 用我的 Google 登入</span></td>
+                </tr>
+                <tr>
+                  <td>呼叫 Gemini 跳 403</td>
+                  <td><span class="rescue-line">GAS 呼叫 Gemini 跳 403 ・ 我的 Key 應該是對的 ・ 請確認 (1) Key 真的存在 GAS 後台的安全設定區 (打開 GAS 設定確認) (2) GAS 的 callGemini 函式有從 GAS 後台讀 GEMINI_KEY 而不是寫死在程式碼裡</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </article>
+
+      <!-- M2-4-R3-B LV1 變體 B 不含 Key (安全 推薦) -->
+      <article class="task" data-tags="M2-4">
+        <div class="task-meta">
+          <span class="tag accent">M2-4</span>
+          <span class="tag">Round 3</span>
+          <span class="tag tag-lv1">LV1 變體 B</span>
+          <span class="tag">三層架構</span>
+          <span class="tag">安全</span>
+          <span class="tag">推薦</span>
+        </div>
+        <h2>R3-B ・ 三層架構會議摘要器(變體 B 不含 Key 推薦)</h2>
+        <p class="desc">同樣的三層架構,但 Key 不進 prompt。AI 幫你開好 GAS,告訴你 Key 要去哪裡貼 — 你自己手動貼 30 秒。Key 從不離開你手,養成「程式碼跟 secret 永遠分離」的好習慣。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> 同 R3-A,但 Key 不用先準備在剪貼簿 — 開好 GAS 後再去貼。
+        </div>
+
+        <h3>給 AI 的 Prompt(變體 B:不含 Key 推薦)</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m24-r3b">複製</button>
+          <pre class="prompt-block" id="m24-r3b">做會議摘要器
+前端 index.html 用 SSH 登入放 GitHub Pages
+後端用 clasp 幫我設好 GAS 存 GEMINI_KEY
+保護好 Key 避免上傳洩漏
+完成兩個部署 給我兩個網址
+完成後告訴我去哪裡放 Key</pre>
+        </div>
+        <p class="copy-hint">比變體 A 少兩行(沒貼 Key)。其他都一樣。AI 會幫你開好 GAS、設好後台框架,最後告訴你「請去 script.google.com/d/.../edit 點左下齒輪 → 安全設定區 → 新增一筆 GEMINI_KEY」。</p>
+
+        <div class="expected">
+          <strong>預期產出:</strong> 兩個網址 + 一個指示「請去這裡貼 Key」。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ 變體 B 流程</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-chat-steps">
+                <div class="step"><div class="step-marker">1</div><div class="step-text">建 GitHub repo my-meeting-summary + SSH push</div></div>
+                <div class="step"><div class="step-marker">2</div><div class="step-text">寫 index.html(前端 fetch GAS endpoint)</div></div>
+                <div class="step"><div class="step-marker">3</div><div class="step-text">開啟 GitHub Pages</div></div>
+                <div class="step"><div class="step-marker">4</div><div class="step-text">用 clasp 建立 GAS project + Code.gs proxy 邏輯</div></div>
+                <div class="step"><div class="step-marker">5</div><div class="step-text">部署 GAS Web App ・ 拿到 exec 網址</div></div>
+                <div class="step"><div class="step-marker">6</div><div class="step-text">把 GAS 網址寫進前端 fetch 路徑</div></div>
+                <div class="step"><div class="step-marker pending">7</div><div class="step-text"><strong style="color:#c15f3c;">換你:</strong>去 script.google.com/d/.../edit ・ 點齒輪 → 安全設定區 → 新增一筆 GEMINI_KEY 把你的 Key 貼進去<div class="ai-line">完成後測 https://cooperation.tw/meeting-summarizer/</div></div></div>
+              </div>
+            </div>
+            <div class="mock-caption">6 步 AI 全跑完 ・ 第 7 步換你貼 Key(只貼進 Google 的設定 UI 不留 chat 紀錄)</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ GAS Web App 第一次手動授權</span>
+          GAS Web App 第一次點開會要求授權,這是 Google 安全沙盒要求,不是 bug。流程:點「Advanced」→「Go to your script (unsafe)」→ 給你的 Google 帳號權限 → 完成後就永久通行,使用者不會再看到這個畫面。
+        </div>
+      </article>
+
+      <!-- M2-4-R4 LV2 客服分流 -->
+      <article class="task" data-tags="M2-4">
+        <div class="task-meta">
+          <span class="tag accent">M2-4</span>
+          <span class="tag">Round 4</span>
+          <span class="tag tag-lv2">LV2</span>
+          <span class="tag">客服分流</span>
+          <span class="tag">5 產業變化</span>
+        </div>
+        <h2>R4 ・ 客服分流網頁(5 產業變化)</h2>
+        <p class="desc">會議摘要器跑通了之後,同一個三層架構可以做客服分流 — 客戶提問丟進去,AI 分類成售前/售後/抱怨,給對應建議回覆。換 prompt 即可換產業。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> R3-A 或 R3-B 三層架構已部署成功。會議摘要器能跑就能改成客服分流(架構完全一樣只改 prompt)。
+        </div>
+
+        <h3>起點 Prompt(套你的產業)</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m24-r4">複製</button>
+          <pre class="prompt-block" id="m24-r4">幫我做客服分流網頁 串 Gemini
+照三層架構 GitHub Pages + GAS + Gemini
+
+業務情境
+- 我賣 [產品/服務 — 例如 線上課程 / 飲料外送 / 保險]
+- 客戶提問分三類:
+  - 售前 (詢問價格 / 比較 / 適不適合我)
+  - 售後 (使用問題 / 退換 / 客訴)
+  - 抱怨 (情緒性強烈不滿)
+- 各類給不同建議回覆
+- 抱怨類自動標「轉真人」+ 通知主管 email
+
+介面
+- 左側貼客戶訊息
+- 右側即時分類 (badge 顏色) + AI 建議回覆草稿
+- 採用按鈕 / 修改按鈕 / 轉真人按鈕
+
+風格沿用我的網頁(主綠 #0F9D8A)
+完成後給我網址</pre>
+        </div>
+        <p class="copy-hint">把 <span class="fill-in">[產品/服務]</span> 換成你的產業。下面 5 個產業變化都可以套這個模板。</p>
+
+        <h3>5 個產業展開</h3>
+        <div class="step-list-inline">
+          <div class="step-item"><span class="step-num-sm">1</span><span><strong>餐廳訂位</strong> — 訂位 / 改時間 / 取消 / 客訴菜色</span></div>
+          <div class="step-item"><span class="step-num-sm">2</span><span><strong>電商售後</strong> — 退貨 / 物流追蹤 / 商品瑕疵 / 抱怨配送</span></div>
+          <div class="step-item"><span class="step-num-sm">3</span><span><strong>SaaS 客服</strong> — 帳號問題 / 訂閱方案 / Bug 回報 / 功能建議</span></div>
+          <div class="step-item"><span class="step-num-sm">4</span><span><strong>保險業務</strong> — 保費試算 / 理賠申請 / 條款解釋 / 客訴申訴</span></div>
+          <div class="step-item"><span class="step-num-sm">5</span><span><strong>教育機構</strong> — 報名 / 課程內容 / 退費 / 投訴老師</span></div>
+        </div>
+
+        <div class="expected">
+          <strong>預期產出:</strong> 客服面板,左貼訊息右出分類 + 建議回覆。
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">cooperation.tw/customer-service-flow/</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-cs">
+                <div class="cs-row">
+                  <div class="cs-input">
+                    <div style="font-size:8px;color:#888;margin-bottom:3px;">客戶訊息(貼上)</div>
+                    <div>「我昨天訂的珍奶送來只有一杯但我訂兩杯 已經放半天了能不能補一杯不然我要去 Google 給負評」</div>
+                  </div>
+                  <div class="cs-result">
+                    <span class="cs-tag cmpl">抱怨 + 轉真人</span>
+                    <div style="font-size:8px;color:#888;margin:3px 0;">AI 建議回覆草稿</div>
+                    <div>「您好,真的非常抱歉漏送!我們立即為您安排補送 + 額外送一杯作為歉意,5 分鐘內到 ・ 已通知主管追蹤」</div>
+                    <div style="display:flex;gap:3px;margin-top:4px;font-size:8px;">
+                      <span style="background:#0F9D8A;color:#fff;padding:1px 5px;border-radius:3px;">採用</span>
+                      <span style="background:#fff;border:1px solid #ccc;padding:1px 5px;border-radius:3px;">修改</span>
+                      <span style="background:#c0392b;color:#fff;padding:1px 5px;border-radius:3px;">轉真人</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="font-size:8px;color:#888;margin-top:8px;text-align:center;">抱怨類自動偵測情緒強度 + 通知主管 email</div>
+              </div>
+            </div>
+            <div class="mock-caption">飲料外送範例 ・ AI 偵測情緒強度高 → 標「轉真人」+ 草稿 + 主管收到通知 email</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ AI 答非所問</span>
+          客服 AI 最常見問題 — 客戶問價格 AI 卻講保固。商業規則寫越具體 AI 答越準:
+          <pre class="tip-fix-prompt">AI 把「課程多少錢」答成課程介紹
+請在 GAS 那層加 system prompt
+強調「客戶問價格 一定先給數字 再附說明」
+給 3 個範例對話 讓 AI 學分類後回覆風格</pre>
+        </div>
+      </article>
+
+      <!-- M2-4-R5 LV3 agent 4 步任務 -->
+      <article class="task" data-tags="M2-4">
+        <div class="task-meta">
+          <span class="tag accent">M2-4</span>
+          <span class="tag">Round 5</span>
+          <span class="tag tag-lv3">LV3</span>
+          <span class="tag">agent 模式</span>
+          <span class="tag">4 步任務</span>
+        </div>
+        <h2>R5 ・ 進 agent 模式跑 4 步任務</h2>
+        <p class="desc">前面所有 prompt 都是「一句指令一個動作」。agent 模式 = 給 AI 一個目標 + 一串子任務,AI 自己排順序、自己跑、遇到問題自己除錯,只在完成時報告。學會這個你才算解鎖 vibe coding 真實生產力。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> R3 會議摘要器已部署成功且能跑。準備升級它(加字數限制 / 歷史 / 複製 / 部署驗證)。agy / Claude Code 用 agent 模式啟動。
+        </div>
+
+        <h3>給 AI 的 Prompt</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="m24-r5">複製</button>
+          <pre class="prompt-block" id="m24-r5">我要你一次幫我做完四件事 中間不要每件來問我
+你自己判斷怎麼做 遇到問題自己想辦法解決
+全部做完才回來跟我說結果
+
+目標 把我之前做的會議摘要器升級
+網址 https://[你的 username].github.io/meeting-summary/
+
+四件要做的事
+1. 輸入框加字數限制 超過 500 字就提示「太長了請縮短」
+2. 加歷史紀錄功能 我做過的摘要存最近 10 筆 重新打開還在
+3. 摘要結果旁邊加一個按鈕 按下去複製成 email 格式
+4. 改完 commit + push 上 GitHub 並且確認線上網站真的更新了
+
+每件做完跟我說做了什麼 用一行字
+中間遇到 bug 自己看錯誤訊息修 不要來問我
+全部做完給我網址讓我測試</pre>
+        </div>
+        <p class="copy-hint">把 <span class="fill-in">[你的 username]</span> 換成你的 GitHub 帳號名。最關鍵的是開頭兩句:「中間不要每件來問我」「你自己判斷怎麼做」 — 這兩句是進 agent 模式的鑰匙。沒這兩句 AI 會每改一行問你一次。</p>
+
+        <div class="expected">
+          <strong>預期 agent 跑的過程:</strong>
+          <div class="mini-mock">
+            <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ agent 模式運行中</span></div>
+            <div class="mock-body" style="padding:0;">
+              <div class="mock-agent">
+                <div class="ag-step"><span class="ck">✓</span><span>Step 1: 加字數限制</span></div>
+                <div class="ag-substep">改 index.html ・ textarea 加 maxlength + 即時計數</div>
+                <div class="ag-step"><span class="ck">✓</span><span>Step 2: 加歷史紀錄</span></div>
+                <div class="ag-substep">資料存在學員自己的瀏覽器 ・ 存最近 10 筆 ・ 點開可重看</div>
+                <div class="ag-step"><span class="ck">✓</span><span>Step 3: 一鍵複製 email</span></div>
+                <div class="ag-substep">摘要產生後加「複製成 email 格式」按鈕</div>
+                <div class="ag-step"><span class="ck running">●</span><span>Step 4: push + 驗證部署</span></div>
+                <div class="ag-substep">git add → commit「升級會議摘要器加字數限制歷史 email 複製」→ push 中...</div>
+                <div class="ag-substep">等待 GitHub Pages build... (約 60 秒)</div>
+                <div class="ag-substep">✓ HTTP 200 ・ 部署成功</div>
+                <div class="ag-step"><span class="ck">✓</span><span>完成 ・ 4/4 步</span></div>
+                <div class="ag-substep">https://alanchen.github.io/meeting-summary/ ・ 請測試</div>
+              </div>
+            </div>
+            <div class="mock-caption">4 步全自動 ・ AI 自己處理 commit message / build 等待 / HTTP 驗證 ・ 你只在完成時看結果</div>
+          </div>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ 觀察 agent 跑歪的訊號</span>
+          agent 模式很爽但要會看訊號:(1) 同一個錯誤改 3 次還沒解 → 該停下手動介入 (2) AI 開始亂改不相干的檔案 → 中斷重新給目標 (3) AI 說「完成」但你開網址看不到改動 → 叫 AI curl 驗證部署。
+        </div>
+
+        <details>
+          <summary>跑失敗時怎麼救?</summary>
+          <div class="troubleshoot">
+            <table>
+              <thead><tr><th style="width:38%">你看到什麼</th><th>把這句貼回 AI</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>AI 每一步還是問我</td>
+                  <td><span class="rescue-line">你還是每件來問我 ・ 請完全自己判斷做完四件事 中間都不要問我 ・ 全部做完才回來報告結果</span></td>
+                </tr>
+                <tr>
+                  <td>AI 跑一半卡住沒進度</td>
+                  <td><span class="rescue-line">你卡在 Step 2 沒進度 ・ 把當前狀態跟卡在哪告訴我 ・ 我幫你判斷要 skip 還是換做法</span></td>
+                </tr>
+                <tr>
+                  <td>說完成但網址沒更新</td>
+                  <td><span class="rescue-line">你說完成但我開網址看不到改動 ・ 請 curl https://alanchen.github.io/meeting-summary/ 看 HTTP status + 看回的 HTML 有沒有新功能字串 ・ 真的有部署成功嗎</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </article>
+
+      <!-- ════════════════════════════════════════
+           Stage 2 結業挑戰
+           ════════════════════════════════════════ -->
+
+      <!-- 結業整合挑戰 -->
+      <article class="task" data-tags="final">
+        <div class="task-meta">
+          <span class="tag accent">Stage 2</span>
+          <span class="tag">結業</span>
+          <span class="tag">整合挑戰</span>
+        </div>
+        <h2>結業 ・ 個人 AI 工作站(三選一)</h2>
+        <p class="desc">Stage 2 學的 GitHub / IDE / 三層架構 / agent 模式整合起來,做一個自己工作會用到的小系統。三個方向選一,做完上線分享連結。</p>
+
+        <div class="prereq">
+          <strong>動手前先確認:</strong> M2-1 ~ M2-4 五次主課都跑過。SSH / clasp / Gemini Key 都可用。挑一個方向,寫一頁規格(目標 / 使用者 / 功能 / 部署路徑)再開工。
+        </div>
+
+        <h3>三個方向選一</h3>
+
+        <div class="scenario-card">
+          <div class="scenario-line"><strong>方向 A:個人知識庫 + AI 助手</strong></div>
+          <div class="scenario-line">把你常讀的 PDF / 筆記 / 報告丟一個 repo,做一個查詢頁 — 輸入問題 AI 從你的資料找答案。</div>
+          <div class="scenario-line"><span style="color:var(--muted);">適合對象:</span>研究員 / 顧問 / 內容創作者 / 業務</div>
+        </div>
+
+        <div class="scenario-card">
+          <div class="scenario-line"><strong>方向 B:工作流自動化</strong></div>
+          <div class="scenario-line">GAS 表單收資料 → GitHub Pages 顯示 → AI 分析 → Telegram / email 通知。完整事件驅動架構。</div>
+          <div class="scenario-line"><span style="color:var(--muted);">適合對象:</span>行銷 / 行政 / 客服主管 / 課程承辦</div>
+        </div>
+
+        <div class="scenario-card">
+          <div class="scenario-line"><strong>方向 C:客戶互動系統</strong></div>
+          <div class="scenario-line">客戶網頁(問卷 / 客服 / 預約)+ AI 即時回覆 + GAS 記錄 + 自動寄信。可以是真實的小品上線給客戶用。</div>
+          <div class="scenario-line"><span style="color:var(--muted);">適合對象:</span>個人接案 / 工作室 / 教練 / 自由業</div>
+        </div>
+
+        <h3>共同架構樣板</h3>
+        <pre class="arch-tree">my-workstation/
+├── index.html        ← GitHub Pages 前端 (使用者介面)
+├── styles.css        ← 統一風格
+├── app.js            ← 前端邏輯 + fetch GAS endpoint
+├── backend.gs        ← GAS API proxy (clasp 部署)
+├── 安全設定區        ← GEMINI_KEY 等機密 (放在 GAS 後台不進程式碼)
+├── .clasp.json       ← IDE 自動部署 GAS 設定
+├── .gitignore        ← 排除 .env / .clasp.json
+└── README.md         ← 給未來自己的說明書</pre>
+
+        <h3>給 agent 的 Prompt 樣板</h3>
+        <div class="prompt-wrap">
+          <button class="copy-btn" data-target="final-prompt">複製</button>
+          <pre class="prompt-block" id="final-prompt">進 agent 模式 我要做 Stage 2 結業作品
+
+方向 [A 個人知識庫 / B 工作流自動化 / C 客戶互動系統]
+
+我的目標
+- [一句話描述要解決什麼問題]
+
+使用者是誰
+- [你 / 同事 / 客戶 / 學員]
+
+主要功能
+1. [功能 1]
+2. [功能 2]
+3. [功能 3]
+
+部署架構
+- 前端 GitHub Pages
+- 後端 GAS Web App + 後台安全設定區 (放 GEMINI_KEY)
+- AI Gemini API
+
+要求
+- 用 SSH + clasp 設好部署
+- 全部跑完給我兩個網址 + 一份 README.md
+- 我的 GitHub username 是 [你的 username]
+- 第一次跑完之後 我會邊用邊回來請你升級
+
+完成 step 自己排 不要每步問我</pre>
+        </div>
+        <p class="copy-hint">把 <span class="fill-in">[ ... ]</span> 填空 — 越具體 agent 跑出來的越接近你想要的。第一版跑出來不滿意是正常的,邊用邊升級才是 vibe coding 的常態。</p>
+
+        <div class="expected">
+          <strong>預期產出:</strong>
+          <ul style="margin-top:6px;margin-left:20px;font-size:14px;line-height:1.8;">
+            <li>兩個可訪問網址(前端 GitHub Pages + 後端 GAS Web App)</li>
+            <li>README.md 寫清楚怎麼用</li>
+            <li>能 demo 給同學看完整流程</li>
+            <li>能講出「我這個東西替我節省了什麼」一句話</li>
+          </ul>
+        </div>
+
+        <div class="tip-callout">
+          <span class="tip-title">提示 ・ 別過度設計</span>
+          結業作品不是要做出可商業化的產品 — 是要證明你能用 Stage 2 工具獨立完成一個三層架構小系統。功能少而完整 > 功能多但跑不動。一開始想做客服 + 知識庫 + 通知三合一的學員通常都做不完。先做 MVP。
+        </div>
+      </article>
+
+    </main>
+
+    <div class="footer">
+      Vibe Coding Stage 2 ・ Prompt 模板庫 ・ 真的卡住再來解鎖 ・
+      <a href="https://aipath.cooperation.tw">回 ai-path 首頁</a>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">已複製到剪貼簿</div>
+
+  <script>
+    // ═══════════════════════════════════════════
+    // 密碼鎖機制 — Stage 2 統一 PIN 1234
+    // ═══════════════════════════════════════════
+    const CORRECT_PIN = '1234';
+    const UNLOCKED_KEY = 'prompts_stage2_unlocked_v1';
+
+    function getUnlocked() {
+      try { return JSON.parse(localStorage.getItem(UNLOCKED_KEY) || '[]'); }
+      catch (e) { return []; }
+    }
+    function setUnlocked(list) {
+      localStorage.setItem(UNLOCKED_KEY, JSON.stringify(list));
+      updateUnlockCount();
+    }
+    function isUnlocked(id) { return getUnlocked().includes(id); }
+    function unlock(id) {
+      const list = getUnlocked();
+      if (!list.includes(id)) {
+        list.push(id);
+        setUnlocked(list);
+      }
+    }
+    function relock(id) {
+      setUnlocked(getUnlocked().filter(x => x !== id));
+    }
+    function updateUnlockCount() {
+      const el = document.getElementById('unlock-count');
+      if (el) el.textContent = getUnlocked().length;
+    }
+
+    function showCardBody(card) {
+      const body = card.querySelector(':scope > .card-body');
+      const lock = card.querySelector(':scope > .lock-state');
+      if (body) body.hidden = false;
+      if (lock) lock.hidden = true;
+    }
+    function hideCardBody(card) {
+      const body = card.querySelector(':scope > .card-body');
+      const lock = card.querySelector(':scope > .lock-state');
+      if (body) body.hidden = true;
+      if (lock) {
+        lock.hidden = false;
+        const wrap = lock.querySelector('.pin-input-wrap');
+        const btn = lock.querySelector('.unlock-btn');
+        const err = lock.querySelector('.pin-error');
+        const input = lock.querySelector('.pin-input');
+        if (wrap) wrap.hidden = true;
+        if (btn) btn.hidden = false;
+        if (err) err.hidden = true;
+        if (input) input.value = '';
+      }
+    }
+
+    document.querySelectorAll('.task').forEach((card, i) => {
+      if (!card.dataset.cardId) {
+        card.dataset.cardId = 'card-s2-' + i;
+      }
+
+      const desc = card.querySelector(':scope > .desc') || card.querySelector(':scope > .task-meta');
+      if (!desc) return;
+
+      const toWrap = [];
+      let next = desc.nextElementSibling;
+      while (next) {
+        toWrap.push(next);
+        next = next.nextElementSibling;
+      }
+      if (toWrap.length === 0) return;
+
+      const body = document.createElement('div');
+      body.className = 'card-body';
+      toWrap.forEach(el => body.appendChild(el));
+      card.appendChild(body);
+
+      const lock = document.createElement('div');
+      lock.className = 'lock-state';
+      lock.innerHTML = `
+        <p class="lock-hint">
+          先自己試試看怎麼下 prompt,真的卡住再看答案。
+          <small>需要時點下面按鈕,輸入 4 位數密碼 (老師會在課堂說) 解鎖。</small>
+        </p>
+        <button class="unlock-btn" type="button">我需要看答案</button>
+        <div class="pin-input-wrap" hidden>
+          <input type="password" class="pin-input" inputmode="numeric" maxlength="4" placeholder="****" autocomplete="off">
+          <button class="pin-submit" type="button">確認</button>
+          <button class="pin-cancel" type="button">取消</button>
+        </div>
+        <p class="pin-error" hidden>密碼不對,再試試。</p>
+      `;
+      card.appendChild(lock);
+
+      const unlockBtn = lock.querySelector('.unlock-btn');
+      const pinWrap = lock.querySelector('.pin-input-wrap');
+      const pinInput = lock.querySelector('.pin-input');
+      const pinSubmit = lock.querySelector('.pin-submit');
+      const pinCancel = lock.querySelector('.pin-cancel');
+      const pinError = lock.querySelector('.pin-error');
+
+      unlockBtn.addEventListener('click', () => {
+        unlockBtn.hidden = true;
+        pinWrap.hidden = false;
+        pinError.hidden = true;
+        setTimeout(() => pinInput.focus(), 50);
+      });
+
+      function trySubmit() {
+        const val = (pinInput.value || '').trim();
+        if (val === CORRECT_PIN) {
+          unlock(card.dataset.cardId);
+          showCardBody(card);
+        } else {
+          pinError.hidden = false;
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      }
+
+      pinSubmit.addEventListener('click', trySubmit);
+      pinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') trySubmit();
+      });
+      pinCancel.addEventListener('click', () => {
+        pinWrap.hidden = true;
+        unlockBtn.hidden = false;
+        pinError.hidden = true;
+        pinInput.value = '';
+      });
+
+      const relockBtn = document.createElement('button');
+      relockBtn.className = 'relock-btn';
+      relockBtn.type = 'button';
+      relockBtn.textContent = '把這張卡鎖回去再練一次';
+      relockBtn.addEventListener('click', () => {
+        relock(card.dataset.cardId);
+        hideCardBody(card);
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      body.appendChild(relockBtn);
+
+      if (isUnlocked(card.dataset.cardId)) {
+        showCardBody(card);
+      } else {
+        hideCardBody(card);
+      }
+    });
+
+    const resetBtn = document.getElementById('reset-all-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (!confirm('確定要把所有卡片鎖回去重新練嗎?')) return;
+        setUnlocked([]);
+        document.querySelectorAll('.task').forEach(card => {
+          if (card.querySelector(':scope > .card-body')) {
+            hideCardBody(card);
+          }
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    updateUnlockCount();
+
+    // ═══════════════════════════════════════════
+    // Copy buttons — 雙軌設計
+    // 優先讀 data-copy 屬性(AI 跑用的精煉版),沒設定就 fallback 讀 <pre> 內文(完整教學版)
+    // 這讓「給人看的詳細版」跟「給 AI 跑的精煉版」可以分開
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        let textToCopy = btn.dataset.copy;
+        let fallbackTarget = null;
+        if (!textToCopy) {
+          fallbackTarget = document.getElementById(btn.dataset.target);
+          if (!fallbackTarget) return;
+          textToCopy = fallbackTarget.textContent;
+        }
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          btn.textContent = '已複製';
+          btn.classList.add('copied');
+          showToast();
+          setTimeout(() => {
+            btn.textContent = '複製';
+            btn.classList.remove('copied');
+          }, 1800);
+        } catch (e) {
+          if (fallbackTarget) {
+            const range = document.createRange();
+            range.selectNodeContents(fallbackTarget);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
+          btn.textContent = '請按 Cmd+C';
+        }
+      });
+    });
+
+    function showToast() {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 1500);
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        document.querySelectorAll('.task').forEach(task => {
+          const tags = (task.dataset.tags || '').split(/\s+/);
+          if (f === 'all' || tags.includes(f)) {
+            task.classList.remove('hidden');
+          } else {
+            task.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

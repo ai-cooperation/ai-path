@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-2 · 彈性補充 — 結構化提問教練 Gem | Vibe Coding Stage 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* M1-2 · R6 之後 · 彈性補充 — 結構化提問教練 Gem
+   Design System: WHITE BACKGROUND
+   Accent: --purple (#7C3AED) 彈性節用紫色暗示「進階補充」 */
+:root{
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g500:#80868B; --g600:#5F6368;
+  --g700:#3C4043; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --navy:#0B3C5D;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;background:var(--white);text-wrap:pretty;}
+
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:1.3rem 3rem .9rem;overflow:hidden;}
+.slide.active{display:flex;}
+.slide.dataviz{background:var(--white);color:var(--g900);padding-top:2.4rem;overflow-y:auto;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.dataviz h2{color:var(--g900);}
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster>*{position:relative;z-index:2;}
+.slide.poster h1,.slide.poster h2{color:#fff;}
+
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+h2{font-size:1.55rem;font-weight:700;margin-bottom:.4rem;line-height:1.35;}
+h3{font-size:1.05rem;font-weight:700;margin-bottom:.25rem;}
+p,li{font-size:.9rem;line-height:1.6;}
+
+.fragment{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.fragment.visible{opacity:1;transform:none;}
+
+/* Anchor banner */
+.anchor-banner{display:inline-flex;align-items:center;gap:.6rem;margin:.2rem 0 .8rem;padding:.4rem 1rem;background:var(--purple-lt);border-left:4px solid var(--purple);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--purple);letter-spacing:.1em;text-transform:uppercase;}
+.anchor-text{font-size:1rem;font-weight:700;color:var(--g900);}
+
+/* Optional badge */
+.optional-banner{display:inline-flex;align-items:center;gap:.5rem;background:#fff7ed;border:1px solid #fdba74;border-radius:8px;padding:.4rem 1rem;margin-bottom:.8rem;}
+.optional-banner .opt-tag{background:var(--orange);color:#fff;font-size:.7rem;font-weight:700;padding:.15rem .55rem;border-radius:4px;letter-spacing:.08em;}
+.optional-banner .opt-text{font-size:.85rem;color:#c2410c;font-weight:600;}
+
+/* Two-column compare: bad vs good design */
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;max-width:960px;width:100%;margin-top:.3rem;}
+.compare-col{border-radius:12px;padding:.85rem 1.1rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid rgba(217,48,37,.3);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--purple-lt);border:2px solid rgba(124,58,237,.3);border-top:4px solid var(--purple);}
+.compare-col .col-label{font-size:.7rem;font-weight:700;letter-spacing:.08em;margin-bottom:.35rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--purple);}
+.compare-col h4{font-size:.95rem;font-weight:700;color:var(--g900);margin-bottom:.35rem;line-height:1.45;}
+.compare-col p{font-size:.85rem;line-height:1.55;color:var(--g800);}
+.compare-col ul{padding-left:1.1rem;margin-top:.2rem;}
+.compare-col li{font-size:.82rem;line-height:1.55;color:var(--g700);margin-bottom:.1rem;}
+
+/* Instructions 4-column breakdown */
+.instr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;max-width:1200px;width:100%;margin-top:.3rem;}
+.instr-col{background:#fff;border:1px solid var(--g200);border-top:4px solid var(--i-color);border-radius:10px;padding:.7rem .85rem;display:flex;flex-direction:column;gap:.35rem;}
+.instr-col .ihead{display:flex;align-items:center;gap:.4rem;}
+.instr-col .ibadge{background:var(--i-color);color:#fff;font-size:.75rem;font-weight:700;padding:.15rem .55rem;border-radius:100px;letter-spacing:.04em;}
+.instr-col h3{font-size:.95rem;color:var(--i-color);margin-bottom:.05rem;}
+.instr-col .ipoints{font-size:.74rem;color:var(--g700);line-height:1.55;}
+.instr-col .ipoints li{font-size:.74rem;margin-left:1rem;margin-bottom:.15rem;list-style:disc;line-height:1.5;}
+.instr-col .ipoints li::marker{color:var(--i-color);}
+.instr-col.role{--i-color:var(--blue);}
+.instr-col.task{--i-color:var(--green);}
+.instr-col.format{--i-color:var(--gold);}
+.instr-col.limit{--i-color:var(--red);}
+
+/* Chat-style example */
+.chat-wrap{max-width:980px;width:100%;display:flex;flex-direction:column;gap:.45rem;margin-top:.25rem;}
+.chat-user{align-self:flex-end;max-width:65%;background:var(--blue);color:#fff;border-radius:14px 14px 4px 14px;padding:.5rem .85rem;font-size:.85rem;line-height:1.5;}
+.chat-user .who{font-size:.62rem;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:.15rem;letter-spacing:.06em;}
+.chat-gem{align-self:flex-start;max-width:92%;background:var(--offwhite);border:1px solid var(--g200);border-left:4px solid var(--purple);border-radius:4px 14px 14px 14px;padding:.6rem .9rem;font-size:.8rem;line-height:1.55;color:var(--g800);}
+.chat-gem .who{font-size:.62rem;font-weight:700;color:var(--purple);margin-bottom:.25rem;letter-spacing:.06em;}
+.chat-gem .gem-sec{margin-bottom:.3rem;}
+.chat-gem .gem-sec:last-child{margin-bottom:0;}
+.chat-gem .gem-sec-tag{display:inline-block;font-size:.66rem;font-weight:700;padding:.1rem .45rem;border-radius:100px;margin-bottom:.15rem;}
+.chat-gem .gem-sec-tag.diag{background:var(--blue-lt);color:var(--blue);}
+.chat-gem .gem-sec-tag.ask{background:var(--gold-lt);color:#b07d00;}
+.chat-gem .gem-sec-tag.next{background:var(--green-lt);color:var(--green);}
+.chat-gem ul{margin-top:.1rem;padding-left:1.1rem;}
+.chat-gem li{font-size:.74rem;line-height:1.55;margin-bottom:.05rem;}
+
+/* Info Box */
+.info-box{border-radius:10px;padding:.65rem 1.1rem;max-width:880px;width:100%;text-align:left;margin-top:.4rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);}
+.info-box.purple{background:var(--purple-lt);border-left:4px solid var(--purple);}
+.info-box.purple .label{color:var(--purple);}
+.info-box .label{font-weight:700;font-size:.95rem;margin-bottom:.3rem;letter-spacing:.05em;}
+.info-box p{color:var(--g800);font-size:.82rem;line-height:1.55;}
+
+/* Quote Box */
+.quote-box{max-width:880px;width:100%;background:var(--offwhite);border-left:5px solid var(--purple);border-radius:0 12px 12px 0;padding:.8rem 1.3rem;margin:.4rem 0;text-align:left;}
+.quote-box .qtag{font-size:.66rem;font-weight:700;color:var(--g500);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.25rem;}
+.quote-box .quote-text{font-size:.95rem;font-weight:700;line-height:1.6;color:var(--g900);}
+
+/* Homework cards */
+.hw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;max-width:980px;width:100%;margin-top:.3rem;}
+.hw-card{background:#fff;border:2px dashed var(--purple);border-radius:10px;padding:.7rem .9rem;}
+.hw-card .hw-tag{display:inline-block;background:var(--purple);color:#fff;font-size:.65rem;font-weight:700;padding:.12rem .45rem;border-radius:100px;letter-spacing:.04em;margin-bottom:.3rem;}
+.hw-card h3{color:var(--purple);font-size:.95rem;margin-bottom:.25rem;}
+.hw-card p{font-size:.76rem;color:var(--g700);line-height:1.55;}
+
+/* Poster helpers */
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.78);}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.85rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;}
+
+/* Controls */
+.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--purple);transition:width .4s;z-index:100;}
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--purple);border-color:var(--purple);color:#fff;}
+.controls button:disabled{opacity:.25;cursor:default;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500);font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--purple-lt);color:var(--purple);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(124,58,237,.2);}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+
+/* Chapter Menu */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--purple);}
+.chapter-icon{color:var(--purple);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:220px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--purple);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--purple);}
+
+/* MOBILE */
+@media(max-width:768px){
+  html,body{font-size:16px;}
+  .slide{padding:1rem 1.2rem 1rem;}
+  .slide.dataviz{padding-top:3rem;}
+  h1{font-size:1.8rem;}
+  h2{font-size:1.3rem;margin-bottom:.6rem;}
+  .compare-two{grid-template-columns:1fr;}
+  .instr-grid{grid-template-columns:repeat(2,1fr);}
+  .hw-grid{grid-template-columns:1fr;}
+  .chat-user,.chat-gem{max-width:100%;}
+  .controls button{width:40px;height:40px;font-size:1rem;}
+  .module-title{font-size:.7rem;left:.8rem;top:.6rem;}
+  .module-badge{font-size:.65rem;top:.6rem;right:.6rem;padding:.2rem .6rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — M1-2 · 彈性補充</div>
+<div class="module-badge">教練 Gem · 10–15 min</div>
+<div class="slides">
+
+<!-- ══ 0 · COVER ══ -->
+<div class="slide poster active" data-act="開場" data-index="0"
+     style="background:linear-gradient(135deg,#1e1b4b 0%,#4c1d95 40%,#7c3aed 100%);">
+  <p style="font-size:.95rem;color:rgba(255,255,255,.5);letter-spacing:.15em;margin-bottom:1rem;">M1-2 · R6 完成後 · 進階補充</p>
+  <h1 style="font-size:3.2rem;line-height:1.2;">結構化提問<br><span style="color:#c4b5fd;">教練 Gem</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">把今天學的整套提問結構<br><strong style="color:#fff;">封裝成一個會反問你的工具</strong></p>
+  <div style="margin-top:2.2rem;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;">
+    <span class="poster-badge">10–15 分鐘</span>
+    <span class="poster-badge">進階補充</span>
+    <span class="poster-badge">完整 Instructions</span>
+    <span class="poster-badge">可直接複製到 Gemini Gems</span>
+  </div>
+  <p style="color:rgba(255,255,255,.3);margin-top:2.8rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1 · 動機:為什麼故意做得「不那麼好用」 ══ -->
+<div class="slide dataviz" data-act="動機" data-index="1">
+  <div style="text-align:center;margin-bottom:.3rem;">
+    <p style="font-size:.68rem;color:var(--orange);letter-spacing:.12em;margin-bottom:.15rem;">進階補充</p>
+    <h2 style="margin-bottom:.2rem;">市面上的 Gem 都想當「答案機器」<br>這個 Gem 反過來</h2>
+  </div>
+
+  <div class="compare-two">
+    <div class="compare-col bad">
+      <div class="col-label">一般 Gem · 答案機器</div>
+      <h4>使用者丟問題 → Gem 直接給答案</h4>
+      <ul>
+        <li>越好用 = 越快給出答案</li>
+        <li>思考全部外包給 AI</li>
+        <li>使用者沒在思考,只在收貨</li>
+        <li>下次遇到類似問題,還是不會問</li>
+      </ul>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">教練 Gem · 反過來</div>
+      <h4>使用者丟問題 → Gem 反問使用者</h4>
+      <ul>
+        <li>故意做得「不那麼好用」</li>
+        <li>強制使用者把立場、限制想清楚</li>
+        <li>使用者自己改提示詞,Gem 只負責教</li>
+        <li>學到「怎麼問」這件事,可以帶走</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box purple fragment" data-order="0">
+    <div class="label">教練 Gem 的重點</div>
+    <p>好用 = 思考外包。<br>這個 Gem 故意做得「不那麼好用」,<strong style="color:var(--purple);">因為它在乎你會不會問,不是它能不能答</strong>。</p>
+  </div>
+</div>
+
+<!-- ══ 2 · Instructions 拆解 ══ -->
+<div class="slide dataviz" data-act="Instructions" data-index="2">
+  <div style="text-align:center;margin-bottom:.4rem;">
+    <p style="font-size:.72rem;color:var(--purple);letter-spacing:.15em;margin-bottom:.2rem;">Instructions 四欄結構</p>
+    <h2 style="margin-bottom:.3rem;">直接複製這四段到 Gemini Gems</h2>
+    <p style="color:var(--g600);font-size:.9rem;">回家照抄,自己換主題做變體</p>
+  </div>
+
+  <div class="instr-grid">
+    <div class="instr-col role">
+      <div class="ihead"><span class="ibadge">角色</span></div>
+      <h3>定身份</h3>
+      <ul class="ipoints">
+        <li>「結構化提問教練」</li>
+        <li>不直接答問題</li>
+        <li>只負責幫使用者把問題問得更好</li>
+      </ul>
+    </div>
+    <div class="instr-col task">
+      <div class="ihead"><span class="ibadge">任務</span></div>
+      <h3>四步驟流程</h3>
+      <ul class="ipoints">
+        <li>診斷:缺角色 / 觀點 / 限制?</li>
+        <li>反問 2–3 個釐清題</li>
+        <li>改寫成 A / B / C 三版本</li>
+        <li>邀請使用者選一個去試</li>
+      </ul>
+    </div>
+    <div class="instr-col format">
+      <div class="ihead"><span class="ibadge">格式</span></div>
+      <h3>四段回應</h3>
+      <ul class="ipoints">
+        <li>診斷(條列缺什麼)</li>
+        <li>我需要先問你(編號反問)</li>
+        <li>改寫版本(A / B / C 三段)</li>
+        <li>建議(推薦哪個版本 + 為什麼)</li>
+      </ul>
+    </div>
+    <div class="instr-col limit">
+      <div class="ihead"><span class="ibadge">限制</span></div>
+      <h3>五條紅線</h3>
+      <ul class="ipoints">
+        <li>不直接答原始問題</li>
+        <li>不超過 300 字</li>
+        <li>不批評使用者「寫得不好」</li>
+        <li>提示詞已經夠好就誠實說</li>
+        <li>連續三次只要答案就溫和拒絕</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box purple fragment" data-order="0">
+    <div class="label">為什麼是這四段</div>
+    <p><strong>角色</strong>把 AI 鎖在「教練」位置不讓它變答案機器;<strong>任務</strong>給它一條可重複執行的 SOP;<strong>格式</strong>讓每次輸出都長得一樣,使用者好學習;<strong>限制</strong>是這套設計的靈魂——沒有限制,Gem 還是會偷偷給答案。</p>
+  </div>
+</div>
+
+<!-- ══ 3 · 範例對話 ══ -->
+<div class="slide dataviz" data-act="範例對話" data-index="3">
+  <div style="text-align:center;margin-bottom:.3rem;">
+    <p style="font-size:.72rem;color:var(--purple);letter-spacing:.15em;margin-bottom:.2rem;">範例對話 · 課堂可現場跑</p>
+    <h2 style="margin-bottom:.3rem;">使用者丟一句,Gem 不答、反問</h2>
+  </div>
+
+  <div class="chat-wrap">
+    <div class="chat-user">
+      <div class="who">使用者</div>
+      員工不學習怎麼辦?
+    </div>
+
+    <div class="chat-gem">
+      <div class="who">教練 GEM</div>
+
+      <div class="gem-sec">
+        <span class="gem-sec-tag diag">診斷</span>
+        <ul>
+          <li>缺<strong>角色</strong>:你是誰?老闆、HR、還是中階主管?</li>
+          <li>缺<strong>觀點</strong>:你覺得是員工的問題,還是制度的問題?</li>
+          <li>缺<strong>限制</strong>:有什麼是你做不到的?(預算 / 換人 / 升遷制度)</li>
+          <li>建議<strong>換主詞</strong>:從「員工不學」改成「員工眼中,學習是什麼」</li>
+        </ul>
+      </div>
+
+      <div class="gem-sec">
+        <span class="gem-sec-tag ask">我需要先問你</span>
+        <ul>
+          <li>你是這群員工的什麼人?(決定 AI 用什麼立場回答)</li>
+          <li>你心裡有沒有一個假設:是員工不想學,還是不敢學、不知道學什麼?</li>
+          <li>你有沒有不能動的限制?(預算、人力、制度)</li>
+        </ul>
+      </div>
+
+      <div class="gem-sec">
+        <span class="gem-sec-tag next">下一步</span>
+        請回答這三題,我再幫你改寫提示詞。
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box note fragment" data-order="0">
+    <div class="label">這一步的重點</div>
+    <p>Gem 沒有給「員工不學習的五個方法」這種列點答案——<strong>它把球丟回給使用者</strong>。使用者必須先把自己的立場、假設、限制想清楚,Gem 才會幫他改寫。這就是「教練 vs 答案機器」的差異。</p>
+  </div>
+</div>
+
+<!-- ══ 4 · 收尾 + 學員作業 ══ -->
+<div class="slide dataviz" data-act="收尾" data-index="4">
+  <div style="text-align:center;margin-bottom:.4rem;">
+    <p style="font-size:.72rem;color:var(--purple);letter-spacing:.15em;margin-bottom:.2rem;">課後挑戰 · 帶一個 Gem 回家</p>
+    <h2 style="margin-bottom:.3rem;">照這個結構,自己做一個變體</h2>
+    <p style="color:var(--g600);font-size:.9rem;">「角色 + 任務 + 格式 + 限制」這四欄,換主題就是新 Gem</p>
+  </div>
+
+  <div class="hw-grid">
+    <div class="hw-card">
+      <span class="hw-tag">變體 1</span>
+      <h3>換主詞 Gem</h3>
+      <p>使用者丟一個問題,Gem 只負責把主詞換掉,給三個換法選項。</p>
+    </div>
+    <div class="hw-card">
+      <span class="hw-tag">變體 2</span>
+      <h3>五個為什麼 Gem</h3>
+      <p>使用者丟一個現象,Gem 連續追問五個「為什麼」,幫使用者挖到根因。</p>
+    </div>
+    <div class="hw-card">
+      <span class="hw-tag">變體 3</span>
+      <h3>反對者 Gem</h3>
+      <p>使用者提一個方案,Gem 扮演反對方,把所有漏洞挑出來,但只問不答。</p>
+    </div>
+  </div>
+
+  <div class="info-box success fragment" data-order="0">
+    <div class="label">為什麼這套設計值得帶走</div>
+    <p>你今天會的不只是「用 Gem」,你會的是<strong>怎麼設計一個 Gem</strong>。<br>下次工作上有任何「我每次都要重新問一遍」的情境,你都能照這個結構封裝成工具。<br><strong>這才是 Gem 真正的價值——不是替你想,是幫你把思考流程固化。</strong></p>
+  </div>
+
+  <div class="quote-box fragment" data-order="1">
+    <div class="qtag">M1-2 完整收尾</div>
+    <p class="quote-text">從<strong style="color:var(--blue);">會用 Gem</strong>(R1–R5),到<strong style="color:var(--green);">會選 Gem 平台</strong>(R6),再到<strong style="color:var(--purple);">會設計 Gem</strong>(這節)。<br>恭喜你,完成 Stage 1 的「用 AI」階段。</p>
+  </div>
+</div>
+
+</div><!-- end .slides -->
+
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter">1 / 5</div>
+<div class="controls">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>‹</button>
+  <button id="nextBtn" onclick="navigate(1)">›</button>
+</div>
+
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">◈</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">▲</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+  let fragmentIdx = 0;
+
+  const chapters = [];
+  let lastAct = '';
+  slides.forEach((s, i) => {
+    const act = s.dataset.act || '';
+    if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+  });
+
+  const list = document.getElementById('chapterList');
+  chapters.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = c.idx;
+    item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+    item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+    list.appendChild(item);
+  });
+
+  function getFragments(slide){
+    return Array.from(slide.querySelectorAll('.fragment'))
+      .sort((a,b) => (+a.dataset.order||0) - (+b.dataset.order||0));
+  }
+
+  function showSlide(n, showAllFragments){
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total-1, n));
+    const s = slides[cur];
+    s.classList.add('active');
+    const frags = getFragments(s);
+    if(showAllFragments){
+      frags.forEach(f => f.classList.add('visible'));
+      fragmentIdx = frags.length;
+    } else {
+      frags.forEach(f => f.classList.remove('visible'));
+      fragmentIdx = 0;
+    }
+    updateUI();
+  }
+
+  function goTo(n){ showSlide(n, false); }
+
+  function navigate(dir){
+    const s = slides[cur];
+    const frags = getFragments(s);
+    if(dir > 0){
+      if(fragmentIdx < frags.length){
+        frags[fragmentIdx].classList.add('visible');
+        fragmentIdx++;
+        updateUI();
+        return;
+      }
+      showSlide(cur + 1, false);
+    } else {
+      if(fragmentIdx > 0){
+        fragmentIdx--;
+        frags[fragmentIdx].classList.remove('visible');
+        updateUI();
+        return;
+      }
+      showSlide(cur - 1, true);
+    }
+  }
+
+  function updateUI(){
+    document.getElementById('progress').style.width = ((cur/(total-1))*100)+'%';
+    document.getElementById('counter').textContent = (cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = cur === 0 && fragmentIdx === 0;
+    document.getElementById('nextBtn').disabled = cur === total-1 && fragmentIdx >= getFragments(slides[cur]).length;
+
+    let act = '';
+    for(let i = chapters.length-1; i >= 0; i--){
+      if(cur >= chapters[i].idx){ act = chapters[i].act; break; }
+    }
+    document.getElementById('chapterLabel').textContent = act || '章節';
+
+    document.querySelectorAll('.chapter-item').forEach(item => {
+      const idx = +item.dataset.idx;
+      let end = total;
+      for(let c of chapters){ if(c.idx > idx){ end = c.idx; break; } }
+      item.classList.toggle('active', cur >= idx && cur < end);
+    });
+  }
+
+  function toggleChapterMenu(){
+    document.getElementById('chapterMenu').classList.toggle('open');
+  }
+  function closeChapterMenu(){
+    document.getElementById('chapterMenu').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => {
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){ e.preventDefault(); navigate(1); }
+    else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); navigate(-1); }
+    else if(e.key==='Home'){ e.preventDefault(); showSlide(0, false); }
+    else if(e.key==='End'){ e.preventDefault(); showSlide(total-1, true); }
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if(e.key==='Escape'){ closeChapterMenu(); }
+  });
+
+  document.querySelector('.slides').addEventListener('click', e => {
+    if(e.target.closest('.controls')||e.target.closest('.chapter-menu')) return;
+    navigate(1);
+  });
+
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ navigate(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+
+  updateUI();
+  window.navigate = navigate;
+  window.goTo = goTo;
+  window.toggleChapterMenu = toggleChapterMenu;
+})();
+</script>
+</body>
+</html>

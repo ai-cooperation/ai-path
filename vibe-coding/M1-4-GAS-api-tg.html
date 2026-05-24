@@ -250,37 +250,146 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
 </div>
+<!-- ══ 全貌揭露 — 從能跑到完整鏈條到多通道 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
-<h2>六輪循環，逐層遞進</h2>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-<div style="font-weight:700;">GAS 網頁 doGet</div>
-</div>
-<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-<div style="font-weight:700;">Sheet 讀寫</div>
-</div>
-<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-<div style="font-weight:700;">串 Groq API</div>
-</div>
-<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-<div style="font-weight:700;">串 TG Bot</div>
-</div>
-<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-<div style="font-weight:700;">Demo 互測</div>
-</div>
-<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-<div style="font-weight:700;">Stage 1 回顧</div>
-</div>
-</div>
-<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-<p style="font-size:.95rem;"><strong>故事線</strong><br/>一張飲料菜單（M1-3）→ 團購表單 → 自動統計 → AI 分析 → TG 通知老闆去買<br/>今天做完，就是一條完整服務</p>
-</div>
+  <!-- 頂部標題 -->
+  <div style="text-align:center;margin-bottom:.7rem;">
+    <p style="font-size:.7rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;">M1-4 ・ 3 小時</p>
+    <h2 style="margin-bottom:.2rem;">本模組你會做出什麼?</h2>
+    <p style="color:var(--g600);font-size:.9rem;">從收意見的網頁,串成 AI 自動分析 + 多通道即時通知</p>
+  </div>
+
+  <!-- 三個 mock-up -->
+  <div style="background:#f7fafc;padding:1rem .8rem .8rem;border-radius:14px;display:flex;align-items:stretch;gap:.3rem;max-width:1200px;width:100%;">
+
+    <!-- LV1 (25%, 灰階, Web App → Sheet) -->
+    <div class="fragment" data-order="0" style="flex:25;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#64748b;font-weight:700;letter-spacing:.08em;">LV1 ・ 系統能跑</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;padding:.5rem .55rem;display:flex;flex-direction:column;gap:.4rem;min-height:185px;">
+        <!-- Web App 意見表單 -->
+        <div style="background:#fafafa;border:1px solid #ddd;border-radius:4px;padding:.35rem;">
+          <div style="font-size:.42rem;color:#999;font-family:monospace;margin-bottom:3px;">script.google.com/.../exec</div>
+          <div style="font-size:.55rem;color:#444;font-weight:700;margin-bottom:3px;">意見回饋</div>
+          <div style="background:#fff;border:1px solid #e5e5e5;height:8px;border-radius:2px;margin-bottom:2px;"></div>
+          <div style="background:#fff;border:1px solid #e5e5e5;height:8px;border-radius:2px;margin-bottom:2px;"></div>
+          <div style="background:#fff;border:1px solid #e5e5e5;height:20px;border-radius:2px;margin-bottom:3px;"></div>
+          <div style="background:#888;color:#fff;font-size:.42rem;padding:.15rem;text-align:center;border-radius:2px;width:50%;">送出</div>
+        </div>
+        <!-- 細線往下 -->
+        <div style="text-align:center;color:#94a3b8;font-size:.6rem;">↓</div>
+        <!-- Sheet 累積 -->
+        <div style="background:#f5f5f5;border:1px solid #ccc;border-radius:4px;padding:.3rem;font-size:.42rem;color:#555;">
+          <div style="font-weight:700;color:#444;border-bottom:1px solid #ddd;padding-bottom:1px;">Sheet ・ 意見</div>
+          <div style="margin-top:2px;line-height:1.4;">
+            <div>王小明 ・ ming@... ・ 12:30</div>
+            <div>李美玲 ・ may@... ・ 12:32</div>
+            <div style="color:#999;">...</div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.78rem;color:var(--g700);margin-top:.4rem;font-weight:500;">純資料流,還沒 AI</p>
+    </div>
+
+    <!-- 連接 1→2 -->
+    <div style="display:flex;align-items:center;padding:0 .15rem;align-self:center;">
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+      <span style="width:18px;border-top:1px dashed #cbd5e1;"></span>
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+    </div>
+
+    <!-- LV2 (36%, 藍綠主色, GAS 中央處理 + Groq + Email) -->
+    <div class="fragment" data-order="1" style="flex:36;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#0F9D8A;font-weight:700;letter-spacing:.08em;">LV2 ・ 完整鏈條</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(15,157,138,.15);overflow:hidden;flex:1;border:1px solid #d1e7e2;padding:.55rem;display:flex;flex-direction:column;gap:.4rem;min-height:185px;">
+        <!-- 中央 GAS 節點 + 三方環繞 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;align-items:start;">
+          <!-- 左:Sheet (含 AI 欄位) -->
+          <div style="background:#e8f5f0;border:1px solid #0F9D8A;border-radius:4px;padding:.3rem;font-size:.42rem;">
+            <div style="color:#0F9D8A;font-weight:700;border-bottom:1px solid #b8e0d7;padding-bottom:1px;">Sheet ・ 意見</div>
+            <div style="margin-top:2px;line-height:1.5;color:#444;">
+              <div>王小明 ・ <span style="background:#fef3c7;color:#92400e;padding:0 2px;border-radius:2px;font-weight:700;">建議</span></div>
+              <div style="color:#666;font-style:italic;font-size:.38rem;">摘要:希望增加課後範例</div>
+              <div style="margin-top:1px;">李美玲 ・ <span style="background:#e8f5f0;color:#0F9D8A;padding:0 2px;border-radius:2px;font-weight:700;">正面</span></div>
+              <div style="color:#666;font-style:italic;font-size:.38rem;">摘要:課程設計很實用</div>
+            </div>
+          </div>
+          <!-- 右:Groq API + Email 通知 -->
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="background:#f3e8ff;border:1px solid #8b5cf6;border-radius:4px;padding:.25rem;font-size:.42rem;">
+              <div style="color:#8b5cf6;font-weight:700;">Groq AI</div>
+              <div style="color:#555;margin-top:1px;line-height:1.3;">分類 + 摘要</div>
+            </div>
+            <div style="background:#e8f0fe;border:1px solid #1a73e8;border-radius:4px;padding:.25rem;font-size:.42rem;">
+              <div style="color:#1a73e8;font-weight:700;display:flex;align-items:center;gap:3px;">
+                <span>✉</span> Email 通知
+              </div>
+              <div style="color:#555;margin-top:1px;line-height:1.4;font-style:italic;">[新意見][建議]<br>- 王小明</div>
+            </div>
+          </div>
+        </div>
+        <!-- 中央 GAS 節點 (橫向放底部) -->
+        <div style="background:#fef3c7;border:1.5px dashed #d97706;border-radius:6px;padding:.3rem;text-align:center;font-size:.5rem;color:#d97706;font-weight:700;">
+          GAS 中介處理 ・ doPost
+          <div style="font-size:.4rem;color:#92400e;margin-top:1px;font-weight:600;font-style:italic;">收意見 → 叫 AI 分類 → 寫 Sheet → 寄信</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.82rem;color:var(--green);margin-top:.4rem;font-weight:600;">AI 自動分類,email 通知到位</p>
+    </div>
+
+    <!-- 連接 2→3 -->
+    <div style="display:flex;align-items:center;padding:0 .15rem;align-self:center;">
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+      <span style="width:18px;border-top:1px dashed #cbd5e1;"></span>
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+    </div>
+
+    <!-- LV3 (31%, 金紫品牌色, 多通道通知中心) -->
+    <div class="fragment" data-order="2" style="flex:31;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#d97706;font-weight:700;letter-spacing:.08em;">LV3 ・ 多通道訊息中心</div>
+      </div>
+      <div style="background:linear-gradient(180deg,#fdfaf6 0%,#fff 60%);border-radius:8px;box-shadow:0 3px 12px rgba(217,119,6,.18);overflow:hidden;flex:1;border:1px solid #ffe8b5;padding:.5rem;display:flex;flex-direction:column;gap:.35rem;min-height:185px;">
+        <!-- 中央事件 -->
+        <div style="background:#fef3c7;border:1.5px dashed #d97706;border-radius:5px;padding:.3rem;text-align:center;font-size:.5rem;color:#92400e;font-weight:700;">
+          新意見送入 ・ 12:35
+        </div>
+        <!-- delivery status board - 三通道 -->
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;">
+          <!-- Email -->
+          <div style="background:#e8f0fe;border-left:3px solid #1a73e8;border-radius:3px;padding:.3rem .4rem;display:flex;align-items:center;gap:.4rem;font-size:.45rem;">
+            <div style="color:#1a73e8;font-weight:700;width:50px;">Email</div>
+            <div style="flex:1;color:#444;line-height:1.3;">[新意見][建議] - 王小明</div>
+            <div style="background:#0F9D8A;color:#fff;padding:1px 5px;border-radius:8px;font-size:.4rem;font-weight:700;">SENT 12:35</div>
+          </div>
+          <!-- Telegram -->
+          <div style="background:#dff1ff;border-left:3px solid #0088cc;border-radius:3px;padding:.3rem .4rem;display:flex;align-items:center;gap:.4rem;font-size:.45rem;">
+            <div style="color:#0088cc;font-weight:700;width:50px;">Telegram</div>
+            <div style="flex:1;color:#444;line-height:1.3;">[新意見] 王小明 ・ 建議</div>
+            <div style="background:#0F9D8A;color:#fff;padding:1px 5px;border-radius:8px;font-size:.4rem;font-weight:700;">SENT 12:35</div>
+          </div>
+          <!-- Line@ -->
+          <div style="background:#e6f7e6;border-left:3px solid #06c755;border-radius:3px;padding:.3rem .4rem;display:flex;align-items:center;gap:.4rem;font-size:.45rem;">
+            <div style="color:#06c755;font-weight:700;width:50px;">Line@</div>
+            <div style="flex:1;color:#444;line-height:1.3;">[新意見] 王小明 ・ 建議</div>
+            <div style="background:#0F9D8A;color:#fff;padding:1px 5px;border-radius:8px;font-size:.4rem;font-weight:700;">SENT 12:35</div>
+          </div>
+        </div>
+        <!-- 並行說明 -->
+        <div style="font-size:.42rem;color:#92400e;text-align:center;font-style:italic;font-weight:600;">同一筆意見,三通道並行,客戶 100% 收得到</div>
+      </div>
+      <p style="text-align:center;font-size:.8rem;color:#d97706;margin-top:.4rem;font-weight:600;">並行雙推,實戰通道</p>
+    </div>
+
+  </div>
+
+  <!-- 底部收束 -->
+  <p class="fragment" data-order="3" style="text-align:center;font-size:1rem;color:var(--g700);margin-top:.7rem;line-height:1.5;">
+    <strong style="color:var(--green);">完成 Stage 1,</strong>你會做事件驅動的完整服務 — 從收資料到 AI 分析到多通道通知。
+  </p>
 </div>
 <div class="slide dataviz" data-act="開場" data-index="2">
 <h2>前情提要：Stage 1 到目前為止</h2>
@@ -666,15 +775,15 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <div class="card-grid" style="margin-top:.8rem;max-width:760px;">
 <div class="card accent-top fragment" data-order="0" style="border-top-color:var(--purple);min-width:0;flex:1;">
 <h3>免費註冊</h3>
-<p>用 Google 帳號登入<br/>不用綁卡 / 不用付費</p>
+<p>用 Google<br/>帳號登入<br/>免綁卡 / 免付費</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1" style="min-width:0;flex:1;">
 <h3>速度極快</h3>
-<p>專門做推理的硬體<br/>回應比一般 API 快數倍</p>
+<p>專門做<br/>推理的硬體<br/>回應快數倍</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="2" style="min-width:0;flex:1;">
 <h3>額度夠用</h3>
-<p>以 console limits 為準<br/>課堂選當天額度足夠的模型</p>
+<p>以 console limits 為準<br/>課堂選當天<br/>額度足夠的模型</p>
 </div>
 </div>
 <div class="info-box success fragment" data-order="3" style="margin-top:.8rem;">
@@ -710,7 +819,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <div class="step-num">1</div>
 <div class="step-content">
 <strong>打開 Groq Console</strong>
-<p><a href="https://console.groq.com" style="color:var(--purple);text-decoration:underline;" target="_blank">console.groq.com</a> → 用 Google 帳號登入</p>
+<p><a href="https://console.groq.com" style="color:var(--purple);text-decoration:underline;" target="_blank">console.groq.com</a> →<br/>Google 登入</p>
 </div>
 </div>
 <div class="step fragment" data-order="1">
@@ -791,11 +900,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <div class="card-grid" style="margin-top:1rem;">
 <div class="card accent-top fragment" data-order="0">
 <h3>自動客服分類</h3>
-<p>客戶留言進來<br/>→ AI 自動分類：<br/>退款 / 技術問題 / 建議<br/>→ 分到不同 Sheet 頁籤</p>
+<p>客戶留言進來<br/>→ AI 自動分類：<br/>退款 / 技術問題 / 建議<br/>→ 分到不同<br/>Sheet 頁籤</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
 <h3>自動翻譯回覆</h3>
-<p>外國客戶留言<br/>→ AI 自動翻譯成中文<br/>→ 翻譯結果寫回 Sheet<br/>→ 中文團隊即時處理</p>
+<p>外國客戶留言<br/>→ AI 自動翻譯成中文<br/>→ 翻譯結果<br/>寫回 Sheet<br/>→ 中文團隊即時處理</p>
 </div>
 </div>
 <div class="info-box note fragment" data-order="2" style="padding:.8rem 1.2rem;">
@@ -863,7 +972,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">三個理由為什麼從 email 入手</p>
 <div class="card-grid">
 <div class="card accent-top fragment" data-order="0">
-<h3>不需要外部服務</h3>
+<h3>不需要<br/>外部服務</h3>
 <p style="font-size:.88rem;">GAS 內建 MailApp<br/>不用申請帳號<br/>不用 Bot Token</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
@@ -871,7 +980,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <p style="font-size:.88rem;">免費帳號 100 封/天<br/>Workspace 1500 封<br/>學習用足夠</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="2">
-<h3>大家都有 email</h3>
+<h3>大家都有<br/>email</h3>
 <p style="font-size:.88rem;">不像 TG / Line<br/>需要安裝特定 app<br/>email 跨平台</p>
 </div>
 </div>
@@ -893,7 +1002,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <div class="card accent-top-blue fragment" data-order="1">
 <h3>定時觸發</h3>
 <p style="font-size:.9rem;">每天固定時間彙整寄<br/><span class="hl-blue">不打擾</span><br/>適合：高頻、彙整型</p>
-<p style="font-size:.82rem;color:var(--g600);margin-top:.4rem;">例：飲料訂單統計、每日報名統計</p>
+<p style="font-size:.82rem;color:var(--g600);margin-top:.4rem;">例：飲料訂單統計<br/>每日報名統計</p>
 </div>
 </div>
 <div class="info-box note fragment" data-order="2" style="margin-top:.6rem;padding:.7rem 1.2rem;">
@@ -1348,20 +1457,20 @@ M2-2 GitHub 安全會把這個觀念延伸到 .env / Secrets / Cloud 環境變�
 <p style="color:var(--g600);margin-bottom:.5rem;">Stage 1 用到的四種「記住設定」的方式</p>
 <div class="card-grid" style="margin-top:.5rem;">
 <div class="card accent-top-green fragment" data-order="0" style="min-width:180px;">
-<h3>GPT Instructions</h3>
-<p>ChatGPT 的自定義指令<br/>每次對話自動帶入</p>
+<h3>GPT<br/>Instructions</h3>
+<p>ChatGPT 的<br/>自定義指令<br/>每次自動帶入</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1" style="min-width:180px;">
 <h3>Gem System Instructions</h3>
-<p>Gemini 的系統指令<br/>角色 + 限制 + 格式</p>
+<p>Gemini 的<br/>系統指令<br/>角色+限制+格式</p>
 </div>
 <div class="card accent-top fragment" data-order="2" style="min-width:180px;">
 <h3>GAS Script Properties</h3>
 <p>GAS 的安全儲存<br/>API Key / Token</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="3" style="min-width:180px;">
-<h3>Claude Projects</h3>
-<p>Claude.ai 的專案設定<br/>跨對話保留指示與知識</p>
+<h3>Claude<br/>Projects</h3>
+<p>Claude.ai 的<br/>專案設定<br/>跨對話知識</p>
 </div>
 </div>
 </div>
@@ -1454,7 +1563,7 @@ M2-2 GitHub 安全會把這個觀念延伸到 .env / Secrets / Cloud 環境變�
 </div>
 <div class="card-grid" style="margin-top:1rem;">
 <div class="card accent-top fragment" data-order="1">
-<h3>ChatGPT / Claude</h3>
+<h3>ChatGPT<br/>/ Claude</h3>
 <p>別人的 AI</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="2">

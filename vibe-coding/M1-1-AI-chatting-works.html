@@ -291,39 +291,157 @@ p,li{font-size:1.1rem;line-height:1.8;}
   <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
 </div>
 
-<!-- ══ 1: 課程教學循環 ══ -->
-<!-- Height: h2(77) + flow(55) + info-box(88) + margins(32) = 252px ✅ -->
+<!-- ══ 1: 全貌揭露 — 三個 browser mock-up,同一個網頁三階段成長 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
-  <h2>六輪循環，逐層遞進</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-    <div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-      <div style="font-weight:700;">裸做</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-      <div style="font-weight:700;">指令結構</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-      <div style="font-weight:700;">介面設計</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-      <div style="font-weight:700;">風險與平台</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-      <div style="font-weight:700;">互動產品</div>
-    </div>
-    <div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-      <div style="font-weight:700;">回顧定位</div>
-    </div>
+  <!-- 頂部標題 -->
+  <div style="text-align:center;margin-bottom:.8rem;">
+    <p style="font-size:.7rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;">M1-1 ・ 3 小時</p>
+    <h2 style="margin-bottom:.2rem;">本模組你會做出什麼?</h2>
+    <p style="color:var(--g600);font-size:.9rem;">同一個個人網頁,從陽春草稿長成有質感的作品</p>
   </div>
-  <div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.95rem;"><strong>每一輪的節奏</strong><br>操作 → 觀察 → 分析 → 升級 → 驗證<br>每一輪新增一層能力，前一輪的方法持續使用</p>
+
+  <!-- 中段 — 三個 browser mock-up -->
+  <div style="background:#f7fafc;padding:1rem .8rem .8rem;border-radius:14px;display:flex;align-items:stretch;gap:.3rem;max-width:1200px;width:100%;">
+
+    <!-- LV1 (25%, 灰階, 含真實文字) -->
+    <div class="fragment" data-order="0" style="flex:25;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#64748b;font-weight:700;letter-spacing:.08em;">LV1</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;">
+        <div style="background:#e8e8e8;padding:.35rem .55rem;display:flex;gap:5px;align-items:center;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#bbb;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#bbb;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#bbb;"></span>
+          <span style="margin-left:.4rem;font-size:.5rem;color:#999;font-family:monospace;">file://my-page.html</span>
+        </div>
+        <div style="padding:.8rem .7rem;display:flex;flex-direction:column;gap:.4rem;min-height:185px;font-family:Times,serif;">
+          <div style="font-size:1rem;font-weight:700;color:#222;">王小明</div>
+          <div style="font-size:.62rem;color:#444;line-height:1.5;margin-top:.2rem;">
+            我是工程師,想接案做網站。<br>
+            工作經驗 10 年。<br>
+            如果有需求歡迎找我。
+          </div>
+          <div style="font-size:.6rem;color:#555;margin-top:.4rem;">
+            聯絡:ming@email.com<br>
+            電話:0912-xxx-xxx
+          </div>
+          <div style="background:#888;color:#fff;font-size:.55rem;padding:.2rem .5rem;border-radius:2px;width:fit-content;margin-top:.3rem;">聯絡我</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.82rem;color:var(--g700);margin-top:.5rem;font-weight:500;">一句話先做出來</p>
+    </div>
+
+    <!-- 連接細線 1→2 -->
+    <div style="display:flex;align-items:center;padding:0 .15rem;align-self:center;">
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+      <span style="width:18px;border-top:1px dashed #cbd5e1;"></span>
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+    </div>
+
+    <!-- LV2 (36%, 主線最大, 主色 + 結構, 含真實文字) -->
+    <div class="fragment" data-order="1" style="flex:36;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#0F9D8A;font-weight:700;letter-spacing:.08em;">LV2 ・ 必做主線</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(15,157,138,.15);overflow:hidden;flex:1;border:1px solid #d1e7e2;">
+        <div style="background:#e8f0fe;padding:.35rem .55rem;display:flex;gap:5px;align-items:center;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#1a73e8;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#1a73e8;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#1a73e8;"></span>
+          <span style="margin-left:.4rem;font-size:.5rem;color:#1a73e8;font-family:monospace;">claude.ai/.../publish</span>
+        </div>
+        <div style="padding:.6rem;display:flex;flex-direction:column;gap:.45rem;min-height:185px;">
+          <!-- Hero 區 -->
+          <div style="background:linear-gradient(135deg,#0F9D8A 0%,#0B3C5D 100%);border-radius:5px;padding:.5rem .7rem;color:#fff;display:flex;gap:.5rem;align-items:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.4);"></div>
+            <div>
+              <div style="font-size:.78rem;font-weight:700;letter-spacing:.02em;">王小明 ・ 全端工程師</div>
+              <div style="font-size:.55rem;opacity:.85;margin-top:1px;">10 年經驗 ・ 擅長把想法變產品</div>
+            </div>
+          </div>
+          <!-- 四個 nav badge -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;">
+            <div style="background:#e8f5f0;border-top:2px solid #0F9D8A;padding:.2rem 0;text-align:center;font-size:.55rem;font-weight:700;color:#0F9D8A;">關於我</div>
+            <div style="background:#e8f0fe;border-top:2px solid #1a73e8;padding:.2rem 0;text-align:center;font-size:.55rem;font-weight:700;color:#1a73e8;">技能</div>
+            <div style="background:#fff5e8;border-top:2px solid #f59e0b;padding:.2rem 0;text-align:center;font-size:.55rem;font-weight:700;color:#d97706;">作品</div>
+            <div style="background:#f3e8ff;border-top:2px solid #8b5cf6;padding:.2rem 0;text-align:center;font-size:.55rem;font-weight:700;color:#8b5cf6;">聯絡</div>
+          </div>
+          <!-- 作品三格 -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
+            <div style="background:#f8f9fb;border-radius:3px;padding:.3rem;font-size:.5rem;color:#333;">
+              <div style="font-weight:700;">作品 1</div>
+              <div style="color:#666;margin-top:1px;line-height:1.3;">電商網站開發</div>
+            </div>
+            <div style="background:#f8f9fb;border-radius:3px;padding:.3rem;font-size:.5rem;color:#333;">
+              <div style="font-weight:700;">作品 2</div>
+              <div style="color:#666;margin-top:1px;line-height:1.3;">App UI 設計</div>
+            </div>
+            <div style="background:#f8f9fb;border-radius:3px;padding:.3rem;font-size:.5rem;color:#333;">
+              <div style="font-weight:700;">作品 3</div>
+              <div style="color:#666;margin-top:1px;line-height:1.3;">企業顧問案</div>
+            </div>
+          </div>
+          <!-- CTA -->
+          <div style="background:#0F9D8A;color:#fff;font-size:.62rem;font-weight:600;padding:.25rem;text-align:center;border-radius:11px;width:55%;margin:.1rem auto 0;">加我 Line 聊聊</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.85rem;color:var(--green);margin-top:.5rem;font-weight:600;">套四要素,變成完整頁面</p>
+    </div>
+
+    <!-- 連接細線 2→3 -->
+    <div style="display:flex;align-items:center;padding:0 .15rem;align-self:center;">
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+      <span style="width:18px;border-top:1px dashed #cbd5e1;"></span>
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+    </div>
+
+    <!-- LV3 (31%, 個人品牌色, 含真實文字) -->
+    <div class="fragment" data-order="2" style="flex:31;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#d97706;font-weight:700;letter-spacing:.08em;">LV3 ・ 完成後加做</div>
+      </div>
+      <div style="background:linear-gradient(180deg,#fdfaf6 0%,#fff 60%);border-radius:8px;box-shadow:0 3px 12px rgba(217,119,6,.18);overflow:hidden;flex:1;border:1px solid #ffe8b5;">
+        <div style="background:#fef3c7;padding:.35rem .55rem;display:flex;gap:5px;align-items:center;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#d97706;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#d97706;"></span>
+          <span style="width:8px;height:8px;border-radius:50%;background:#d97706;"></span>
+          <span style="margin-left:.4rem;font-size:.5rem;color:#d97706;font-family:monospace;">claude.ai/public/...</span>
+        </div>
+        <div style="padding:.7rem;display:flex;flex-direction:column;gap:.5rem;min-height:185px;">
+          <!-- Hero + Avatar -->
+          <div style="text-align:center;">
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#d97706,#8b5cf6);margin:0 auto;box-shadow:0 2px 4px rgba(0,0,0,.1);"></div>
+            <div style="font-size:.7rem;font-weight:700;color:#222;margin-top:.3rem;letter-spacing:.02em;">把抽象需求變成能用的東西</div>
+            <div style="font-size:.55rem;color:#666;margin-top:1px;">王小明 ・ 全端工程師</div>
+          </div>
+          <!-- 精緻作品卡 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+            <div style="background:#fff;border:1px solid #ffeac0;border-radius:5px;padding:.3rem;box-shadow:0 1px 3px rgba(217,119,6,.12);">
+              <div style="background:linear-gradient(90deg,#fde68a,#fcd34d);height:5px;border-radius:2px;"></div>
+              <div style="font-size:.52rem;font-weight:700;color:#333;margin-top:.25rem;">品牌網站</div>
+              <div style="font-size:.45rem;color:#777;margin-top:1px;line-height:1.3;">為 X 餐廳重塑線上形象</div>
+            </div>
+            <div style="background:#fff;border:1px solid #ffeac0;border-radius:5px;padding:.3rem;box-shadow:0 1px 3px rgba(217,119,6,.12);">
+              <div style="background:linear-gradient(90deg,#c4b5fd,#a78bfa);height:5px;border-radius:2px;"></div>
+              <div style="font-size:.52rem;font-weight:700;color:#333;margin-top:.25rem;">互動原型</div>
+              <div style="font-size:.45rem;color:#777;margin-top:1px;line-height:1.3;">為新創 Y 設計 MVP</div>
+            </div>
+          </div>
+          <!-- CTA -->
+          <div style="background:linear-gradient(90deg,#d97706,#8b5cf6);color:#fff;font-size:.62rem;font-weight:600;padding:.3rem;text-align:center;border-radius:13px;width:65%;margin:.1rem auto 0;box-shadow:0 2px 5px rgba(139,92,246,.25);">想聊聊嗎? →</div>
+          <div style="font-size:.5rem;color:#888;text-align:center;font-style:italic;">過去 10 年,幫過 50+ 品牌</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.82rem;color:#d97706;margin-top:.5rem;font-weight:600;">升級質感,做出你的味道</p>
+    </div>
+
   </div>
+
+  <!-- 底部收束 -->
+  <p class="fragment" data-order="3" style="text-align:center;font-size:1rem;color:var(--g700);margin-top:.9rem;line-height:1.5;">
+    <strong style="color:var(--green);">今天不是學語法,</strong>是把一句想法變成可以展示的作品。
+  </p>
 </div>
 
 <!-- ══════════════════════════════════════
@@ -428,11 +546,11 @@ C：做一個活動報名頁</pre>
   <div class="card-grid" style="margin-top:1rem;">
     <div class="card accent-top fragment" data-order="1">
       <h3>版面結構</h3>
-      <p>清晰的區塊分隔<br>資訊層次是否可辨</p>
+      <p>清晰的區塊分隔<br>資訊層次<br>是否可辨</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="2">
       <h3>視覺一致性</h3>
-      <p>配色是否統一<br>字級是否有層次感</p>
+      <p>配色是否統一<br>字級是否<br>有層次感</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="3">
       <h3>內容完整度</h3>
@@ -502,15 +620,15 @@ C：做一個活動報名頁</pre>
     </div>
     <div class="card accent-top fragment" data-order="2" style="min-width:180px;">
       <h3>任務</h3>
-      <p>需求的顆粒度決定產出的完整度</p>
+      <p>需求的顆粒度<br>決定產出的完整度</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="3" style="min-width:180px;">
       <h3>格式</h3>
-      <p>控制視覺呈現方式與風格方向</p>
+      <p>控制視覺呈現<br>方式與風格方向</p>
     </div>
     <div class="card accent-top-orange fragment" data-order="4" style="min-width:180px;">
       <h3>限制</h3>
-      <p>排除不要的變數<br>縮小 AI 的決策空間</p>
+      <p>排除不要的變數<br>縮小 AI<br>的決策空間</p>
     </div>
   </div>
 </div>
@@ -1162,7 +1280,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <div class="card-grid" style="margin-top:.5rem;">
     <div class="card accent-top-orange fragment" data-order="0">
       <h3>為什麼會錯</h3>
-      <p>AI 是機率生成<br>「聽起來合理」≠「事實正確」</p>
+      <p>AI 是機率生成<br>「聽起來合理」<br>≠「事實正確」</p>
     </div>
     <div class="card accent-top fragment" data-order="1">
       <h3>你怎麼修的</h3>
@@ -1170,7 +1288,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card accent-top-blue fragment" data-order="2">
       <h3>更大的風險場景</h3>
-      <p>做網頁只是 bug<br>如果是醫療、法律、財務呢</p>
+      <p>做網頁只是 bug<br>如果是醫療<br>法律、財務呢</p>
     </div>
   </div>
 </div>
@@ -1183,7 +1301,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <div class="card-grid" style="margin-top:.3rem;">
     <div class="card accent-top fragment" data-order="0">
       <h3>不丟機敏資料</h3>
-      <p>密碼、個資、公司內部文件<br>不進 AI 對話框</p>
+      <p>密碼、個資<br>公司內部文件<br>不進 AI 對話框</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="1">
       <h3>不當作事實</h3>
@@ -1239,7 +1357,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card accent-top-blue fragment" data-order="2" style="text-align:center;">
       <h3>Gemini</h3>
-      <p>Google 生態系<br>額度與限制依帳號方案變動<br>現場以實測為準</p>
+      <p>Google 生態系<br>額度與限制<br>依帳號方案變動<br>現場以實測為準</p>
     </div>
   </div>
 </div>
@@ -1274,7 +1392,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <div class="card-grid" style="display:grid;grid-template-columns:repeat(2,1fr);max-width:760px;">
     <div class="card accent-top fragment" data-order="0">
       <h3>回應速度</h3>
-      <p>從提交到完整輸出的耗時差異</p>
+      <p>從提交到<br>完整輸出的耗時差異</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="1">
       <h3>設計風格</h3>
@@ -1306,7 +1424,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card fragment" data-order="2" style="border-top:4px solid var(--blue);text-align:center;">
       <h3>Gemini</h3>
-      <p>Google 生態系<br>額度與限制依帳號方案變動<br>現場以實測為準</p>
+      <p>Google 生態系<br>額度與限制<br>依帳號方案變動<br>現場以實測為準</p>
     </div>
   </div>
 </div>
@@ -1425,11 +1543,11 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card accent-top-blue fragment" data-order="1">
       <h3>回饋機制不足</h3>
-      <p>分數、倒數、翻牌次數<br>沒有形成可觀察結果</p>
+      <p>分數、倒數<br>翻牌次數<br>沒有形成可觀察結果</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="2">
       <h3>狀態轉換漏掉</h3>
-      <p>開始、進行中、結束<br>重新開始沒有完整交代</p>
+      <p>開始、進行中、結束<br>重新開始<br>沒有完整交代</p>
     </div>
   </div>
 </div>
@@ -1543,19 +1661,19 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <div class="card-grid" style="display:grid;grid-template-columns:repeat(2,1fr);max-width:760px;">
     <div class="card accent-top fragment" data-order="0">
       <h3>音效回饋</h3>
-      <p>操作時的聲音反饋增加沉浸感</p>
+      <p>操作時的聲音<br>反饋增加沉浸感</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="1">
       <h3>計分系統</h3>
-      <p>分數顯示 + 最高紀錄記錄</p>
+      <p>分數顯示<br>+ 最高紀錄記錄</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="2">
       <h3>難度等級</h3>
-      <p>簡單 / 普通 / 困難的分級機制</p>
+      <p>簡單 / 普通<br>/ 困難的分級機制</p>
     </div>
     <div class="card accent-top-purple fragment" data-order="3">
       <h3>視覺動畫</h3>
-      <p>完成、失敗、得分時的動態效果</p>
+      <p>完成、失敗<br>得分時的動態效果</p>
     </div>
   </div>
 </div>

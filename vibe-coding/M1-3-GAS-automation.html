@@ -296,38 +296,146 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <p style="font-size:.95rem;">M1-1 你學會了跟 AI 聊天做作品<br/>M1-2 你學會了讓 AI 讀圖、讀文件<br/>今天要把這些能力串起來 — 讓程式在背景自動跑</p>
 </div>
 </div>
-<!-- ══ 2: 六輪循環 ══ -->
+<!-- ══ 2: 全貌揭露 — 從靜態網頁到自動系統到實體入口 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="2">
-<h2>六輪循環，逐層遞進</h2>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.8rem 0;">
-<div class="flow-box accent fragment" data-order="0" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 1</div>
-<div style="font-weight:700;">GAS 展示說明</div>
-</div>
-<div class="flow-box accent fragment" data-order="1" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 2</div>
-<div style="font-weight:700;">拍菜單建表單</div>
-</div>
-<div class="flow-box accent fragment" data-order="2" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 3</div>
-<div style="font-weight:700;">觸發器+Sheet</div>
-</div>
-<div class="flow-box accent fragment" data-order="3" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 4</div>
-<div style="font-weight:700;">三步除錯法</div>
-</div>
-<div class="flow-box accent fragment" data-order="4" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 5</div>
-<div style="font-weight:700;">三平台比較</div>
-</div>
-<div class="flow-box accent fragment" data-order="5" style="text-align:center;padding:.8rem .5rem;">
-<div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">Round 6</div>
-<div style="font-weight:700;">回顧 + 下一步預告</div>
-</div>
-</div>
-<div class="info-box note fragment" data-order="6" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-<p style="font-size:.95rem;"><strong>每一輪的節奏</strong><br/>操作 → 觀察 → 分析 → 升級 → 驗證<br/>今天的終極目標：做出一個在背景自動跑的系統</p>
-</div>
+  <!-- 頂部標題 -->
+  <div style="text-align:center;margin-bottom:.7rem;">
+    <p style="font-size:.7rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;">M1-3 ・ 3 小時</p>
+    <h2 style="margin-bottom:.2rem;">本模組你會做出什麼?</h2>
+    <p style="color:var(--g600);font-size:.9rem;">從靜態網頁升級成自動跑的系統,再延伸到實體 NFC 入口</p>
+  </div>
+
+  <!-- 三個 mock-up -->
+  <div style="background:#f7fafc;padding:1rem .8rem .8rem;border-radius:14px;display:flex;align-items:stretch;gap:.3rem;max-width:1200px;width:100%;">
+
+    <!-- LV1 (25%, 灰階, M1-1 → GAS 部署) -->
+    <div class="fragment" data-order="0" style="flex:25;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#64748b;font-weight:700;letter-spacing:.08em;">LV1 ・ 從 HTML 升級到 Web App</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;padding:.5rem .55rem;display:flex;flex-direction:column;gap:.4rem;min-height:185px;">
+        <!-- M1-1 個人網頁 小縮圖 -->
+        <div style="background:#fafafa;border:1px solid #e5e5e5;border-radius:4px;padding:.3rem;">
+          <div style="font-size:.42rem;color:#999;font-family:monospace;margin-bottom:2px;">file://my-page.html</div>
+          <div style="font-size:.5rem;color:#444;font-weight:700;">王小明</div>
+          <div style="font-size:.42rem;color:#777;margin-top:1px;">M1-1 做的個人網頁</div>
+        </div>
+        <!-- Apps Script 部署節點 -->
+        <div style="background:#fffbe6;border:1px dashed #f0c419;border-radius:4px;padding:.3rem;text-align:center;">
+          <div style="font-size:.5rem;color:#a16207;font-weight:700;">Apps Script</div>
+          <div style="font-size:.42rem;color:#92400e;margin-top:1px;">部署 → Web App</div>
+        </div>
+        <!-- GAS Web App URL -->
+        <div style="background:#e8f5f0;border:1px solid #0F9D8A;border-radius:4px;padding:.3rem;">
+          <div style="font-size:.4rem;color:#0F9D8A;font-family:monospace;margin-bottom:2px;">script.google.com/.../exec</div>
+          <div style="font-size:.5rem;color:#0F9D8A;font-weight:700;">王小明</div>
+          <div style="font-size:.42rem;color:#0F9D8A;margin-top:1px;font-weight:600;">部署完成 ・ 可分享網址</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.78rem;color:var(--g700);margin-top:.4rem;font-weight:500;">同樣內容,有了正式網址</p>
+    </div>
+
+    <!-- 連接 1→2 -->
+    <div style="display:flex;align-items:center;padding:0 .15rem;align-self:center;">
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+      <span style="width:18px;border-top:1px dashed #cbd5e1;"></span>
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+    </div>
+
+    <!-- LV2 (36%, 藍綠主色, 訂單系統流程) -->
+    <div class="fragment" data-order="1" style="flex:36;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#0F9D8A;font-weight:700;letter-spacing:.08em;">LV2 ・ 自動跑的訂單系統</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(15,157,138,.15);overflow:hidden;flex:1;border:1px solid #d1e7e2;padding:.55rem;display:flex;flex-direction:column;gap:.4rem;min-height:185px;">
+        <!-- Form → Trigger → Sheet 流程橫向 -->
+        <div style="display:flex;align-items:center;gap:.3rem;">
+          <!-- Google 表單 -->
+          <div style="flex:1;background:#e8f0fe;border:1px solid #1a73e8;border-radius:4px;padding:.3rem;font-size:.45rem;">
+            <div style="color:#1a73e8;font-weight:700;">Google 表單</div>
+            <div style="color:#555;margin-top:1px;line-height:1.3;">姓名 / 品項 / 糖度</div>
+          </div>
+          <div style="font-size:.7rem;color:#94a3b8;">→</div>
+          <!-- Trigger 節點 -->
+          <div style="background:#fef3c7;border:1px dashed #d97706;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:.4rem;color:#d97706;font-weight:700;text-align:center;line-height:1.2;flex-shrink:0;">onForm<br>Submit</div>
+          <div style="font-size:.7rem;color:#94a3b8;">→</div>
+          <!-- Sheet -->
+          <div style="flex:1;background:#e8f5f0;border:1px solid #0F9D8A;border-radius:4px;padding:.3rem;font-size:.45rem;">
+            <div style="color:#0F9D8A;font-weight:700;">Sheet ・ 雙分頁</div>
+            <div style="color:#555;margin-top:1px;">寫入 + 統計</div>
+          </div>
+        </div>
+        <!-- 訂單明細 + 即時統計 雙分頁 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;flex:1;">
+          <div style="background:#f9fafb;border-radius:4px;padding:.3rem;font-size:.45rem;">
+            <div style="color:#0F9D8A;font-weight:700;border-bottom:1px solid #d1e7e2;padding-bottom:1px;">訂單明細</div>
+            <div style="color:#555;margin-top:3px;line-height:1.5;">
+              <div>王小明 ・ 奶茶 M</div>
+              <div>李美玲 ・ 四季春 L</div>
+              <div>陳大文 ・ 奶茶 M</div>
+              <div style="color:#999;">...共 15 筆</div>
+            </div>
+          </div>
+          <div style="background:#f9fafb;border-radius:4px;padding:.3rem;font-size:.45rem;">
+            <div style="color:#0F9D8A;font-weight:700;border-bottom:1px solid #d1e7e2;padding-bottom:1px;">即時統計</div>
+            <div style="color:#555;margin-top:3px;line-height:1.5;">
+              <div>奶茶 <span style="color:#0F9D8A;font-weight:700;">×5</span></div>
+              <div>四季春 <span style="color:#0F9D8A;font-weight:700;">×3</span></div>
+              <div>紅茶 <span style="color:#0F9D8A;font-weight:700;">×2</span></div>
+            </div>
+            <div style="color:#999;font-size:.4rem;margin-top:3px;font-style:italic;">最後更新 12:34:56</div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.82rem;color:var(--green);margin-top:.4rem;font-weight:600;">表單一送出,系統自己跑</p>
+    </div>
+
+    <!-- 連接 2→3 -->
+    <div style="display:flex;align-items:center;padding:0 .15rem;align-self:center;">
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+      <span style="width:18px;border-top:1px dashed #cbd5e1;"></span>
+      <span style="width:5px;height:5px;border-radius:50%;background:#94a3b8;"></span>
+    </div>
+
+    <!-- LV3 (31%, 金紫品牌色, NFC 實體入口) -->
+    <div class="fragment" data-order="2" style="flex:31;display:flex;flex-direction:column;">
+      <div style="text-align:center;margin-bottom:.4rem;">
+        <div style="font-size:.75rem;color:#d97706;font-weight:700;letter-spacing:.08em;">LV3 ・ 實體入口</div>
+      </div>
+      <div style="background:linear-gradient(180deg,#fdfaf6 0%,#fff 60%);border-radius:8px;box-shadow:0 3px 12px rgba(217,119,6,.18);overflow:hidden;flex:1;border:1px solid #ffe8b5;padding:.55rem;display:flex;flex-direction:column;gap:.4rem;min-height:185px;">
+        <!-- NFC → URL 標籤 -->
+        <div style="background:#fff;border:1px dashed #d97706;border-radius:4px;padding:.25rem .4rem;display:flex;align-items:center;gap:.3rem;font-size:.5rem;">
+          <div style="width:20px;height:14px;border:2px solid #d97706;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:.35rem;color:#d97706;font-weight:700;">NFC</div>
+          <div style="color:#d97706;font-weight:600;">→</div>
+          <div style="flex:1;font-family:monospace;color:#92400e;font-size:.42rem;">script.google.com/.../exec</div>
+        </div>
+        <!-- 手機畫面 -->
+        <div style="background:#1a1a1a;border-radius:14px;padding:.3rem;flex:1;display:flex;flex-direction:column;">
+          <div style="background:#fff;border-radius:8px;flex:1;padding:.4rem;display:flex;flex-direction:column;gap:.3rem;">
+            <!-- 內容區 -->
+            <div style="text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;">
+              <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#d97706,#8b5cf6);margin:0 auto;"></div>
+              <div style="font-size:.55rem;font-weight:700;color:#222;margin-top:3px;">王小明</div>
+              <div style="font-size:.42rem;color:#666;margin-top:1px;">全端工程師</div>
+              <div style="background:#0F9D8A;color:#fff;font-size:.45rem;padding:.2rem;border-radius:8px;margin-top:.3rem;width:60%;margin-left:auto;margin-right:auto;">加我 Line</div>
+            </div>
+            <!-- 底部 tab -->
+            <div style="display:flex;background:#f5f5f5;border-radius:4px;font-size:.45rem;font-weight:600;">
+              <div style="flex:1;background:#fff;text-align:center;padding:.25rem;color:#d97706;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.06);">名片</div>
+              <div style="flex:1;text-align:center;padding:.25rem;color:#999;">點餐</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:.8rem;color:#d97706;margin-top:.4rem;font-weight:600;">碰一下,實體 → 雲端</p>
+    </div>
+
+  </div>
+
+  <!-- 底部收束 -->
+  <p class="fragment" data-order="3" style="text-align:center;font-size:1rem;color:var(--g700);margin-top:.7rem;line-height:1.5;">
+    <strong style="color:var(--green);">3 小時內,</strong>把今天學的 Web App 能力套到三種不同場景。
+  </p>
 </div>
 <!-- ══════════════════════════════════════
      Round 1：GAS 展示說明 (slides 3-10)
@@ -423,7 +531,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
 <h3>程式碼不用你寫</h3>
-<p>AI 寫，你貼<br/>這就是 M1-3 的核心流程</p>
+<p>AI 寫，你貼<br/>這就是 M1-3<br/>的核心流程</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="2">
 <h3>觸發器像設鬧鐘</h3>
@@ -454,11 +562,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <div class="card-grid" style="margin-top:.8rem;">
 <div class="card accent-top fragment" data-order="0" style="min-width:140px;">
 <h3>Sheet</h3>
-<p>讀寫試算表<br/>自動統計</p>
+<p>讀寫<br/>試算表<br/>自動統計</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1" style="min-width:140px;">
 <h3>Form</h3>
-<p>自動建立表單<br/>收回覆觸發動作</p>
+<p>自動建表單<br/>收回覆<br/>觸發動作</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="2" style="min-width:140px;">
 <h3>Gmail</h3>
@@ -466,7 +574,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 <div class="card accent-top-orange fragment" data-order="3" style="min-width:140px;">
 <h3>Calendar</h3>
-<p>建立行程<br/>時間到提醒</p>
+<p>建立行程<br/>時間到<br/>提醒</p>
 </div>
 <div class="card accent-top-purple fragment" data-order="4" style="min-width:140px;">
 <h3>Drive</h3>
@@ -531,11 +639,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <div class="card-grid">
 <div class="card accent-top fragment" data-order="0">
 <h3>會什麼了</h3>
-<p>M1-1 的 HTML 介紹頁<br/>靜態內容、無後端</p>
+<p>M1-1 的 HTML<br/>介紹頁<br/>靜態內容、無後端</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
 <h3>能升級什麼</h3>
-<p>同一份頁面，<br/>加入互動 + 後端 + 資料收集</p>
+<p>同一份頁面，<br/>加入互動 + 後端<br/>+ 資料收集</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="2">
 <h3>升級的路徑</h3>
@@ -584,7 +692,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 <div class="card accent-top-orange fragment" data-order="3">
 <h3>資料記錄</h3>
-<p style="font-size:.88rem;">答題記錄寫 Sheet<br/>分數累積<br/>個人追蹤</p>
+<p style="font-size:.88rem;">答題記錄<br/>寫 Sheet<br/>分數累積<br/>個人追蹤</p>
 </div>
 </div>
 <div class="info-box note fragment" data-order="4" style="margin-top:.6rem;">
@@ -599,19 +707,19 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <div class="card-grid">
 <div class="card accent-top fragment" data-order="0">
 <h3>諮詢預約</h3>
-<p style="font-size:.88rem;">日期 + 主題 + 聯絡方式<br/>寫入 Sheet 等回覆</p>
+<p style="font-size:.88rem;">日期 + 主題<br/>+ 聯絡方式<br/>寫入 Sheet 回覆</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
 <h3>活動報名</h3>
-<p style="font-size:.88rem;">姓名 + 人數 + 場次<br/>名額限制計算</p>
+<p style="font-size:.88rem;">姓名 + 人數<br/>+ 場次<br/>名額限制計算</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="2">
 <h3>興趣調查</h3>
-<p style="font-size:.88rem;">領域 + 程度 + 想學什麼<br/>分類統計</p>
+<p style="font-size:.88rem;">領域 + 程度<br/>+ 想學什麼<br/>分類統計</p>
 </div>
 <div class="card accent-top-orange fragment" data-order="3">
 <h3>意見回饋</h3>
-<p style="font-size:.88rem;">滿意度 + 改善建議<br/>累積成資料庫</p>
+<p style="font-size:.88rem;">滿意度<br/>+ 改善建議<br/>累積成資料庫</p>
 </div>
 <div class="card accent-top-purple fragment" data-order="4">
 <h3>簽到系統</h3>
@@ -669,15 +777,15 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">挑前一張的場景之一，描述給 AI</p>
 <div class="card-grid" style="max-width:920px;">
 <div class="card accent-top fragment" data-order="0">
-<h3>諮詢預約 prompt</h3>
-<p style="font-size:.85rem;font-family:'Fira Code',monospace;">加一個諮詢預約表單<br/>欄位：日期、主題、姓名、email<br/>提交後顯示「已收到」</p>
+<h3>諮詢預約<br/>prompt</h3>
+<p style="font-size:.85rem;font-family:'Fira Code',monospace;">加一個諮詢預約表單<br/>欄位：日期、主題<br/>姓名、email<br/>提交後顯示「已收到」</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
-<h3>興趣調查 prompt</h3>
-<p style="font-size:.85rem;font-family:'Fira Code',monospace;">加一個興趣調查問卷<br/>三題單選 + 一個開放問答<br/>提交後感謝頁</p>
+<h3>興趣調查<br/>prompt</h3>
+<p style="font-size:.85rem;font-family:'Fira Code',monospace;">加一個興趣調查問卷<br/>三題單選<br/>+ 一個開放問答<br/>提交後感謝頁</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="2">
-<h3>活動報名 prompt</h3>
+<h3>活動報名<br/>prompt</h3>
 <p style="font-size:.85rem;font-family:'Fira Code',monospace;">加一個活動報名表單<br/>姓名、人數、場次選擇<br/>限額 50 人</p>
 </div>
 </div>
@@ -748,6 +856,33 @@ Round 2 之後，同一份頁面變成可以收資料、寫 Sheet 的完整應�
 </div>
 
 
+<!-- ══ 21.5: 實作 Tip — Logger.log 救命指令 ══ -->
+<div class="slide dataviz" data-act="Round 2：拍菜單建表單" data-index="21.5">
+<h2>實作 Tip：看不到執行紀錄的連結？</h2>
+<p style="color:var(--g600);margin-bottom:.6rem;text-align:center;">課堂上 <strong style="color:#d97706;">80%</strong> 同學會遇到 — 跑完 GAS function，「執行紀錄」沒印出 Form URL。<br/>通常是 AI 忘了加 Logger.log。再下一道指令叫 AI 補就好。</p>
+
+<div style="background:#fff7e8;border:1px solid #f0c419;border-left:4px solid #d97706;border-radius:0 8px 8px 0;padding:.9rem 1.2rem;max-width:780px;width:100%;margin-top:.5rem;">
+<div style="display:inline-block;background:#d97706;color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:.05em;margin-bottom:.5rem;">給 AI 的補救 PROMPT</div>
+<pre style="background:#1a1a1a;color:#f4f4f0;padding:.8rem 1.1rem;border-radius:6px;font-size:.95rem;line-height:1.7;font-family:'Fira Code',monospace;margin:0;white-space:pre-wrap;">我剛剛跑完你給我的 code，
+但 GAS 的執行紀錄沒看到表單連結，
+也沒看到 Sheet 連結。
+
+請幫我修改 code，
+讓我下次跑完之後，執行紀錄會印出兩個網址：
+1. Google 表單的網址
+2. 試算表 (Sheet) 的網址</pre>
+</div>
+
+<div class="info-box success fragment" data-order="1" style="padding:.7rem 1.2rem;margin-top:.6rem;max-width:780px;">
+<div class="label">改完之後</div>
+<p style="font-size:.92rem;">再跑一次 → GAS 編輯器左側「執行項目」點進去 → 看「紀錄」分頁 → <strong>表單網址 + Sheet 網址 兩個都印出來</strong></p>
+</div>
+
+<div class="info-box note fragment" data-order="2" style="padding:.7rem 1.2rem;margin-top:.6rem;max-width:780px;">
+<p style="font-size:.88rem;"><strong>同樣狀況也會發生在：</strong>看不到某個資料的值 / 不知道 code 跑到哪一步 / 想確認資料有沒有讀對。<br/>解法都一樣 — <strong style="color:var(--green);">叫 AI「在執行紀錄印出 OO」</strong>，AI 會自動加上對應的程式碼，你不用懂技術細節。</p>
+</div>
+</div>
+
 <!-- ══════════════════════════════════════
      Round 3 — 分享 + GEM 助手（NEW · 7 slides）
      ══════════════════════════════════════ -->
@@ -773,8 +908,8 @@ Round 2 之後，同一份頁面變成可以收資料、寫 Sheet 的完整應�
 <p style="font-size:.88rem;">「加表單」vs「加意見回饋表單，含...」<br/>差別在 AI 產出品質</p>
 </div>
 <div class="card accent-top-purple fragment" data-order="2">
-<h3>補充細節的時機</h3>
-<p style="font-size:.88rem;">什麼時候該一次給全部？<br/>什麼時候該分段對話？</p>
+<h3>補充細節<br/>的時機</h3>
+<p style="font-size:.88rem;">什麼時候<br/>該一次給全部？<br/>何時分段對話？</p>
 </div>
 </div>
 <div class="info-box note fragment" data-order="3" style="margin-top:.8rem;">
@@ -917,28 +1052,28 @@ R3 把這份「知道」固化成 Gem 助手，<strong>未來每次需求都自�
 <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">用手機拍一張你身邊的實體素材，AI 幫你變成數位表單</p>
 <div class="card-grid" style="max-width:1100px;">
 <div class="card accent-top" style="min-width:160px;max-width:240px;">
-<h3>飲料店菜單</h3>
-<p>團購訂飲料表單<br/>品項+冰塊+甜度+數量<br/><span class="hl-green">最實用</span></p>
+<h3>飲料店<br/>菜單</h3>
+<p>團購表單<br/>品項+冰塊<br/>甜度+數量<br/><span class="hl-green">最實用</span></p>
 </div>
 <div class="card accent-top-blue" style="min-width:160px;max-width:240px;">
-<h3>便當店菜單</h3>
-<p>午餐訂便當表單<br/>主菜+配菜+白飯/糙米<br/><span class="hl-blue">每天都用得到</span></p>
+<h3>便當店<br/>菜單</h3>
+<p>午餐表單<br/>主菜+配菜<br/>白飯/糙米<br/><span class="hl-blue">每天用</span></p>
 </div>
 <div class="card accent-top-gold" style="min-width:160px;max-width:240px;">
-<h3>Pizza 傳單</h3>
-<p>部門聚餐投票表單<br/>口味+大小+數量<br/><span class="hl-gold">選擇困難救星</span></p>
+<h3>Pizza<br/>傳單</h3>
+<p>聚餐投票<br/>口味+大小<br/>數量<br/><span class="hl-gold">選擇救星</span></p>
 </div>
 <div class="card accent-top-orange" style="min-width:160px;max-width:240px;">
-<h3>咖啡廳黑板</h3>
-<p>下午茶統計表單<br/>手寫字考驗辨識力<br/><span class="hl-orange">AI OCR 挑戰</span></p>
+<h3>咖啡廳<br/>黑板</h3>
+<p>下午茶<br/>表單<br/>手寫字辨識<br/><span class="hl-orange">OCR 挑戰</span></p>
 </div>
 <div class="card accent-top-purple" style="min-width:160px;max-width:240px;">
-<h3>公司紙本簽到表</h3>
-<p>數位簽到表單<br/>姓名+部門+時間<br/><span style="color:var(--purple);font-weight:700;">無紙化第一步</span></p>
+<h3>公司紙本<br/>簽到表</h3>
+<p>簽到表單<br/>姓名+部門<br/>時間<br/><span style="color:var(--purple);font-weight:700;">無紙化</span></p>
 </div>
 <div class="card" style="min-width:160px;max-width:240px;border-top:4px solid var(--g400);">
-<h3>活動海報/傳單</h3>
-<p>活動報名表單<br/>姓名+人數+場次<br/><span style="color:var(--g600);font-weight:700;">路邊撿的也能用</span></p>
+<h3>活動海報<br/>/傳單</h3>
+<p>報名表單<br/>姓名+人數<br/>場次<br/><span style="color:var(--g600);font-weight:700;">素材也能用</span></p>
 </div>
 </div>
 </div>
@@ -1052,7 +1187,7 @@ R3 把這份「知道」固化成 Gem 助手，<strong>未來每次需求都自�
 <div class="card-grid" style="margin-top:1rem;max-width:600px;">
 <div class="card accent-top fragment" data-order="0" style="min-width:220px;">
 <h3>M1-2 多模態</h3>
-<p>OCR + 結構化<br/>讓 AI 讀懂實體世界</p>
+<p>OCR + 結構化<br/>讓 AI 讀懂<br/>實體世界</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1" style="min-width:220px;">
 <h3>M1-3 自動化</h3>
@@ -1099,8 +1234,8 @@ R3 把這份「知道」固化成 Gem 助手，<strong>未來每次需求都自�
 <p>紙本和數位世界的橋樑<br/>數位化的第一步</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1" style="min-width:220px;">
-<h3>授權 Authorization</h3>
-<p>程式操作你的 Google 服務<br/>需要你的許可</p>
+<h3>授權<br/>Authorization</h3>
+<p>程式操作你的<br/>Google 服務<br/>需要你的許可</p>
 </div>
 </div>
 </div>
@@ -1203,7 +1338,7 @@ R3 把這份「知道」固化成 Gem 助手，<strong>未來每次需求都自�
 <div class="card-grid" style="margin-top:1rem;">
 <div class="card accent-top fragment" data-order="0">
 <h3>觸發條件</h3>
-<p>什麼事件啟動程式<br/>表單提交 / 時間到 / 新資料</p>
+<p>什麼事件啟動程式<br/>表單提交 / 時間到<br/>/ 新資料</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
 <h3>執行邏輯</h3>
@@ -1305,7 +1440,7 @@ R3 把這份「知道」固化成 Gem 助手，<strong>未來每次需求都自�
 <div class="card-grid" style="margin-top:.8rem;">
 <div class="card accent-top fragment" data-order="0" style="border-top-color:var(--red);">
 <h3>找不到欄位</h3>
-<p>AI 寫的欄位名<br/>跟你 Sheet 不一樣</p>
+<p>AI 寫的欄位名<br/>跟你 Sheet<br/>不一樣</p>
 </div>
 <div class="card accent-top fragment" data-order="1" style="border-top-color:var(--red);">
 <h3>權限不夠</h3>
@@ -1330,7 +1465,7 @@ R3 把這份「知道」固化成 Gem 助手，<strong>未來每次需求都自�
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
 <h3>Step 2 — 丟</h3>
-<p>把截圖丟給 AI<br/>「這是我跑出來的錯誤<br/>請幫我修」</p>
+<p>把截圖丟給 AI<br/>「這是我跑出來<br/>的錯誤<br/>請幫我修」</p>
 </div>
 <div class="card accent-top-gold fragment" data-order="2">
 <h3>Step 3 — 貼</h3>
@@ -1509,7 +1644,7 @@ R3 把這份「知道」固化成 Gem 助手，<strong>未來每次需求都自�
 <div class="card-grid" style="margin-top:1rem;">
 <div class="card accent-top-gold fragment" data-order="0">
 <h3>Gemini</h3>
-<p>跟 Google 生態整合<br/>但也常搞錯指令<br/>實測才知道</p>
+<p>跟 Google<br/>生態整合<br/>但也常搞錯指令<br/>實測才知道</p>
 </div>
 <div class="card accent-top-blue fragment" data-order="1">
 <h3>Claude</h3>

@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-2 — IDE 工具登場 V2 | Vibe Coding Stage 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g500:#80868B; --g600:#5F6368; --g700:#3C4043; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --navy:#0B3C5D;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;background:var(--white);}
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 4rem 1.5rem;overflow:hidden;}
+.slide.active{display:flex;}
+.slide.dataviz{background:var(--white);padding-top:3rem;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.7) 100%);z-index:1;}
+.slide.poster>*{position:relative;z-index:2;}
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+.slide.poster h1{color:#fff;}
+h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;color:var(--g900);}
+h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
+p,li{font-size:1.1rem;line-height:1.8;}
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
+.poster-tag{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.85rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin:.3rem;}
+
+.step-list{text-align:left;max-width:800px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;line-height:1.7;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
+.stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
+.stat-box .val{font-size:2.4rem;font-weight:900;color:var(--green);line-height:1.1;}
+.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+.big-stat{text-align:center;margin:1rem 0;}
+.big-stat .num{font-size:5rem;font-weight:900;color:var(--green);line-height:1;}
+.big-stat .unit{font-size:1.4rem;font-weight:700;color:var(--g600);margin-left:.3rem;}
+.big-stat .caption{font-size:1.05rem;color:var(--g600);margin-top:.4rem;}
+
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:1100px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.3rem 1.5rem;min-width:220px;max-width:320px;flex:1;}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.7;}
+.card.accent-top{border-top:4px solid var(--green);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-red{border-top:4px solid var(--red);}
+.card.accent-top-purple{border-top:4px solid var(--purple);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+
+.flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
+
+.info-box{border-radius:12px;padding:1.1rem 1.5rem;max-width:820px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:#b07d00;font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box p{font-size:1rem;line-height:1.75;color:var(--g800);}
+
+.quote-box{max-width:820px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.6rem 2rem;margin:1rem 0;text-align:left;}
+.quote-box .quote-text{font-size:1.35rem;font-weight:700;line-height:1.6;color:var(--g900);}
+
+.code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1rem 1.4rem;max-width:820px;width:100%;text-align:left;margin:.8rem 0;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:.92rem;color:var(--g900);line-height:1.8;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.4rem;}
+
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:1000px;width:100%;margin-top:.8rem;}
+.compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
+.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--green);}
+.compare-col p,.compare-col li{font-size:1rem;line-height:1.8;color:var(--g800);}
+.compare-col ul{padding-left:1.2rem;}
+
+.cycle-ring{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;max-width:780px;width:100%;margin:1rem 0;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.7rem 1rem;text-align:center;color:var(--g800);}
+.cycle-step .cycle-label{font-size:.78rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step .cycle-name{font-size:1.05rem;font-weight:700;}
+.cycle-step.active{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.cycle-step.active .cycle-label{color:var(--green);}
+
+.bottom-line{max-width:820px;width:100%;background:var(--green-lt);border:2px solid rgba(15,157,138,.3);border-radius:16px;padding:1.6rem 2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.4rem;color:var(--green);margin-bottom:.4rem;}
+.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:680px;margin:0 auto;line-height:1.7;}
+
+.page-title{text-align:center;margin-bottom:.6rem;}
+.page-title .stage-tag{font-size:.7rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;}
+.page-title h2{margin-bottom:.2rem;}
+.page-title .sub{color:var(--g600);font-size:.95rem;}
+
+/* LV row */
+.lv-row{background:#f7fafc;padding:1rem .8rem .8rem;border-radius:14px;display:flex;align-items:stretch;gap:.3rem;max-width:1280px;width:100%;height:75%;max-height:520px;}
+.lv-col{display:flex;flex-direction:column;}
+.lv-label{text-align:center;margin-bottom:.4rem;}
+.lv-label .num{font-size:.85rem;font-weight:700;letter-spacing:.08em;}
+.lv-label.lv1 .num{color:#64748b;}
+.lv-label.lv2 .num{color:var(--green);}
+.lv-label.lv3 .num{color:#d97706;}
+.lv-caption{text-align:center;font-size:.82rem;color:var(--g700);margin-top:.5rem;font-weight:500;}
+.lv-caption.lv2{color:var(--green);font-weight:600;font-size:.85rem;}
+.lv-caption.lv3{color:#d97706;font-weight:600;font-size:.82rem;}
+.lv-connector{display:flex;align-items:center;padding:0 .15rem;align-self:center;}
+.lv-connector span:first-child,.lv-connector span:last-child{width:5px;height:5px;border-radius:50%;background:#94a3b8;}
+.lv-connector span:nth-child(2){width:18px;border-top:1px dashed #cbd5e1;}
+
+/* IDE Mockup */
+.ide-frame{background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;flex:1;display:flex;flex-direction:column;border:1px solid #d1d9e0;}
+.ide-frame.lv2{box-shadow:0 2px 10px rgba(15,157,138,.18);border-color:#a7d4cc;}
+.ide-frame.lv3{box-shadow:0 3px 14px rgba(217,119,6,.18);border-color:#f0d28b;}
+.ide-titlebar{background:#e8e8e8;padding:.3rem .5rem;display:flex;gap:5px;align-items:center;font-size:.5rem;flex-shrink:0;}
+.ide-titlebar.lv2{background:#e8f0fe;}
+.ide-titlebar.lv3{background:#fef3c7;}
+.ide-titlebar .dot{width:7px;height:7px;border-radius:50%;background:#bbb;}
+.ide-titlebar.lv2 .dot{background:#1a73e8;}
+.ide-titlebar.lv3 .dot{background:#d97706;}
+.ide-titlebar .url{margin-left:.4rem;color:#666;font-family:'Fira Code',monospace;font-size:.48rem;}
+.ide-titlebar.lv2 .url{color:#1a73e8;}
+.ide-titlebar.lv3 .url{color:#d97706;}
+
+.ide-body{display:flex;flex:1;min-height:0;background:#1e1e1e;color:#d4d4d4;font-family:'Fira Code',monospace;}
+.ide-sidebar{width:30%;background:#252526;padding:.35rem .3rem;font-size:.42rem;border-right:1px solid #3e3e42;overflow:hidden;}
+.ide-sidebar .section{color:#6a737d;font-size:.36rem;text-transform:uppercase;letter-spacing:.05em;padding:.15rem 0 .1rem;font-weight:700;}
+.ide-sidebar .folder{color:#cccccc;padding:.05rem 0;display:flex;align-items:center;gap:2px;}
+.ide-sidebar .file{padding-left:.5rem;color:#9da5b4;font-size:.4rem;line-height:1.55;cursor:pointer;}
+.ide-sidebar .file.active{background:#37373d;color:#fff;}
+.ide-sidebar .file.new{color:#73c991;}
+
+.ide-main{flex:1;display:flex;flex-direction:column;min-width:0;}
+.ide-tabs{background:#2d2d30;padding:0;display:flex;font-size:.4rem;border-bottom:1px solid #3e3e42;flex-shrink:0;}
+.ide-tab{padding:.18rem .35rem;background:#2d2d30;color:#9da5b4;border-right:1px solid #3e3e42;}
+.ide-tab.active{background:#1e1e1e;color:#fff;}
+.ide-code{flex:1;padding:.3rem .35rem;font-size:.4rem;line-height:1.55;overflow:hidden;background:#1e1e1e;}
+.ide-code .line{display:flex;}
+.ide-code .ln{color:#6a737d;width:14px;flex-shrink:0;text-align:right;padding-right:.25rem;}
+.ide-code .tag{color:#569cd6;}
+.ide-code .str{color:#ce9178;}
+.ide-code .txt{color:#d4d4d4;}
+.ide-code .hl{background:rgba(255,213,0,.18);}
+.ide-code .added{background:rgba(115,201,145,.18);}
+
+.ide-chat{width:34%;background:#252526;border-left:1px solid #3e3e42;padding:.3rem .35rem;display:flex;flex-direction:column;gap:.25rem;font-size:.42rem;line-height:1.5;overflow:hidden;}
+.chat-header{color:#9da5b4;font-size:.38rem;border-bottom:1px solid #3e3e42;padding-bottom:.18rem;}
+.chat-msg{padding:.22rem .3rem;border-radius:4px;}
+.chat-msg.user{background:#37373d;color:#fff;align-self:flex-end;max-width:90%;}
+.chat-msg.ai{background:#094771;color:#cce4ff;max-width:92%;}
+.chat-msg.ai .meta{color:#73c991;font-size:.36rem;display:block;margin-top:1px;}
+
+.mockup-center{background:#f7fafc;padding:1rem;border-radius:14px;max-width:880px;width:100%;margin:.5rem 0;}
+
+/* Wow / Pitfall / TimeMap */
+.wow-slide{text-align:center;justify-content:center !important;padding-top:2rem;}
+.wow-badge{display:inline-block;background:var(--gold);color:#fff;padding:.35rem 1.4rem;border-radius:100px;font-size:.95rem;font-weight:700;letter-spacing:.12em;margin-bottom:1rem;}
+.wow-heading{font-size:2.6rem;font-weight:900;line-height:1.35;color:var(--g900);margin:.4rem 0 .8rem;max-width:900px;}
+.wow-sub{font-size:1.15rem;color:var(--g600);max-width:680px;margin:0 auto 1rem;line-height:1.7;}
+.pitfall-badge{display:inline-block;background:var(--red);color:#fff;padding:.3rem 1.2rem;border-radius:100px;font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.8rem;}
+.pitfall-card{background:#fff;border:2px solid var(--red);border-top:5px solid var(--red);border-radius:14px;padding:1rem 1.3rem;max-width:1100px;width:100%;margin-top:.5rem;}
+.pitfall-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:.6rem;}
+.pitfall-item{background:var(--red-lt);border-radius:10px;padding:.7rem .9rem;}
+.pitfall-item .ptitle{font-size:1rem;font-weight:700;color:var(--g900);margin-bottom:.2rem;}
+.pitfall-item .pdesc{font-size:.82rem;color:var(--g700);line-height:1.6;}
+.time-map{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;max-width:1200px;width:100%;margin:.8rem 0;}
+.time-block{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:2px solid var(--g100);}
+.time-block .tb-head{padding:.5rem .6rem;color:#fff;text-align:center;}
+.time-block .tb-head .tb-time{font-size:.75rem;font-weight:600;opacity:.85;}
+.time-block .tb-head .tb-name{font-size:.95rem;font-weight:700;margin-top:.15rem;}
+.time-block .tb-body{flex:1;background:#fff;padding:.5rem .6rem;font-size:.78rem;color:var(--g700);line-height:1.55;}
+.time-block .tb-body strong{color:var(--g900);font-size:.85rem;display:block;margin-bottom:.2rem;}
+
+/* IDE tools 4-card comparison */
+.ide-tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;max-width:1200px;width:100%;margin-top:.5rem;}
+.ide-tool-card{background:#fff;border:2px solid var(--g100);border-radius:14px;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.3rem;}
+.ide-tool-card.primary{border-color:var(--green);background:linear-gradient(135deg,#fff,var(--green-lt));}
+.ide-tool-card .tool-name{font-size:1.1rem;font-weight:700;color:var(--g900);}
+.ide-tool-card .tool-tag{font-size:.7rem;font-weight:700;letter-spacing:.08em;padding:.1rem .5rem;border-radius:100px;background:var(--g100);color:var(--g600);display:inline-block;align-self:flex-start;}
+.ide-tool-card.primary .tool-tag{background:var(--green);color:#fff;}
+.ide-tool-card .tool-pay{font-size:.78rem;color:var(--g600);}
+.ide-tool-card .tool-desc{font-size:.82rem;color:var(--g700);line-height:1.6;}
+
+/* Chapter Menu */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--green);}
+.chapter-icon{color:var(--green);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:220px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--green);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--green);}
+
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:44px;height:44px;border:2px solid var(--g200);border-radius:10px;background:var(--white);color:var(--g800);font-size:1.1rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--green);border-color:var(--green);color:#fff;}
+.slide-counter{position:fixed;bottom:4.4rem;right:1.5rem;z-index:100;color:var(--g500);font-size:.78rem;font-weight:500;font-family:'Fira Code',monospace;}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--green-lt);color:var(--green);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(15,157,138,.2);}
+.progress-bar{position:fixed;bottom:0;left:0;height:3px;background:var(--green);transition:width .4s;z-index:100;}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — Stage 2 · 上線網頁</div>
+<div class="module-badge">M2-2 · IDE 工具</div>
+
+<div class="slides">
+
+<!-- ══ 0 開場: COVER ══ -->
+<div class="slide poster active" data-act="開場" style="background:linear-gradient(135deg,#0d2a44 0%,#1a1a2e 40%,#7C3AED 100%);">
+  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 上線網頁</p>
+  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">IDE 工具<br><span style="color:#c4b5fd;">登場</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">AI 直接改你的檔案 從改網頁到讀 PDF 到產簡報</p>
+  <div style="margin-top:2rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
+    <span class="poster-tag">M2-2</span>
+    <span class="poster-tag">3 小時</span>
+    <span class="poster-tag">6 輪循環</span>
+    <span class="poster-tag">agy 主場</span>
+  </div>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1 開場: LV1/2/3 全景圖 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <div class="page-title">
+    <p class="stage-tag">M2-2 ・ 3 小時</p>
+    <h2>本模組你會做出什麼</h2>
+    <p class="sub">從讓 AI 改你的網頁 到讀 PDF 整理 到產出簡報 IDE 直接動你的檔案</p>
+  </div>
+  <div class="lv-row">
+    <div class="lv-col lv1" style="flex:25;">
+      <div class="lv-label lv1"><div class="num">LV1</div></div>
+      <div class="ide-frame">
+        <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-page/</span></div>
+        <div class="ide-body">
+          <div class="ide-sidebar">
+            <div class="section">EXPLORER</div>
+            <div class="folder">▾ my-page</div>
+            <div class="file active">index.html</div>
+            <div class="file">README.md</div>
+          </div>
+          <div class="ide-main">
+            <div class="ide-tabs"><div class="ide-tab active">index.html</div></div>
+            <div class="ide-code">
+              <div class="line"><span class="ln">8</span>&nbsp;<span class="tag">&lt;h1</span> style=<span class="str">"color:#000"</span><span class="tag">&gt;</span></div>
+              <div class="line hl"><span class="ln">9</span>&nbsp;&nbsp;<span class="txt">王小明</span></div>
+              <div class="line"><span class="ln">10</span>&nbsp;<span class="tag">&lt;/h1&gt;</span></div>
+            </div>
+          </div>
+          <div class="ide-chat">
+            <div class="chat-header">▸ Chat</div>
+            <div class="chat-msg user">幫我把標題改成綠色</div>
+            <div class="chat-msg ai">已修改 index.html<span class="meta">✓ line 8 color #000 → #0F9D8A</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="lv-caption">把舊網頁丟給 AI 改</p>
+    </div>
+    <div class="lv-connector"><span></span><span></span><span></span></div>
+    <div class="lv-col lv2" style="flex:36;">
+      <div class="lv-label lv2"><div class="num">LV2 ・ 必做主線</div></div>
+      <div class="ide-frame lv2">
+        <div class="ide-titlebar lv2"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-research/</span></div>
+        <div class="ide-body">
+          <div class="ide-sidebar">
+            <div class="section">EXPLORER</div>
+            <div class="folder">▾ my-research</div>
+            <div class="file">paper.pdf</div>
+            <div class="file new active">report.md ●</div>
+          </div>
+          <div class="ide-main">
+            <div class="ide-tabs"><div class="ide-tab">paper.pdf</div><div class="ide-tab active">report.md</div></div>
+            <div class="ide-code">
+              <div class="line added"><span class="ln">1</span>&nbsp;<span class="tag"># 報告重點摘要</span></div>
+              <div class="line"><span class="ln">2</span>&nbsp;</div>
+              <div class="line added"><span class="ln">3</span>&nbsp;<span class="tag">## 核心發現</span></div>
+              <div class="line added"><span class="ln">4</span>&nbsp;<span class="txt">- 三個關鍵</span></div>
+              <div class="line added"><span class="ln">5</span>&nbsp;<span class="txt">- 兩個建議</span></div>
+            </div>
+          </div>
+          <div class="ide-chat">
+            <div class="chat-header">▸ Chat</div>
+            <div class="chat-msg user">幫我讀 paper.pdf 整理重點寫成 md</div>
+            <div class="chat-msg ai">已讀完 24 頁<span class="meta">✓ 產出 report.md 12 段重點</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="lv-caption lv2">PDF 丟進來 整理成報告 md</p>
+    </div>
+    <div class="lv-connector"><span></span><span></span><span></span></div>
+    <div class="lv-col lv3" style="flex:31;">
+      <div class="lv-label lv3"><div class="num">LV3 ・ 完成後加做</div></div>
+      <div class="ide-frame lv3">
+        <div class="ide-titlebar lv3"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-slides/</span></div>
+        <div class="ide-body">
+          <div class="ide-sidebar">
+            <div class="section">EXPLORER</div>
+            <div class="folder">▾ my-slides</div>
+            <div class="file">report.md</div>
+            <div class="file new active">slides.html ●</div>
+          </div>
+          <div class="ide-main" style="background:#fff;">
+            <div class="ide-tabs" style="background:#f0f0f0;"><div class="ide-tab" style="background:#f0f0f0;color:#666;">Code</div><div class="ide-tab active" style="background:#fff;color:#222;">Preview</div></div>
+            <div style="flex:1;background:linear-gradient(135deg,#fef3c7,#fff);padding:.5rem;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+              <div style="background:#fff;border-radius:4px;width:90%;height:75%;box-shadow:0 2px 6px rgba(217,119,6,.2);padding:.4rem;display:flex;flex-direction:column;gap:.25rem;">
+                <div style="background:linear-gradient(90deg,#d97706,#8b5cf6);height:4px;border-radius:2px;"></div>
+                <div style="font-size:.55rem;font-weight:700;color:#222;margin-top:.2rem;">研究報告摘要</div>
+                <div style="font-size:.42rem;color:#666;">核心發現 ・ 數據洞察</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:.3rem;">
+                  <div style="background:#fef3c7;border-radius:3px;padding:.2rem;font-size:.4rem;">3 個關鍵</div>
+                  <div style="background:#f3e8ff;border-radius:3px;padding:.2rem;font-size:.4rem;">2 個建議</div>
+                </div>
+                <div style="margin-top:auto;font-size:.38rem;color:#999;text-align:right;">1 / 8</div>
+              </div>
+            </div>
+          </div>
+          <div class="ide-chat" style="width:32%;">
+            <div class="chat-header">▸ Chat</div>
+            <div class="chat-msg user">把 report.md 做成 8 頁簡報 html</div>
+            <div class="chat-msg ai">已產出 slides.html<span class="meta">✓ 8 頁 含目錄</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="lv-caption lv3">md 變成可呈現的簡報</p>
+    </div>
+  </div>
+  <div class="info-box success" style="max-width:1100px;margin-top:1rem;">
+    <p style="text-align:center;font-size:1.05rem;"><strong style="color:var(--green);">今天 IDE 第一次直接動你的檔案</strong> 從改 HTML 到讀 PDF 到產簡報</p>
+  </div>
+</div>
+
+<!-- ══ 2 開場: 六輪循環 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <h2>六輪循環 逐層遞進</h2>
+  <div class="cycle-ring">
+    <div class="cycle-step"><span class="cycle-label">Round 1</span><span class="cycle-name">認識 IDE</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 2</span><span class="cycle-name">裝 agy 連 Google</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 3</span><span class="cycle-name">LV1 改 HTML</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 4</span><span class="cycle-name">LV2 讀 PDF 產 md</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 5</span><span class="cycle-name">LV3 md 變簡報</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 6</span><span class="cycle-name">回顧反思</span></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">每一輪的節奏</div>
+    <p>操作指令 → 補強版參考 → 操作計時 → 分享觀察 → 小結反思</p>
+  </div>
+</div>
+
+<!-- ══ 3 開場: 3 小時流程地圖 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <h2>今天 3 小時的路線</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">每 30 分鐘一個 Round 中間沒安排休息 卡住的人趁分享觀察喘口氣</p>
+  <div class="time-map">
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#065f46,#0F9D8A);"><div class="tb-time">0:00 – 0:30</div><div class="tb-name">Round 1</div></div>
+      <div class="tb-body"><strong>認識 IDE</strong>從瀏覽器到本機 IDE 是什麼為什麼要用</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#0d2a44,#1A73E8);"><div class="tb-time">0:30 – 1:00</div><div class="tb-name">Round 2</div></div>
+      <div class="tb-body"><strong>裝 agy</strong>用 Google 一鍵登入 4 IDE 工具比較</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#0d2a44,#1A73E8);"><div class="tb-time">1:00 – 1:30</div><div class="tb-name">Round 3</div></div>
+      <div class="tb-body"><strong>LV1 改 HTML</strong>把 M2-1 的網頁丟進 IDE AI 直接改</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#2a2a44,#7C3AED);"><div class="tb-time">1:30 – 2:00</div><div class="tb-name">Round 4</div></div>
+      <div class="tb-body"><strong>LV2 讀 PDF</strong>把 PDF 整理成 md 報告</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#9a3412,#E8710A);"><div class="tb-time">2:00 – 2:30</div><div class="tb-name">Round 5</div></div>
+      <div class="tb-body"><strong>LV3 產簡報</strong>md 變成可呈現的簡報 html</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#065f46,#0F9D8A);"><div class="tb-time">2:30 – 3:00</div><div class="tb-name">Round 6</div></div>
+      <div class="tb-body"><strong>回顧反思</strong>三階段對比 M2-3 預告</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 1: 認識 IDE
+     ════════════════════════════════════════ -->
+
+<!-- ══ 4 R1 Poster ══ -->
+<div class="slide poster" data-act="Round 1：認識 IDE" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">從瀏覽器<br><span style="color:#6ee7d4;">走進 IDE</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">認識本機開發環境 為什麼比 ChatGPT 強</p>
+</div>
+
+<!-- ══ 5 概念: IDE 是什麼 ══ -->
+<div class="slide dataviz" data-act="Round 1：認識 IDE">
+  <h2>IDE 是什麼</h2>
+  <div class="info-box blue">
+    <div class="label">IDE 是什麼字</div>
+    <p>IDE 是 <strong style="color:var(--blue);">Integrated Development Environment</strong> 縮寫 中文叫整合式開發環境　就是一個程式設計師專用的編輯器</p>
+  </div>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">瀏覽器 AI 對話</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">IDE<br><span style="font-size:.8rem;font-weight:400;">AI 直接動你的檔案</span></div>
+  </div>
+  <div class="info-box success">
+    <div class="label">差別最大的一件事</div>
+    <p>ChatGPT 給你文字 你自己複製貼上　IDE 裡的 AI 直接改你電腦上的檔案 你看著它在你眼前修改</p>
+  </div>
+</div>
+
+<!-- ══ 6 概念: 為什麼要 IDE ══ -->
+<div class="slide dataviz" data-act="Round 1：認識 IDE">
+  <h2>為什麼要走進 IDE</h2>
+  <div class="card-grid">
+    <div class="card accent-top">
+      <h3>多檔案一起改</h3>
+      <p>不只改一個 HTML AI 能同時修 CSS JS 圖片 多個檔案一次處理</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>能讀你的資料</h3>
+      <p>把 PDF Excel 圖片放進資料夾 AI 直接讀 不用一個個複製貼到對話框</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>能執行能驗證</h3>
+      <p>改完直接在 IDE 開預覽 AI 自己看結果 不對再修</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 7 操作指令: 認識 IDE 介面 ══ -->
+<div class="slide dataviz" data-act="Round 1：認識 IDE">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">先不裝任何東西<br>看老師示範 IDE 介面三個區塊</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">三個區塊認識</div>
+    <p>左邊　檔案樹 你的資料夾長什麼樣<br>中間　編輯區 程式碼或文件內容<br>右邊　Chat 跟 AI 對話的地方</p>
+  </div>
+</div>
+
+<!-- ══ 8 補強版: IDE 三區塊 mockup ══ -->
+<div class="slide dataviz" data-act="Round 1：認識 IDE">
+  <h2>IDE 三區塊長什麼樣</h2>
+  <div class="mockup-center" style="max-width:920px;position:relative;">
+    <div class="ide-frame" style="height:340px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-page/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar" style="position:relative;">
+          <div class="section">EXPLORER</div>
+          <div class="folder">▾ my-page</div>
+          <div class="file active">index.html</div>
+          <div class="file">style.css</div>
+          <div class="file">README.md</div>
+          <div style="position:absolute;top:.5rem;right:-3.8rem;background:#ff4d4f;color:#fff;font-size:.5rem;padding:.1rem .3rem;border-radius:3px;font-weight:700;white-space:nowrap;">A 檔案樹</div>
+        </div>
+        <div class="ide-main" style="position:relative;">
+          <div class="ide-tabs"><div class="ide-tab active">index.html</div></div>
+          <div class="ide-code">
+            <div class="line"><span class="ln">1</span>&nbsp;<span class="tag">&lt;!DOCTYPE html&gt;</span></div>
+            <div class="line"><span class="ln">2</span>&nbsp;<span class="tag">&lt;html&gt;</span></div>
+            <div class="line"><span class="ln">3</span>&nbsp;<span class="tag">&lt;body&gt;</span></div>
+            <div class="line"><span class="ln">4</span>&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span>王小明<span class="tag">&lt;/h1&gt;</span></div>
+            <div class="line"><span class="ln">5</span>&nbsp;<span class="tag">&lt;/body&gt;</span></div>
+          </div>
+          <div style="position:absolute;top:.5rem;right:1rem;background:#ff4d4f;color:#fff;font-size:.5rem;padding:.1rem .3rem;border-radius:3px;font-weight:700;">B 編輯區</div>
+        </div>
+        <div class="ide-chat" style="position:relative;">
+          <div class="chat-header">▸ Chat with AI</div>
+          <div class="chat-msg user">幫我改標題</div>
+          <div class="chat-msg ai">好的 line 4 改成什麼</div>
+          <div style="position:absolute;top:.5rem;right:.5rem;background:#ff4d4f;color:#fff;font-size:.5rem;padding:.1rem .3rem;border-radius:3px;font-weight:700;">C Chat</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note" style="margin-top:.5rem;">
+    <p style="font-size:.95rem;line-height:2;">
+      A 檔案樹看資料夾<br>
+      B 編輯區看內容<br>
+      C Chat 跟 AI 對話<br>
+      <span style="color:var(--g600);">不同 IDE 介面類似 只是顏色排列不同</span>
+    </p>
+  </div>
+</div>
+
+<!-- ══ INSERT: 三種 AI 編程模式 ══ -->
+<div class="slide dataviz" data-act="Round 1：認識 IDE">
+  <h2>AI 編程工具的三種模式</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">同一個 AI 服務通常有三種界面 給不同場景用</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1280px;width:100%;align-items:stretch;">
+
+    <div style="background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);border-radius:16px;padding:1rem 1.2rem;display:flex;flex-direction:column;">
+      <div style="font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:.1em;">模式 1</div>
+      <h3 style="color:var(--g900);margin:.2rem 0 .3rem;">IDE 模式</h3>
+      <div style="font-size:.78rem;color:var(--g600);margin-bottom:.4rem;">圖形化完整環境</div>
+      <div style="background:#fff;border-radius:6px;padding:.4rem .55rem;font-size:.82rem;color:var(--g700);margin-bottom:.5rem;font-family:'Fira Code',monospace;line-height:1.7;">VS Code + Claude/Copilot/Cursor<br>Antigravity IDE</div>
+      <ul style="list-style:none;padding:0;font-size:.88rem;line-height:1.8;">
+        <li>A. 左檔案樹永遠看得到</li>
+        <li>B. 中編輯區改檔有高亮</li>
+        <li>C. 右 Chat 跟 AI 對話</li>
+        <li>D. 同時開多檔分頁</li>
+        <li>E. 視覺 diff 看哪變了</li>
+        <li>F. 5 分鐘上手 要安裝</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--blue-lt);border:2px solid var(--blue);border-top:4px solid var(--blue);border-radius:16px;padding:1rem 1.2rem;display:flex;flex-direction:column;">
+      <div style="font-size:.78rem;color:var(--blue);font-weight:700;letter-spacing:.1em;">模式 2</div>
+      <h3 style="color:var(--g900);margin:.2rem 0 .3rem;">Codex 模式</h3>
+      <div style="font-size:.78rem;color:var(--g600);margin-bottom:.4rem;">終端機內的任務介面</div>
+      <div style="background:#fff;border-radius:6px;padding:.4rem .55rem;font-size:.82rem;color:var(--g700);margin-bottom:.5rem;font-family:'Fira Code',monospace;line-height:1.7;">codex 互動<br>claude code 互動<br>agy 互動</div>
+      <ul style="list-style:none;padding:0;font-size:.88rem;line-height:1.8;">
+        <li>A. 沒檔案樹瀏覽器</li>
+        <li>B. 主畫面是任務 + AI 對話</li>
+        <li>C. 改檔在對話中以 diff 顯示</li>
+        <li>D. 要 ls 才能看資料夾</li>
+        <li>E. 純文字背景</li>
+        <li>F. 比 IDE 輕量 啟動快</li>
+      </ul>
+    </div>
+
+    <div style="background:var(--offwhite);border:2px solid var(--g300,var(--g200));border-top:4px solid var(--g600);border-radius:16px;padding:1rem 1.2rem;display:flex;flex-direction:column;">
+      <div style="font-size:.78rem;color:var(--g700);font-weight:700;letter-spacing:.1em;">模式 3</div>
+      <h3 style="color:var(--g900);margin:.2rem 0 .3rem;">CLI 模式</h3>
+      <div style="font-size:.78rem;color:var(--g600);margin-bottom:.4rem;">純命令列指令</div>
+      <div style="background:#fff;border-radius:6px;padding:.4rem .55rem;font-size:.82rem;color:var(--g700);margin-bottom:.5rem;font-family:'Fira Code',monospace;line-height:1.7;">codex exec<br>claude -p<br>agy -p</div>
+      <ul style="list-style:none;padding:0;font-size:.88rem;line-height:1.8;">
+        <li>A. 一個指令一個任務</li>
+        <li>B. 沒互動 沒 Chat</li>
+        <li>C. 適合腳本自動化</li>
+        <li>D. 拿輸出接其他程式</li>
+        <li>E. 最快最精簡</li>
+        <li>F. 要先寫好完整 prompt</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ 9 操作計時: 看老師示範 ══ -->
+<div class="slide dataviz" data-act="Round 1：認識 IDE">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">15</span><span class="unit">分鐘</span><div class="caption">看老師示範 + 觀察介面差異</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">這 15 分鐘你要做的</div>
+    <p>不裝任何東西 不操作　只認介面 認觀念<br>看老師打開 agy 操作一輪 改個小東西 你會看到 IDE 跟 ChatGPT 介面的差別</p>
+  </div>
+</div>
+
+<!-- ══ 10 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 1：認識 IDE">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>你看到 AI 直接改檔案有什麼感覺</strong><p>跟你用 ChatGPT 複製貼上的經驗比 哪裡不一樣</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>三區塊你最在意哪個</strong><p>檔案樹 編輯區 Chat 哪個你覺得最重要 為什麼</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>三個同學講一輪</strong><p>聽聽大家對 IDE 的第一印象</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 11 R1 小結 ══ -->
+<div class="slide dataviz" data-act="Round 1：認識 IDE">
+  <h2>Round 1 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">IDE 不是更高級的 ChatGPT<br>是讓 AI 從建議者變成執行者</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>IDE 是什麼的概念 ・ 三區塊認識 ・ 看過老師示範 ・ 對 AI 直接改檔案的初印象</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 2: 裝 agy + 4 IDE 介紹
+     ════════════════════════════════════════ -->
+
+<!-- ══ 12 R2 Poster ══ -->
+<div class="slide poster" data-act="Round 2：裝 agy" style="background:linear-gradient(135deg,#0d2a44 0%,#1A73E8 50%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:30–1:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">裝 agy<br><span style="color:#93c5fd;">用 Google 一鍵登入</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">免費 IDE 主場 順帶看其他三個</p>
+</div>
+
+<!-- ══ 13 概念: 4 個 IDE 工具比較 ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <h2>市面四個主流 IDE 工具</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">這堂課主推 agy 因為它免費 其他要付費的看一眼有印象就好</p>
+  <div class="ide-tools-grid">
+    <div class="ide-tool-card primary">
+      <span class="tool-tag">本堂主推</span>
+      <div class="tool-name">agy</div>
+      <div class="tool-pay">免費 · Google 帳號登入</div>
+      <div class="tool-desc">Antigravity CLI Google 出的 跟 Gemini 整合好 適合入門</div>
+    </div>
+    <div class="ide-tool-card">
+      <span class="tool-tag">付費</span>
+      <div class="tool-name">Claude Code</div>
+      <div class="tool-pay">需 Claude Pro 訂閱</div>
+      <div class="tool-desc">Anthropic 出 寫程式能力強 適合長期專案</div>
+    </div>
+    <div class="ide-tool-card">
+      <span class="tool-tag">付費</span>
+      <div class="tool-name">Codex</div>
+      <div class="tool-pay">需 ChatGPT Plus</div>
+      <div class="tool-desc">OpenAI 出 跟 ChatGPT 同源 寫腳本快</div>
+    </div>
+    <div class="ide-tool-card">
+      <span class="tool-tag">免費 + 付費</span>
+      <div class="tool-name">VS Code + Copilot</div>
+      <div class="tool-pay">VS Code 免費 · Copilot 月費</div>
+      <div class="tool-desc">微軟出 業界標準編輯器 接 Claude 或 Copilot 都可以</div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">介面長得差不多 都有左檔案樹 中編輯區 右 Chat　學一個其他都會用　今天用 agy 因為它免費</p>
+  </div>
+</div>
+
+<!-- ══ 14 操作指令: 裝 agy ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">打開 antigravity.google<br>下載安裝 用 Google 帳號登入</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">三步驟</div>
+    <p>1. 到官網點 Download for Mac / Windows<br>2. 開啟 dmg 或 exe 拖到 Applications<br>3. 第一次開啟 Continue with Google 跳到瀏覽器授權</p>
+  </div>
+  <div class="info-box tip">
+    <div class="label">和 GitHub 註冊一樣的 OAuth</div>
+    <p>你已經會了 不會用 Gmail 一鍵登入的話回 M2-1 R1 看一次</p>
+  </div>
+</div>
+
+<!-- ══ 15 補強版: agy 安裝畫面 mockup ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <h2>agy 安裝畫面長這樣</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="background:#fff;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">antigravity.google</span></div>
+      <div style="background:#fff;padding:1rem 1.5rem;flex:1;display:flex;flex-direction:column;align-items:center;gap:.5rem;">
+        <div style="font-size:1.4rem;font-weight:900;color:#1a73e8;">Antigravity</div>
+        <div style="font-size:.85rem;color:var(--g600);">Google 的 IDE 工具 整合 Gemini 模型</div>
+        <div style="display:flex;gap:.6rem;margin-top:.4rem;">
+          <div style="background:#1a73e8;color:#fff;padding:.4rem 1.2rem;border-radius:5px;font-size:.85rem;font-weight:700;">Download for Mac</div>
+          <div style="background:#fff;border:1px solid var(--g200);color:var(--g800);padding:.4rem 1.2rem;border-radius:5px;font-size:.85rem;font-weight:700;">Download for Windows</div>
+        </div>
+        <div style="font-size:.75rem;color:var(--g500);margin-top:.4rem;">免費 · 不需信用卡 · 用 Google 帳號登入</div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">下載 dmg 或 exe 安裝　第一次開啟會跳 Continue with Google　選你的 Gmail 帳號授權</p>
+  </div>
+</div>
+
+<!-- ══ 16 踩坑預告: 安裝常見問題 ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <span class="pitfall-badge">預期會踩坑</span>
+  <h2>安裝有 3 種常見卡關</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">看過這張等下不會慌</p>
+  <div class="pitfall-card">
+    <div class="pitfall-row">
+      <div class="pitfall-item">
+        <div class="ptitle">Mac 說無法驗證開發者</div>
+        <div class="pdesc">第一次開啟 Mac 會擋<br><span style="color:var(--green);font-weight:600;">解 系統設定 → 隱私權與安全性 → 點仍要打開</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">Windows 防毒擋下載</div>
+        <div class="pdesc">SmartScreen 警告未知發行者<br><span style="color:var(--green);font-weight:600;">解 點其他資訊 → 仍要執行</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">Google 授權卡住</div>
+        <div class="pdesc">瀏覽器擋 popup 或卡白頁<br><span style="color:var(--green);font-weight:600;">解 換 Chrome 開 允許 popup</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">這三個踩到都不用慌 一句話有解　跑除錯儀式 截錯誤 + 描述狀況問 AI 也行</p>
+  </div>
+</div>
+
+<!-- ══ 17 操作指令: 打開資料夾 ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">打開 agy 後<br>File → Open Folder 選你 M2-1 的 my-first-page 資料夾</p>
+  </div>
+  <div class="info-box warning">
+    <div class="label">關鍵觀念 信任資料夾</div>
+    <p>agy 第一次開資料夾會問 Do you trust this folder<br>選 Yes 才能讓 AI 看到你的檔案　不信任就只能讀不能改</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">怎麼確認資料夾在哪</div>
+    <p>M2-1 你從 GitHub 下載 zip 解壓縮 或從 GitHub 點 Code → Download ZIP　通常在下載資料夾</p>
+  </div>
+</div>
+
+<!-- ══ 18 補強版: 打開資料夾 mockup ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <h2>打開資料夾後看到三區塊</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="height:340px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-first-page/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar">
+          <div class="section">EXPLORER</div>
+          <div class="folder">▾ my-first-page</div>
+          <div class="file">.gitignore</div>
+          <div class="file">README.md</div>
+          <div class="file active">index.html</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab active">index.html</div></div>
+          <div class="ide-code">
+            <div class="line"><span class="ln">1</span>&nbsp;<span class="tag">&lt;!DOCTYPE html&gt;</span></div>
+            <div class="line"><span class="ln">2</span>&nbsp;<span class="tag">&lt;html&gt;</span></div>
+            <div class="line"><span class="ln">3</span>&nbsp;<span class="tag">&lt;head&gt;</span></div>
+            <div class="line"><span class="ln">4</span>&nbsp;&nbsp;<span class="tag">&lt;title&gt;</span>我的網頁<span class="tag">&lt;/title&gt;</span></div>
+            <div class="line"><span class="ln">5</span>&nbsp;<span class="tag">&lt;/head&gt;</span></div>
+            <div class="line"><span class="ln">6</span>&nbsp;<span class="tag">&lt;body&gt;</span></div>
+            <div class="line"><span class="ln">7</span>&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span>王小明<span class="tag">&lt;/h1&gt;</span></div>
+          </div>
+        </div>
+        <div class="ide-chat">
+          <div class="chat-header">▸ Chat with Gemini</div>
+          <div style="background:var(--gh-canvas);color:#9da5b4;padding:.3rem;font-size:.4rem;border-radius:4px;text-align:center;">準備好對話了 試試 say hello</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success">
+    <p style="font-size:.95rem;">左邊看到你的檔案了　中間打開 index.html 看內容　右邊 Chat 等你說話　準備好開始 vibe coding 了</p>
+  </div>
+</div>
+
+<!-- ══ 19 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">20</span><span class="unit">分鐘</span><div class="caption">含下載安裝 OAuth 開資料夾</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">完成目標</div>
+    <p>agy 已開啟 ・ Gmail 登入完成 ・ 你的 my-first-page 資料夾打開了 ・ 看到 index.html 內容</p>
+  </div>
+</div>
+
+<!-- ══ 20 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>大家都裝好了嗎</strong><p>有人卡住的舉手 同學或老師幫忙除錯</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>跟 agy 說 hello 看看回什麼</strong><p>第一次跟 IDE 裡的 AI 對話 感受跟 ChatGPT 的不同</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>觀察 Chat 區的提示</strong><p>它會建議你問什麼 你會發現它已經知道你開了什麼資料夾</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 21 R2 小結 ══ -->
+<div class="slide dataviz" data-act="Round 2：裝 agy">
+  <h2>Round 2 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">裝好 IDE 才是真正進入了開發者的世界<br>從此 AI 不再只是給建議 它跟你一起做事</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>agy 安裝完成 ・ Google 帳號授權登入 ・ M2-1 資料夾打開 ・ 看過 4 種 IDE 介面對比</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 3: LV1 改 HTML
+     ════════════════════════════════════════ -->
+
+<!-- ══ 22 R3 Poster ══ -->
+<div class="slide poster" data-act="Round 3：LV1 改 HTML" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 1:00–1:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">LV1<br><span style="color:#6ee7d4;">把 HTML 丟給 AI 改</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">把 M2-1 的網頁丟進 agy 一句話讓 AI 改</p>
+</div>
+
+<!-- ══ 23 概念: AI 直接改檔案 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 改 HTML">
+  <h2>AI 直接改檔案是什麼意思</h2>
+  <div class="compare-two">
+    <div class="compare-col bad">
+      <div class="col-label">M1-1 的做法</div>
+      <p>跟 ChatGPT 說 幫我把標題改綠色<br>它給你一段新的 HTML<br>你複製 貼回你的 index.html<br>存檔 重新打開瀏覽器看</p>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">M2-2 的做法</div>
+      <p>跟 agy 說 幫我把標題改綠色<br>agy 直接打開 index.html<br>改 line 8 自動存檔<br>跟你說 改好了 在 line 8</p>
+    </div>
+  </div>
+  <div class="info-box success">
+    <div class="label">為什麼重要</div>
+    <p>5 個小改動 用 ChatGPT 要 5 次複製貼上　用 IDE 跟 AI 講就好<br>10 個檔案的專案 更明顯</p>
+  </div>
+</div>
+
+<!-- ══ 24 操作指令: 第一次跟 IDE 對話 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 改 HTML">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">在 agy Chat 區輸入<br>幫我把 index.html 的標題改成綠色</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">這次只改一個地方</div>
+    <p>就先做最簡單的　看 AI 怎麼回應 看它真的去動你的檔案<br>改完瀏覽器打開 index.html 確認標題真的變綠</p>
+  </div>
+</div>
+
+<!-- ══ 25 補強版: AI 改 HTML mockup ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 改 HTML">
+  <h2>AI 改完會看到這樣</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="height:340px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-first-page/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar">
+          <div class="section">EXPLORER</div>
+          <div class="folder">▾ my-first-page</div>
+          <div class="file active">index.html ●</div>
+          <div class="file">README.md</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab active">index.html</div></div>
+          <div class="ide-code">
+            <div class="line"><span class="ln">7</span>&nbsp;<span class="tag">&lt;body&gt;</span></div>
+            <div class="line added"><span class="ln">8</span>&nbsp;&nbsp;<span class="tag">&lt;h1</span> style=<span class="str">"color:#0F9D8A"</span><span class="tag">&gt;</span>王小明<span class="tag">&lt;/h1&gt;</span></div>
+            <div class="line"><span class="ln">9</span>&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>全端工程師<span class="tag">&lt;/p&gt;</span></div>
+            <div class="line"><span class="ln">10</span>&nbsp;<span class="tag">&lt;/body&gt;</span></div>
+          </div>
+        </div>
+        <div class="ide-chat">
+          <div class="chat-header">▸ Chat</div>
+          <div class="chat-msg user">幫我把 index.html 標題改綠</div>
+          <div class="chat-msg ai">已修改 index.html<span class="meta">✓ line 8 加上 style 屬性</span><span class="meta">✓ color #0F9D8A 品牌綠</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success">
+    <p style="font-size:.95rem;">看到綠色高亮 那就是 AI 改的地方　檔名旁邊小圓點 ● 表示有未存的修改 或剛存好</p>
+  </div>
+</div>
+
+<!-- ══ 26 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 改 HTML">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">20</span><span class="unit">分鐘</span><div class="caption">至少改 3 個地方 體驗 AI 多檔案改</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">建議改的三件事</div>
+    <p>1. 標題顏色 換成你喜歡的<br>2. 加一個自我介紹段落<br>3. 加一個聯絡按鈕<br>每改一個就用瀏覽器打開 index.html 確認</p>
+  </div>
+</div>
+
+<!-- ══ 27 Wow Moment ══ -->
+<div class="slide dataviz wow-slide" data-act="Round 3：LV1 改 HTML">
+  <span class="wow-badge">亮點時刻</span>
+  <div class="wow-heading">一句話讓 AI 改了你的檔案<br>你像看魔術一樣站在旁邊</div>
+  <p class="wow-sub">不用複製 不用貼上 不用存檔　你只是說了你要什麼<br>這就是 vibe coding</p>
+  <div style="background:var(--green-lt);border-radius:14px;padding:1.2rem 2rem;margin-top:1rem;max-width:900px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;text-align:center;">
+      <div><div style="font-size:1.8rem;font-weight:900;color:var(--green);">3 倍</div><div style="font-size:.9rem;color:var(--g700);margin-top:.2rem;">改檔速度</div></div>
+      <div><div style="font-size:1.8rem;font-weight:900;color:var(--green);">0 次</div><div style="font-size:.9rem;color:var(--g700);margin-top:.2rem;">複製貼上</div></div>
+      <div><div style="font-size:1.8rem;font-weight:900;color:var(--green);">多檔案</div><div style="font-size:.9rem;color:var(--g700);margin-top:.2rem;">同步修改</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 28 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 改 HTML">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>跟同學交換 看對方改了什麼</strong><p>同樣是 M2-1 的網頁 不同人改出來不一樣</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>觀察你的指令跟 AI 回應</strong><p>下指令越具體 AI 動越精準　模糊指令會被反問</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>記下你想試的下一步</strong><p>R4 我們會挑戰更難的 讀 PDF 整理成 md</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 29 R3 小結 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 改 HTML">
+  <h2>Round 3 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">寫得越具體 AI 動得越精準<br>同樣的 IDE 你的描述能力決定產出</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>第一次 vibe coding 經驗 ・ 3 個 AI 改的版本 ・ 觀察精準指令的影響 ・ LV1 達成</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 4: LV2 讀 PDF 產 md
+     ════════════════════════════════════════ -->
+
+<!-- ══ 30 R4 Poster ══ -->
+<div class="slide poster" data-act="Round 4：LV2 讀 PDF" style="background:linear-gradient(135deg,#0d2a44 0%,#0B3C5D 40%,#1A73E8 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:30–2:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">LV2<br><span style="color:#93c5fd;">讀 PDF 整理成 md</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">把資料夾裡的 PDF 丟給 AI 一句話整理成報告</p>
+</div>
+
+<!-- ══ 31 概念: 把檔案放資料夾就讀得到 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <h2>關鍵觀念 信任資料夾</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">PDF 檔丟進資料夾</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">IDE 看到</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">AI 能讀<br><span style="font-size:.8rem;font-weight:400;">不用複製貼上</span></div>
+  </div>
+  <div class="info-box success">
+    <div class="label">核心邏輯</div>
+    <p>IDE 打開資料夾後 整個資料夾的檔案都是 AI 看得到的<br>你想讓 AI 處理什麼資料 把檔案放進來就行</p>
+  </div>
+  <div class="info-box warning">
+    <div class="label">注意 PDF 不能太大</div>
+    <p>免費版額度有限 PDF 超過 50 頁可能撞 token 上限　建議 10-30 頁<br>如果有超大 PDF 先用免費工具拆成幾份再放進來</p>
+  </div>
+</div>
+
+<!-- ══ 32 操作指令: 準備 PDF + 對話 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">把一份 PDF 放進你的資料夾<br>跟 AI 說 幫我讀這個 PDF 整理重點寫成 report.md</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">沒有 PDF 的話</div>
+    <p>用任何你手邊的 找一份你工作會看的<br>或下載一份公開研究報告 PDF 例如政府開放資料的研究報告</p>
+  </div>
+</div>
+
+<!-- ══ 33 補強版: PDF prompt 起點 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <h2>整理 PDF 的起點 prompt</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">先簡單下 然後用 M1-1 四要素持續優化</p>
+  <div class="code-block">
+    <div class="code-label">起點 一行就好</div>
+    <pre>幫我讀 paper.pdf 整理成 report.md</pre>
+  </div>
+  <div class="info-box tip">
+    <div class="label">第一次跑出來後 用 M1-1 四要素優化</div>
+    <p style="line-height:2;">
+      <strong>角色</strong> 我是 ESG 顧問 客戶看這份要做策略決策<br>
+      <strong>任務</strong> 摘要重點 不要照抄全文<br>
+      <strong>格式</strong> 三層架構 核心發現 數據洞察 行動建議<br>
+      <strong>限制</strong> 保留原文關鍵術語 不要意譯
+    </p>
+  </div>
+  <div class="info-box success">
+    <div class="label">完整變化版見 prompt 教材</div>
+    <p>同一份 PDF 不同目的有不同 prompt 寫法　簡報大綱 / 報告格式 / 摘要卡片 / 比較表　prompt 教材檔都有範例</p>
+  </div>
+</div>
+
+<!-- ══ INSERT: PDF prompt 三種變化版本 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <h2>同 PDF 三種 prompt 變化</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">同份 PDF 不同目的 prompt 寫法完全不同</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1180px;width:100%;">
+    <div class="card accent-top">
+      <h3>變化 1 簡報大綱</h3>
+      <p style="font-size:.85rem;line-height:1.7;">幫我把 paper.pdf 轉成 8 頁簡報大綱<br>每頁 1 個主標題 + 3 個 bullet<br>用 markdown 列出 我之後做成 PPT</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>變化 2 報告格式</h3>
+      <p style="font-size:.85rem;line-height:1.7;">幫我整理成正式報告 report.md<br>結構 摘要 + 三章節 + 結論<br>每章節 200 字 + 一個重點數據表</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>變化 3 摘要卡片</h3>
+      <p style="font-size:.85rem;line-height:1.7;">幫我用一張卡片 50 字內<br>摘要這份報告最重要的 3 件事<br>給沒空看的人用</p>
+    </div>
+  </div>
+  <div class="info-box note">
+    <div class="label">學員任務</div>
+    <p>挑一個變化版用<br>跑出第一版後 再用 M1-1 四要素優化　持續修 prompt 直到產出像你想要的格式為止</p>
+  </div>
+</div>
+
+<!-- ══ 34 補強版: 產出 md 結果 mockup ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <h2>產出 md 會像這樣</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="height:340px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-research/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar">
+          <div class="section">EXPLORER</div>
+          <div class="folder">▾ my-research</div>
+          <div class="file">paper.pdf</div>
+          <div class="file new active">report.md ●</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab">paper.pdf</div><div class="ide-tab active">report.md</div></div>
+          <div class="ide-code">
+            <div class="line added"><span class="ln">1</span>&nbsp;<span class="tag"># AI 教育市場 2026 報告</span></div>
+            <div class="line"><span class="ln">2</span>&nbsp;</div>
+            <div class="line added"><span class="ln">3</span>&nbsp;<span class="tag">## 核心發現</span></div>
+            <div class="line added"><span class="ln">4</span>&nbsp;<span class="txt">- 企業導入率年增 78%</span></div>
+            <div class="line added"><span class="ln">5</span>&nbsp;<span class="txt">- 員工培訓需求最大</span></div>
+            <div class="line added"><span class="ln">6</span>&nbsp;</div>
+            <div class="line added"><span class="ln">7</span>&nbsp;<span class="tag">## 數據洞察</span></div>
+            <div class="line added"><span class="ln">8</span>&nbsp;<span class="txt">| 產業 | 採用率 |</span></div>
+            <div class="line added"><span class="ln">9</span>&nbsp;<span class="txt">| --- | --- |</span></div>
+            <div class="line added"><span class="ln">10</span>&nbsp;<span class="txt">| 製造 | 65% |</span></div>
+          </div>
+        </div>
+        <div class="ide-chat">
+          <div class="chat-header">▸ Chat</div>
+          <div class="chat-msg user">幫我讀 paper.pdf 整理成 report.md</div>
+          <div class="chat-msg ai">已讀完 24 頁 PDF<span class="meta">✓ 產出 report.md</span><span class="meta">✓ 12 段重點</span><span class="meta">✓ 3 張數據表</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 35 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">25</span><span class="unit">分鐘</span><div class="caption">放 PDF 進去 寫 prompt 跑出 md</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">完成目標</div>
+    <p>你的資料夾多了一個 report.md<br>內容有結構 不是一坨文字 <br>能直接讀 不用回去翻 PDF</p>
+  </div>
+</div>
+
+<!-- ══ 36 踩坑預告: PDF 讀不動 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <span class="pitfall-badge">預期會踩坑</span>
+  <h2>PDF 讀不出來常見原因</h2>
+  <div class="pitfall-card">
+    <div class="pitfall-row">
+      <div class="pitfall-item">
+        <div class="ptitle">PDF 是掃描檔</div>
+        <div class="pdesc">不是真實文字 是圖片<br><span style="color:var(--green);font-weight:600;">解 用線上 OCR 工具轉文字版 PDF 再放進來</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">PDF 太大撞 token</div>
+        <div class="pdesc">超過 50 頁額度爆掉<br><span style="color:var(--green);font-weight:600;">解 拆成 10-30 頁 或先告訴 AI 只讀某幾章</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">產出 md 太精簡</div>
+        <div class="pdesc">AI 自己決定保留什麼<br><span style="color:var(--green);font-weight:600;">解 prompt 加 詳細列出每個段落的重點 不要省略</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 37 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>大家用了什麼 PDF</strong><p>產業報告 學術論文 公司文件 大家用的不同</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>產出的 md 品質差別</strong><p>同樣 prompt 不同 PDF 出來的結構不一樣 AI 會自動依內容調整</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>誰的 prompt 寫得最好用</strong><p>學起來 你工作上常讀的 PDF 之後都能這樣處理</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 38 R4 小結 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 讀 PDF">
+  <h2>Round 4 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">你不用再花一小時讀 PDF<br>把它丟進資料夾 AI 5 分鐘幫你整理完</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>一個 report.md ・ PDF prompt 模板 ・ AI 讀外部檔案的能力認知 ・ LV2 主線達成</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 5: LV3 md 變簡報 html
+     ════════════════════════════════════════ -->
+
+<!-- ══ 39 R5 Poster ══ -->
+<div class="slide poster" data-act="Round 5：LV3 產簡報" style="background:linear-gradient(135deg,#7c2d12 0%,#9a3412 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 2:00–2:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">LV3<br><span style="color:#fdba74;">md 轉成多格式輸出</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">HTML 簡報 PDF 報告 pptx 一份 md 三種格式</p>
+</div>
+
+<!-- ══ 40 概念: 一份 md 多格式輸出 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>一份 md 三種輸出</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">report.md<br><span style="font-size:.8rem;font-weight:400;">骨架</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">HTML 簡報<br><span style="font-size:.8rem;font-weight:400;">線上呈現</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">PDF 報告<br><span style="font-size:.8rem;font-weight:400;">寄客戶</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">pptx<br><span style="font-size:.8rem;font-weight:400;">會議用</span></div>
+  </div>
+  <div class="info-box success">
+    <div class="label">為什麼三種都要試</div>
+    <p>不同場合需要不同格式　線上分享用 HTML　寄客戶用 PDF　現場開會用 pptx<br>一份 md 三種格式 不用重做 學員體驗到 內容跟外觀分離 的威力</p>
+  </div>
+</div>
+
+<!-- ══ 41 操作指令: HTML → PDF → pptx ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">三個任務 一份 md 跑出三種輸出</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">三個任務</div>
+    <p style="line-height:2;">
+      A. 把 report.md 做成 8 頁 slides.html 線上簡報<br>
+      B. 把 report.md 做成 PDF 報告 適合寄客戶<br>
+      C. 把 report.md 做成 pptx 給 PowerPoint 開
+    </p>
+  </div>
+</div>
+
+<!-- ══ 42 補強版: 三個簡單 prompt 起點 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>三個起點 prompt</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">先一行下 跑出來再用 M1-1 四要素優化</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1180px;width:100%;">
+    <div class="card accent-top">
+      <h3>A 簡報 html</h3>
+      <p style="font-size:.85rem;line-height:1.7;font-family:'Fira Code',monospace;background:var(--offwhite);padding:.5rem;border-radius:6px;">把 report.md 做成 8 頁 slides.html</p>
+      <p style="font-size:.78rem;color:var(--g600);margin-top:.3rem;">線上用 投影機翻頁</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>B PDF 報告</h3>
+      <p style="font-size:.85rem;line-height:1.7;font-family:'Fira Code',monospace;background:var(--offwhite);padding:.5rem;border-radius:6px;">把 report.md 轉成 PDF 報告</p>
+      <p style="font-size:.78rem;color:var(--g600);margin-top:.3rem;">寄客戶 印出來用</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>C pptx 簡報檔</h3>
+      <p style="font-size:.85rem;line-height:1.7;font-family:'Fira Code',monospace;background:var(--offwhite);padding:.5rem;border-radius:6px;">把 report.md 做成 pptx 用 python-pptx</p>
+      <p style="font-size:.78rem;color:var(--g600);margin-top:.3rem;">PowerPoint 開 自己改</p>
+    </div>
+  </div>
+  <div class="info-box success">
+    <div class="label">完整版見 prompt 教材</div>
+    <p>每個格式的進階版本 例如 配色 字體 版型 動畫 都在 prompt 教材檔　今天現場先用最簡版本體驗多格式</p>
+  </div>
+</div>
+
+<!-- ══ 43 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">20</span><span class="unit">分鐘</span><div class="caption">三個格式 至少完成兩種</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">完成目標</div>
+    <p>資料夾多了 slides.html + report.pdf + slides.pptx 其中至少兩個<br>每個都能打開能看　能截圖貼出來給同學<br>體會 同一份內容三種輸出 的威力</p>
+  </div>
+</div>
+
+<!-- ══ 44 Wow Moment: 一句話產簡報 ══ -->
+<div class="slide dataviz wow-slide" data-act="Round 5：LV3 產簡報">
+  <span class="wow-badge">亮點時刻</span>
+  <div class="wow-heading">PDF 進來 簡報出去<br>一整天的工作 25 分鐘完成</div>
+  <p class="wow-sub">以前讀報告抓重點 整理成簡報 配色排版要花一整天　今天你 2 個指令完成　而且配色比你做的還好看</p>
+  <div style="background:var(--green-lt);border-radius:14px;padding:1.2rem 2rem;margin-top:1rem;max-width:900px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;text-align:center;">
+    <div><div style="font-size:1.6rem;font-weight:900;color:var(--green);">2 個</div><div style="font-size:.9rem;color:var(--g700);margin-top:.2rem;">prompt 完成</div></div>
+    <div><div style="font-size:1.6rem;font-weight:900;color:var(--green);">25 分鐘</div><div style="font-size:.9rem;color:var(--g700);margin-top:.2rem;">PDF 到簡報</div></div>
+    <div><div style="font-size:1.6rem;font-weight:900;color:var(--green);">0 PowerPoint</div><div style="font-size:.9rem;color:var(--g700);margin-top:.2rem;">不用設計工具</div></div>
+  </div>
+</div>
+
+<!-- ══ 45 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>把你的簡報截圖貼到群組</strong><p>不用真的傳 html 截兩三頁畫面就行</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>看大家簡報長什麼樣</strong><p>同樣 prompt 不同 PDF 出來的視覺風格不一樣</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>找一個你覺得最美的</strong><p>下一輪可以叫 AI 學它的風格幫你升級</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 46 R5 小結 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>Round 5 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">你今天做出了讓你上個月覺得不可能的東西<br>而且只用了一句話的 prompt</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>slides.html 簡報作品 ・ PDF 到簡報的完整工作流 ・ md 跟 html 的分工觀念 ・ LV3 達成</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 6: 回顧 + M2-3 預告
+     ════════════════════════════════════════ -->
+
+<!-- ══ 47 R6 Poster ══ -->
+<div class="slide poster" data-act="Round 6：回顧" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:30–3:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">IDE 你會用了<br><span style="color:#6ee7d4;">下一堂要部署</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">回顧今天三層 預告 M2-3</p>
+</div>
+
+<!-- ══ 48 六輪回顧 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>六輪回顧</h2>
+  <div class="cycle-ring">
+    <div class="cycle-step active"><span class="cycle-label">Round 1</span><span class="cycle-name">認識 IDE</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 2</span><span class="cycle-name">裝 agy</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 3</span><span class="cycle-name">LV1 改 HTML</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 4</span><span class="cycle-name">LV2 讀 PDF</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 5</span><span class="cycle-name">LV3 產簡報</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 6</span><span class="cycle-name">回顧反思</span></div>
+  </div>
+  <div class="info-box success">
+    <p style="text-align:center;font-size:1.05rem;">每一輪都讓 AI 幫你做了更複雜的事　最後你帶走的不只是檔案　是整套讓 AI 改檔案的工作流</p>
+  </div>
+</div>
+
+<!-- ══ 49 三 LV 對比 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>今天完成的三個任務</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1100px;width:100%;">
+    <div class="card accent-top">
+      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">LV1</div>
+      <h3>改 HTML</h3>
+      <p>把 M2-1 的網頁丟進 IDE　跟 AI 講一句話它直接改檔　不用複製貼上</p>
+    </div>
+    <div class="card accent-top-blue" style="border-color:var(--green);background:var(--green-lt);">
+      <div style="font-size:.7rem;color:var(--green);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">LV2 必做主線</div>
+      <h3>讀 PDF 產 md</h3>
+      <p>把 PDF 丟進資料夾　AI 讀完整理成結構化 md 報告　PDF prompt 模板</p>
+    </div>
+    <div class="card accent-top-orange" style="border-color:#d97706;">
+      <div style="font-size:.7rem;color:#d97706;letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">LV3 完成後加做</div>
+      <h3>md 產簡報</h3>
+      <p>md 變成可呈現的 8 頁簡報　配色字體 AI 自己處理　簡報 prompt 模板</p>
+    </div>
+  </div>
+  <div class="bottom-line">
+    <h3>三層共通的事</h3>
+    <p>把檔案放資料夾　信任 IDE　用清楚的指令給 AI　看著它工作</p>
+  </div>
+</div>
+
+<!-- ══ 50 帶走清單 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>M2-2 帶走清單</h2>
+  <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);max-width:920px;">
+    <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
+      <div style="font-size:.78rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">作品產出</div>
+      <ul style="list-style:none;padding:0;font-size:.95rem;color:var(--g800);line-height:2;">
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 改過的 index.html</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 一份 report.md</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 一份 slides.html</li>
+      </ul>
+    </div>
+    <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
+      <div style="font-size:.78rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">能力習慣</div>
+      <ul style="list-style:none;padding:0;font-size:.95rem;color:var(--g800);line-height:2;">
+        <li><span style="color:var(--green);font-weight:900;">✓</span> agy 操作流程</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 信任資料夾的觀念</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> PDF / 簡報 prompt 模板</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 4 種 IDE 工具認知</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 51 M2-3 預告 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>下一堂 M2-3 預告</h2>
+  <div class="info-box blue">
+    <div class="label">IDE 接到 GitHub</div>
+    <p>今天你的作品都在本機資料夾　下一堂課教 IDE 怎麼跟你 M2-1 的 GitHub 連起來　AI 改完直接 push 上線</p>
+  </div>
+  <div class="card-grid">
+    <div class="card accent-top">
+      <h3>LV1</h3>
+      <p>把今天的 slides.html push 到 GitHub Pages</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>LV2 必做主線</h3>
+      <p>把 M2-1 個人介紹頁升級成多頁網站 含簡報區跟檔案下載</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>LV3 加做</h3>
+      <p>重做一個全新專案 從零部署上線</p>
+    </div>
+  </div>
+  <div class="bottom-line">
+    <h3>記得帶今天的作品</h3>
+    <p>下一堂課直接用今天的 slides.html 跟 report.md 部署上線</p>
+  </div>
+</div>
+
+</div>
+
+<!-- Chapter Menu -->
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">◈</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">▲</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<div class="progress-bar" id="progress"></div>
+<div class="slide-counter"><span id="cur">1</span> / <span id="total">52</span></div>
+<div class="controls">
+  <button onclick="prev()">◂</button>
+  <button onclick="next()">▸</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let idx = 0;
+const curEl = document.getElementById('cur');
+const totalEl = document.getElementById('total');
+const progress = document.getElementById('progress');
+totalEl.textContent = total;
+const chapters = [];
+let lastAct = '';
+slides.forEach((s, i) => {
+  const act = s.dataset.act || '';
+  if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+});
+const list = document.getElementById('chapterList');
+chapters.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'chapter-item';
+  item.dataset.idx = c.idx;
+  item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+  item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+  list.appendChild(item);
+});
+function show(){
+  slides.forEach((s,i)=>s.classList.toggle('active', i===idx));
+  curEl.textContent = idx+1;
+  progress.style.width = ((idx+1)/total*100) + '%';
+  let curAct = '';
+  for(let i = chapters.length-1; i >= 0; i--){
+    if(idx >= chapters[i].idx){ curAct = chapters[i].act; break; }
+  }
+  document.getElementById('chapterLabel').textContent = curAct || '章節';
+  document.querySelectorAll('.chapter-item').forEach(item => {
+    const ci = +item.dataset.idx;
+    let end = total;
+    for(let c of chapters){ if(c.idx > ci){ end = c.idx; break; } }
+    item.classList.toggle('active', idx >= ci && idx < end);
+  });
+}
+function next(){ if(idx<total-1){idx++;show();} }
+function prev(){ if(idx>0){idx--;show();} }
+function goTo(n){ idx = Math.max(0, Math.min(total-1, n)); show(); }
+function toggleChapterMenu(){ document.getElementById('chapterMenu').classList.toggle('open'); }
+function closeChapterMenu(){ document.getElementById('chapterMenu').classList.remove('open'); }
+document.addEventListener('keydown', e=>{
+  if(['ArrowRight',' ','PageDown','.','n','N'].includes(e.key)){ e.preventDefault(); next(); }
+  else if(['ArrowLeft','PageUp','p','P','Backspace'].includes(e.key)){ e.preventDefault(); prev(); }
+  else if(e.key==='Home'){ e.preventDefault(); goTo(0); }
+  else if(e.key==='End'){ e.preventDefault(); goTo(total-1); }
+  else if(e.key==='Escape'){ closeChapterMenu(); }
+  else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.chapter-menu')) closeChapterMenu();
+});
+show();
+</script>
+</body>
+</html>

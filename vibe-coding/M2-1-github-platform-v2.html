@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-1 — GitHub 平台熟悉 V2 | Vibe Coding Stage 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g500:#80868B; --g600:#5F6368; --g700:#3C4043; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --navy:#0B3C5D;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --accent:#0F9D8A;
+  --gh-fg:#1f2328; --gh-mute:#59636e; --gh-border:#d1d9e0; --gh-bg:#fff;
+  --gh-canvas:#f6f8fa; --gh-green:#1f883d; --gh-link:#0969da;
+  --gh-nav:#1f2328; --gh-nav-fg:#f6f8fa;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;background:var(--white);}
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 4rem 1.5rem;overflow:hidden;}
+.slide.active{display:flex;}
+.slide.dataviz{background:var(--white);padding-top:3rem;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.7) 100%);z-index:1;}
+.slide.poster>*{position:relative;z-index:2;}
+
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+.slide.poster h1{color:#fff;}
+h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;color:var(--g900);}
+h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
+p,li{font-size:1.1rem;line-height:1.8;}
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
+.poster-tag{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.85rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin:.3rem;}
+
+/* Step list */
+.step-list{text-align:left;max-width:800px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;line-height:1.7;}
+
+/* Stat & big stat */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
+.stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
+.stat-box .val{font-size:2.4rem;font-weight:900;color:var(--green);line-height:1.1;}
+.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+.big-stat{text-align:center;margin:1rem 0;}
+.big-stat .num{font-size:5rem;font-weight:900;color:var(--green);line-height:1;}
+.big-stat .unit{font-size:1.4rem;font-weight:700;color:var(--g600);margin-left:.3rem;}
+.big-stat .caption{font-size:1.05rem;color:var(--g600);margin-top:.4rem;}
+
+/* Card grid */
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:1100px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.3rem 1.5rem;min-width:220px;max-width:320px;flex:1;}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.7;}
+.card.accent-top{border-top:4px solid var(--green);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-red{border-top:4px solid var(--red);}
+
+/* Flow boxes */
+.flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
+
+/* Info boxes */
+.info-box{border-radius:12px;padding:1.1rem 1.5rem;max-width:820px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:#b07d00;font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip p{color:var(--g800);}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note p{color:var(--g800);}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box p{font-size:1rem;line-height:1.75;color:var(--g800);}
+
+/* Quote box (Round 小結 金句) */
+.quote-box{max-width:820px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.6rem 2rem;margin:1rem 0;text-align:left;}
+.quote-box .quote-text{font-size:1.35rem;font-weight:700;line-height:1.6;color:var(--g900);}
+.quote-box .quote-src{font-size:.9rem;color:var(--g500);margin-top:.5rem;}
+
+/* Code block (補強版 範例) */
+.code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1rem 1.4rem;max-width:820px;width:100%;text-align:left;margin:.8rem 0;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:.92rem;color:var(--g900);line-height:1.8;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.4rem;}
+
+/* Two-column compare */
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:1000px;width:100%;margin-top:.8rem;}
+.compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
+.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--green);}
+.compare-col p,.compare-col li{font-size:1rem;line-height:1.8;color:var(--g800);}
+.compare-col ul{padding-left:1.2rem;}
+
+/* Cycle ring 6-round overview */
+.cycle-ring{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;max-width:780px;width:100%;margin:1rem 0;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.7rem 1rem;text-align:center;color:var(--g800);}
+.cycle-step .cycle-label{font-size:.78rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step .cycle-name{font-size:1.05rem;font-weight:700;}
+.cycle-step.active{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.cycle-step.active .cycle-label{color:var(--green);}
+
+/* Bottom line summary */
+.bottom-line{max-width:820px;width:100%;background:var(--green-lt);border:2px solid rgba(15,157,138,.3);border-radius:16px;padding:1.6rem 2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.4rem;color:var(--green);margin-bottom:.4rem;}
+.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:680px;margin:0 auto;line-height:1.7;}
+
+/* Stage compare (M1-1 / M1-4 / M2-1 升級線) */
+.stage-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1100px;width:100%;margin-top:.5rem;}
+.stage-card{background:#fff;border:2px solid var(--g100);border-radius:14px;padding:1rem 1.2rem;}
+.stage-card.cur{border-color:var(--green);background:var(--green-lt);}
+.stage-card .stage-num{font-size:.7rem;color:var(--g400);font-weight:700;letter-spacing:.08em;}
+.stage-card.cur .stage-num{color:var(--green);}
+.stage-card h3{font-size:1.05rem;color:var(--g900);margin:.15rem 0 .3rem;}
+.stage-card .url{font-family:'Fira Code',monospace;font-size:.7rem;color:var(--g600);background:var(--offwhite);padding:.18rem .4rem;border-radius:4px;display:inline-block;margin-bottom:.3rem;word-break:break-all;max-width:100%;}
+.stage-card.cur .url{background:#fff;color:var(--green);font-weight:600;}
+.stage-card .feat{font-size:.85rem;color:var(--g700);line-height:1.7;}
+
+/* page title */
+.page-title{text-align:center;margin-bottom:.6rem;}
+.page-title .stage-tag{font-size:.7rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;}
+.page-title h2{margin-bottom:.2rem;}
+.page-title .sub{color:var(--g600);font-size:.95rem;}
+
+/* LV row (page 2 全景圖) */
+.lv-row{background:#f7fafc;padding:1rem .8rem .8rem;border-radius:14px;display:flex;align-items:stretch;gap:.3rem;max-width:1280px;width:100%;height:75%;max-height:520px;}
+.lv-col{display:flex;flex-direction:column;}
+.lv-label{text-align:center;margin-bottom:.4rem;}
+.lv-label .num{font-size:.85rem;font-weight:700;letter-spacing:.08em;}
+.lv-label.lv1 .num{color:#64748b;}
+.lv-label.lv2 .num{color:var(--green);}
+.lv-label.lv3 .num{color:#d97706;}
+.lv-caption{text-align:center;font-size:.82rem;color:var(--g700);margin-top:.5rem;font-weight:500;}
+.lv-caption.lv2{color:var(--green);font-weight:600;font-size:.85rem;}
+.lv-caption.lv3{color:#d97706;font-weight:600;font-size:.82rem;}
+.lv-connector{display:flex;align-items:center;padding:0 .15rem;align-self:center;}
+.lv-connector span:first-child,.lv-connector span:last-child{width:5px;height:5px;border-radius:50%;background:#94a3b8;}
+.lv-connector span:nth-child(2){width:18px;border-top:1px dashed #cbd5e1;}
+
+/* GitHub UI Mockup */
+.gh-frame{background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;flex:1;display:flex;flex-direction:column;border:1px solid var(--gh-border);}
+.gh-frame.lv2{box-shadow:0 2px 10px rgba(15,157,138,.18);border-color:#a7d4cc;}
+.gh-frame.lv3{box-shadow:0 3px 14px rgba(217,119,6,.18);border-color:#f0d28b;}
+.gh-browser{background:#e8eaee;padding:.3rem .5rem;display:flex;gap:5px;align-items:center;font-size:.5rem;flex-shrink:0;}
+.gh-browser .dot{width:7px;height:7px;border-radius:50%;background:#bbb;}
+.gh-browser .url{margin-left:.4rem;color:#666;font-family:'Fira Code',monospace;font-size:.48rem;}
+.gh-nav{background:var(--gh-nav);color:var(--gh-nav-fg);padding:.3rem .55rem;display:flex;align-items:center;gap:.4rem;font-size:.45rem;flex-shrink:0;}
+.gh-nav .gh-logo{width:14px;height:14px;background:#fff;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;font-size:.5rem;}
+.gh-nav .gh-search{flex:1;background:#1d2228;border:1px solid #30363d;border-radius:5px;padding:.1rem .4rem;color:#9d9d9d;font-size:.4rem;}
+.gh-nav .gh-icon{width:11px;height:11px;background:#30363d;border-radius:2px;}
+.gh-nav .gh-avatar{width:14px;height:14px;background:linear-gradient(135deg,#a78bfa,#0F9D8A);border-radius:50%;flex-shrink:0;}
+.gh-body{flex:1;background:#fff;padding:.4rem .55rem;font-size:.45rem;color:var(--gh-fg);overflow:hidden;display:flex;flex-direction:column;gap:.3rem;}
+.gh-repo-header{display:flex;align-items:center;gap:.3rem;padding-bottom:.3rem;border-bottom:1px solid var(--gh-border);}
+.gh-repo-header .icon{font-size:.55rem;color:var(--gh-mute);}
+.gh-repo-header .name{font-weight:700;font-size:.5rem;color:var(--gh-link);}
+.gh-repo-header .slash{color:var(--gh-mute);}
+.gh-repo-header .visibility{font-size:.38rem;color:var(--gh-mute);border:1px solid var(--gh-border);padding:0 .25rem;border-radius:8px;margin-left:.2rem;}
+.gh-tabs{display:flex;gap:.5rem;font-size:.4rem;color:var(--gh-mute);border-bottom:1px solid var(--gh-border);padding-bottom:.15rem;}
+.gh-tab{padding:.05rem .1rem;}
+.gh-tab.active{color:var(--gh-fg);font-weight:600;border-bottom:2px solid #fd8c73;margin-bottom:-.15rem;padding-bottom:.15rem;}
+.gh-files{border:1px solid var(--gh-border);border-radius:5px;overflow:hidden;}
+.gh-file-head{background:var(--gh-canvas);padding:.15rem .4rem;font-size:.38rem;color:var(--gh-mute);border-bottom:1px solid var(--gh-border);display:flex;justify-content:space-between;}
+.gh-file-row{padding:.15rem .4rem;display:flex;align-items:center;gap:.3rem;font-size:.42rem;border-bottom:1px solid var(--gh-border);}
+.gh-file-row:last-child{border-bottom:none;}
+.gh-file-row .ficon{display:inline-block;width:8px;height:10px;background:#57606a;border-radius:1px;flex-shrink:0;}
+.gh-file-row .fname{color:var(--gh-link);font-weight:500;flex:1;}
+.gh-file-row .fmsg{color:var(--gh-mute);font-size:.38rem;}
+.gh-file-row .ftime{color:var(--gh-mute);font-size:.38rem;}
+.gh-pages-box{background:#ddf4ff;border:1px solid #54aeff;border-radius:5px;padding:.3rem .4rem;font-size:.42rem;color:#0550ae;display:flex;align-items:center;gap:.3rem;}
+
+/* Mockup centered wrap */
+.mockup-center{background:#f7fafc;padding:1rem;border-radius:14px;max-width:880px;width:100%;margin:.5rem 0;}
+.mockup-wrap-row{background:#f7fafc;padding:.7rem;border-radius:12px;max-width:680px;display:flex;flex-direction:column;}
+
+/* Wow Moment slide */
+.wow-slide{text-align:center;justify-content:center !important;padding-top:2rem;}
+.wow-badge{display:inline-block;background:var(--gold);color:#fff;padding:.35rem 1.4rem;border-radius:100px;font-size:.95rem;font-weight:700;letter-spacing:.12em;margin-bottom:1rem;}
+.wow-heading{font-size:2.6rem;font-weight:900;line-height:1.35;color:var(--g900);margin:.4rem 0 .8rem;max-width:900px;}
+.wow-sub{font-size:1.15rem;color:var(--g600);max-width:680px;margin:0 auto 1rem;line-height:1.7;}
+
+/* Pitfall warning */
+.pitfall-badge{display:inline-block;background:var(--red);color:#fff;padding:.3rem 1.2rem;border-radius:100px;font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.8rem;}
+.pitfall-card{background:#fff;border:2px solid var(--red);border-top:5px solid var(--red);border-radius:14px;padding:1rem 1.3rem;max-width:1100px;width:100%;margin-top:.5rem;}
+.pitfall-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:.6rem;}
+.pitfall-item{background:var(--red-lt);border-radius:10px;padding:.7rem .9rem;}
+.pitfall-item .ptitle{font-size:1rem;font-weight:700;color:var(--g900);margin-bottom:.2rem;}
+.pitfall-item .pdesc{font-size:.82rem;color:var(--g700);line-height:1.6;}
+
+/* Timeline map (3 小時流程地圖) */
+.time-map{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;max-width:1200px;width:100%;margin:.8rem 0;}
+.time-block{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:2px solid var(--g100);}
+.time-block .tb-head{padding:.5rem .6rem;color:#fff;text-align:center;}
+.time-block .tb-head .tb-time{font-size:.75rem;font-weight:600;opacity:.85;}
+.time-block .tb-head .tb-name{font-size:.95rem;font-weight:700;margin-top:.15rem;}
+.time-block .tb-body{flex:1;background:#fff;padding:.5rem .6rem;font-size:.78rem;color:var(--g700);line-height:1.55;}
+.time-block .tb-body strong{color:var(--g900);font-size:.85rem;display:block;margin-bottom:.2rem;}
+
+/* Phone mockup for wow moment */
+.phone-wow{width:130px;height:240px;background:#1f2328;border-radius:18px;padding:6px;margin:0 auto;flex-shrink:0;box-shadow:0 8px 28px rgba(0,0,0,.25);}
+.phone-wow .screen{background:#fff;border-radius:13px;width:100%;height:100%;overflow:hidden;display:flex;flex-direction:column;}
+.phone-wow .addr{background:var(--g100);padding:.3rem;font-size:.55rem;color:var(--g600);text-align:center;font-family:'Fira Code',monospace;}
+.phone-wow .content{padding:.7rem .5rem;flex:1;display:flex;flex-direction:column;gap:.3rem;}
+
+/* Chapter Menu */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--green);}
+.chapter-icon{color:var(--green);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:220px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--green);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--green);}
+
+/* Nav controls */
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:44px;height:44px;border:2px solid var(--g200);border-radius:10px;background:var(--white);color:var(--g800);font-size:1.1rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--green);border-color:var(--green);color:#fff;}
+.slide-counter{position:fixed;bottom:4.4rem;right:1.5rem;z-index:100;color:var(--g500);font-size:.78rem;font-weight:500;font-family:'Fira Code',monospace;}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--green-lt);color:var(--green);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(15,157,138,.2);}
+.progress-bar{position:fixed;bottom:0;left:0;height:3px;background:var(--green);transition:width .4s;z-index:100;}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — Stage 2 · 上線網頁</div>
+<div class="module-badge">M2-1 · GitHub 平台</div>
+
+<div class="slides">
+
+<!-- ════════════════════════════════════════════════════════════════
+     開場 (Slides 0-2)
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ══ 0: COVER ══ -->
+<div class="slide poster active" data-act="開場" style="background:linear-gradient(135deg,#0B3C5D 0%,#0d2a44 40%,#0F9D8A 100%);">
+  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 上線網頁</p>
+  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">GitHub<br><span style="color:#6ee7d4;">平台熟悉</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">把你 Stage 1 做的網頁 搬到全世界都能看到的地方</p>
+  <div style="margin-top:2rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
+    <span class="poster-tag">M2-1</span>
+    <span class="poster-tag">3 小時</span>
+    <span class="poster-tag">6 輪循環</span>
+    <span class="poster-tag">純瀏覽器操作</span>
+  </div>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1: Page 2 — LV1/2/3 全景圖 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <div class="page-title">
+    <p class="stage-tag">M2-1 ・ 3 小時</p>
+    <h2>本模組你會做出什麼</h2>
+    <p class="sub">同一個個人網頁 從本機檔案變成全世界都能開的網址</p>
+  </div>
+  <div class="lv-row">
+    <div class="lv-col lv1" style="flex:25;">
+      <div class="lv-label lv1"><div class="num">LV1</div></div>
+      <div class="gh-frame">
+        <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/alan/my-page</span></div>
+        <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+        <div class="gh-body">
+          <div class="gh-repo-header"><span class="icon">●</span><span class="name">alan</span><span class="slash">/</span><span class="name">my-page</span><span class="visibility">Public</span></div>
+          <div class="gh-files">
+            <div class="gh-file-head"><span>main</span><span>1 commit</span></div>
+            <div class="gh-file-row"><span class="ficon"></span><span class="fname">index.html</span><span class="fmsg">first upload</span></div>
+          </div>
+          <div style="font-size:.4rem;color:var(--gh-mute);margin-top:.2rem;">傳上去就完成了</div>
+        </div>
+      </div>
+      <p class="lv-caption">先把網頁傳上去</p>
+    </div>
+    <div class="lv-connector"><span></span><span></span><span></span></div>
+    <div class="lv-col lv2" style="flex:36;">
+      <div class="lv-label lv2"><div class="num">LV2 ・ 必做主線</div></div>
+      <div class="gh-frame lv2">
+        <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">alan-chen.github.io</span></div>
+        <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+        <div class="gh-body">
+          <div class="gh-repo-header"><span class="icon">●</span><span class="name">alan-chen</span><span class="slash">/</span><span class="name">alan-chen.github.io</span><span class="visibility">Public</span></div>
+          <div class="gh-tabs"><span class="gh-tab active">&lt;&gt; Code</span><span class="gh-tab">Issues</span><span class="gh-tab">Pull requests</span><span class="gh-tab">Actions</span><span class="gh-tab">Settings</span></div>
+          <div class="gh-pages-box"><span style="color:#0969da;font-weight:900;">✓</span><span>已部署</span><span style="background:#fff;padding:0 .2rem;border-radius:3px;font-family:'Fira Code',monospace;">alan-chen.github.io</span></div>
+          <div class="gh-files">
+            <div class="gh-file-head"><span>main · 5 commits</span><span>Updated 2h</span></div>
+            <div class="gh-file-row"><span class="ficon"></span><span class="fname">README.md</span><span class="fmsg">加上專案說明</span><span class="ftime">2h</span></div>
+            <div class="gh-file-row"><span class="ficon"></span><span class="fname">index.html</span><span class="fmsg">加深色模式</span><span class="ftime">3h</span></div>
+            <div class="gh-file-row"><span class="ficon" style="background:#79c0ff;"></span><span class="fname">avatar.jpg</span><span class="fmsg">放上頭像</span><span class="ftime">5h</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="lv-caption lv2">短網址 改檔 留紀錄</p>
+    </div>
+    <div class="lv-connector"><span></span><span></span><span></span></div>
+    <div class="lv-col lv3" style="flex:31;">
+      <div class="lv-label lv3"><div class="num">LV3 ・ 完成後加做</div></div>
+      <div class="gh-frame lv3">
+        <div class="gh-browser"><span class="dot" style="background:#d97706;"></span><span class="dot" style="background:#d97706;"></span><span class="dot" style="background:#d97706;"></span><span class="url" style="color:#d97706;">github.com/alan-chen</span></div>
+        <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search repos</div><div class="gh-avatar"></div></div>
+        <div class="gh-body">
+          <div style="display:flex;align-items:center;gap:.3rem;">
+            <div style="width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#d97706,#8b5cf6);"></div>
+            <div><div style="font-size:.5rem;font-weight:700;">alan-chen</div><div style="font-size:.4rem;color:var(--gh-mute);">3 個 repo ・ 5 star</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.25rem;margin-top:.2rem;">
+            <div style="border:1px solid var(--gh-border);border-radius:4px;padding:.25rem .35rem;"><div style="font-size:.42rem;color:var(--gh-link);font-weight:600;">my-portfolio</div><div style="font-size:.36rem;color:var(--gh-mute);margin-top:.1rem;">個人作品集</div></div>
+            <div style="border:1px solid var(--gh-border);border-radius:4px;padding:.25rem .35rem;"><div style="font-size:.42rem;color:var(--gh-link);font-weight:600;">ai-tools</div><div style="font-size:.36rem;color:var(--gh-mute);margin-top:.1rem;">AI 工具</div></div>
+            <div style="border:1px solid var(--gh-border);border-radius:4px;padding:.25rem .35rem;"><div style="font-size:.42rem;color:var(--gh-link);font-weight:600;">resume</div><div style="font-size:.36rem;color:var(--gh-mute);margin-top:.1rem;">線上履歷</div></div>
+            <div style="border:1px dashed #d97706;border-radius:4px;padding:.25rem .35rem;background:#fffbeb;"><div style="font-size:.42rem;color:#d97706;font-weight:600;">+ 新專案</div><div style="font-size:.36rem;color:var(--gh-mute);margin-top:.1rem;">下個想做的</div></div>
+          </div>
+        </div>
+      </div>
+      <p class="lv-caption lv3">多個作品 個人技術名片</p>
+    </div>
+  </div>
+  <div class="info-box success" style="max-width:1100px;margin-top:1rem;">
+    <p style="text-align:center;font-size:1.05rem;"><strong style="color:var(--green);">今天不教程式</strong> 只教怎麼把已經有的網頁變成全世界都能開的網址</p>
+  </div>
+</div>
+
+<!-- ══ 2: 六輪循環逐層遞進 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <h2>六輪循環 逐層遞進</h2>
+  <div class="cycle-ring">
+    <div class="cycle-step"><span class="cycle-label">Round 1</span><span class="cycle-name">註冊帳號</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 2</span><span class="cycle-name">開 repo 上傳</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 3</span><span class="cycle-name">部署網頁</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 4</span><span class="cycle-name">commit 時光機</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 5</span><span class="cycle-name">Public vs Private</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 6</span><span class="cycle-name">三階段回顧</span></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">每一輪的節奏</div>
+    <p>操作指令 → 補強版參考 → 操作計時 → 分享觀察 → 小結反思<br>每一輪新增一層能力 前一輪的方法持續使用</p>
+  </div>
+</div>
+
+<!-- ══ 3 INSERT: 今天 3 小時流程地圖 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <h2>今天 3 小時的路線</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">每 30 分鐘一個 Round 中間沒安排休息 卡住的人趁分享觀察喘口氣</p>
+  <div class="time-map">
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#065f46,#0F9D8A);">
+        <div class="tb-time">0:00 – 0:30</div>
+        <div class="tb-name">Round 1</div>
+      </div>
+      <div class="tb-body"><strong>註冊帳號</strong>用 Gmail 一鍵建 GitHub 拿到 Username</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#0d2a44,#1A73E8);">
+        <div class="tb-time">0:30 – 1:00</div>
+        <div class="tb-name">Round 2</div>
+      </div>
+      <div class="tb-body"><strong>開 repo 上傳</strong>建第一個 repo 把 index.html 拖上去</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#0d2a44,#1A73E8);">
+        <div class="tb-time">1:00 – 1:30</div>
+        <div class="tb-name">Round 3</div>
+      </div>
+      <div class="tb-body"><strong>部署網頁</strong>Settings Pages 拿到你的網址 用手機開</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#2a2a44,#7C3AED);">
+        <div class="tb-time">1:30 – 2:00</div>
+        <div class="tb-name">Round 4</div>
+      </div>
+      <div class="tb-body"><strong>commit 時光機</strong>改 3 次累積 commit 看 history</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#9a3412,#E8710A);">
+        <div class="tb-time">2:00 – 2:30</div>
+        <div class="tb-name">Round 5</div>
+      </div>
+      <div class="tb-body"><strong>Public Private</strong>確認設對 認識真實案例</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#065f46,#0F9D8A);">
+        <div class="tb-time">2:30 – 3:00</div>
+        <div class="tb-name">Round 6</div>
+      </div>
+      <div class="tb-body"><strong>回顧反思</strong>三階段對比 M2-2 預告</div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <div class="label">每個 Round 你會經歷</div>
+    <p>看概念 → 收到操作指令 → 看補強版範例 → 操作計時 → 跟同學分享觀察 → 看一句話小結　每輪都用一樣的節奏 你會很快上手</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     ROUND 1: 註冊 GitHub (7 slides)
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ══ 4: Round 1 Chapter Poster ══ -->
+<div class="slide poster" data-act="Round 1：註冊" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">先註冊<br><span style="color:#6ee7d4;">才有家</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">用 Gmail 一鍵建立你的 GitHub 帳號</p>
+</div>
+
+<!-- ══ 4: 概念 GitHub 是什麼 ══ -->
+<div class="slide dataviz" data-act="Round 1：註冊">
+  <h2>GitHub 是什麼</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">本機檔案</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">GitHub<br><span style="font-size:.8rem;font-weight:400;">雲端倉庫</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">全世界<br><span style="font-size:.8rem;font-weight:400;">看你的網頁</span></div>
+  </div>
+  <div class="card-grid">
+    <div class="card accent-top">
+      <h3>有公開網址</h3>
+      <p>免費拿一個 <span style="font-family:'Fira Code',monospace;color:var(--green);">.github.io</span> 網址 任何人手機電腦都能開</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>有時光機</h3>
+      <p>每次改檔留下紀錄 改壞了能回到上一版</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>跟 IDE 串得起來</h3>
+      <p>下一堂課 IDE 工具會直接接到你的 GitHub 自動同步</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 5: 操作指令 用 Gmail 註冊 ══ -->
+<div class="slide dataviz" data-act="Round 1：註冊">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.4rem;font-weight:700;color:var(--green);line-height:1.6;">打開 github.com/signup<br>用你的 Gmail 一鍵登入</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">操作條件</div>
+    <p>用你平常的 Gmail 不需要新申請 不需要信用卡<br>選一個英文 Username 這會變成你以後的網址</p>
+  </div>
+  <div class="stat-grid" style="max-width:520px;grid-template-columns:1fr;">
+    <div class="stat-box"><div class="val">5 min</div><div class="label">操作時間</div></div>
+  </div>
+</div>
+
+<!-- ══ 6: 補強版 註冊三步驟 mockup ══ -->
+<div class="slide dataviz" data-act="Round 1：註冊">
+  <h2>常見起點 卡住可參考</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">三個步驟全部跑完約 5 分鐘</p>
+  <div class="mockup-center" style="max-width:980px;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/signup</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div style="flex:1;font-size:.42rem;">Sign in</div></div>
+      <div class="gh-body" style="padding:.6rem .8rem;">
+        <div style="text-align:center;font-size:.6rem;font-weight:700;margin-bottom:.3rem;">Sign up to GitHub</div>
+        <div style="background:#fff;border:1.5px solid var(--gh-border);border-radius:5px;padding:.35rem .5rem;display:flex;align-items:center;gap:.5rem;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.05);">
+          <span style="display:inline-block;width:16px;height:16px;background:linear-gradient(135deg,#4285F4 0%,#34A853 33%,#FBBC04 66%,#EA4335 100%);border-radius:50%;flex-shrink:0;"></span>
+          <span style="font-size:.55rem;font-weight:600;">Continue with Google</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.3rem;margin:.4rem 0;">
+          <div style="flex:1;height:1px;background:var(--gh-border);"></div><span style="font-size:.45rem;color:var(--gh-mute);">or</span><div style="flex:1;height:1px;background:var(--gh-border);"></div>
+        </div>
+        <div style="background:var(--gh-canvas);border:1px solid var(--gh-border);border-radius:5px;padding:.35rem .5rem;opacity:.55;font-size:.45rem;text-align:center;color:var(--gh-mute);">Email · Password 不推薦</div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;line-height:2;">A. 打開 <span style="font-family:'Fira Code',monospace;color:var(--green);">github.com/signup</span><br>B. 按 Continue with Google 選 Gmail<br>C. 選 Username 確認註冊</p>
+  </div>
+</div>
+
+<!-- ══ 7: Username 命名規則對比 ══ -->
+<div class="slide dataviz" data-act="Round 1：註冊">
+  <h2>Username 怎麼取</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">這個名字會變成你的網址 改不掉 取個正式一點的</p>
+  <div class="compare-two">
+    <div class="compare-col bad">
+      <div class="col-label">不推薦這樣取</div>
+      <ul style="list-style:none;padding:0;font-family:'Fira Code',monospace;font-size:.95rem;">
+        <li>✗ alanchen2026　帶年份</li>
+        <li>✗ Alan_Chen_75　底線大小寫</li>
+        <li>✗ 陳小明　中文不能用</li>
+        <li>✗ coolguy123　跟作品不像</li>
+      </ul>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">推薦這樣取</div>
+      <ul style="list-style:none;padding:0;font-family:'Fira Code',monospace;font-size:.95rem;">
+        <li>✓ alan-chen　連字號全小寫</li>
+        <li>✓ achen　簡短好記</li>
+        <li>✓ alantech　跟領域有關</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box tip">
+    <div class="label">技術規則</div>
+    <p>英數字 連字號 不能有空格 最多 39 字 不能用連字號開頭結尾 別人沒用過就能用</p>
+  </div>
+</div>
+
+<!-- ══ 8: 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 1：註冊">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat">
+      <span class="num">5</span><span class="unit">分鐘</span>
+      <div class="caption">完成後請報出你的 Username</div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <div class="label">遇到問題就跑除錯儀式</div>
+    <p>截錯誤訊息的圖　描述你剛做了什麼　貼給 AI　驗證修復<br>4 步驟之後我們每個 Round 都會用到</p>
+  </div>
+</div>
+
+<!-- ══ 9: 分享與觀察 ══ -->
+<div class="slide dataviz" data-act="Round 1：註冊">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>把你的 GitHub Profile 連結貼到群組</strong>
+        <p>網址會是 github.com/你的-username 例如 github.com/alan-chen</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>打開三位同學的 profile 看看</strong>
+        <p>觀察大家怎麼取名 看頭像有沒有設 看 bio 寫什麼</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>記下你想要修一下的地方</strong>
+        <p>沒有對錯 只是看別人怎麼呈現自己</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INSERT: R1 範例 完整 vs 陽春 profile 對比 ══ -->
+<div class="slide dataviz" data-act="Round 1：註冊">
+  <h2>看一個好 profile 長什麼樣</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">左邊是剛註冊的樣子 右邊是花 10 分鐘設定後的樣子</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:1180px;width:100%;">
+
+    <div style="background:#f7fafc;padding:.7rem;border-radius:12px;">
+      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;text-align:center;">陽春版　剛註冊</div>
+      <div class="gh-frame">
+        <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/alan-chen</span></div>
+        <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar" style="background:var(--g200);"></div></div>
+        <div class="gh-body">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:.2rem;">
+            <div style="width:50px;height:50px;border-radius:50%;background:var(--g200);"></div>
+            <div style="font-size:.5rem;font-weight:700;">alan-chen</div>
+            <div style="font-size:.4rem;color:var(--gh-mute);font-style:italic;">No bio</div>
+            <div style="font-size:.38rem;color:var(--gh-mute);">No location</div>
+          </div>
+          <div style="margin-top:.4rem;background:var(--gh-canvas);border:1px dashed var(--gh-border);border-radius:5px;padding:.4rem;text-align:center;font-size:.4rem;color:var(--gh-mute);">Popular repositories<br>You don't have any popular repositories yet</div>
+        </div>
+      </div>
+      <div style="margin-top:.4rem;font-size:.78rem;color:var(--g600);line-height:1.6;text-align:center;">沒頭像 沒 bio 沒地點　別人看不出你是誰</div>
+    </div>
+
+    <div style="background:#f7fafc;padding:.7rem;border-radius:12px;border:2px solid var(--green);">
+      <div style="font-size:.7rem;color:var(--green);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;text-align:center;">完整版　10 分鐘設定後</div>
+      <div class="gh-frame lv2">
+        <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/alan-chen</span></div>
+        <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+        <div class="gh-body">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:.2rem;">
+            <div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#a78bfa,#0F9D8A);border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.15);"></div>
+            <div style="font-size:.55rem;font-weight:700;">Alan Chen</div>
+            <div style="font-size:.45rem;color:var(--gh-mute);">alan-chen</div>
+            <div style="font-size:.42rem;color:var(--g700);text-align:center;line-height:1.55;margin-top:.1rem;">教 AI 教育的工程師<br>iPAS AI 應用規劃師認證</div>
+            <div style="font-size:.4rem;color:var(--gh-mute);margin-top:.15rem;">Taipei Taiwan</div>
+          </div>
+          <div style="margin-top:.35rem;">
+            <div style="font-size:.45rem;font-weight:700;margin-bottom:.15rem;">Pinned</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.2rem;">
+              <div style="border:1px solid var(--gh-border);border-radius:4px;padding:.2rem .3rem;"><div style="font-size:.4rem;color:var(--gh-link);font-weight:600;">my-first-page</div><div style="font-size:.34rem;color:var(--gh-mute);">第一個 GitHub 網頁</div></div>
+              <div style="border:1px solid var(--gh-border);border-radius:4px;padding:.2rem .3rem;"><div style="font-size:.4rem;color:var(--gh-link);font-weight:600;">ai-tools</div><div style="font-size:.34rem;color:var(--gh-mute);">AI 工具集合</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:.4rem;font-size:.78rem;color:var(--g700);line-height:1.6;text-align:center;"><strong style="color:var(--green);">有頭像 有定位 有作品</strong>　別人 5 秒看懂你是誰</div>
+    </div>
+
+  </div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1rem;max-width:1180px;width:100%;margin-top:.6rem;">
+    <div class="info-box note" style="margin-top:0;">
+      <div class="label">回家可以做的事</div>
+      <p>右上頭像 → Your profile → Edit profile　設頭像 設 bio 設地點　全部選填 但每個都讓你的 profile 更專業</p>
+    </div>
+    <a href="https://github.com/sindresorhus" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--green-lt));border:2px solid var(--green);border-radius:12px;padding:.7rem 1rem;display:flex;flex-direction:column;gap:.2rem;transition:transform .15s,box-shadow .15s;box-shadow:0 2px 8px rgba(15,157,138,.12);">
+      <div style="font-size:.7rem;color:var(--green);font-weight:700;letter-spacing:.08em;">真實案例　點開來看</div>
+      <div style="font-size:1.05rem;font-weight:700;color:var(--g900);">github.com/sindresorhus</div>
+      <div style="font-size:.78rem;color:var(--g700);line-height:1.55;">著名 OSS 作者 README 帶動畫卡片　看天花板級的 profile 長什麼樣</div>
+    </a>
+  </div>
+</div>
+
+<!-- ══ 10: Round 1 小結 ══ -->
+<div class="slide dataviz" data-act="Round 1：註冊">
+  <h2>Round 1 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">註冊只是入場券<br>真正的內容是接下來你要放進去的東西</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>一個 GitHub 帳號 ・ 一個會變成你網址的 Username ・ 認識帳號首頁 ・ 看過好 profile 的樣子 ・ 第一次體會除錯儀式</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     ROUND 2: 開 repo + 上傳 (11 slides)
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ══ 11: Round 2 Chapter Poster ══ -->
+<div class="slide poster" data-act="Round 2：開 repo" style="background:linear-gradient(135deg,#0B3C5D 0%,#0d2a44 40%,#1A73E8 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:30–1:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">把第一個網頁<br><span style="color:#93c5fd;">搬上 GitHub</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">開新 repo 再把 index.html 上傳</p>
+</div>
+
+<!-- ══ 12: 概念 repo 是什麼 ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>repo 是專案的家</h2>
+  <div class="info-box blue">
+    <div class="label">repo 是什麼字</div>
+    <p>repo 是 <strong style="color:var(--blue);">repository</strong> 的縮寫 中文意思是「儲存庫」　寫程式的人懶得打全名 大家都叫它 repo<br>之後你會看到一堆地方寫 repo 都是同一個東西</p>
+  </div>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">電腦資料夾</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">GitHub repo<br><span style="font-size:.8rem;font-weight:400;">雲端版的資料夾</span></div>
+  </div>
+  <div class="info-box success">
+    <div class="label">核心觀念</div>
+    <p>一個專案 一個 repo 像桌上一個資料夾　不同的網站 不同的工具 各自一個 repo 不會混在一起</p>
+  </div>
+</div>
+
+<!-- ══ 13: 操作指令 開新 repo ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">點 GitHub 右上角加號<br>選 New repository</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">填三個欄位</div>
+    <p>Owner 自動帶 你的 username<br>Repository name 填英文加連字號 例如 my-first-page<br>選 Public 勾 Add README file</p>
+  </div>
+  <div class="info-box tip">
+    <div class="label">為什麼一定選 Public</div>
+    <p>免費版 GitHub Pages 只能用 Public repo 發網頁 Private 不行</p>
+  </div>
+</div>
+
+<!-- ══ 14: 補強版 New repo 設定表單 ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>常見起點 New repo 設定畫面</h2>
+  <div class="mockup-center" style="max-width:880px;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/new</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+      <div class="gh-body" style="padding:.6rem .8rem;">
+        <div style="font-size:.65rem;font-weight:700;margin-bottom:.3rem;">Create a new repository</div>
+        <div style="display:flex;gap:.4rem;align-items:flex-end;margin-bottom:.3rem;">
+          <div style="flex:1;"><div style="font-size:.42rem;color:var(--gh-mute);">Owner</div><div style="background:var(--gh-canvas);border:1px solid var(--gh-border);border-radius:4px;padding:.18rem .3rem;font-size:.45rem;font-weight:600;">alan-chen</div></div>
+          <div style="font-size:.65rem;color:var(--gh-mute);padding-bottom:.2rem;">/</div>
+          <div style="flex:1.4;"><div style="font-size:.42rem;color:var(--gh-mute);">Repository name <span style="color:#cf222e;">*</span></div><div style="background:#fff;border:1.5px solid var(--gh-green);border-radius:4px;padding:.18rem .3rem;font-size:.45rem;color:var(--gh-green);font-weight:600;">my-first-page</div></div>
+        </div>
+        <div style="background:#dafbe1;border:1px solid #1a7f37;border-radius:4px;padding:.2rem .35rem;font-size:.4rem;color:#1a7f37;margin-bottom:.4rem;">✓ my-first-page 可以用</div>
+        <div style="border:1.5px solid var(--gh-green);border-radius:5px;padding:.3rem .4rem;margin-bottom:.3rem;background:#f0fdf4;">
+          <div style="display:flex;align-items:center;gap:.3rem;"><div style="width:11px;height:11px;border:1.5px solid var(--gh-green);border-radius:50%;background:#fff;position:relative;"><div style="position:absolute;inset:2px;background:var(--gh-green);border-radius:50%;"></div></div><div style="font-size:.5rem;font-weight:700;">Public</div></div>
+        </div>
+        <div style="display:flex;gap:.3rem;align-items:flex-start;margin-top:.4rem;">
+          <div style="width:11px;height:11px;border:1.5px solid var(--gh-green);border-radius:2px;background:var(--gh-green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.4rem;flex-shrink:0;">✓</div>
+          <div style="font-size:.45rem;font-weight:600;">Add a README file</div>
+        </div>
+        <div style="background:var(--gh-green);color:#fff;text-align:center;padding:.28rem;border-radius:4px;font-size:.5rem;font-weight:700;margin-top:.5rem;">Create repository</div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">repo name 不要中文 不要空格 用英文加連字號　最後一定按綠色 Create repository</p>
+  </div>
+</div>
+
+<!-- ══ 15: 操作指令 上傳 index.html ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">在 repo 主頁找 Add file 按鈕<br>選 Upload files 把 index.html 拖進去</p>
+  </div>
+  <div class="info-box warning">
+    <div class="label">最容易卡的一步</div>
+    <p>學員常找不到上傳按鈕 因為它不在綠色 Code 按鈕裡 是藏在 Add file 下拉選單裡的第二項</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">檔名要正確</div>
+    <p>index.html 全小寫 不能是 Index.html 不能是 index.htm 拼錯了部署會失敗</p>
+  </div>
+</div>
+
+<!-- ══ 16: 補強版 上傳按鈕在哪 mockup ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>Add file 下拉選單在這裡</h2>
+  <div class="mockup-center" style="max-width:880px;position:relative;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/alan-chen/my-first-page</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+      <div class="gh-body">
+        <div class="gh-repo-header"><span class="icon">●</span><span class="name">alan-chen</span><span class="slash">/</span><span class="name">my-first-page</span><span class="visibility">Public</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:.4rem;position:relative;">
+          <div style="background:var(--gh-canvas);border:1px solid var(--gh-border);border-radius:4px;padding:.1rem .4rem;font-size:.45rem;">main ▾</div>
+          <div style="display:flex;gap:.25rem;align-items:center;">
+            <div style="background:var(--gh-canvas);border:2px solid #ff4d4f;border-radius:4px;padding:.15rem .4rem;font-size:.5rem;font-weight:600;box-shadow:0 0 0 3px rgba(255,77,79,.25);">Add file ▾</div>
+            <div style="background:var(--gh-green);color:#fff;padding:.1rem .35rem;border-radius:4px;font-size:.45rem;font-weight:600;">&lt;&gt; Code ▾</div>
+          </div>
+        </div>
+        <div style="position:absolute;right:6rem;top:5.5rem;background:#fff;border:1px solid var(--gh-border);border-radius:5px;box-shadow:0 4px 12px rgba(0,0,0,.15);padding:.2rem 0;width:170px;z-index:5;">
+          <div style="padding:.2rem .5rem;font-size:.5rem;color:var(--gh-mute);">Create new file</div>
+          <div style="padding:.2rem .5rem;background:var(--green-lt);border-left:3px solid var(--green);font-size:.5rem;font-weight:700;color:var(--gh-fg);">Upload files</div>
+        </div>
+        <div style="margin-top:.5rem;opacity:.6;">
+          <div class="gh-files">
+            <div class="gh-file-row"><span class="ficon"></span><span class="fname">README.md</span><span class="fmsg">Initial commit</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;top:2.5rem;right:2rem;background:#ff4d4f;color:#fff;font-size:.85rem;font-weight:700;padding:.25rem .6rem;border-radius:5px;">點 Add file → Upload files</div>
+  </div>
+</div>
+
+<!-- ══ 17: 補強版 拖檔上傳介面 ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>拖檔到綠色虛線框裡</h2>
+  <div class="mockup-center" style="max-width:880px;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">.../upload/main</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+      <div class="gh-body">
+        <div style="font-size:.5rem;font-weight:700;margin-bottom:.3rem;">Add files via upload</div>
+        <div style="border:2px dashed #1a7f37;border-radius:8px;padding:.7rem .5rem;background:#f0fdf4;text-align:center;">
+          <div style="font-size:.6rem;font-weight:700;margin-bottom:.15rem;">Drag files here to add them</div>
+          <div style="font-size:.45rem;color:var(--gh-mute);">to your repository</div>
+          <div style="font-size:.45rem;color:var(--gh-mute);margin:.2rem 0;">or</div>
+          <div style="background:#fff;border:1px solid var(--gh-border);border-radius:4px;padding:.15rem .4rem;font-size:.5rem;color:var(--gh-link);font-weight:600;display:inline-block;">choose your files</div>
+        </div>
+        <div style="background:#dafbe1;border-radius:4px;padding:.2rem .35rem;font-size:.5rem;color:#1a7f37;margin-top:.4rem;display:flex;align-items:center;gap:.3rem;">
+          <span style="color:#1a7f37;font-weight:900;">✓</span><span class="ficon"></span><span style="font-weight:600;">index.html</span><span style="margin-left:auto;">已上傳</span>
+        </div>
+        <div style="margin-top:.5rem;padding:.4rem;background:var(--gh-canvas);border:1px solid var(--gh-border);border-radius:5px;">
+          <div style="font-size:.45rem;color:var(--gh-mute);margin-bottom:.15rem;">Commit changes</div>
+          <div style="background:#fff;border:1px solid var(--gh-border);border-radius:3px;padding:.1rem .35rem;font-size:.5rem;font-weight:600;">Add index.html</div>
+          <div style="background:var(--gh-green);color:#fff;text-align:center;padding:.2rem;border-radius:4px;font-size:.5rem;font-weight:700;margin-top:.3rem;">Commit changes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 18: 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">10</span><span class="unit">分鐘</span><div class="caption">完成後請把 repo 網址貼到群組</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">目標</div>
+    <p>repo 主頁能看到 README.md 和 index.html 兩個檔案<br>commit 數字顯示 2 commits</p>
+  </div>
+</div>
+
+<!-- ══ 19: 分享與觀察 ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>把 repo 網址貼到群組</strong>
+        <p>網址形式 github.com/你的-username/my-first-page</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>打開三位同學的 repo</strong>
+        <p>看大家的 commit message 寫什麼 看檔案列表長什麼樣</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>觀察 commit message 的差異</strong>
+        <p>有人寫 update 有人寫 Add index.html 有人寫得更具體</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 20: 補強版 commit message 寫法對比 ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>從別人的 commit message 學寫法</h2>
+  <div class="compare-two">
+    <div class="compare-col bad">
+      <div class="col-label">過幾天會看不懂的</div>
+      <ul style="list-style:none;padding:0;font-family:'Fira Code',monospace;font-size:.95rem;">
+        <li>✗ update</li>
+        <li>✗ fix</li>
+        <li>✗ change</li>
+        <li>✗ 改了一些東西</li>
+        <li>✗ asdfasdf</li>
+      </ul>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">未來會感謝你的</div>
+      <ul style="list-style:none;padding:0;font-size:.95rem;">
+        <li>✓ 加上深色模式按鈕</li>
+        <li>✓ 換 hero 區的標題</li>
+        <li>✓ 修正手機版按鈕太小</li>
+        <li>✓ 上傳頭像照片</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box tip">
+    <div class="label">寫法公式</div>
+    <p>動詞 + 改了什麼　例如 加上 換掉 修正 移除 重寫　一個 commit 一件事</p>
+  </div>
+</div>
+
+<!-- ══ 21: Round 2 小結 ══ -->
+<div class="slide dataviz" data-act="Round 2：開 repo">
+  <h2>Round 2 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">傳上去不算結束<br>留下好的紀錄 是給未來的自己留禮物</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>一個 Public repo ・ 第一筆自己寫的 commit ・ 知道 Add file 在哪 ・ commit message 寫法公式</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     ROUND 3: 部署 Pages (9 slides)
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ══ 22: Round 3 Chapter Poster ══ -->
+<div class="slide poster" data-act="Round 3：部署" style="background:linear-gradient(135deg,#0B3C5D 0%,#0d2a44 40%,#1A73E8 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 1:00–1:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">部署網頁<br><span style="color:#93c5fd;">拿到你的網址</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">三個下拉選項 一個按鈕 就上線</p>
+</div>
+
+<!-- ══ 23: 概念 GitHub Pages 是什麼 ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <h2>GitHub Pages 是什麼</h2>
+  <div class="info-box success">
+    <div class="label">一句話</div>
+    <p>把你的 repo 自動變成一個公開網頁　網址是 你的-username.github.io/repo名字</p>
+  </div>
+  <div class="card-grid">
+    <div class="card accent-top">
+      <h3>完全免費</h3>
+      <p>不需要付主機費 不需要綁信用卡 流量幾乎不限</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>自動部署</h3>
+      <p>你每次 commit 都會自動重新發布 不用手動上傳</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>支援自訂網域</h3>
+      <p>之後想接自己買的網域 也支援 不過今天先用預設網址</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INSERT: R3 踩坑預告 部署常見三種失敗 ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <span class="pitfall-badge">預期會踩坑</span>
+  <h2>部署有 3 種常見失敗</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">看過這張等下卡關不會慌 對應原因直接走除錯儀式</p>
+  <div class="pitfall-card">
+    <div class="pitfall-row">
+      <div class="pitfall-item">
+        <div class="ptitle">檔名拼錯</div>
+        <div class="pdesc">Index.html 大寫 / index.htm 少 l / index.Html 混合大小寫<br><span style="color:var(--green);font-weight:600;">解 改成 index.html 全小寫</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">repo 是 Private</div>
+        <div class="pdesc">免費版 Pages 只能 Public 發布 Private 不行<br><span style="color:var(--green);font-weight:600;">解 Settings General Change visibility 改 Public</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">Source 沒設好</div>
+        <div class="pdesc">Branch 沒選 main 或路徑沒選 / (root)<br><span style="color:var(--green);font-weight:600;">解 重設 main + / (root) 按 Save</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">部署完網址打開看到 404 不是世界末日　8 成是這三個之一　截圖 + 你的 Settings Pages 設定截圖 一起貼給 AI 它能秒判斷</p>
+  </div>
+</div>
+
+<!-- ══ 24: 操作指令 Settings → Pages ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">repo 主頁最右邊的 Settings<br>左側選單往下找 Pages</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">設定三件事</div>
+    <p>Source 選 Deploy from a branch<br>Branch 選 main<br>路徑選 / (root) 按綠色 Save</p>
+  </div>
+  <div class="info-box tip">
+    <div class="label">不要混淆</div>
+    <p>repo 主頁右上頭像旁也有 Settings 那是帳號設定 不是 repo 設定 要用 repo tab 那一排最右邊的 Settings</p>
+  </div>
+</div>
+
+<!-- ══ 25: 補強版 Pages 設定畫面 ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <h2>Pages 設定畫面長這樣</h2>
+  <div class="mockup-center" style="max-width:880px;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">.../settings/pages</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+      <div class="gh-body">
+        <div style="display:flex;gap:.4rem;">
+          <div style="width:28%;border-right:1px solid var(--gh-border);padding-right:.3rem;font-size:.45rem;">
+            <div style="color:var(--gh-mute);padding:.1rem 0;">General</div>
+            <div style="color:var(--gh-mute);padding:.1rem 0;">Access</div>
+            <div style="color:var(--gh-mute);padding:.1rem 0;">Branches</div>
+            <div style="background:var(--green-lt);color:var(--gh-fg);padding:.15rem .3rem;border-radius:3px;font-weight:700;border-left:2px solid var(--gh-green);">Pages</div>
+            <div style="color:var(--gh-mute);padding:.1rem 0;">Environments</div>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:.6rem;font-weight:700;margin-bottom:.2rem;">GitHub Pages</div>
+            <div style="background:var(--gh-canvas);border:1px solid var(--gh-border);border-radius:5px;padding:.35rem .4rem;">
+              <div style="font-size:.5rem;font-weight:600;margin-bottom:.15rem;">Source</div>
+              <div style="background:#fff;border:1px solid var(--gh-border);border-radius:3px;padding:.12rem .3rem;font-size:.45rem;">Deploy from a branch ▾</div>
+              <div style="font-size:.5rem;font-weight:600;margin-top:.3rem;margin-bottom:.15rem;">Branch</div>
+              <div style="display:flex;gap:.2rem;">
+                <div style="background:#fff;border:1px solid var(--gh-border);border-radius:3px;padding:.12rem .3rem;font-size:.45rem;">main ▾</div>
+                <div style="background:#fff;border:1px solid var(--gh-border);border-radius:3px;padding:.12rem .3rem;font-size:.45rem;">/ (root) ▾</div>
+                <div style="background:var(--gh-green);color:#fff;border-radius:3px;padding:.12rem .4rem;font-size:.45rem;font-weight:700;">Save</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">三個下拉選 main 跟 / (root) 按 Save　等 1 到 2 分鐘綠色 box 出現你的網址</p>
+  </div>
+</div>
+
+<!-- ══ 26: 補強版 等 build Actions 進度 ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <h2>看部署狀態 在 Actions tab</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">綠勾代表完成 黃點代表進行中 紅叉代表失敗</p>
+  <div class="card-grid">
+    <div class="card accent-top">
+      <h3>綠勾　完成了</h3>
+      <p>通常 30 秒到 2 分鐘 回 Pages 頁重新整理就會看到網址</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>黃點　還在跑</h3>
+      <p>建置中 不要關視窗 等 1 到 2 分鐘自然變綠</p>
+    </div>
+    <div class="card accent-top-red">
+      <h3>紅叉　失敗</h3>
+      <p>點進去看訊息 常見原因 檔名拼錯 或選錯 branch 跑除錯儀式</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 27: 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">10</span><span class="unit">分鐘</span><div class="caption">含等待 build 的時間</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">完成後</div>
+    <p>網址形式 你的-username.github.io/my-first-page<br>用手機打開試試 確認在小螢幕也能看</p>
+  </div>
+</div>
+
+<!-- ══ INSERT: R3 Wow Moment 手機開網頁 ══ -->
+<div class="slide dataviz wow-slide" data-act="Round 3：部署">
+  <span class="wow-badge">亮點時刻</span>
+  <div class="wow-heading">專屬於你的網址<br>全世界都能開</div>
+  <p class="wow-sub">打開手機 看到自己的網頁在小螢幕上　這串字以前只屬於有錢買主機的人　今天起 它屬於你</p>
+  <div style="display:flex;align-items:center;gap:2rem;justify-content:center;margin-top:1rem;">
+    <div class="phone-wow">
+      <div class="screen">
+        <div class="addr">alan-chen.github.io</div>
+        <div class="content">
+          <div style="font-size:.85rem;font-weight:700;color:var(--g900);">王小明</div>
+          <div style="font-size:.6rem;color:var(--g600);">全端工程師</div>
+          <div style="background:var(--green-lt);height:10px;border-radius:2px;margin-top:.2rem;"></div>
+          <div style="background:var(--green-lt);height:10px;border-radius:2px;width:75%;"></div>
+          <div style="background:var(--green-lt);height:10px;border-radius:2px;width:60%;"></div>
+          <div style="margin-top:auto;background:var(--green);color:#fff;text-align:center;padding:.25rem;border-radius:4px;font-size:.55rem;font-weight:700;">聯絡我</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:left;max-width:420px;">
+      <div style="font-size:1.1rem;font-weight:700;color:var(--g900);margin-bottom:.4rem;">三件事一次成立</div>
+      <div style="display:flex;flex-direction:column;gap:.4rem;font-size:1rem;color:var(--g700);">
+        <div><span style="color:var(--green);font-weight:900;">✓</span> 你不用裝伺服器</div>
+        <div><span style="color:var(--green);font-weight:900;">✓</span> 你不用付主機費</div>
+        <div><span style="color:var(--green);font-weight:900;">✓</span> 你不用懂網路設定</div>
+      </div>
+      <div style="background:var(--green-lt);border-radius:8px;padding:.6rem .8rem;margin-top:.6rem;font-size:.9rem;color:var(--g800);">傳給朋友 他能直接打開　傳給長輩看 不用解釋怎麼裝</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 28: 分享與觀察 ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>把你的網頁網址貼到群組</strong>
+        <p>不是 repo 網址 是 Pages 部署完拿到的那個 .github.io 網址</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>打開三位同學的網頁</strong>
+        <p>真實打開 看載入速度 看手機表現 看版面好不好讀</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>找一個你最喜歡的版本</strong>
+        <p>稍後 Round 4 改檔的時候可以參考它的做法</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 29: 補強版 升級網址 username.github.io ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <h2>想要更短的網址 換 repo 名</h2>
+  <div class="compare-two">
+    <div class="compare-col" style="background:var(--offwhite);border:2px solid var(--g200);">
+      <div class="col-label" style="color:var(--g600);">現在你的網址</div>
+      <p style="font-family:'Fira Code',monospace;color:var(--g700);font-size:.95rem;word-break:break-all;">alan-chen.github.io/my-first-page</p>
+      <p style="margin-top:.5rem;font-size:.85rem;">能用 但網址有點長</p>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">換 repo 名變這樣</div>
+      <p style="font-family:'Fira Code',monospace;color:var(--green);font-size:1.05rem;font-weight:600;">alan-chen.github.io</p>
+      <p style="margin-top:.5rem;font-size:.85rem;">repo 改成 你的-username.github.io 網址自動短一截</p>
+    </div>
+  </div>
+  <div class="info-box tip">
+    <div class="label">怎麼改</div>
+    <p>Settings → General → Repository name 改成 你的-username.github.io → 按 Rename　等 1 到 2 分鐘新網址生效</p>
+  </div>
+</div>
+
+<!-- ══ 30: Round 3 小結 ══ -->
+<div class="slide dataviz" data-act="Round 3：部署">
+  <h2>Round 3 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">有網址不只是技術成就<br>是你開始能讓世界看到你的作品</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>一個 .github.io 公開網址 ・ 自動部署機制 ・ 看 Actions 判讀部署狀態 ・ 知道網址能再升級</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     ROUND 4: commit 時光機 (9 slides)
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ══ 31: Round 4 Chapter Poster ══ -->
+<div class="slide poster" data-act="Round 4：commit" style="background:linear-gradient(135deg,#1a1a2e 0%,#2a2a44 40%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:30–2:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">改檔 重新上傳<br><span style="color:#c4b5fd;">看到時光機</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">每次上傳都是一個存檔點 永遠不會搞丟</p>
+</div>
+
+<!-- ══ 32: 概念 commit 是存檔點 ══ -->
+<div class="slide dataviz" data-act="Round 4：commit">
+  <h2>commit 是存檔點</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">改檔</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">寫 commit message</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">commit 存檔點<br><span style="font-size:.8rem;font-weight:400;">永遠不會掉</span></div>
+  </div>
+  <div class="info-box success">
+    <div class="label">為什麼重要</div>
+    <p>每次 commit 都被 GitHub 記下來 給一個編號<br>你可以隨時翻回去看任何一次的版本 改壞了能還原</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">這一輪你會做</div>
+    <p>至少改 3 次 index.html 累積 3 個 commit 看 commit history 體會時光機</p>
+  </div>
+</div>
+
+<!-- ══ 33: 操作指令 在 GitHub 直接改檔 ══ -->
+<div class="slide dataviz" data-act="Round 4：commit">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">點 index.html 看內容<br>點右上鉛筆圖示 直接在瀏覽器改</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">這次改三個地方</div>
+    <p>1. 標題顏色　2. 加一段自我介紹文字　3. 加一個聯絡按鈕<br>每改一個就 Commit changes 一次 累積 3 個 commit</p>
+  </div>
+</div>
+
+<!-- ══ 34: 補強版 GitHub 直接編輯介面 ══ -->
+<div class="slide dataviz" data-act="Round 4：commit">
+  <h2>編輯介面長這樣</h2>
+  <div class="mockup-center" style="max-width:880px;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">.../edit/main/index.html</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+      <div class="gh-body">
+        <div style="background:#fff;border:1px solid var(--gh-border);border-radius:5px;padding:.4rem .5rem;font-family:'Fira Code',monospace;font-size:.45rem;line-height:1.8;color:var(--g800);">
+          <div><span style="color:#999;">5</span>　&lt;body&gt;</div>
+          <div style="background:rgba(115,201,145,.18);"><span style="color:#999;">6</span>　　&lt;h1 style="color:#0F9D8A"&gt;王小明&lt;/h1&gt;</div>
+          <div style="background:rgba(115,201,145,.18);"><span style="color:#999;">7</span>　　&lt;p&gt;全端工程師　接案中&lt;/p&gt;</div>
+          <div><span style="color:#999;">8</span>　&lt;/body&gt;</div>
+        </div>
+        <div style="background:var(--gh-canvas);border:1px solid var(--gh-border);border-radius:5px;padding:.4rem;margin-top:.3rem;">
+          <div style="font-size:.5rem;font-weight:700;margin-bottom:.2rem;">Commit changes</div>
+          <div style="background:#fff;border:1.5px solid var(--gh-green);border-radius:3px;padding:.2rem .3rem;font-size:.48rem;color:var(--gh-green);font-weight:600;">換標題顏色為品牌綠</div>
+          <div style="background:var(--gh-green);color:#fff;text-align:center;padding:.22rem;border-radius:4px;font-size:.5rem;font-weight:700;margin-top:.35rem;">Commit changes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">綠色高亮代表你改了什麼　每次按 Commit changes 就會留下一筆紀錄</p>
+  </div>
+</div>
+
+<!-- ══ 35: 補強版 commit message 寫法再深化 ══ -->
+<div class="slide dataviz" data-act="Round 4：commit">
+  <h2>三個 commit message 寫法練習</h2>
+  <div class="code-block">
+    <div class="code-label">三個 commit 的範例</div>
+    <pre>commit 1　換標題顏色為品牌綠
+commit 2　加上自我介紹段落
+commit 3　加上 Line 聯絡按鈕</pre>
+  </div>
+  <div class="info-box tip">
+    <div class="label">寫好 commit message 的好處</div>
+    <p>下次 Round 4 結尾我們會回去看 commit history 你會看到自己一連串的改動<br>如果寫 update 就只看到一堆 update 寫具體就能一眼看出每筆做了什麼</p>
+  </div>
+</div>
+
+<!-- ══ 36: 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 4：commit">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">15</span><span class="unit">分鐘</span><div class="caption">改 3 次 commit 3 次</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">目標</div>
+    <p>回 repo 主頁看到 5 commits　點 Commits 連結看到所有歷史</p>
+  </div>
+</div>
+
+<!-- ══ 37: 補強版 commit history mockup ══ -->
+<div class="slide dataviz" data-act="Round 4：commit">
+  <h2>看 commit history 就是看時光機</h2>
+  <div class="mockup-center" style="max-width:880px;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">.../my-first-page/commits/main</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+      <div class="gh-body">
+        <div style="font-size:.55rem;font-weight:700;margin-bottom:.25rem;">Commits on Nov 24, 2026</div>
+        <div style="background:#fff;border:1px solid var(--gh-border);border-radius:6px;overflow:hidden;font-size:.45rem;">
+          <div style="padding:.3rem .4rem;border-bottom:1px solid var(--gh-border);display:flex;align-items:center;gap:.3rem;">
+            <div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#a78bfa,#0F9D8A);flex-shrink:0;"></div>
+            <div style="flex:1;"><div style="font-weight:600;">加上 Line 聯絡按鈕</div><div style="color:var(--gh-mute);font-size:.4rem;">alan-chen committed 2 min ago</div></div>
+            <div style="font-family:'Fira Code',monospace;color:var(--gh-link);font-size:.4rem;">a3f9e1c</div>
+          </div>
+          <div style="padding:.3rem .4rem;border-bottom:1px solid var(--gh-border);display:flex;align-items:center;gap:.3rem;">
+            <div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#a78bfa,#0F9D8A);flex-shrink:0;"></div>
+            <div style="flex:1;"><div style="font-weight:600;">加上自我介紹段落</div><div style="color:var(--gh-mute);font-size:.4rem;">alan-chen committed 5 min ago</div></div>
+            <div style="font-family:'Fira Code',monospace;color:var(--gh-link);font-size:.4rem;">7b2c4d8</div>
+          </div>
+          <div style="padding:.3rem .4rem;border-bottom:1px solid var(--gh-border);display:flex;align-items:center;gap:.3rem;">
+            <div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#a78bfa,#0F9D8A);flex-shrink:0;"></div>
+            <div style="flex:1;"><div style="font-weight:600;">換標題顏色為品牌綠</div><div style="color:var(--gh-mute);font-size:.4rem;">alan-chen committed 10 min ago</div></div>
+            <div style="font-family:'Fira Code',monospace;color:var(--gh-link);font-size:.4rem;">f1e5a2b</div>
+          </div>
+          <div style="padding:.3rem .4rem;display:flex;align-items:center;gap:.3rem;background:var(--gh-canvas);">
+            <div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#a78bfa,#0F9D8A);flex-shrink:0;"></div>
+            <div style="flex:1;"><div style="font-weight:600;">Add index.html</div><div style="color:var(--gh-mute);font-size:.4rem;">alan-chen committed 30 min ago</div></div>
+            <div style="font-family:'Fira Code',monospace;color:var(--gh-link);font-size:.4rem;">e8d3a91</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">點任何一筆 commit 都能看當時的版本　改壞了找上一筆好的複製出來重新上傳</p>
+  </div>
+</div>
+
+<!-- ══ INSERT: R4 Wow Moment 點舊 commit 看當時版本 ══ -->
+<div class="slide dataviz wow-slide" data-act="Round 4：commit">
+  <span class="wow-badge">亮點時刻</span>
+  <div class="wow-heading">時光機在你手上<br>過去的版本永遠回得去</div>
+  <p class="wow-sub">點任何一筆 commit 都能看到當時的網頁　從今天起 你的作品不會因為手滑改壞而消失　所有過去都被記下來</p>
+  <div style="display:flex;gap:1.2rem;justify-content:center;margin-top:1rem;align-items:center;">
+    <div style="background:#f7fafc;border-radius:12px;padding:.7rem;width:380px;">
+      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">點 commit a3f9e1c</div>
+      <div class="gh-frame">
+        <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">.../commit/a3f9e1c</span></div>
+        <div class="gh-body" style="padding:.5rem;">
+          <div style="font-size:.55rem;font-weight:700;">加上 Line 聯絡按鈕</div>
+          <div style="font-size:.42rem;color:var(--gh-mute);margin-top:.15rem;">alan-chen committed 2 min ago</div>
+          <div style="background:#fff;border:1px solid var(--gh-border);border-radius:4px;padding:.3rem;margin-top:.3rem;font-family:'Fira Code',monospace;font-size:.4rem;">
+            <div style="background:rgba(115,201,145,.18);color:#1a7f37;">+ &lt;a href="line"&gt;Line 我&lt;/a&gt;</div>
+            <div style="background:rgba(244,135,113,.18);color:#cf222e;">- &lt;a href="email"&gt;Email&lt;/a&gt;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:2rem;color:var(--green);font-weight:900;">→</div>
+    <div style="background:#f7fafc;border-radius:12px;padding:.7rem;width:380px;">
+      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">看到那一刻的網頁</div>
+      <div class="gh-frame">
+        <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">那個 commit 當時的狀態</span></div>
+        <div class="gh-body" style="padding:.6rem;background:linear-gradient(135deg,#fff 0%,var(--green-lt) 100%);">
+          <div style="text-align:center;padding:1rem 0;">
+            <div style="font-size:.75rem;font-weight:700;color:var(--g900);">王小明</div>
+            <div style="font-size:.5rem;color:var(--g600);margin-top:.2rem;">全端工程師</div>
+            <div style="background:#06C755;color:#fff;text-align:center;padding:.2rem;border-radius:4px;font-size:.5rem;font-weight:700;margin-top:.5rem;display:inline-block;padding:.15rem .8rem;">Line 我</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note" style="max-width:900px;margin-top:.8rem;">
+    <p style="font-size:.95rem;text-align:center;">改壞了不慌　到 commits 找上一個好的 → 點進去 → 複製檔案內容 → 重新上傳　幾步就能還原</p>
+  </div>
+</div>
+
+<!-- ══ 38: 分享與觀察 ══ -->
+<div class="slide dataviz" data-act="Round 4：commit">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>把你的 commit history 連結貼出來</strong>
+        <p>網址形式 github.com/你的-username/my-first-page/commits/main</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>打開三位同學的 history</strong>
+        <p>看他們的 commit message 怎麼寫 看改了什麼</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>找一個寫得很好的</strong>
+        <p>學起來 下次自己 commit 也這樣寫</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 39: Round 4 小結 ══ -->
+<div class="slide dataviz" data-act="Round 4：commit">
+  <h2>Round 4 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">commit message 是給未來的自己留筆記<br>寫具體一點 半年後翻回來會感謝你</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>5 個累積的 commit ・ 看 commit history 的能力 ・ 寫人話 commit message 的習慣 ・ 改壞了不慌的安全感</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     ROUND 5: Public vs Private (7 slides)
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ══ 40: Round 5 Chapter Poster ══ -->
+<div class="slide poster" data-act="Round 5：Public Private" style="background:linear-gradient(135deg,#7c2d12 0%,#9a3412 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 2:00–2:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">Public 還是 Private<br><span style="color:#fdba74;">怎麼選</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">原始碼公開 不代表網頁要登入才能看</p>
+</div>
+
+<!-- ══ 41: 概念 兩個常被搞混的差別 ══ -->
+<div class="slide dataviz" data-act="Round 5：Public Private">
+  <h2>兩個被搞混的東西</h2>
+  <div class="compare-two">
+    <div class="compare-col" style="background:var(--blue-lt);border:2px solid var(--blue);border-top:4px solid var(--blue);">
+      <div class="col-label" style="color:var(--blue);">repo 的可見性</div>
+      <p>Public 代表原始碼任何人都能看<br>Private 代表只有你跟邀請的人能看</p>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">網頁誰能看</div>
+      <p>不管 repo 是 Public 還是 Private<br>部署出來的網頁都是公開的 任何人都能開</p>
+    </div>
+  </div>
+  <div class="info-box warning">
+    <div class="label">最常見的誤解</div>
+    <p>repo 設 Public 不等於 任何人都能改你的網頁<br>只有原始碼能看 改的權限只有你 別人連 commit 都做不了</p>
+  </div>
+</div>
+
+<!-- ══ INSERT: R5 踩坑預告 別不小心設 Private ══ -->
+<div class="slide dataviz" data-act="Round 5：Public Private">
+  <span class="pitfall-badge">預期會踩坑</span>
+  <h2>不小心選了 Private 網頁就停了</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">這是 Stage 1 學員第一期最常踩的坑 排第三名</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:1100px;width:100%;align-items:stretch;">
+    <div style="background:#fff;border:2px solid var(--g100);border-top:4px solid var(--red);border-radius:16px;padding:1.3rem 1.5rem;min-width:0;max-width:none;">
+      <h3 style="color:var(--g900);">會發生什麼</h3>
+      <p style="font-size:.95rem;line-height:1.8;color:var(--g700);">你開 repo 時隨手選了 Private<br>網頁部署不了 顯示 Pages is currently disabled<br>網址打開是 404</p>
+    </div>
+    <div style="background:#fff;border:2px solid var(--g100);border-top:4px solid var(--green);border-radius:16px;padding:1.3rem 1.5rem;min-width:0;max-width:none;">
+      <h3 style="color:var(--g900);">怎麼還原</h3>
+      <p style="font-size:.95rem;line-height:1.8;color:var(--g700);">Settings → General → 拉到最下面 Danger zone<br>Change repository visibility → Make Public<br>輸入 repo 名確認 → 等 1 分鐘自動重新部署</p>
+    </div>
+  </div>
+
+  <div class="info-box warning">
+    <div class="label">為什麼會選錯</div>
+    <p>很多人直覺以為 Private 比較安全　其實 Public 的原始碼別人能看 但只有你能改　這堂課所有 repo 都用 Public 才能免費發網頁</p>
+  </div>
+</div>
+
+<!-- ══ 42: 操作指令 確認自己是 Public ══ -->
+<div class="slide dataviz" data-act="Round 5：Public Private">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">回到 repo 主頁<br>確認 repo 名字旁邊寫 Public</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">如果不小心選了 Private</div>
+    <p>Settings → General 滑到最下面 Danger zone<br>Change repository visibility 改回 Public<br>網頁要部署這一定要 Public</p>
+  </div>
+</div>
+
+<!-- ══ 43: 補強版 Public vs Private 對照表 ══ -->
+<div class="slide dataviz" data-act="Round 5：Public Private">
+  <h2>Public 跟 Private 完整對照</h2>
+  <div class="compare-two">
+    <div class="compare-col good">
+      <div class="col-label">Public　免費發網頁的唯一選擇</div>
+      <ul style="list-style:none;padding:0;">
+        <li>✓ 原始碼任何人能看</li>
+        <li>✓ 能用 GitHub Pages 免費發布</li>
+        <li>✓ 網頁公開 任何人都能開</li>
+        <li>✓ 適合作品集 個人站 教學範例</li>
+      </ul>
+      <p style="margin-top:.5rem;font-size:.85rem;background:#fff;padding:.4rem .6rem;border-radius:6px;">注意　不要在程式碼裡寫密碼</p>
+    </div>
+    <div class="compare-col" style="background:var(--g50);border:2px solid var(--g200);border-top:4px solid var(--g400);">
+      <div class="col-label" style="color:var(--g600);">Private　不能免費發網頁</div>
+      <ul style="list-style:none;padding:0;color:var(--g700);">
+        <li>✓ 原始碼只有你跟邀請的人</li>
+        <li>✗ 免費版不能用 GitHub Pages</li>
+        <li>✓ 適合工作專案 客戶資料</li>
+        <li>✓ 付費 Pro 才能 Private 發網頁</li>
+      </ul>
+      <p style="margin-top:.5rem;font-size:.85rem;background:#fff;padding:.4rem .6rem;border-radius:6px;">這堂課全部用 Public</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 44: 真實案例 secret 外洩 ══ -->
+<div class="slide dataviz" data-act="Round 5：Public Private">
+  <h2>真實案例 程式碼裡的密碼別放心上</h2>
+  <div class="info-box warning">
+    <div class="label">2023 年某新創意外</div>
+    <p>工程師把 AWS Key 寫在程式碼裡 push 到 Public repo<br>10 分鐘內被機器人掃到 拿去挖礦<br>一週帳單 12000 美金</p>
+  </div>
+  <div class="card-grid">
+    <div class="card accent-top-red">
+      <h3>絕對不要</h3>
+      <p>程式碼裡寫 API Key 密碼 Token 任何敏感字串</p>
+    </div>
+    <div class="card accent-top">
+      <h3>對的做法</h3>
+      <p>M2-4 接 API 時會教標準流程　把 Key 放 .env 用 .gitignore 排除　不會 push 上 GitHub</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>這一輪要做的</h3>
+      <p>等下故意貼一段假 Key 進去 commit 上去　當作 M2-4 用 IDE 檢查的教材</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INSERT: M2-1 故意 commit fake API key ══ -->
+<div class="slide dataviz" data-act="Round 5：Public Private">
+  <h2>練習 故意 commit 一個假 API Key</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">這是教學設計 讓你體會踩坑 之後再學怎麼清</p>
+  <div class="info-box tip">
+    <div class="label">為什麼要故意做錯</div>
+    <p>很多人聽過 不要把 Key 寫進程式碼 但沒真的踩過 印象不深<br>這一輪你故意貼一段假 Key 進去 push 上 GitHub　M2-4 我們會用 IDE 掃這個假 Key 把它清掉</p>
+  </div>
+  <div class="code-block">
+    <div class="code-label">在 index.html 隨便找個地方貼這段假 Key</div>
+    <pre>&lt;!-- 故意留的假 Key 給 M2-4 教材用 不會真的有作用 --&gt;
+&lt;script&gt;
+  const FAKE_API_KEY = "sk-fake1234567890abcdefghijklmnop";
+  const FAKE_TOKEN = "ghp_demoOnlyToken9876543210";
+&lt;/script&gt;</pre>
+  </div>
+  <div class="info-box note">
+    <div class="label">操作步驟</div>
+    <p style="line-height:2;">
+      A. 在 GitHub 上點 index.html → 點鉛筆編輯<br>
+      B. 隨便找個 body 內的位置貼上面這段 code<br>
+      C. commit message 寫 故意留假 Key 給後面教材用<br>
+      D. 按 Commit changes
+    </p>
+  </div>
+  <div class="info-box warning">
+    <div class="label">關鍵 這是假的 Key</div>
+    <p>它真的能被機器人掃到 但因為是假的 不會有實際後果　你練習踩坑 但沒風險　M2-4 學完安全檢查機制 我們再回來清</p>
+  </div>
+</div>
+
+<!-- ══ 45: 分享與觀察 ══ -->
+<div class="slide dataviz" data-act="Round 5：Public Private">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>互相檢查同學的 repo 是不是 Public</strong>
+        <p>打開三位同學的 repo 主頁 看 repo 名字旁邊的小標籤</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>檢查程式碼裡有沒有敏感資訊</strong>
+        <p>點 index.html 看完整內容 找有沒有 KEY PASSWORD TOKEN 之類的字</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>有的話互相提醒對方移除</strong>
+        <p>記得改了之後 commit 移除舊紀錄 比較複雜這堂課先不教 下一堂深入</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 46: Round 5 小結 ══ -->
+<div class="slide dataviz" data-act="Round 5：Public Private">
+  <h2>Round 5 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">Public 不可怕 密碼放進去才可怕<br>下一堂課我們教你怎麼安全管理</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>確認 Public 設定正確 ・ 知道 Public 跟 Private 的真實差別 ・ 程式碼安全意識 ・ 為 M2-2 鋪好底</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     ROUND 6: 三階段回顧 + Stage 2 預告 (6 slides)
+     ════════════════════════════════════════════════════════════════ -->
+
+<!-- ══ 47: Round 6 Chapter Poster ══ -->
+<div class="slide poster" data-act="Round 6：回顧" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:30–3:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">三階段網頁<br><span style="color:#6ee7d4;">你都做過了</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">看一次完整的升級之路</p>
+</div>
+
+<!-- ══ 48: 六輪回顧 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>六輪回顧</h2>
+  <div class="cycle-ring">
+    <div class="cycle-step active"><span class="cycle-label">Round 1</span><span class="cycle-name">註冊帳號</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 2</span><span class="cycle-name">開 repo 上傳</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 3</span><span class="cycle-name">部署網頁</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 4</span><span class="cycle-name">commit 時光機</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 5</span><span class="cycle-name">Public vs Private</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 6</span><span class="cycle-name">回顧反思</span></div>
+  </div>
+  <div class="info-box success">
+    <p style="text-align:center;font-size:1.05rem;">每一輪都在前一輪的基礎上加一層　最後你帶走的不只是網頁　是一整套網頁管理的工作流</p>
+  </div>
+</div>
+
+<!-- ══ 49: 網頁進化三階段 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>網頁進化三階段</h2>
+  <div class="stage-row">
+    <div class="stage-card">
+      <div class="stage-num">LEVEL 1 ・ M1-1</div>
+      <h3>AI 聊天做 HTML</h3>
+      <div class="url">file:/// 本機檔案</div>
+      <div class="feat">
+        只能存自己電腦<br>
+        分享要傳檔案<br>
+        <span style="color:#cf222e;">手機朋友看不到</span>
+      </div>
+    </div>
+    <div class="stage-card">
+      <div class="stage-num">LEVEL 2 ・ M1-4</div>
+      <h3>GAS 做網頁</h3>
+      <div class="url">script.google.com/.../exec</div>
+      <div class="feat">
+        有公開網址<br>
+        能讀 Sheet 資料<br>
+        <span style="color:#cf222e;">網址超長 不能客製</span>
+      </div>
+    </div>
+    <div class="stage-card cur">
+      <div class="stage-num">LEVEL 3 ・ M2-1 你在這</div>
+      <h3>GitHub Pages</h3>
+      <div class="url">alan-chen.github.io</div>
+      <div class="feat">
+        短網址 漂亮網域<br>
+        每次改有版本紀錄<br>
+        <span style="color:var(--green);font-weight:600;">能接 IDE 自動同步</span>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-line">
+    <h3>三個工具各有適合場景</h3>
+    <p>不是 GitHub Pages 比較厲害 而是你現在三個都會用 以後做不同專案能挑對工具</p>
+  </div>
+</div>
+
+<!-- ══ 50: 帶走清單 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>M2-1 帶走清單</h2>
+  <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);max-width:920px;">
+    <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
+      <div style="font-size:.78rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">作品產出</div>
+      <ul style="list-style:none;padding:0;font-size:.95rem;color:var(--g800);line-height:2;">
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 一個上線的 GitHub Pages 網頁</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 5 個累積的 commit 紀錄</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 一個 username.github.io 網址</li>
+      </ul>
+    </div>
+    <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
+      <div style="font-size:.78rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">能力習慣</div>
+      <ul style="list-style:none;padding:0;font-size:.95rem;color:var(--g800);line-height:2;">
+        <li><span style="color:var(--green);font-weight:900;">✓</span> GitHub UI 全主要按鈕位置</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> commit message 寫人話</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> Public Private 判斷</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 4 步驟除錯儀式</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 51: 除錯儀式回顧 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>除錯儀式 每個 Round 都用到了</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box accent">1<br><span style="font-size:.85rem;font-weight:400;">看到錯誤</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">2<br><span style="font-size:.85rem;font-weight:400;">截圖描述</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">3<br><span style="font-size:.85rem;font-weight:400;">貼給 AI</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">4<br><span style="font-size:.85rem;font-weight:400;">驗證修復</span></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">為什麼這 4 步重要</div>
+    <p>Stage 1 第一期 56% 學員主訴痛點是 卡關時不知道怎麼辦<br>有了這套儀式 你下次卡關不用慌 跟著走就解 80% 的問題</p>
+  </div>
+</div>
+
+<!-- ══ 52: M2-2 預告 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>下一堂 M2-2 預告</h2>
+  <div class="info-box blue">
+    <div class="label">IDE 工具登場</div>
+    <p>今天你用瀏覽器一個一個拖檔上傳　下一堂課換 IDE 直接改你的檔案 AI 改完自動同步</p>
+  </div>
+  <div class="card-grid">
+    <div class="card accent-top">
+      <h3>LV1</h3>
+      <p>把 index.html 丟進 IDE 讓 AI 改</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>LV2 必做主線</h3>
+      <p>讀 PDF 整理成報告 md</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>LV3 加做</h3>
+      <p>md 變成簡報 html</p>
+    </div>
+  </div>
+  <div class="bottom-line">
+    <h3>下次見</h3>
+    <p>把今天的網頁丟進 IDE 你會發現修改網頁變成 跟 AI 對話就好</p>
+  </div>
+</div>
+
+</div>
+
+<!-- Chapter Menu -->
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">◈</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">▲</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<!-- Nav -->
+<div class="progress-bar" id="progress"></div>
+<div class="slide-counter"><span id="cur">1</span> / <span id="total">59</span></div>
+<div class="controls">
+  <button onclick="prev()">◂</button>
+  <button onclick="next()">▸</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let idx = 0;
+const curEl = document.getElementById('cur');
+const totalEl = document.getElementById('total');
+const progress = document.getElementById('progress');
+totalEl.textContent = total;
+
+// Build chapter data
+const chapters = [];
+let lastAct = '';
+slides.forEach((s, i) => {
+  const act = s.dataset.act || '';
+  if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+});
+
+// Build chapter menu items
+const list = document.getElementById('chapterList');
+chapters.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'chapter-item';
+  item.dataset.idx = c.idx;
+  item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+  item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+  list.appendChild(item);
+});
+
+function show(){
+  slides.forEach((s,i)=>s.classList.toggle('active', i===idx));
+  curEl.textContent = idx+1;
+  progress.style.width = ((idx+1)/total*100) + '%';
+  // Update chapter label
+  let curAct = '';
+  for(let i = chapters.length-1; i >= 0; i--){
+    if(idx >= chapters[i].idx){ curAct = chapters[i].act; break; }
+  }
+  document.getElementById('chapterLabel').textContent = curAct || '章節';
+  // Update active item
+  document.querySelectorAll('.chapter-item').forEach(item => {
+    const ci = +item.dataset.idx;
+    let end = total;
+    for(let c of chapters){ if(c.idx > ci){ end = c.idx; break; } }
+    item.classList.toggle('active', idx >= ci && idx < end);
+  });
+}
+function next(){ if(idx<total-1){idx++;show();} }
+function prev(){ if(idx>0){idx--;show();} }
+function goTo(n){ idx = Math.max(0, Math.min(total-1, n)); show(); }
+function toggleChapterMenu(){ document.getElementById('chapterMenu').classList.toggle('open'); }
+function closeChapterMenu(){ document.getElementById('chapterMenu').classList.remove('open'); }
+
+document.addEventListener('keydown', e=>{
+  // 簡報筆通常送 PageDown / PageUp / ArrowRight / ArrowLeft / period
+  if(['ArrowRight',' ','PageDown','.','n','N'].includes(e.key)){ e.preventDefault(); next(); }
+  else if(['ArrowLeft','PageUp','p','P','Backspace'].includes(e.key)){ e.preventDefault(); prev(); }
+  else if(e.key==='Home'){ e.preventDefault(); goTo(0); }
+  else if(e.key==='End'){ e.preventDefault(); goTo(total-1); }
+  else if(e.key==='Escape'){ closeChapterMenu(); }
+  else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+});
+
+// Click outside menu closes it
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.chapter-menu')) closeChapterMenu();
+});
+
+show();
+</script>
+</body>
+</html>

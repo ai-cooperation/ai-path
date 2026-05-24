@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-2 · R1.5 互動 — 黑箱競猜 + 換個問法 | Vibe Coding Stage 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* M1-2 · R1.5 互動環節 — 黑箱競猜 + 換個問法
+   Design System: WHITE BACKGROUND
+   Accent: --blue (#1A73E8) */
+:root{
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g500:#80868B; --g600:#5F6368;
+  --g700:#3C4043; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --navy:#0B3C5D;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;background:var(--white);text-wrap:pretty;}
+
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:1.4rem 3.2rem 1rem;overflow:hidden;}
+.slide.active{display:flex;}
+.slide.dataviz{background:var(--white);color:var(--g900);padding-top:2.6rem;overflow-y:auto;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.dataviz h2{color:var(--g900);}
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster>*{position:relative;z-index:2;}
+.slide.poster h1,.slide.poster h2{color:#fff;}
+
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+h2{font-size:1.6rem;font-weight:700;margin-bottom:.4rem;line-height:1.35;}
+h3{font-size:1.1rem;font-weight:700;margin-bottom:.3rem;}
+p,li{font-size:.95rem;line-height:1.65;}
+
+.fragment{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.fragment.visible{opacity:1;transform:none;}
+
+/* Step List */
+.step-list{text-align:left;max-width:820px;width:100%;}
+.step{display:flex;gap:1rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;}
+.step-content strong{font-size:1rem;color:var(--g900);}
+.step-content p{font-size:.88rem;color:var(--g600);margin-top:.1rem;line-height:1.55;}
+
+/* Card */
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:980px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:14px;padding:.9rem 1.1rem;min-width:200px;max-width:280px;flex:1;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.card h3{color:var(--g900);margin-bottom:.25rem;font-size:1rem;}
+.card p{font-size:.85rem;color:var(--g600);line-height:1.55;}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-green{border-top:4px solid var(--green);}
+.card.accent-top-purple{border-top:4px solid var(--purple);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+
+/* Info Box */
+.info-box{border-radius:10px;padding:.7rem 1.2rem;max-width:840px;width:100%;text-align:left;margin-top:.5rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);}
+.info-box .label{font-weight:700;font-size:.95rem;margin-bottom:.3rem;letter-spacing:.05em;}
+.info-box p{color:var(--g800);font-size:.9rem;line-height:1.65;}
+
+/* Quote Box */
+.quote-box{max-width:880px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:.85rem 1.3rem;margin:.5rem 0;text-align:left;}
+.quote-box .qtag{font-size:.7rem;font-weight:700;color:var(--g500);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;}
+.quote-box .quote-text{font-size:1rem;font-weight:700;line-height:1.6;color:var(--g900);}
+
+/* Anchor banner */
+.anchor-banner{display:inline-flex;align-items:center;gap:.6rem;margin:.2rem 0 .8rem;padding:.4rem 1rem;background:var(--blue-lt);border-left:4px solid var(--blue);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;}
+.anchor-text{font-size:1rem;font-weight:700;color:var(--g900);}
+
+/* Black-box quiz: three opaque answers */
+.quiz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:1180px;width:100%;margin-top:.6rem;}
+.quiz-col{background:var(--offwhite);border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:10px;padding:.7rem .85rem;display:flex;flex-direction:column;gap:.35rem;}
+.quiz-col .qhead{display:flex;align-items:center;gap:.45rem;}
+.quiz-col .qbadge{font-size:.9rem;font-weight:900;color:var(--col-color);background:#fff;border:2px solid var(--col-color);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+.quiz-col .qlabel{font-size:.7rem;font-weight:700;color:var(--col-color);letter-spacing:.05em;}
+.quiz-col .qmask{background:#0f1419;border-radius:6px;padding:.4rem .7rem;font-size:.7rem;color:rgba(255,255,255,.45);font-family:'Fira Code',monospace;text-align:center;}
+.quiz-col .qbody{background:#fff;border:1px solid var(--g100);border-radius:6px;padding:.55rem .75rem;font-size:.74rem;color:var(--g700);line-height:1.6;flex:1;}
+.quiz-col .qfeature{font-size:.65rem;color:var(--g500);font-style:italic;text-align:right;}
+.quiz-col.a{--col-color:var(--blue);}
+.quiz-col.b{--col-color:var(--green);}
+.quiz-col.c{--col-color:var(--purple);}
+
+/* Reveal grid (prompt formula) */
+.reveal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1120px;width:100%;margin-top:.3rem;}
+.reveal-col{background:#fff;border:2px solid var(--r-color);border-radius:12px;padding:.75rem .95rem;}
+.reveal-col .rhead{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;}
+.reveal-col .rbadge{font-size:.9rem;font-weight:900;color:#fff;background:var(--r-color);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+.reveal-col .rshape{font-size:.88rem;font-weight:700;color:var(--r-color);}
+.reveal-col .rprompt{background:var(--r-bg);border-radius:6px;padding:.5rem .7rem;font-size:.78rem;color:var(--g900);font-family:'Fira Code',monospace;line-height:1.5;font-weight:600;margin-bottom:.4rem;}
+.reveal-col .rwhy{font-size:.76rem;color:var(--g600);line-height:1.6;}
+.reveal-col.a{--r-color:var(--blue);--r-bg:var(--blue-lt);}
+.reveal-col.b{--r-color:var(--green);--r-bg:var(--green-lt);}
+.reveal-col.c{--r-color:var(--purple);--r-bg:var(--purple-lt);}
+
+/* Five-swap board */
+.swap-list{display:flex;flex-direction:column;gap:.4rem;max-width:980px;width:100%;margin-top:.3rem;}
+.swap-row{display:grid;grid-template-columns:auto 1fr;gap:.8rem;background:var(--offwhite);border:1px solid var(--g200);border-left:4px solid var(--s-color,var(--blue));border-radius:8px;padding:.5rem .9rem;align-items:center;}
+.swap-tag{display:inline-flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--s-color,var(--blue));color:var(--s-color,var(--blue));border-radius:100px;padding:.2rem .8rem;font-size:.85rem;font-weight:700;min-width:6em;}
+.swap-example{font-size:.85rem;color:var(--g800);line-height:1.55;}
+.swap-example .em{color:var(--s-color,var(--blue));font-weight:700;}
+.swap-row.r1{--s-color:var(--blue);}
+.swap-row.r2{--s-color:var(--green);}
+.swap-row.r3{--s-color:var(--purple);}
+.swap-row.r4{--s-color:var(--orange);}
+.swap-row.r5{--s-color:var(--red);}
+
+/* Bridge to Gem */
+.bridge-box{max-width:880px;width:100%;background:linear-gradient(135deg,var(--blue-lt) 0%,#fff 100%);border:2px solid rgba(26,115,232,.25);border-radius:14px;padding:1rem 1.4rem;text-align:left;margin-top:.4rem;}
+.bridge-box h3{color:var(--blue);font-size:1.1rem;margin-bottom:.4rem;}
+.bridge-box p{font-size:.9rem;color:var(--g800);line-height:1.65;}
+.bridge-box p strong{color:var(--blue);}
+
+/* Poster helpers */
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.78);}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.85rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;}
+
+/* Controls */
+.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--blue);transition:width .4s;z-index:100;}
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
+.controls button:disabled{opacity:.25;cursor:default;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500);font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--blue-lt);color:var(--blue);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(26,115,232,.2);}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+
+/* Chapter Menu */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--blue);}
+.chapter-icon{color:var(--blue);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:220px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--blue);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--blue);}
+
+/* MOBILE */
+@media(max-width:768px){
+  html,body{font-size:16px;}
+  .slide{padding:1rem 1.2rem 1rem;}
+  .slide.dataviz{padding-top:3rem;}
+  h1{font-size:1.8rem;}
+  h2{font-size:1.3rem;margin-bottom:.6rem;}
+  .card-grid{flex-direction:column;align-items:center;}
+  .card{max-width:100%;min-width:0;}
+  .quiz-grid,.reveal-grid{grid-template-columns:1fr;}
+  .swap-row{grid-template-columns:1fr;gap:.4rem;}
+  .controls button{width:40px;height:40px;font-size:1rem;}
+  .module-title{font-size:.7rem;left:.8rem;top:.6rem;}
+  .module-badge{font-size:.65rem;top:.6rem;right:.6rem;padding:.2rem .6rem;}
+  .quote-box .quote-text{font-size:1rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — M1-2 · R1.5 互動</div>
+<div class="module-badge">黑箱競猜 · 10 min</div>
+<div class="slides">
+
+<!-- ══ 0 · COVER ══ -->
+<div class="slide poster active" data-act="開場" data-index="0"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+  <p style="font-size:.95rem;color:rgba(255,255,255,.5);letter-spacing:.15em;margin-bottom:1rem;">M1-2 · R1 完成後 · R2 之前</p>
+  <h1 style="font-size:3.4rem;line-height:1.2;">黑箱競猜<br><span style="color:#93c5fd;">換個問法</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">同一個 AI、同一天<br>三段答案為什麼差這麼多?</p>
+  <div style="margin-top:2.2rem;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;">
+    <span class="poster-badge">10 分鐘</span>
+    <span class="poster-badge">2 步驟</span>
+    <span class="poster-badge">兩人一組</span>
+    <span class="poster-badge">為 Gem 鋪路</span>
+  </div>
+  <p style="color:rgba(255,255,255,.3);margin-top:2.8rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1 · 這節要做什麼 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="1">
+  <div style="text-align:center;margin-bottom:.6rem;">
+    <p style="font-size:.72rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;">這節要做什麼</p>
+    <h2 style="margin-bottom:.4rem;">從「會寫一次性提示詞」進化到「會設計可重用的提問工具」</h2>
+  </div>
+
+  <div class="anchor-banner">
+    <span class="anchor-label">你會帶走</span>
+    <span class="anchor-text">看懂同一題如何因為提問維度不同而產生不同答案</span>
+  </div>
+
+  <div class="step-list fragment" data-order="0" style="margin-top:.4rem;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>黑箱競猜 · 5 分鐘</strong>
+        <p>看三段 AI 答案,猜每段背後的提示詞用了什麼角度</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>揭曉 + 五種換法 · 5 分鐘</strong>
+        <p>不揭原文,只揭「形狀」:換主詞 / 換動詞 / 換層級 / 換單位 / 換時態</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box note fragment" data-order="1">
+    <div class="label">先看差異,再找規律</div>
+    <p>先觀察三段答案差在哪裡,再回頭看提示詞改了什麼。你會更容易記住「換法」不是技巧名詞,而是看問題的角度。</p>
+  </div>
+</div>
+
+<!-- ══ 2 · Step 1 黑箱競猜 ══ -->
+<div class="slide dataviz" data-act="Step 1 · 競猜" data-index="2">
+  <div style="text-align:center;margin-bottom:.3rem;">
+    <p style="font-size:.72rem;color:var(--blue);letter-spacing:.15em;margin-bottom:.2rem;">STEP 1 ・ 5 分鐘</p>
+    <h2>黑箱競猜</h2>
+    <p style="color:var(--g600);font-size:.9rem;">同題目「為什麼員工不主動學習?」三段 AI 答案,兩人一組,猜提示詞</p>
+  </div>
+
+  <div class="quiz-grid">
+    <div class="quiz-col a">
+      <div class="qhead">
+        <span class="qbadge">A</span>
+        <span class="qlabel">答案 A</span>
+      </div>
+      <div class="qmask">[ 提示詞 隱藏 ]</div>
+      <div class="qbody">員工不主動學習有以下原因:1. 缺乏內在動機 2. 工作壓力大,沒時間 3. 學習資源不足。建議改善方向:設目標、給時間、建獎勵...</div>
+      <div class="qfeature">列點式 / 原因 + 方法</div>
+    </div>
+    <div class="quiz-col b">
+      <div class="qhead">
+        <span class="qbadge">B</span>
+        <span class="qlabel">答案 B</span>
+      </div>
+      <div class="qmask">[ 提示詞 隱藏 ]</div>
+      <div class="qbody">學新技能對員工是高風險低報酬的賭注。學了不一定加薪,但時間是真花掉的。在這算式裡,「不學」反而是理性選擇...</div>
+      <div class="qfeature">同理性語氣 / 講員工的成本計算</div>
+    </div>
+    <div class="quiz-col c">
+      <div class="qhead">
+        <span class="qbadge">C</span>
+        <span class="qlabel">答案 C</span>
+      </div>
+      <div class="qmask">[ 提示詞 隱藏 ]</div>
+      <div class="qbody">十年前員工願意學,因為「學了就升遷」還在。2015 年組織扁平化,管道收窄。2020 年遠距讓「會什麼」比「在哪家」重要,但又被 AI 衝擊。學習動機環境十年崩塌三次...</div>
+      <div class="qfeature">時間軸分析 / 講環境變化</div>
+    </div>
+  </div>
+
+  <div class="info-box blue fragment" data-order="0" style="margin-top:.4rem;">
+    <div class="label">小組任務</div>
+    <p>同一題、同一個 AI、同一天,三段答案差這麼多。<strong style="color:var(--blue);">猜猜看每段答案背後的提示詞用了什麼角度?</strong></p>
+  </div>
+</div>
+
+<!-- ══ 3 · 揭曉:提示詞的「形狀」 ══ -->
+<div class="slide dataviz" data-act="揭曉" data-index="3">
+  <div style="text-align:center;margin-bottom:.3rem;">
+    <p style="font-size:.72rem;color:var(--blue);letter-spacing:.15em;margin-bottom:.2rem;">揭曉 ・ 不揭原文,只揭形狀</p>
+    <h2>三個提示詞,只改了一個維度</h2>
+  </div>
+
+  <div class="reveal-grid">
+    <div class="reveal-col a">
+      <div class="rhead">
+        <span class="rbadge">A</span>
+        <span class="rshape">直接問</span>
+      </div>
+      <div class="rprompt">為什麼員工不主動學習?</div>
+      <div class="rwhy">原句直接丟給 AI。AI 會給最通用的列點答案——這就是大多數人預設的問法。</div>
+    </div>
+    <div class="reveal-col b">
+      <div class="rhead">
+        <span class="rbadge">B</span>
+        <span class="rshape">換主詞</span>
+      </div>
+      <div class="rprompt">站在員工的角度,為什麼學新技能對他來說是高風險低報酬的事?</div>
+      <div class="rwhy">把主詞從「公司」換成「員工」。AI 開始用員工的語氣思考,給出同理性的成本計算。</div>
+    </div>
+    <div class="reveal-col c">
+      <div class="rhead">
+        <span class="rbadge">C</span>
+        <span class="rshape">換時態</span>
+      </div>
+      <div class="rprompt">員工不學習這件事,過去十年是什麼時候開始變嚴重的?發生了什麼?</div>
+      <div class="rwhy">把時態從「現在問題」換成「過去演變」。AI 會給時間軸分析,講環境怎麼變的。</div>
+    </div>
+  </div>
+
+  <div class="info-box blue fragment" data-order="0">
+    <div class="label">換法重點</div>
+    <p><strong style="color:var(--blue);">題目沒有變,只改了一個維度。</strong><br>AI 給的答案就從「公司該做什麼」變成「員工怎麼想」,再變成「環境怎麼變的」。<br><strong style="color:var(--blue);">換個問法,就是換個維度。</strong></p>
+  </div>
+</div>
+
+<!-- ══ 4 · Step 2 五種換法 ══ -->
+<div class="slide dataviz" data-act="Step 2 · 五種換法" data-index="4">
+  <div style="text-align:center;margin-bottom:.4rem;">
+    <p style="font-size:.72rem;color:var(--blue);letter-spacing:.15em;margin-bottom:.2rem;">STEP 2 ・ 5 分鐘</p>
+    <h2>五種換法</h2>
+    <p style="color:var(--g600);font-size:.92rem;">同一題「員工不主動學習」,五種維度切入</p>
+  </div>
+
+  <div class="swap-list">
+    <div class="swap-row r1">
+      <div class="swap-tag">換主詞</div>
+      <div class="swap-example"><span class="em">站在員工的角度</span>,學新技能對他是什麼?</div>
+    </div>
+    <div class="swap-row r2">
+      <div class="swap-tag">換動詞</div>
+      <div class="swap-example">「不學習」<span class="em">正在跟什麼競爭</span>員工的時間?</div>
+    </div>
+    <div class="swap-row r3">
+      <div class="swap-tag">換層級</div>
+      <div class="swap-example">我們真正想要的是「<span class="em">會新技能的員工</span>」,還是「<span class="em">願意改變的員工</span>」?</div>
+    </div>
+    <div class="swap-row r4">
+      <div class="swap-tag">換單位</div>
+      <div class="swap-example">員工不學習,不是個人問題,是<span class="em">組織 KPI / 主管行為 / 升遷制度</span>三個系統的結果。</div>
+    </div>
+    <div class="swap-row r5">
+      <div class="swap-tag">換時態</div>
+      <div class="swap-example">十年前員工願意學,他擁有什麼是<span class="em">現在的員工失去的</span>?</div>
+    </div>
+  </div>
+
+  <div class="info-box note fragment" data-order="0">
+    <div class="label">不用全部記</div>
+    <p>記得「<strong>換</strong>」這個動作就夠了。下次卡住,問自己一句:<strong>我能不能換點什麼?</strong></p>
+  </div>
+</div>
+
+<!-- ══ 5 · 收尾 + 過渡到 Gem ══ -->
+<div class="slide dataviz" data-act="收尾" data-index="5">
+  <div style="text-align:center;margin-bottom:.4rem;">
+    <p style="font-size:.72rem;color:var(--blue);letter-spacing:.15em;margin-bottom:.2rem;">過渡 · 接回主簡報 R2</p>
+    <h2>每次都要重想一遍,很煩</h2>
+  </div>
+
+  <div class="bridge-box">
+    <h3>下一步 · 把好的提問結構封裝成可重用的工具</h3>
+    <p>你們剛剛看到了五種換法。問題來了——<strong>每次遇到問題都要重想一遍該用哪一種換法,很煩</strong>。</p>
+    <p style="margin-top:.6rem;">如果你能把「換主詞」這個思考流程,做成一個工具,<strong>下次只要把問題丟進去,它自動幫你換好</strong>——你覺得這個工具有沒有用?</p>
+    <p style="margin-top:.6rem;">這就是接下來 M1-2 主課要教的東西:<strong>Gem</strong> ——把好的提問結構,封裝成可以重複用的工具。</p>
+  </div>
+
+  <div class="card-grid fragment" data-order="0" style="max-width:880px;margin-top:.8rem;">
+    <div class="card accent-top-blue">
+      <h3 style="color:var(--blue);">這節</h3>
+      <p>你會「換問法」</p>
+    </div>
+    <div class="card accent-top-green">
+      <h3 style="color:var(--green);">下節 R2</h3>
+      <p>你會「四要素改寫」一個完整提示詞</p>
+    </div>
+    <div class="card accent-top-purple">
+      <h3 style="color:var(--purple);">主課</h3>
+      <p>把這套結構封裝成 Gem,做成可重用工具</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 6 · 收尾 poster ══ -->
+<div class="slide poster" data-act="收尾" data-index="6"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#1A56A0 40%,#1A73E8 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.5);letter-spacing:.15em;margin-bottom:.8rem;">黑箱競猜結束 · 接回主簡報 R2</p>
+  <h1 style="font-size:2.9rem;line-height:1.25;">換個問法<br><span style="color:#93c5fd;">就是換個維度</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.4rem;">下一步——把這套結構<strong style="color:#fff;">封裝成 Gem</strong></p>
+  <div style="margin-top:2.2rem;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;">
+    <span class="poster-badge">主詞</span>
+    <span class="poster-badge">動詞</span>
+    <span class="poster-badge">層級</span>
+    <span class="poster-badge">單位</span>
+    <span class="poster-badge">時態</span>
+  </div>
+  <p style="color:rgba(255,255,255,.35);margin-top:2.8rem;font-size:.9rem;">回到 M1-2 主簡報 · Round 2 四要素改寫</p>
+</div>
+
+</div><!-- end .slides -->
+
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter">1 / 7</div>
+<div class="controls">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>‹</button>
+  <button id="nextBtn" onclick="navigate(1)">›</button>
+</div>
+
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">◈</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">▲</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+  let fragmentIdx = 0;
+
+  const chapters = [];
+  let lastAct = '';
+  slides.forEach((s, i) => {
+    const act = s.dataset.act || '';
+    if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+  });
+
+  const list = document.getElementById('chapterList');
+  chapters.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = c.idx;
+    item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+    item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+    list.appendChild(item);
+  });
+
+  function getFragments(slide){
+    return Array.from(slide.querySelectorAll('.fragment'))
+      .sort((a,b) => (+a.dataset.order||0) - (+b.dataset.order||0));
+  }
+
+  function showSlide(n, showAllFragments){
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total-1, n));
+    const s = slides[cur];
+    s.classList.add('active');
+    const frags = getFragments(s);
+    if(showAllFragments){
+      frags.forEach(f => f.classList.add('visible'));
+      fragmentIdx = frags.length;
+    } else {
+      frags.forEach(f => f.classList.remove('visible'));
+      fragmentIdx = 0;
+    }
+    updateUI();
+  }
+
+  function goTo(n){ showSlide(n, false); }
+
+  function navigate(dir){
+    const s = slides[cur];
+    const frags = getFragments(s);
+    if(dir > 0){
+      if(fragmentIdx < frags.length){
+        frags[fragmentIdx].classList.add('visible');
+        fragmentIdx++;
+        updateUI();
+        return;
+      }
+      showSlide(cur + 1, false);
+    } else {
+      if(fragmentIdx > 0){
+        fragmentIdx--;
+        frags[fragmentIdx].classList.remove('visible');
+        updateUI();
+        return;
+      }
+      showSlide(cur - 1, true);
+    }
+  }
+
+  function updateUI(){
+    document.getElementById('progress').style.width = ((cur/(total-1))*100)+'%';
+    document.getElementById('counter').textContent = (cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = cur === 0 && fragmentIdx === 0;
+    document.getElementById('nextBtn').disabled = cur === total-1 && fragmentIdx >= getFragments(slides[cur]).length;
+
+    let act = '';
+    for(let i = chapters.length-1; i >= 0; i--){
+      if(cur >= chapters[i].idx){ act = chapters[i].act; break; }
+    }
+    document.getElementById('chapterLabel').textContent = act || '章節';
+
+    document.querySelectorAll('.chapter-item').forEach(item => {
+      const idx = +item.dataset.idx;
+      let end = total;
+      for(let c of chapters){ if(c.idx > idx){ end = c.idx; break; } }
+      item.classList.toggle('active', cur >= idx && cur < end);
+    });
+  }
+
+  function toggleChapterMenu(){
+    document.getElementById('chapterMenu').classList.toggle('open');
+  }
+  function closeChapterMenu(){
+    document.getElementById('chapterMenu').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => {
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){ e.preventDefault(); navigate(1); }
+    else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); navigate(-1); }
+    else if(e.key==='Home'){ e.preventDefault(); showSlide(0, false); }
+    else if(e.key==='End'){ e.preventDefault(); showSlide(total-1, true); }
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if(e.key==='Escape'){ closeChapterMenu(); }
+  });
+
+  document.querySelector('.slides').addEventListener('click', e => {
+    if(e.target.closest('.controls')||e.target.closest('.chapter-menu')) return;
+    navigate(1);
+  });
+
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ navigate(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+
+  updateUI();
+  window.navigate = navigate;
+  window.goTo = goTo;
+  window.toggleChapterMenu = toggleChapterMenu;
+})();
+</script>
+</body>
+</html>

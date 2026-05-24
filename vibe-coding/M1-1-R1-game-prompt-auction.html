@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1-1 · R1.5 互動 — 提示詞拍賣會 | Vibe Coding Stage 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* M1-1 · R1.5 互動環節 — 提示詞拍賣會
+   Design System: WHITE BACKGROUND
+   Accent: --green (#0F9D8A) */
+:root{
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g500:#80868B; --g600:#5F6368;
+  --g700:#3C4043; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;background:var(--white);text-wrap:pretty;}
+
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem 3.5rem 1rem;overflow:hidden;}
+.slide.active{display:flex;}
+.slide.dataviz{background:var(--white);color:var(--g900);padding-top:2.8rem;overflow-y:auto;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.dataviz h2{color:var(--g900);}
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster>*{position:relative;z-index:2;}
+.slide.poster h1,.slide.poster h2{color:#fff;}
+
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+h2{font-size:1.7rem;font-weight:700;margin-bottom:.5rem;line-height:1.35;}
+h3{font-size:1.2rem;font-weight:700;margin-bottom:.3rem;}
+p,li{font-size:1rem;line-height:1.7;}
+.subtitle{font-size:1.15rem;font-weight:500;}
+.dim{opacity:.6;}
+
+.fragment{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;}
+.fragment.visible{opacity:1;transform:none;}
+
+/* Step List */
+.step-list{text-align:left;max-width:820px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;}
+
+/* Card Grid */
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:980px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.4rem;min-width:200px;max-width:280px;flex:1;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.6;}
+.card.accent-top{border-top:4px solid var(--green);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-purple{border-top:4px solid var(--purple);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+.card.accent-top-red{border-top:4px solid var(--red);}
+
+/* Info Boxes */
+.info-box{border-radius:12px;padding:1.2rem 1.6rem;max-width:840px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;letter-spacing:.05em;}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:#b07d00;font-weight:700;font-size:.95rem;margin-bottom:.3rem;letter-spacing:.05em;}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;letter-spacing:.05em;}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;letter-spacing:.05em;}
+.info-box p{color:var(--g800);}
+
+/* Quote Box */
+.quote-box{max-width:840px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.4rem 1.8rem;margin:.8rem 0;text-align:left;}
+.quote-box .qtag{font-size:.75rem;font-weight:700;color:var(--g500);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem;}
+.quote-box .quote-text{font-size:1.2rem;font-weight:700;line-height:1.65;color:var(--g900);}
+
+/* Prompt tag style */
+.prompt-tags{display:flex;flex-wrap:wrap;gap:.7rem;margin:.8rem 0;justify-content:center;}
+.ptag{padding:.5rem 1.3rem;border-radius:100px;font-size:1.05rem;font-weight:700;}
+.ptag.role{background:var(--blue-lt);color:var(--blue);}
+.ptag.view{background:var(--green-lt);color:var(--green);}
+.ptag.limit{background:var(--red-lt);color:var(--red);}
+
+/* Anchor banner */
+.anchor-banner{display:inline-flex;align-items:center;gap:.6rem;margin:.2rem 0 .8rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
+.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.1em;text-transform:uppercase;}
+.anchor-text{font-size:1rem;font-weight:700;color:var(--g900);}
+
+/* Three-column AI answer compare */
+.ai-compare{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1100px;width:100%;margin-top:.4rem;}
+.ai-col{background:var(--offwhite);border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g400));border-radius:10px;padding:.7rem .85rem;display:flex;flex-direction:column;gap:.35rem;}
+.ai-col .ai-head{display:flex;align-items:center;gap:.4rem;}
+.ai-col .ai-dot{width:10px;height:10px;border-radius:50%;background:var(--col-color,var(--g400));flex-shrink:0;}
+.ai-col .ai-label{font-size:.72rem;font-weight:700;color:var(--col-color,var(--g600));letter-spacing:.04em;}
+.ai-col .ai-prompt{background:#fff;border:1px solid var(--g200);border-radius:6px;padding:.45rem .65rem;font-size:.78rem;color:var(--g700);font-family:'Fira Code',monospace;line-height:1.5;}
+.ai-col .ai-result{background:#fff;border:1px solid var(--g100);border-radius:6px;padding:.55rem .75rem;font-size:.76rem;color:var(--g600);line-height:1.6;flex:1;}
+.ai-col.bad{--col-color:var(--red);}
+.ai-col.mid{--col-color:var(--gold);}
+.ai-col.good{--col-color:var(--green);}
+
+/* Sticky note board mock */
+.board{background:#fffbe6;border:2px dashed var(--g200);border-radius:14px;padding:1rem;max-width:880px;width:100%;margin-top:.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;}
+.note{background:#fff;border:1px solid var(--g100);border-radius:6px;padding:.55rem .65rem;box-shadow:0 1px 3px rgba(0,0,0,.08);transform:rotate(var(--rot,0deg));position:relative;font-size:.72rem;line-height:1.45;color:var(--g800);}
+.note .dots{position:absolute;top:-6px;right:-6px;display:flex;gap:2px;}
+.note .dot{width:14px;height:14px;border-radius:50%;border:1px solid #fff;box-shadow:0 1px 2px rgba(0,0,0,.2);}
+.note .dot.green{background:var(--green);}
+.note .dot.red{background:var(--red);}
+.note.win{border-color:var(--green);box-shadow:0 0 0 2px rgba(15,157,138,.15),0 1px 3px rgba(0,0,0,.08);}
+.note.lose{border-color:var(--red);box-shadow:0 0 0 2px rgba(217,48,37,.15),0 1px 3px rgba(0,0,0,.08);}
+
+/* Topic chooser */
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;max-width:980px;width:100%;margin-top:.8rem;}
+.topic-card{background:var(--offwhite);border:1px solid var(--g200);border-top:4px solid var(--t-color,var(--green));border-radius:12px;padding:1rem 1.1rem;text-align:left;}
+.topic-card .t-tag{font-size:.7rem;font-weight:700;color:var(--t-color,var(--green));letter-spacing:.1em;margin-bottom:.3rem;}
+.topic-card .t-q{font-size:1rem;font-weight:700;color:var(--g900);line-height:1.55;}
+.topic-card .t-when{font-size:.78rem;color:var(--g500);margin-top:.4rem;}
+.topic-card.b{--t-color:var(--blue);}
+.topic-card.c{--t-color:var(--orange);}
+
+/* Template box */
+.template-box{background:#fff;border:2px solid var(--green);border-radius:14px;padding:1.4rem 1.8rem;max-width:840px;width:100%;margin-top:.6rem;text-align:center;font-size:1.15rem;line-height:2.1;color:var(--g900);font-weight:500;}
+.template-box .blank{display:inline-block;min-width:5em;border-bottom:2px solid var(--green);padding:0 .4em;color:var(--green);font-weight:700;}
+
+/* Bottom line */
+.bottom-line{max-width:820px;width:100%;background:var(--green-lt);border:2px solid rgba(15,157,138,.3);border-radius:16px;padding:1.6rem 2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.4rem;color:var(--green);margin-bottom:.5rem;}
+.bottom-line p{font-size:1rem;color:var(--g800);line-height:1.7;}
+
+/* Poster text helpers */
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.78);}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.85rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;}
+
+/* Controls */
+.progress{position:fixed;bottom:0;left:0;height:4px;background:var(--green);transition:width .4s;z-index:100;}
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:48px;height:48px;border:2px solid var(--g200);border-radius:12px;background:var(--white);color:var(--g800);font-size:1.2rem;cursor:pointer;transition:all .15s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--green);border-color:var(--green);color:#fff;}
+.controls button:disabled{opacity:.25;cursor:default;}
+.slide-counter{position:fixed;bottom:4.8rem;right:1.5rem;z-index:100;color:var(--g500);font-size:.8rem;font-weight:500;text-align:center;min-width:5.2rem;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--green-lt);color:var(--green);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(15,157,138,.2);}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+
+/* Chapter Menu */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--green);}
+.chapter-icon{color:var(--green);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:220px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;transition:background .15s,color .15s;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--green);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--green);}
+
+/* MOBILE */
+@media(max-width:768px){
+  html,body{font-size:16px;}
+  .slide{padding:1rem 1.2rem 1rem;}
+  .slide.dataviz{padding-top:3rem;}
+  h1{font-size:1.8rem;}
+  h2{font-size:1.3rem;margin-bottom:.6rem;}
+  .card-grid{flex-direction:column;align-items:center;}
+  .card{max-width:100%;min-width:0;}
+  .topic-grid{grid-template-columns:1fr;}
+  .ai-compare{grid-template-columns:1fr;}
+  .board{grid-template-columns:repeat(2,1fr);}
+  .controls button{width:40px;height:40px;font-size:1rem;}
+  .module-title{font-size:.7rem;left:.8rem;top:.6rem;}
+  .module-badge{font-size:.65rem;top:.6rem;right:.6rem;padding:.2rem .6rem;}
+  .template-box{font-size:.95rem;line-height:1.9;}
+  .quote-box .quote-text{font-size:1rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — M1-1 · R1.5 互動</div>
+<div class="module-badge">提示詞拍賣會 · 15 min</div>
+<div class="slides">
+
+<!-- ══ 0 · COVER ══ -->
+<div class="slide poster active" data-act="開場" data-index="0"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.95rem;color:rgba(255,255,255,.5);letter-spacing:.15em;margin-bottom:1rem;">M1-1 · R1 完成後 · R2 之前</p>
+  <h1 style="font-size:3.4rem;line-height:1.2;">提示詞拍賣會</h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">寫得長,不會讓答案變好<br>寫得有結構才會</p>
+  <div style="margin-top:2.2rem;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;">
+    <span class="poster-badge">15 分鐘</span>
+    <span class="poster-badge">4 步驟</span>
+    <span class="poster-badge">便利貼 + 投票</span>
+    <span class="poster-badge">現場跑 AI</span>
+  </div>
+  <p style="color:rgba(255,255,255,.3);margin-top:2.8rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1 · 這節要做什麼 + 規則總覽 ══ -->
+<div class="slide dataviz" data-act="開場" data-index="1">
+  <div style="text-align:center;margin-bottom:.6rem;">
+    <p style="font-size:.72rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;">這節要做什麼</p>
+    <h2 style="margin-bottom:.4rem;">讓你親手撞到一個錯覺</h2>
+  </div>
+
+  <div class="anchor-banner">
+    <span class="anchor-label">你會帶走</span>
+    <span class="anchor-text">好提示詞不是寫得長,是寫得有結構</span>
+  </div>
+
+  <div class="step-list fragment" data-order="0" style="margin-top:.4rem;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>個人寫提示詞 · 3 分鐘</strong>
+        <p>你會丟給 AI 的問法,寫一張便利貼,不超過兩行</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>貼牆 + 投票 · 3 分鐘</strong>
+        <p>綠點貼最好的,紅點貼最爛的,不能貼自己的</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>現場跑 AI 對照 · 4 分鐘</strong>
+        <p>挑紅點最多 / 中間 / 綠點最多三張,並排顯示答案</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>揭示結構 + 重寫 · 5 分鐘</strong>
+        <p>角色 + 觀點 + 限制,套進去再問一次</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2 · Step 1 寫提示詞 ══ -->
+<div class="slide dataviz" data-act="Step 1 · 寫" data-index="2">
+  <div style="text-align:center;margin-bottom:.4rem;">
+    <p style="font-size:.72rem;color:var(--green);letter-spacing:.15em;margin-bottom:.2rem;">STEP 1 ・ 3 分鐘</p>
+    <h2>個人寫提示詞</h2>
+    <p style="color:var(--g600);font-size:.92rem;">現場挑一題,所有人問同一題,看誰問得最好</p>
+  </div>
+
+  <div class="topic-grid">
+    <div class="topic-card">
+      <div class="t-tag">題目 A</div>
+      <div class="t-q">員工不主動學習新技能,怎麼辦?</div>
+      <div class="t-when">職場類 / 中階主管場景</div>
+    </div>
+    <div class="topic-card b">
+      <div class="t-tag">題目 B</div>
+      <div class="t-q">年輕人不想結婚,怎麼辦?</div>
+      <div class="t-when">社會類 / 開放討論</div>
+    </div>
+    <div class="topic-card c">
+      <div class="t-tag">題目 C</div>
+      <div class="t-q">員工不願意配合 ESG 推動,怎麼辦?</div>
+      <div class="t-when">企業類 / 永續主管場景</div>
+    </div>
+  </div>
+
+  <div class="info-box note fragment" data-order="0" style="margin-top:.4rem;">
+    <div class="label">任務規則</div>
+    <p>每人 3 張便利貼,只能選 1 張寫提示詞,不超過兩行字。</p>
+  </div>
+</div>
+
+<!-- ══ 3 · Step 2 貼牆 + 投票 ══ -->
+<div class="slide dataviz" data-act="Step 2 · 投票" data-index="3">
+  <div style="text-align:center;margin-bottom:.4rem;">
+    <p style="font-size:.72rem;color:var(--green);letter-spacing:.15em;margin-bottom:.2rem;">STEP 2 ・ 3 分鐘</p>
+    <h2>貼牆 + 投票</h2>
+    <p style="color:var(--g600);font-size:.92rem;">所有人的提示詞貼上來,憑直覺投票</p>
+  </div>
+
+  <div class="board">
+    <div class="note" style="--rot:-1.5deg;">員工不學習怎麼辦?<div class="dots"><span class="dot red"></span></div></div>
+    <div class="note win" style="--rot:.8deg;">身為主管,我該如何讓員工主動學習?<div class="dots"><span class="dot green"></span><span class="dot green"></span></div></div>
+    <div class="note" style="--rot:-.5deg;">請告訴我員工不學習的原因和解決方法<div class="dots"></div></div>
+    <div class="note lose" style="--rot:1.2deg;">員工不學,公司怎麼辦?<div class="dots"><span class="dot red"></span><span class="dot red"></span></div></div>
+    <div class="note" style="--rot:.4deg;">怎麼讓員工願意自己去學新技能?<div class="dots"><span class="dot green"></span></div></div>
+    <div class="note" style="--rot:-1deg;">員工學習動機分析<div class="dots"><span class="dot red"></span></div></div>
+    <div class="note" style="--rot:.9deg;">給我五個讓員工學習的方法<div class="dots"></div></div>
+    <div class="note win" style="--rot:-.3deg;">站在員工立場,為什麼不想學?<div class="dots"><span class="dot green"></span><span class="dot green"></span></div></div>
+  </div>
+
+  <div class="card-grid fragment" data-order="0" style="max-width:780px;margin-top:1rem;">
+    <div class="card accent-top">
+      <h3 style="color:var(--green);">綠點</h3>
+      <p>貼「會問出最好答案」的那張</p>
+    </div>
+    <div class="card accent-top-red">
+      <h3 style="color:var(--red);">紅點</h3>
+      <p>貼「最爛」的那張</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3 style="color:#b07d00;">規則</h3>
+      <p>每人各兩張,不能貼自己的</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 4 · Step 3 跑 AI 對照 ══ -->
+<div class="slide dataviz" data-act="Step 3 · 跑 AI" data-index="4">
+  <div style="text-align:center;margin-bottom:.3rem;">
+    <p style="font-size:.72rem;color:var(--green);letter-spacing:.15em;margin-bottom:.2rem;">STEP 3 ・ 4 分鐘</p>
+    <h2>現場跑 AI 對照</h2>
+    <p style="color:var(--g600);font-size:.9rem;">挑三張:紅點最多 / 中間 / 綠點最多,投影並排</p>
+  </div>
+
+  <div class="ai-compare">
+    <div class="ai-col bad">
+      <div class="ai-head"><span class="ai-dot"></span><span class="ai-label">紅點最多</span></div>
+      <div class="ai-prompt">員工學習動機分析</div>
+      <div class="ai-result">員工學習動機可分為內在與外在兩類。內在包括成就感、興趣;外在包括升遷、薪資。建議公司...</div>
+    </div>
+    <div class="ai-col mid">
+      <div class="ai-head"><span class="ai-dot"></span><span class="ai-label">中間值</span></div>
+      <div class="ai-prompt">員工不學習怎麼辦?</div>
+      <div class="ai-result">員工不學習有以下原因:1. 缺乏動機 2. 時間不夠 3. 資源不足。公司可以採取以下措施...</div>
+    </div>
+    <div class="ai-col good">
+      <div class="ai-head"><span class="ai-dot"></span><span class="ai-label">綠點最多</span></div>
+      <div class="ai-prompt">身為主管,我該如何讓員工主動學習?</div>
+      <div class="ai-result">作為主管,可以從幾個方向著手:建立明確的成長路徑,提供學習時間,用自己的學習行為當示範...</div>
+    </div>
+  </div>
+
+  <div class="bottom-line fragment" data-order="0" style="margin-top:.5rem;padding:1rem 1.5rem;">
+    <h3>答案差異的關鍵</h3>
+    <p>文字不同,<strong style="color:var(--green);">但結構一樣</strong>:都在問「怎麼辦」。<br>寫長一點不會讓答案變好,<strong style="color:var(--green);">寫得有結構才會</strong>。</p>
+  </div>
+</div>
+
+<!-- ══ 5 · Step 4 揭示結構 + 重寫 ══ -->
+<div class="slide dataviz" data-act="Step 4 · 結構" data-index="5">
+  <div style="text-align:center;margin-bottom:.4rem;">
+    <p style="font-size:.72rem;color:var(--green);letter-spacing:.15em;margin-bottom:.2rem;">STEP 4 ・ 5 分鐘</p>
+    <h2>揭示結構 + 重寫</h2>
+    <p style="color:var(--g600);font-size:.92rem;">三個元素,寫進每一個提示詞</p>
+  </div>
+
+  <div class="card-grid" style="max-width:980px;margin-top:.3rem;gap:.8rem;">
+    <div class="card accent-top-blue" style="padding:.9rem 1.1rem;">
+      <h3 style="color:var(--blue);">角色</h3>
+      <p>你是誰?AI 要用什麼身份回答?</p>
+    </div>
+    <div class="card accent-top" style="padding:.9rem 1.1rem;">
+      <h3 style="color:var(--green);">觀點</h3>
+      <p>你怎麼看?你的判斷是什麼?</p>
+    </div>
+    <div class="card accent-top-red" style="padding:.9rem 1.1rem;">
+      <h3 style="color:var(--red);">限制</h3>
+      <p>什麼不能做?什麼是底線?</p>
+    </div>
+  </div>
+
+  <div class="template-box fragment" data-order="0" style="padding:1rem 1.4rem;font-size:1rem;line-height:1.9;margin-top:.5rem;">
+    身為 <span class="blank">角色</span>,我認為 <span class="blank">觀點</span>,但 <span class="blank">限制</span> 不能做。請給我 <span class="blank">想要的東西</span>。
+  </div>
+
+  <div class="info-box success fragment" data-order="1" style="padding:.7rem 1.2rem;margin-top:.4rem;">
+    <div class="label">現在做</div>
+    <p style="font-size:.92rem;">拿出第二張便利貼,用三個元素重寫。三分鐘後挑一張當場跑 AI,跟剛剛的答案<strong>並排對照</strong>。</p>
+  </div>
+</div>
+
+<!-- ══ 6 · 收尾 + 過渡到 R2 ══ -->
+<div class="slide poster" data-act="收尾" data-index="6"
+     style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.5);letter-spacing:.15em;margin-bottom:.8rem;">拍賣會結束 · 接回主簡報 R2</p>
+  <h1 style="font-size:2.8rem;line-height:1.25;">你今天會不會用 AI<br><span style="color:#6ee7d4;">不是看你輸入幾個字</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.4rem;">是看你<strong style="color:#fff;">有沒有給它結構</strong></p>
+  <div style="margin-top:2.2rem;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;">
+    <span class="poster-badge">角色</span>
+    <span class="poster-badge">觀點</span>
+    <span class="poster-badge">限制</span>
+  </div>
+  <p style="color:rgba(255,255,255,.35);margin-top:2.8rem;font-size:.9rem;">回到 M1-1 主簡報 · Round 2 指令</p>
+</div>
+
+</div><!-- end .slides -->
+
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter">1 / 7</div>
+<div class="controls">
+  <button id="prevBtn" onclick="navigate(-1)" disabled>‹</button>
+  <button id="nextBtn" onclick="navigate(1)">›</button>
+</div>
+
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">◈</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">▲</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+  let fragmentIdx = 0;
+
+  const chapters = [];
+  let lastAct = '';
+  slides.forEach((s, i) => {
+    const act = s.dataset.act || '';
+    if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+  });
+
+  const list = document.getElementById('chapterList');
+  chapters.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'chapter-item';
+    item.dataset.idx = c.idx;
+    item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+    item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+    list.appendChild(item);
+  });
+
+  function getFragments(slide){
+    return Array.from(slide.querySelectorAll('.fragment'))
+      .sort((a,b) => (+a.dataset.order||0) - (+b.dataset.order||0));
+  }
+
+  function showSlide(n, showAllFragments){
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total-1, n));
+    const s = slides[cur];
+    s.classList.add('active');
+    const frags = getFragments(s);
+    if(showAllFragments){
+      frags.forEach(f => f.classList.add('visible'));
+      fragmentIdx = frags.length;
+    } else {
+      frags.forEach(f => f.classList.remove('visible'));
+      fragmentIdx = 0;
+    }
+    updateUI();
+  }
+
+  function goTo(n){ showSlide(n, false); }
+
+  function navigate(dir){
+    const s = slides[cur];
+    const frags = getFragments(s);
+    if(dir > 0){
+      if(fragmentIdx < frags.length){
+        frags[fragmentIdx].classList.add('visible');
+        fragmentIdx++;
+        updateUI();
+        return;
+      }
+      showSlide(cur + 1, false);
+    } else {
+      if(fragmentIdx > 0){
+        fragmentIdx--;
+        frags[fragmentIdx].classList.remove('visible');
+        updateUI();
+        return;
+      }
+      showSlide(cur - 1, true);
+    }
+  }
+
+  function updateUI(){
+    document.getElementById('progress').style.width = ((cur/(total-1))*100)+'%';
+    document.getElementById('counter').textContent = (cur+1)+' / '+total;
+    document.getElementById('prevBtn').disabled = cur === 0 && fragmentIdx === 0;
+    document.getElementById('nextBtn').disabled = cur === total-1 && fragmentIdx >= getFragments(slides[cur]).length;
+
+    let act = '';
+    for(let i = chapters.length-1; i >= 0; i--){
+      if(cur >= chapters[i].idx){ act = chapters[i].act; break; }
+    }
+    document.getElementById('chapterLabel').textContent = act || '章節';
+
+    document.querySelectorAll('.chapter-item').forEach(item => {
+      const idx = +item.dataset.idx;
+      let end = total;
+      for(let c of chapters){ if(c.idx > idx){ end = c.idx; break; } }
+      item.classList.toggle('active', cur >= idx && cur < end);
+    });
+  }
+
+  function toggleChapterMenu(){
+    document.getElementById('chapterMenu').classList.toggle('open');
+  }
+  function closeChapterMenu(){
+    document.getElementById('chapterMenu').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => {
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){ e.preventDefault(); navigate(1); }
+    else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); navigate(-1); }
+    else if(e.key==='Home'){ e.preventDefault(); showSlide(0, false); }
+    else if(e.key==='End'){ e.preventDefault(); showSlide(total-1, true); }
+    else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if(e.key==='Escape'){ closeChapterMenu(); }
+  });
+
+  document.querySelector('.slides').addEventListener('click', e => {
+    if(e.target.closest('.controls')||e.target.closest('.chapter-menu')) return;
+    navigate(1);
+  });
+
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 50){ navigate(dx < 0 ? 1 : -1); }
+  }, {passive:true});
+
+  updateUI();
+  window.navigate = navigate;
+  window.goTo = goTo;
+  window.toggleChapterMenu = toggleChapterMenu;
+})();
+</script>
+</body>
+</html>

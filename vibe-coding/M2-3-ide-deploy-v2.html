@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M2-3 — IDE 接 GitHub 部署 V2 | Vibe Coding Stage 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g500:#80868B; --g600:#5F6368; --g700:#3C4043; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --navy:#0B3C5D;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --gh-fg:#1f2328; --gh-mute:#59636e; --gh-border:#d1d9e0;
+  --gh-canvas:#f6f8fa; --gh-green:#1f883d; --gh-link:#0969da;
+  --gh-nav:#1f2328;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;background:var(--white);}
+.slides{width:100%;height:100%;position:relative;}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 4rem 1.5rem;overflow:hidden;}
+.slide.active{display:flex;}
+.slide.dataviz{background:var(--white);padding-top:3rem;justify-content:flex-start;}
+.slide.dataviz::before,.slide.dataviz::after{content:'';flex:1 0 0px;}
+.slide.poster{background-size:cover;background-position:center;color:#fff;text-align:center;}
+.slide.poster::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.7) 100%);z-index:1;}
+.slide.poster>*{position:relative;z-index:2;}
+h1{font-size:3rem;font-weight:900;line-height:1.3;color:var(--g900);}
+.slide.poster h1{color:#fff;}
+h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;color:var(--g900);}
+h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
+p,li{font-size:1.1rem;line-height:1.8;}
+.poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
+.poster-tag{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.85rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin:.3rem;}
+
+.step-list{text-align:left;max-width:800px;width:100%;}
+.step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
+.step:last-child{border:none;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-content{flex:1;}
+.step-content strong{font-size:1.1rem;color:var(--g900);}
+.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;line-height:1.7;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
+.stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
+.stat-box .val{font-size:2.4rem;font-weight:900;color:var(--green);line-height:1.1;}
+.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+.big-stat{text-align:center;margin:1rem 0;}
+.big-stat .num{font-size:5rem;font-weight:900;color:var(--green);line-height:1;}
+.big-stat .unit{font-size:1.4rem;font-weight:700;color:var(--g600);margin-left:.3rem;}
+.big-stat .caption{font-size:1.05rem;color:var(--g600);margin-top:.4rem;}
+
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:1100px;}
+.card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.3rem 1.5rem;min-width:220px;max-width:320px;flex:1;}
+.card h3{color:var(--g900);margin-bottom:.3rem;}
+.card p{font-size:.95rem;color:var(--g600);line-height:1.7;}
+.card.accent-top{border-top:4px solid var(--green);}
+.card.accent-top-blue{border-top:4px solid var(--blue);}
+.card.accent-top-gold{border-top:4px solid var(--gold);}
+.card.accent-top-red{border-top:4px solid var(--red);}
+.card.accent-top-purple{border-top:4px solid var(--purple);}
+.card.accent-top-orange{border-top:4px solid var(--orange);}
+
+.flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
+
+.info-box{border-radius:12px;padding:1.1rem 1.5rem;max-width:820px;width:100%;text-align:left;margin-top:.8rem;}
+.info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
+.info-box.tip .label{color:#b07d00;font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box p{font-size:1rem;line-height:1.75;color:var(--g800);}
+
+.quote-box{max-width:820px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.6rem 2rem;margin:1rem 0;text-align:left;}
+.quote-box .quote-text{font-size:1.35rem;font-weight:700;line-height:1.6;color:var(--g900);}
+
+.code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1rem 1.4rem;max-width:820px;width:100%;text-align:left;margin:.8rem 0;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:.92rem;color:var(--g900);line-height:1.8;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.4rem;}
+
+.compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:1000px;width:100%;margin-top:.8rem;}
+.compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
+.compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
+.compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
+.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col.bad .col-label{color:var(--red);}
+.compare-col.good .col-label{color:var(--green);}
+.compare-col p,.compare-col li{font-size:1rem;line-height:1.8;color:var(--g800);}
+
+.cycle-ring{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;max-width:780px;width:100%;margin:1rem 0;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.7rem 1rem;text-align:center;color:var(--g800);}
+.cycle-step .cycle-label{font-size:.78rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step .cycle-name{font-size:1.05rem;font-weight:700;}
+.cycle-step.active{border-color:var(--green);background:var(--green-lt);color:var(--green);}
+.cycle-step.active .cycle-label{color:var(--green);}
+
+.bottom-line{max-width:820px;width:100%;background:var(--green-lt);border:2px solid rgba(15,157,138,.3);border-radius:16px;padding:1.6rem 2rem;text-align:center;margin-top:1rem;}
+.bottom-line h3{font-size:1.4rem;color:var(--green);margin-bottom:.4rem;}
+.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:680px;margin:0 auto;line-height:1.7;}
+
+.page-title{text-align:center;margin-bottom:.6rem;}
+.page-title .stage-tag{font-size:.7rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;}
+.page-title h2{margin-bottom:.2rem;}
+.page-title .sub{color:var(--g600);font-size:.95rem;}
+
+/* LV row */
+.lv-row{background:#f7fafc;padding:1rem .8rem .8rem;border-radius:14px;display:flex;align-items:stretch;gap:.3rem;max-width:1280px;width:100%;height:75%;max-height:520px;}
+.lv-col{display:flex;flex-direction:column;}
+.lv-label{text-align:center;margin-bottom:.4rem;}
+.lv-label .num{font-size:.85rem;font-weight:700;letter-spacing:.08em;}
+.lv-label.lv1 .num{color:#64748b;}
+.lv-label.lv2 .num{color:var(--green);}
+.lv-label.lv3 .num{color:#d97706;}
+.lv-caption{text-align:center;font-size:.82rem;color:var(--g700);margin-top:.5rem;font-weight:500;}
+.lv-caption.lv2{color:var(--green);font-weight:600;font-size:.85rem;}
+.lv-caption.lv3{color:#d97706;font-weight:600;font-size:.82rem;}
+.lv-connector{display:flex;align-items:center;padding:0 .15rem;align-self:center;}
+.lv-connector span:first-child,.lv-connector span:last-child{width:5px;height:5px;border-radius:50%;background:#94a3b8;}
+.lv-connector span:nth-child(2){width:18px;border-top:1px dashed #cbd5e1;}
+
+/* IDE + GitHub mockup */
+.ide-frame{background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;flex:1;display:flex;flex-direction:column;border:1px solid #d1d9e0;}
+.ide-frame.lv2{box-shadow:0 2px 10px rgba(15,157,138,.18);border-color:#a7d4cc;}
+.ide-frame.lv3{box-shadow:0 3px 14px rgba(217,119,6,.18);border-color:#f0d28b;}
+.ide-titlebar{background:#e8e8e8;padding:.3rem .5rem;display:flex;gap:5px;align-items:center;font-size:.5rem;flex-shrink:0;}
+.ide-titlebar.lv2{background:#e8f0fe;}
+.ide-titlebar.lv3{background:#fef3c7;}
+.ide-titlebar .dot{width:7px;height:7px;border-radius:50%;background:#bbb;}
+.ide-titlebar.lv2 .dot{background:#1a73e8;}
+.ide-titlebar.lv3 .dot{background:#d97706;}
+.ide-titlebar .url{margin-left:.4rem;color:#666;font-family:'Fira Code',monospace;font-size:.48rem;}
+.ide-body{display:flex;flex:1;min-height:0;background:#1e1e1e;color:#d4d4d4;font-family:'Fira Code',monospace;}
+.ide-sidebar{width:30%;background:#252526;padding:.35rem .3rem;font-size:.42rem;border-right:1px solid #3e3e42;}
+.ide-sidebar .section{color:#6a737d;font-size:.36rem;text-transform:uppercase;letter-spacing:.05em;padding:.15rem 0 .1rem;font-weight:700;}
+.ide-sidebar .folder{color:#cccccc;padding:.05rem 0;}
+.ide-sidebar .file{padding-left:.5rem;color:#9da5b4;font-size:.4rem;line-height:1.55;}
+.ide-sidebar .file.active{background:#37373d;color:#fff;}
+.ide-sidebar .file.new{color:#73c991;}
+.ide-main{flex:1;display:flex;flex-direction:column;min-width:0;}
+.ide-tabs{background:#2d2d30;padding:0;display:flex;font-size:.4rem;border-bottom:1px solid #3e3e42;}
+.ide-tab{padding:.18rem .35rem;background:#2d2d30;color:#9da5b4;border-right:1px solid #3e3e42;}
+.ide-tab.active{background:#1e1e1e;color:#fff;}
+.ide-code{flex:1;padding:.3rem .35rem;font-size:.4rem;line-height:1.55;background:#1e1e1e;}
+.ide-code .line{display:flex;}
+.ide-code .ln{color:#6a737d;width:14px;flex-shrink:0;text-align:right;padding-right:.25rem;}
+.ide-code .tag{color:#569cd6;}
+.ide-code .str{color:#ce9178;}
+.ide-code .txt{color:#d4d4d4;}
+.ide-code .added{background:rgba(115,201,145,.18);}
+.ide-chat{width:34%;background:#252526;border-left:1px solid #3e3e42;padding:.3rem .35rem;display:flex;flex-direction:column;gap:.25rem;font-size:.42rem;}
+.chat-header{color:#9da5b4;font-size:.38rem;border-bottom:1px solid #3e3e42;padding-bottom:.18rem;}
+.chat-msg{padding:.22rem .3rem;border-radius:4px;}
+.chat-msg.user{background:#37373d;color:#fff;align-self:flex-end;max-width:90%;}
+.chat-msg.ai{background:#094771;color:#cce4ff;max-width:92%;}
+.chat-msg.ai .meta{color:#73c991;font-size:.36rem;display:block;margin-top:1px;}
+
+/* GitHub UI mockup */
+.gh-frame{background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;border:1px solid var(--gh-border);display:flex;flex-direction:column;flex:1;}
+.gh-browser{background:#e8eaee;padding:.3rem .5rem;display:flex;gap:5px;align-items:center;font-size:.5rem;}
+.gh-browser .dot{width:7px;height:7px;border-radius:50%;background:#bbb;}
+.gh-browser .url{margin-left:.4rem;color:#666;font-family:'Fira Code',monospace;font-size:.48rem;}
+.gh-nav{background:var(--gh-nav);color:#f6f8fa;padding:.3rem .55rem;display:flex;align-items:center;gap:.4rem;font-size:.45rem;}
+.gh-nav .gh-logo{width:14px;height:14px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;font-size:.5rem;}
+.gh-nav .gh-search{flex:1;background:#1d2228;border:1px solid #30363d;border-radius:5px;padding:.1rem .4rem;color:#9d9d9d;font-size:.4rem;}
+.gh-nav .gh-avatar{width:14px;height:14px;background:linear-gradient(135deg,#a78bfa,#0F9D8A);border-radius:50%;}
+.gh-body{flex:1;background:#fff;padding:.4rem .55rem;font-size:.45rem;color:var(--gh-fg);display:flex;flex-direction:column;gap:.3rem;}
+
+.mockup-center{background:#f7fafc;padding:1rem;border-radius:14px;max-width:880px;width:100%;margin:.5rem 0;}
+
+/* Wow / Pitfall / TimeMap */
+.wow-slide{text-align:center;justify-content:center !important;padding-top:2rem;}
+.wow-badge{display:inline-block;background:var(--gold);color:#fff;padding:.35rem 1.4rem;border-radius:100px;font-size:.95rem;font-weight:700;letter-spacing:.12em;margin-bottom:1rem;}
+.wow-heading{font-size:2.6rem;font-weight:900;line-height:1.35;color:var(--g900);margin:.4rem 0 .8rem;max-width:900px;}
+.wow-sub{font-size:1.15rem;color:var(--g600);max-width:680px;margin:0 auto 1rem;line-height:1.7;}
+.pitfall-badge{display:inline-block;background:var(--red);color:#fff;padding:.3rem 1.2rem;border-radius:100px;font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.8rem;}
+.pitfall-card{background:#fff;border:2px solid var(--red);border-top:5px solid var(--red);border-radius:14px;padding:1rem 1.3rem;max-width:1100px;width:100%;margin-top:.5rem;}
+.pitfall-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:.6rem;}
+.pitfall-item{background:var(--red-lt);border-radius:10px;padding:.7rem .9rem;}
+.pitfall-item .ptitle{font-size:1rem;font-weight:700;color:var(--g900);margin-bottom:.2rem;}
+.pitfall-item .pdesc{font-size:.82rem;color:var(--g700);line-height:1.6;}
+.time-map{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;max-width:1200px;width:100%;margin:.8rem 0;}
+.time-block{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:2px solid var(--g100);}
+.time-block .tb-head{padding:.5rem .6rem;color:#fff;text-align:center;}
+.time-block .tb-head .tb-time{font-size:.75rem;font-weight:600;opacity:.85;}
+.time-block .tb-head .tb-name{font-size:.95rem;font-weight:700;margin-top:.15rem;}
+.time-block .tb-body{flex:1;background:#fff;padding:.5rem .6rem;font-size:.78rem;color:var(--g700);line-height:1.55;}
+.time-block .tb-body strong{color:var(--g900);font-size:.85rem;display:block;margin-bottom:.2rem;}
+
+/* Chapter Menu */
+.chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
+.chapter-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--white);border:1px solid var(--g200);border-radius:8px;color:var(--g800);font-size:.8rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.chapter-btn:hover{border-color:var(--green);}
+.chapter-icon{color:var(--green);font-weight:700;}
+.chapter-arrow{font-size:.6rem;opacity:.5;transition:transform .2s;}
+.chapter-menu.open .chapter-arrow{transform:rotate(180deg);}
+.chapter-list{display:none;position:absolute;bottom:calc(100% + 8px);left:0;min-width:240px;background:var(--white);border:1px solid var(--g200);border-radius:10px;padding:6px 0;max-height:60vh;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.chapter-menu.open .chapter-list{display:block;}
+.chapter-item{display:flex;align-items:center;gap:8px;padding:8px 14px;color:var(--g600);font-size:.78rem;cursor:pointer;white-space:nowrap;}
+.chapter-item:hover{background:var(--offwhite);color:var(--g900);}
+.chapter-item.active{color:var(--green);font-weight:600;}
+.chapter-dot{width:6px;height:6px;border-radius:50%;background:var(--g200);flex-shrink:0;}
+.chapter-item.active .chapter-dot{background:var(--green);}
+
+.controls{position:fixed;bottom:1.2rem;right:1.2rem;z-index:100;display:flex;gap:.5rem;}
+.controls button{width:44px;height:44px;border:2px solid var(--g200);border-radius:10px;background:var(--white);color:var(--g800);font-size:1.1rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.controls button:hover{background:var(--green);border-color:var(--green);color:#fff;}
+.slide-counter{position:fixed;bottom:4.4rem;right:1.5rem;z-index:100;color:var(--g500);font-size:.78rem;font-family:'Fira Code',monospace;}
+.module-title{position:fixed;top:1rem;left:1.2rem;z-index:100;color:var(--g400);font-size:.85rem;font-weight:700;}
+.module-badge{position:fixed;top:1rem;right:1rem;z-index:100;background:var(--green-lt);color:var(--green);padding:.25rem .8rem;border-radius:100px;font-size:.8rem;font-weight:700;border:1px solid rgba(15,157,138,.2);}
+.progress-bar{position:fixed;bottom:0;left:0;height:3px;background:var(--green);transition:width .4s;z-index:100;}
+</style>
+</head>
+<body>
+
+<div class="module-title">Vibe Coding — Stage 2 · 上線網頁</div>
+<div class="module-badge">M2-3 · IDE 接 GitHub</div>
+
+<div class="slides">
+
+<!-- ══ 0 Cover ══ -->
+<div class="slide poster active" data-act="開場" style="background:linear-gradient(135deg,#0B3C5D 0%,#1a1a2e 40%,#1A73E8 100%);">
+  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 上線網頁</p>
+  <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">IDE 接 GitHub<br><span style="color:#93c5fd;">直接部署</span></h1>
+  <p class="poster-subtitle" style="margin-top:1.2rem;">M2-2 做的作品 一句話 push 上 GitHub Pages</p>
+  <div style="margin-top:2rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
+    <span class="poster-tag">M2-3</span>
+    <span class="poster-tag">3 小時</span>
+    <span class="poster-tag">6 輪循環</span>
+    <span class="poster-tag">SSH 金鑰 一次設定</span>
+  </div>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+</div>
+
+<!-- ══ 1 Page 2 LV 全景 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <div class="page-title">
+    <p class="stage-tag">M2-3 ・ 3 小時</p>
+    <h2>本模組你會做出什麼</h2>
+    <p class="sub">M2-2 做的作品 從本機檔案 一路 push 到 GitHub Pages 上線</p>
+  </div>
+  <div class="lv-row">
+    <div class="lv-col lv1" style="flex:25;">
+      <div class="lv-label lv1"><div class="num">LV1</div></div>
+      <div class="ide-frame">
+        <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-slides/</span></div>
+        <div class="ide-body">
+          <div class="ide-sidebar">
+            <div class="section">SOURCE CONTROL</div>
+            <div class="folder">▾ Changes (1)</div>
+            <div class="file active">slides.html</div>
+          </div>
+          <div class="ide-main">
+            <div class="ide-tabs"><div class="ide-tab active">Source Control</div></div>
+            <div style="padding:.5rem;color:#cce4ff;font-size:.4rem;">
+              <div>✓ Connected to github.com/alan/my-slides</div>
+              <div style="margin-top:.3rem;">$ git push origin main</div>
+              <div style="color:#73c991;">✓ Deploy to alan.github.io</div>
+            </div>
+          </div>
+          <div class="ide-chat">
+            <div class="chat-header">▸ Chat</div>
+            <div class="chat-msg user">幫我 push 上 GitHub</div>
+            <div class="chat-msg ai">已 push 部署中<span class="meta">✓ 1 分鐘後上線</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="lv-caption">把作品直接 push 上線</p>
+    </div>
+    <div class="lv-connector"><span></span><span></span><span></span></div>
+    <div class="lv-col lv2" style="flex:36;">
+      <div class="lv-label lv2"><div class="num">LV2 ・ 必做主線</div></div>
+      <div class="gh-frame" style="border-color:#a7d4cc;">
+        <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">alan-chen.github.io</span></div>
+        <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+        <div class="gh-body" style="padding:.5rem;">
+          <div style="background:linear-gradient(135deg,#0B3C5D,#0F9D8A);color:#fff;padding:.4rem .6rem;border-radius:4px;text-align:center;">
+            <div style="font-size:.65rem;font-weight:700;">Alan Chen</div>
+            <div style="font-size:.42rem;opacity:.8;margin-top:.1rem;">教 AI 教育的工程師</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.2rem;margin-top:.3rem;">
+            <div style="background:var(--green-lt);padding:.3rem;border-radius:4px;font-size:.4rem;color:var(--green);font-weight:700;text-align:center;">關於我</div>
+            <div style="background:var(--blue-lt);padding:.3rem;border-radius:4px;font-size:.4rem;color:var(--blue);font-weight:700;text-align:center;">簡報</div>
+            <div style="background:var(--gold-lt);padding:.3rem;border-radius:4px;font-size:.4rem;color:#b07d00;font-weight:700;text-align:center;">下載</div>
+          </div>
+          <div style="margin-top:.3rem;background:var(--offwhite);border-radius:4px;padding:.3rem;font-size:.4rem;color:var(--g700);">
+            <div style="font-weight:700;">最新作品</div>
+            <div style="margin-top:.15rem;">研究報告分析 ・ AI 工具評測</div>
+          </div>
+        </div>
+      </div>
+      <p class="lv-caption lv2">多頁網站 含簡報跟下載</p>
+    </div>
+    <div class="lv-connector"><span></span><span></span><span></span></div>
+    <div class="lv-col lv3" style="flex:31;">
+      <div class="lv-label lv3"><div class="num">LV3 ・ 完成後加做</div></div>
+      <div class="gh-frame" style="border-color:#f0d28b;">
+        <div class="gh-browser"><span class="dot" style="background:#d97706;"></span><span class="dot" style="background:#d97706;"></span><span class="dot" style="background:#d97706;"></span><span class="url" style="color:#d97706;">alan.github.io/new-project</span></div>
+        <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+        <div class="gh-body" style="padding:.5rem;">
+          <div style="background:linear-gradient(135deg,#d97706,#8b5cf6);color:#fff;padding:.5rem;border-radius:4px;text-align:center;">
+            <div style="font-size:.65rem;font-weight:700;">全新專案</div>
+            <div style="font-size:.4rem;opacity:.85;margin-top:.15rem;">從零到部署 25 分鐘</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.2rem;margin-top:.3rem;">
+            <div style="border:1px solid var(--gh-border);border-radius:3px;padding:.25rem;"><div style="font-size:.4rem;font-weight:700;">AI 翻譯器</div></div>
+            <div style="border:1px solid var(--gh-border);border-radius:3px;padding:.25rem;"><div style="font-size:.4rem;font-weight:700;">客戶查詢</div></div>
+          </div>
+        </div>
+      </div>
+      <p class="lv-caption lv3">重做新專案部署上線</p>
+    </div>
+  </div>
+  <div class="info-box success" style="max-width:1100px;margin-top:1rem;">
+    <p style="text-align:center;font-size:1.05rem;"><strong style="color:var(--green);">IDE 跟 GitHub 串起來</strong> AI 改完直接 push 上線 不用回瀏覽器拖檔</p>
+  </div>
+</div>
+
+<!-- ══ 2 六輪循環 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <h2>六輪循環 逐層遞進</h2>
+  <div class="cycle-ring">
+    <div class="cycle-step"><span class="cycle-label">Round 1</span><span class="cycle-name">SSH key 是什麼</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 2</span><span class="cycle-name">自己跑 ssh-keygen</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 3</span><span class="cycle-name">LV1 第一次 push</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 4</span><span class="cycle-name">LV2 多頁網站</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 5</span><span class="cycle-name">LV3 重做新專案</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 6</span><span class="cycle-name">回顧反思</span></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">每一輪的節奏</div>
+    <p>操作指令 → 補強版參考 → 操作計時 → 分享觀察 → 小結反思</p>
+  </div>
+</div>
+
+<!-- ══ 3 3 小時流程地圖 ══ -->
+<div class="slide dataviz" data-act="開場">
+  <h2>今天 3 小時的路線</h2>
+  <div class="time-map">
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#065f46,#0F9D8A);"><div class="tb-time">0:00 – 0:30</div><div class="tb-name">Round 1</div></div>
+      <div class="tb-body"><strong>SSH key 觀念</strong>一次設定 全帳號通行 為什麼這樣選</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#0d2a44,#1A73E8);"><div class="tb-time">0:30 – 1:00</div><div class="tb-name">Round 2</div></div>
+      <div class="tb-body"><strong>跑 ssh-keygen</strong>生金鑰 貼 GitHub 驗證</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#0d2a44,#1A73E8);"><div class="tb-time">1:00 – 1:30</div><div class="tb-name">Round 3</div></div>
+      <div class="tb-body"><strong>LV1 第一次 push</strong>把 M2-2 slides.html push 上線</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#2a2a44,#7C3AED);"><div class="tb-time">1:30 – 2:00</div><div class="tb-name">Round 4</div></div>
+      <div class="tb-body"><strong>LV2 多頁網站</strong>個人介紹頁 + 簡報 + 檔案下載</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#9a3412,#E8710A);"><div class="tb-time">2:00 – 2:30</div><div class="tb-name">Round 5</div></div>
+      <div class="tb-body"><strong>LV3 重做新專案</strong>從零開始一個全新作品部署上線</div>
+    </div>
+    <div class="time-block">
+      <div class="tb-head" style="background:linear-gradient(135deg,#065f46,#0F9D8A);"><div class="tb-time">2:30 – 3:00</div><div class="tb-name">Round 6</div></div>
+      <div class="tb-body"><strong>回顧</strong>三階段對比 M2-4 預告</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 1: SSH token 是什麼
+     ════════════════════════════════════════ -->
+
+<!-- ══ 4 R1 Poster ══ -->
+<div class="slide poster" data-act="Round 1：SSH key" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">SSH 金鑰<br><span style="color:#6ee7d4;">一次設定 全帳號通</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">vibe coding 的精神<br>不讓基礎設施卡住創作流程</p>
+</div>
+
+<!-- ══ 5 概念: SSH key 是什麼 ══ -->
+<div class="slide dataviz" data-act="Round 1：SSH key">
+  <h2>SSH key 是 GitHub 認你的鑰匙</h2>
+  <div class="info-box blue">
+    <div class="label">SSH 是什麼字</div>
+    <p>SSH 是 <strong style="color:var(--blue);">Secure Shell</strong> 縮寫 安全通訊協定　key 就是金鑰<br>你產出一對金鑰 公鑰貼到 GitHub 私鑰留在本機　以後本機跟 GitHub 對話都用這對金鑰認證</p>
+  </div>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">本機生一對金鑰<br><span style="font-size:.8rem;font-weight:400;">公鑰 + 私鑰</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">公鑰貼 GitHub</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">驗證通了<br><span style="font-size:.8rem;font-weight:400;">所有 repo 全帳號通</span></div>
+  </div>
+</div>
+
+<!-- ══ 6 概念: 三種認證方式比較 為什麼用 Account-level SSH key ══ -->
+<div class="slide dataviz" data-act="Round 1：SSH key">
+  <h2>為什麼選 Account-level SSH key</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">GitHub 有三種認證方式 給入門選最順的</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1180px;width:100%;align-items:stretch;">
+    <div style="background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);border-radius:16px;padding:1rem 1.2rem;display:flex;flex-direction:column;">
+      <div style="font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:.1em;">本堂選這個</div>
+      <h3 style="color:var(--g900);margin:.2rem 0 .15rem;">Account SSH key</h3>
+      <div style="font-size:.78rem;color:var(--g600);margin-bottom:.4rem;">push / pull 程式碼</div>
+      <ul style="list-style:none;padding:0;font-size:.88rem;line-height:1.8;">
+        <li>✓ 一次設定 所有 repo 通</li>
+        <li>✓ 不會過期</li>
+        <li>✓ 入門最順</li>
+        <li>✗ 一把鑰匙管所有 repo</li>
+      </ul>
+    </div>
+    <div style="background:var(--offwhite);border:2px solid var(--g200);border-top:4px solid var(--g600);border-radius:16px;padding:1rem 1.2rem;display:flex;flex-direction:column;">
+      <div style="font-size:.78rem;color:var(--g700);font-weight:700;letter-spacing:.1em;">部署機才用</div>
+      <h3 style="color:var(--g900);margin:.2rem 0 .15rem;">Deploy key</h3>
+      <div style="font-size:.78rem;color:var(--g600);margin-bottom:.4rem;">部署機推單一 repo</div>
+      <ul style="list-style:none;padding:0;font-size:.88rem;line-height:1.8;">
+        <li>✓ 每把鑰匙只能碰一個 repo</li>
+        <li>✓ 細權限 安全度高</li>
+        <li>✗ 每個 repo 要重設一次</li>
+        <li>✗ 入門被勸退</li>
+      </ul>
+    </div>
+    <div style="background:var(--offwhite);border:2px solid var(--g200);border-top:4px solid var(--g600);border-radius:16px;padding:1rem 1.2rem;display:flex;flex-direction:column;">
+      <div style="font-size:.78rem;color:var(--g700);font-weight:700;letter-spacing:.1em;">API 操作用</div>
+      <h3 style="color:var(--g900);margin:.2rem 0 .15rem;">Personal Token</h3>
+      <div style="font-size:.78rem;color:var(--g600);margin-bottom:.4rem;">建 repo / 開 PR / 改設定</div>
+      <ul style="list-style:none;padding:0;font-size:.88rem;line-height:1.8;">
+        <li>✓ HTTPS 環境用</li>
+        <li>✓ 細權限可調</li>
+        <li>✗ 會過期要重產 fine-grained</li>
+        <li>✗ 字串易誤貼外洩</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box success">
+    <div class="label">入門就用 Account SSH key</div>
+    <p>學員今天建 repo-A 明天 repo-B　如果每個 repo 都要重設 Deploy key 光這關就勸退一半　Account key 一次設定全通行</p>
+  </div>
+</div>
+
+<!-- ══ 7 概念: 一句話讓 agy 全跑 ══ -->
+<div class="slide dataviz" data-act="Round 1：SSH key">
+  <h2>整套流程 一句話讓 agy 全跑</h2>
+  <div class="info-box success">
+    <div class="label">vibe coding 真正的精神</div>
+    <p>學員不用學指令 不用打指令　給 agy 一句話描述目標　它自己跑 自己驗證 只在需要人去 GitHub 貼公鑰那一步停下來告訴你</p>
+  </div>
+  <div class="code-block">
+    <div class="code-label">你給 agy 的一句話 就這樣</div>
+    <pre>帶我設定 GitHub SSH key 直接下指令
+每個步驟完成後告訴我下一步</pre>
+  </div>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box accent">agy 自己跑<br>ssh-keygen</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">告訴你<br>公鑰已複製</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">你去 GitHub 貼</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">agy 自己驗證<br>告訴你 Hi 帳號</div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">你全程只做兩件事 看 agy 在 Chat 裡的訊息　到 GitHub SSH keys 頁面貼一次</p>
+  </div>
+</div>
+
+<!-- ══ 8 補強版: 三個全開的代價 ══ -->
+<div class="slide dataviz" data-act="Round 1：SSH key">
+  <h2>全開的三個代價 要建立觀念</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">Account key 一把通用全帳號 方便 也代表外洩就全淪陷</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1180px;width:100%;">
+    <div class="card accent-top-red">
+      <h3>代價 1 私鑰絕不外流</h3>
+      <p style="font-size:.88rem;line-height:1.7;"><span style="font-family:'Fira Code',monospace;color:var(--red);">~/.ssh/id_ed25519</span> 沒 .pub 那個檔　永遠不貼 不傳 不進 git　只貼 <strong style="color:var(--green);">.pub</strong></p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>代價 2 passphrase 留空</h3>
+      <p style="font-size:.88rem;line-height:1.7;">入門先求順 留空快　公用電腦 正式環境要設密碼<br>你的學習機可以空 但要知道有這選項</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>代價 3 長大要分權</h3>
+      <p style="font-size:.88rem;line-height:1.7;">未來碰 CI / 部署到伺服器　再學 Deploy key 那台機器只該碰一個 repo　入門不用一次塞</p>
+    </div>
+  </div>
+  <div class="info-box warning">
+    <div class="label">最重要的一條規則</div>
+    <p>私鑰 (<span style="font-family:'Fira Code',monospace;">id_ed25519</span>) 跟 公鑰 (<span style="font-family:'Fira Code',monospace;">id_ed25519.pub</span>) 差一個 .pub　帶 .pub 才能貼出去　不帶 .pub 永遠留在你電腦裡</p>
+  </div>
+</div>
+
+<!-- ══ 9 操作指令: 看老師示範 ══ -->
+<div class="slide dataviz" data-act="Round 1：SSH key">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">看老師示範一次<br>R2 你自己跟 agy 一起跑</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">這 15 分鐘觀察什麼</div>
+    <p>老師讓 agy 在 Chat 區跑 ssh-keygen　看終端機輸出長什麼樣<br>看公鑰怎麼複製 怎麼貼到 GitHub SSH keys 設定<br>看 ssh -T 出現 Hi 你的帳號 那一刻</p>
+  </div>
+</div>
+
+<!-- ══ 10 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 1：SSH key">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">5</span><span class="unit">分鐘</span><div class="caption">看老師示範 + 認識觀念</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">這 5 分鐘做的</div>
+    <p>不操作 只看老師示範一遍<br>R2 換你自己跑 也只要 5 分鐘<br>有問題等下分享觀察提出來</p>
+  </div>
+</div>
+
+<!-- ══ 11 R1 小結 ══ -->
+<div class="slide dataviz" data-act="Round 1：SSH key">
+  <h2>Round 1 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">SSH key 一次設定 全帳號通行<br>不讓基礎設施卡住你的創作流</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>SSH key 是什麼 ・ 為什麼 Account-level ・ 三步驟總覽 ・ 三個全開的代價</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 2: 拿 token 接 IDE
+     ════════════════════════════════════════ -->
+
+<!-- ══ 12 R2 Poster ══ -->
+<div class="slide poster" data-act="Round 2：跑 ssh-keygen" style="background:linear-gradient(135deg,#0d2a44 0%,#1A73E8 50%,#7C3AED 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:30–1:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">一句話讓 agy 全跑<br><span style="color:#93c5fd;">5 分鐘搞定</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">你不打指令 agy 自己跑 只在貼 GitHub 那一步停下</p>
+</div>
+
+<!-- ══ 13 操作指令: 給 agy 一句話 ══ -->
+<div class="slide dataviz" data-act="Round 2：跑 ssh-keygen">
+  <h2>操作指令 一句話而已</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">在 agy Chat 區貼這句</p>
+  </div>
+  <div class="code-block">
+    <div class="code-label">複製貼上</div>
+    <pre>帶我設定 GitHub SSH key 直接下指令
+每個步驟完成後告訴我下一步</pre>
+  </div>
+  <div class="info-box success">
+    <div class="label">agy 會自己做的事</div>
+    <p style="line-height:2;">
+      A. 跑 ssh-keygen 產生金鑰<br>
+      B. 自動複製公鑰到剪貼簿<br>
+      C. 告訴你 公鑰已複製 請去 GitHub 貼上<br>
+      D. 你貼完回 agy 說好了<br>
+      E. agy 自動跑 ssh -T 驗證 告訴你 Hi 你的帳號
+    </p>
+  </div>
+</div>
+
+<!-- ══ 14 補強版: agy 自動跑的 chat 對話 mockup ══ -->
+<div class="slide dataviz" data-act="Round 2：跑 ssh-keygen">
+  <h2>agy 自動跑的對話長這樣</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="height:380px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ Chat with Gemini</span></div>
+      <div style="background:#252526;flex:1;padding:.5rem .6rem;color:#cce4ff;font-size:.5rem;line-height:1.7;display:flex;flex-direction:column;gap:.3rem;overflow:hidden;">
+        <div style="background:#37373d;color:#fff;align-self:flex-end;padding:.3rem .4rem;border-radius:4px;max-width:80%;">帶我設定 GitHub SSH key 直接下指令 每個步驟完成後告訴我下一步</div>
+        <div style="background:#094771;padding:.3rem .4rem;border-radius:4px;max-width:88%;">
+          <span style="color:#73c991;">▸ 跑 ssh-keygen -t ed25519 -C "alan.chen75@gmail.com"</span><br>
+          <span style="color:#73c991;">✓ 金鑰已生成 在 ~/.ssh/id_ed25519</span>
+        </div>
+        <div style="background:#094771;padding:.3rem .4rem;border-radius:4px;max-width:88%;">
+          <span style="color:#73c991;">▸ 跑 pbcopy &lt; ~/.ssh/id_ed25519.pub</span><br>
+          <span style="color:#73c991;">✓ 公鑰已複製到剪貼簿</span><br>
+          <span style="color:#fdd663;">⏸ 換你做了 去 github.com/settings/ssh/new</span><br>
+          <span style="color:#fdd663;">　 New SSH key → Title 寫 my-laptop → Key 直接 cmd+V 貼上 → Add</span><br>
+          <span style="color:#fdd663;">　 貼完跟我說 好了</span>
+        </div>
+        <div style="background:#37373d;color:#fff;align-self:flex-end;padding:.3rem .4rem;border-radius:4px;max-width:60%;">好了</div>
+        <div style="background:#094771;padding:.3rem .4rem;border-radius:4px;max-width:88%;">
+          <span style="color:#73c991;">▸ 跑 ssh -T git@github.com</span><br>
+          <span style="color:#73c991;">✓ Hi alan-chen! 驗證成功</span><br>
+          <span style="color:#73c991;">✓ 從此你所有 repo push 不用再碰權限</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success">
+    <p style="font-size:.95rem;">全程你只做兩件事 <strong>貼 prompt</strong> 跟 <strong>去 GitHub 貼公鑰</strong>　其他 agy 自己跑 自己驗證 自己回報</p>
+  </div>
+</div>
+
+<!-- ══ 15 補強版: 去 GitHub 貼公鑰那一步 mockup ══ -->
+<div class="slide dataviz" data-act="Round 2：跑 ssh-keygen">
+  <h2>你做的唯一步驟 去 GitHub 貼公鑰</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">github.com/settings/ssh/new</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+      <div class="gh-body">
+        <div style="font-size:.6rem;font-weight:700;margin-bottom:.3rem;">Add new SSH Key</div>
+        <div>
+          <div style="font-size:.45rem;color:var(--gh-mute);">Title</div>
+          <div style="background:#fff;border:1.5px solid var(--gh-green);border-radius:3px;padding:.18rem .3rem;font-size:.5rem;font-weight:600;">my-laptop</div>
+        </div>
+        <div style="margin-top:.35rem;">
+          <div style="font-size:.45rem;color:var(--gh-mute);">Key type</div>
+          <div style="background:#fff;border:1px solid var(--gh-border);border-radius:3px;padding:.15rem .3rem;font-size:.45rem;">Authentication Key ▾</div>
+        </div>
+        <div style="margin-top:.35rem;">
+          <div style="font-size:.45rem;color:var(--gh-mute);">Key　<span style="color:var(--gh-green);font-weight:600;">cmd+V 直接貼</span></div>
+          <div style="background:#fff;border:1.5px solid var(--gh-green);border-radius:3px;padding:.25rem .35rem;font-family:'Fira Code',monospace;font-size:.4rem;color:var(--gh-link);line-height:1.5;word-break:break-all;">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI<span style="color:var(--gh-mute);">[此處為你公鑰的 base64 內容 約 60+ 字元]</span> alan.chen75@gmail.com</div>
+        </div>
+        <div style="background:var(--gh-green);color:#fff;text-align:center;padding:.25rem;border-radius:4px;font-size:.55rem;font-weight:700;margin-top:.4rem;">Add SSH key</div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:.95rem;">公鑰已經在你剪貼簿（agy 幫你複製好）　Title 取個好認的名字 例如 my-laptop　Key 欄位直接 cmd+V 貼　按綠色 Add SSH key　回去 agy 跟它說 好了</p>
+  </div>
+</div>
+
+<!-- ══ 16 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 2：跑 ssh-keygen">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">5</span><span class="unit">分鐘</span><div class="caption">貼 prompt + 等 + 去 GitHub 貼一次 + 等</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">完成目標</div>
+    <p>agy 回報 Hi 你的-username　GitHub Settings → SSH keys 看到 my-laptop　從此所有 repo push 不用再問權限</p>
+  </div>
+  <div class="info-box success">
+    <div class="label">為什麼這麼快</div>
+    <p>你沒打任何指令 沒記任何語法　全程靠一句 prompt + 一次貼上動作　這就是 vibe coding 不被基礎設施卡住的精神</p>
+  </div>
+</div>
+
+<!-- ══ 19 踩坑預告 ══ -->
+<div class="slide dataviz" data-act="Round 2：跑 ssh-keygen">
+  <span class="pitfall-badge">預期會踩坑</span>
+  <h2>SSH 設定常見三種卡關</h2>
+  <div class="pitfall-card">
+    <div class="pitfall-row">
+      <div class="pitfall-item">
+        <div class="ptitle">不小心貼到私鑰</div>
+        <div class="pdesc">把 id_ed25519 沒 .pub 那個貼到 GitHub<br><span style="color:var(--green);font-weight:600;">解 立刻刪掉那把 重新貼正確的 .pub</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">pbcopy 在 Linux 不能用</div>
+        <div class="pdesc">macOS 用 pbcopy Windows 用 clip<br><span style="color:var(--green);font-weight:600;">解 Linux 改 cat ~/.ssh/id_ed25519.pub 自己選</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">ssh -T 顯示 Permission denied</div>
+        <div class="pdesc">公鑰沒貼好 或漏貼<br><span style="color:var(--green);font-weight:600;">解 回 GitHub 確認 SSH keys 列表有那一把</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 20 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 2：跑 ssh-keygen">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>agy Chat 裡有跳出 Hi 你的帳號 嗎</strong><p>沒看到的舉手 一起檢查 多半是 GitHub 公鑰沒貼好 重貼一次就過了</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>到 GitHub Settings 確認 SSH keys</strong><p>github.com/settings/keys 看到 my-laptop（或你取的名字）就對了</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>記得私鑰不能外流</strong><p>id_ed25519（沒 .pub）永遠不貼出去 不傳訊息 不進 git</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 21 R2 小結 ══ -->
+<div class="slide dataviz" data-act="Round 2：跑 ssh-keygen">
+  <h2>Round 2 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">這把金鑰一次設定 你所有 repo 從此都通了<br>不會再有任何重設權限的麻煩</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>有效的 SSH key 對 ・ GitHub 認得你 ・ ssh -T 驗證通過 ・ 全帳號 repo 通行</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 3: LV1 第一次 push
+     ════════════════════════════════════════ -->
+
+<!-- ══ 21 R3 Poster ══ -->
+<div class="slide poster" data-act="Round 3：LV1 第一次 push" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 1:00–1:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">LV1<br><span style="color:#6ee7d4;">第一次 push 上線</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">把 M2-2 的 slides.html 推上 GitHub Pages</p>
+</div>
+
+<!-- ══ 22 概念: push 是什麼 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 第一次 push">
+  <h2>push 是什麼意思</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">你 IDE 改完的檔案</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">commit 留紀錄</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">push 推上 GitHub<br><span style="font-size:.8rem;font-weight:400;">公開網頁更新</span></div>
+  </div>
+  <div class="info-box success">
+    <div class="label">M2-1 你用的是手動拖檔 上傳到 GitHub</div>
+    <p>M2-3 改成 IDE 跟 AI 講一句話 它幫你跑 commit + push　節省的不是 5 分鐘 是「不會忘了存檔」的安心感</p>
+  </div>
+</div>
+
+<!-- ══ 23 操作指令: 把 slides.html 加進來 push ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 第一次 push">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">把 M2-2 的 slides.html 複製進 my-first-page 資料夾<br>跟 AI 說 幫我 commit 跟 push 訊息寫 加上 M2-2 簡報</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">AI 會做的事</div>
+    <p>git add slides.html<br>git commit -m "加上 M2-2 簡報"<br>git push origin main<br>3 個指令一次跑完 你只看結果</p>
+  </div>
+</div>
+
+<!-- ══ 24 補強版: AI 跑 push mockup ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 第一次 push">
+  <h2>push 過程 IDE 顯示的樣子</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="height:340px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-first-page/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar">
+          <div class="section">SOURCE CONTROL</div>
+          <div class="folder">▾ Changes (1)</div>
+          <div class="file new active">slides.html ●</div>
+          <div class="folder" style="margin-top:.3rem;">▾ Staged</div>
+          <div class="file">slides.html</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab active">Source Control</div></div>
+          <div style="padding:.5rem;color:#cce4ff;font-size:.4rem;line-height:1.7;font-family:'Fira Code',monospace;">
+            <div>$ git add slides.html</div>
+            <div style="color:#73c991;">✓ Added</div>
+            <div style="margin-top:.2rem;">$ git commit -m "加上 M2-2 簡報"</div>
+            <div style="color:#73c991;">✓ [main e8d3a91] 加上 M2-2 簡報</div>
+            <div>  1 file changed 8 pages added</div>
+            <div style="margin-top:.2rem;">$ git push origin main</div>
+            <div style="color:#73c991;">✓ Pushed to alan-chen/my-first-page</div>
+          </div>
+        </div>
+        <div class="ide-chat">
+          <div class="chat-header">▸ Chat</div>
+          <div class="chat-msg user">幫我 commit 跟 push slides.html</div>
+          <div class="chat-msg ai">已完成<span class="meta">✓ commit e8d3a91</span><span class="meta">✓ pushed to main</span><span class="meta">✓ Pages 1 分鐘後更新</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 25 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 第一次 push">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">15</span><span class="unit">分鐘</span><div class="caption">push + 等待 Pages 部署</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">完成確認</div>
+    <p>用瀏覽器開 你的-username.github.io/my-first-page/slides.html<br>看到 8 頁簡報 翻頁正常</p>
+  </div>
+</div>
+
+<!-- ══ 26 Wow Moment ══ -->
+<div class="slide dataviz wow-slide" data-act="Round 3：LV1 第一次 push">
+  <span class="wow-badge">亮點時刻</span>
+  <div class="wow-heading">IDE 跟 GitHub 通了<br>你的作品不再只是本機檔案</div>
+  <p class="wow-sub">M2-1 你會了上傳　M2-2 你會了讓 AI 改檔　M2-3 兩個串起來 一句話從 IDE 直接送上線　你的 vibe coding 工作流今天完整了</p>
+  <div style="background:var(--green-lt);border-radius:14px;padding:1.2rem 2rem;margin-top:1rem;max-width:900px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;text-align:center;">
+    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">M2-1</div><div style="font-size:.85rem;color:var(--g700);margin-top:.2rem;">拖檔上傳</div></div>
+    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">M2-2</div><div style="font-size:.85rem;color:var(--g700);margin-top:.2rem;">IDE 改檔</div></div>
+    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">M2-3</div><div style="font-size:.85rem;color:var(--g700);margin-top:.2rem;">一句話 push</div></div>
+  </div>
+</div>
+
+<!-- ══ 27 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 第一次 push">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>把你的簡報網址貼到群組</strong><p>形式 你的-username.github.io/my-first-page/slides.html</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>打開三位同學的簡報</strong><p>看簡報內容 配色 翻頁體驗</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>你想下一步做什麼</strong><p>R4 我們會把這個簡報變成多頁網站的一部分</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 28 R3 小結 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 第一次 push">
+  <h2>Round 3 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">IDE 不再只是改你的本機檔案<br>它幫你把改動推上雲端 還會跟你說做了什麼</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>第一次 IDE push 經驗 ・ slides.html 上線 ・ commit + push 工作流 ・ LV1 達成</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 4: LV2 多頁網站
+     ════════════════════════════════════════ -->
+
+<!-- ══ 29 R4 Poster ══ -->
+<div class="slide poster" data-act="Round 4：LV2 多頁網站" style="background:linear-gradient(135deg,#0d2a44 0%,#0B3C5D 40%,#1A73E8 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:30–2:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">LV2<br><span style="color:#93c5fd;">多頁個人介紹網站</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">首頁 簡報區 檔案下載 一個網址搞定</p>
+</div>
+
+<!-- ══ 30 概念: 多頁網站是什麼 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 多頁網站">
+  <h2>多頁網站 = 多個 HTML 連起來</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">index.html<br><span style="font-size:.8rem;font-weight:400;">首頁</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">slides.html<br><span style="font-size:.8rem;font-weight:400;">簡報區</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">files.html<br><span style="font-size:.8rem;font-weight:400;">檔案下載</span></div>
+  </div>
+  <div class="info-box success">
+    <div class="label">怎麼讓它們相連</div>
+    <p>在 index.html 加導覽列 連到 slides.html 跟 files.html<br>三個 HTML 各自獨立 用 a 連結串起來 學員不用懂語法 AI 寫</p>
+  </div>
+</div>
+
+<!-- ══ 31 操作指令: 升級成多頁 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 多頁網站">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">跟 AI 說<br>幫我把 my-first-page 升級成多頁網站</p>
+  </div>
+  <div class="info-box note">
+    <div class="label">給 AI 的需求清單</div>
+    <p>首頁 index.html 含 hero 加自我介紹<br>簡報區 連到 slides.html<br>檔案下載 列 PDF 跟 md 提供下載連結<br>所有頁面共用 navbar 統一風格</p>
+  </div>
+</div>
+
+<!-- ══ 32 補強版: 多頁網站 prompt 模板 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 多頁網站">
+  <h2>多頁網站的 prompt 模板</h2>
+  <div class="code-block">
+    <div class="code-label">複製這段</div>
+    <pre>幫我把 my-first-page 升級成多頁個人網站
+
+頁面架構
+- index.html 首頁 含 hero + 自我介紹 + Pinned 作品 3 個
+- slides.html 簡報區 列出我的所有簡報
+- files.html 檔案下載 提供 PDF md 下載
+- 共用 navbar 三個分頁切換
+
+設計風格
+- 配色 主綠 #0F9D8A 配深藍 #0B3C5D
+- 字體 Noto Sans TC
+- 手機 RWD 支援
+
+最後 commit 跟 push 上 GitHub</pre>
+  </div>
+  <div class="info-box tip">
+    <div class="label">為什麼要寫得這麼詳細</div>
+    <p>頁面架構 = 給 AI 藍圖<br>設計風格 = 視覺一致<br>commit + push = 一句話完成從 0 到上線</p>
+  </div>
+</div>
+
+<!-- ══ 33 補強版: 多頁網站 mockup ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 多頁網站">
+  <h2>產出的多頁網站長這樣</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="gh-frame">
+      <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">alan-chen.github.io/my-first-page</span></div>
+      <div class="gh-nav"><div class="gh-logo">G</div><div class="gh-search">Search...</div><div class="gh-avatar"></div></div>
+      <div class="gh-body" style="background:#fff;">
+        <div style="background:linear-gradient(135deg,#0B3C5D,#0F9D8A);color:#fff;padding:.6rem .8rem;border-radius:5px;text-align:center;">
+          <div style="font-size:.8rem;font-weight:700;">Alan Chen</div>
+          <div style="font-size:.5rem;opacity:.8;margin-top:.15rem;">教 AI 教育的工程師</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;margin-top:.4rem;">
+          <div style="background:var(--green-lt);border-radius:4px;padding:.4rem;text-align:center;border-top:3px solid var(--green);"><div style="font-size:.55rem;font-weight:700;color:var(--g900);">關於我</div><div style="font-size:.4rem;color:var(--gh-mute);">/index.html</div></div>
+          <div style="background:var(--blue-lt);border-radius:4px;padding:.4rem;text-align:center;border-top:3px solid var(--blue);"><div style="font-size:.55rem;font-weight:700;color:var(--g900);">簡報區</div><div style="font-size:.4rem;color:var(--gh-mute);">/slides.html</div></div>
+          <div style="background:var(--gold-lt);border-radius:4px;padding:.4rem;text-align:center;border-top:3px solid var(--gold);"><div style="font-size:.55rem;font-weight:700;color:var(--g900);">檔案下載</div><div style="font-size:.4rem;color:var(--gh-mute);">/files.html</div></div>
+        </div>
+        <div style="background:var(--offwhite);border-radius:4px;padding:.4rem;margin-top:.3rem;font-size:.42rem;color:var(--g700);">
+          <div style="font-weight:700;color:var(--g900);">最新作品</div>
+          <div style="margin-top:.15rem;">研究報告分析 2026-Q4 ・ AI 工具評測 2026-Q3 ・ 個人介紹頁 2026-Q1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 34 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 多頁網站">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">25</span><span class="unit">分鐘</span><div class="caption">含 AI 產出三個 HTML + push + 確認上線</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">完成目標</div>
+    <p>三個 HTML 都產出 互相連得到<br>push 上 GitHub Pages<br>用手機開首頁 三個分頁都能切換</p>
+  </div>
+</div>
+
+<!-- ══ 35 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 多頁網站">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>把你的首頁網址貼到群組</strong><p>形式 你的-username.github.io/my-first-page</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>打開三位同學的網站</strong><p>看 navbar 是否好用 看三個分頁的設計差異</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>找一個最像個人品牌的</strong><p>記下哪些設計細節讓它看起來專業</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 36 R4 小結 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 多頁網站">
+  <h2>Round 4 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">你的個人技術名片從一頁變三頁<br>一個 prompt 一句話 AI 全部做完</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>三頁個人介紹網站 ・ 多頁 prompt 模板 ・ navbar 與多頁協作觀念 ・ LV2 主線達成</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 5: LV3 重做新專案
+     ════════════════════════════════════════ -->
+
+<!-- ══ 37 R5 Poster ══ -->
+<div class="slide poster" data-act="Round 5：LV3 新專案" style="background:linear-gradient(135deg,#7c2d12 0%,#9a3412 40%,#E8710A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 2:00–2:30</p>
+  <h1 style="color:#fff;font-size:2.8rem;">LV3<br><span style="color:#fdba74;">把 M1-2 飲料點餐<br>從 GAS 搬上 GitHub</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">主任務 飲料點餐系統升級　進階學員可選二個專案</p>
+</div>
+
+<!-- ══ 38 概念: 為什麼要搬 M1-2 飲料點餐 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 新專案">
+  <h2>主任務 把 M1-2 飲料點餐搬到 GitHub</h2>
+  <div class="info-box success">
+    <div class="label">為什麼這個任務</div>
+    <p>M1-2 你已經做過飲料點餐系統 用 GAS 版本　今天把它升級成 GitHub Pages 版本<br>學員不用想新題目 直接帶你 M1-2 的 html 檔給 agy 改版 一個 prompt 就完成</p>
+  </div>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">M1-2 GAS 飲料點餐 html</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">給 agy 改版</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">部署 GitHub Pages<br><span style="font-size:.8rem;font-weight:400;">短網址 + 自訂主題</span></div>
+  </div>
+</div>
+
+<!-- ══ 39 操作指令: 一句話讓 agy 全跑 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 新專案">
+  <h2>操作指令 一句話讓 agy 全跑</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">把 M1-2 的飲料點餐 html 拖到 agy 資料夾<br>下這一句 prompt</p>
+  </div>
+  <div class="code-block">
+    <div class="code-label">複製貼上</div>
+    <pre>把這個飲料點餐 html 改版成 GitHub Pages 版本
+做完直接開新 repo drink-order 部署上線
+完成後給我網址</pre>
+  </div>
+  <div class="info-box success">
+    <div class="label">agy 會自己做的事</div>
+    <p style="line-height:2;">
+      A. 讀你的 GAS 版 html 理解結構<br>
+      B. 改成純前端版（localStorage 取代 Google Sheet）<br>
+      C. 開新 repo drink-order push 上去<br>
+      D. 開啟 GitHub Pages<br>
+      E. 給你網址 你-username.github.io/drink-order
+    </p>
+  </div>
+</div>
+
+<!-- ══ 40 補強版: 進階學員加碼小應用清單 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 新專案">
+  <h2>進階學員 完成主任務後加碼</h2>
+  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">飲料點餐做完還有時間 挑一個你工作會用的</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;max-width:1180px;width:100%;">
+    <div class="card accent-top" style="min-width:0;max-width:none;">
+      <h3>會議備忘錄</h3>
+      <p style="font-size:.82rem;line-height:1.65;">輸入主題 + 議題清單　輸出格式化 markdown 含 action items</p>
+    </div>
+    <div class="card accent-top-blue" style="min-width:0;max-width:none;">
+      <h3>習慣追蹤打卡牆</h3>
+      <p style="font-size:.82rem;line-height:1.65;">每天打卡 看 30 天 streak　localStorage 存資料</p>
+    </div>
+    <div class="card accent-top-gold" style="min-width:0;max-width:none;">
+      <h3>客戶簡易 CRM</h3>
+      <p style="font-size:.82rem;line-height:1.65;">姓名電話 Email 備註　搜尋 / 標籤 / 匯出 CSV</p>
+    </div>
+    <div class="card accent-top-purple" style="min-width:0;max-width:none;">
+      <h3>記帳分類器</h3>
+      <p style="font-size:.82rem;line-height:1.65;">輸入金額 + 描述　月度報表 + 圓餅圖 圖表用 Chart.js</p>
+    </div>
+    <div class="card accent-top-orange" style="min-width:0;max-width:none;">
+      <h3>名片數位化</h3>
+      <p style="font-size:.82rem;line-height:1.65;">拍照識別文字（OCR）or 手動鍵入　存成名片冊</p>
+    </div>
+    <div class="card accent-top-red" style="min-width:0;max-width:none;">
+      <h3>番茄鐘計時器</h3>
+      <p style="font-size:.82rem;line-height:1.65;">25 分鐘工作 5 分鐘休息　當天番茄數累積追蹤</p>
+    </div>
+  </div>
+  <div class="info-box tip">
+    <div class="label">為什麼這些題目</div>
+    <p>都是 vibe coding 社群分享多的高頻小應用 純前端能完成 不用後端　25 分鐘做完一個沒問題</p>
+  </div>
+</div>
+
+<!-- ══ 41 補強版: agy 跑飲料點餐改版 mockup ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 新專案">
+  <h2>agy 跑改版的對話樣子</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="height:340px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ drink-order/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar">
+          <div class="section">SOURCE CONTROL</div>
+          <div class="folder">▾ drink-order</div>
+          <div class="file" style="color:#73c991;">✓ Connected</div>
+          <div class="section" style="margin-top:.3rem;">EXPLORER</div>
+          <div class="folder">▾ drink-order</div>
+          <div class="file">m1-2-gas.html</div>
+          <div class="file new">index.html</div>
+          <div class="file new">README.md</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab active">Agent Tasks</div></div>
+          <div style="padding:.5rem;color:#cce4ff;font-size:.4rem;line-height:1.7;">
+            <div style="color:#73c991;">✓ 1. 讀 m1-2-gas.html 理解結構</div>
+            <div style="color:#73c991;">✓ 2. 把 Google Sheet 寫入改成 localStorage</div>
+            <div style="color:#73c991;">✓ 3. 產出 index.html 純前端版</div>
+            <div style="color:#73c991;">✓ 4. 開新 repo drink-order 推上去</div>
+            <div style="color:#73c991;">✓ 5. 開啟 GitHub Pages</div>
+            <div style="color:#73c991;">✓ 6. 部署完成</div>
+            <div style="color:#73c991;margin-top:.2rem;">→ alan-chen.github.io/drink-order</div>
+          </div>
+        </div>
+        <div class="ide-chat">
+          <div class="chat-header">▸ Chat</div>
+          <div class="chat-msg user">把這個飲料點餐 html 改版成 GitHub Pages 版本</div>
+          <div class="chat-msg ai">我看到 M1-2 的 GAS 版 改成純前端 6 步驟跑完<span class="meta">✓ 全部完成</span><span class="meta">→ 點網址開來看</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 42 操作計時 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 新專案">
+  <h2>操作計時</h2>
+  <div style="text-align:center;margin:1rem 0;">
+    <div class="big-stat"><span class="num">25</span><span class="unit">分鐘</span><div class="caption">從想題目到部署上線</div></div>
+  </div>
+  <div class="info-box note">
+    <div class="label">完成目標</div>
+    <p>一個新的 GitHub repo 跟 你的-username.github.io/repo-name 的新網址<br>把網址貼到群組 跟同學分享你做了什麼</p>
+  </div>
+</div>
+
+<!-- ══ 43 分享觀察 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 新專案">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>你的新專案是什麼</strong><p>講一句話介紹 你做了什麼 解決什麼問題</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>打開三位同學的新專案</strong><p>大家想的題目都不一樣 看別人怎麼想</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>記下你想再做的下一個</strong><p>回家可以接著做更多 因為流程你已經會了</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 44 R5 小結 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 新專案">
+  <h2>Round 5 小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">25 分鐘從想法到上線網頁<br>這個能力過去 5 年只有工程師有</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>一個全新的線上作品 ・ 新專案 prompt 模板 ・ 從 0 到部署的完整工作流 ・ LV3 達成</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ROUND 6: 回顧 + M2-4 預告
+     ════════════════════════════════════════ -->
+
+<!-- ══ 45 R6 Poster ══ -->
+<div class="slide poster" data-act="Round 6：回顧" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
+  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:30–3:00</p>
+  <h1 style="color:#fff;font-size:2.8rem;">部署你會了<br><span style="color:#6ee7d4;">下一堂要串 API</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">回顧今天三層 預告 M2-4</p>
+</div>
+
+<!-- ══ 46 六輪回顧 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>六輪回顧</h2>
+  <div class="cycle-ring">
+    <div class="cycle-step active"><span class="cycle-label">Round 1</span><span class="cycle-name">SSH token</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 2</span><span class="cycle-name">接 IDE</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 3</span><span class="cycle-name">LV1 push</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 4</span><span class="cycle-name">LV2 多頁</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 5</span><span class="cycle-name">LV3 新專案</span></div>
+    <div class="cycle-step active"><span class="cycle-label">Round 6</span><span class="cycle-name">回顧反思</span></div>
+  </div>
+  <div class="info-box success">
+    <p style="text-align:center;font-size:1.05rem;">三節合一　M2-1 GitHub 平台 ・ M2-2 IDE 改檔 ・ M2-3 直接部署</p>
+  </div>
+</div>
+
+<!-- ══ 47 三 LV 對比 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>今天完成的三個任務</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1100px;width:100%;">
+    <div class="card accent-top">
+      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">LV1</div>
+      <h3>第一次 push</h3>
+      <p>把 M2-2 的 slides.html 推上 GitHub Pages　IDE 三個指令一次跑完</p>
+    </div>
+    <div class="card accent-top-blue" style="border-color:var(--green);background:var(--green-lt);">
+      <div style="font-size:.7rem;color:var(--green);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">LV2 必做主線</div>
+      <h3>多頁個人網站</h3>
+      <p>首頁 + 簡報區 + 檔案下載　一個 prompt 全部產出 + 部署</p>
+    </div>
+    <div class="card accent-top-orange" style="border-color:#d97706;">
+      <div style="font-size:.7rem;color:#d97706;letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">LV3 完成後加做</div>
+      <h3>全新專案</h3>
+      <p>從零開始一個新作品 25 分鐘部署完成</p>
+    </div>
+  </div>
+  <div class="bottom-line">
+    <h3>三層共通的事</h3>
+    <p>IDE 接 GitHub　跟 AI 講清楚要做什麼　看著它跑完整流程　不用回瀏覽器拖檔</p>
+  </div>
+</div>
+
+<!-- ══ 48 帶走清單 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>M2-3 帶走清單</h2>
+  <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);max-width:920px;">
+    <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
+      <div style="font-size:.78rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">作品產出</div>
+      <ul style="list-style:none;padding:0;font-size:.95rem;color:var(--g800);line-height:2;">
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 升級版 my-first-page 多頁</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 一個全新 repo 跟 新網址</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 至少 5 個累積 commit</li>
+      </ul>
+    </div>
+    <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
+      <div style="font-size:.78rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">能力習慣</div>
+      <ul style="list-style:none;padding:0;font-size:.95rem;color:var(--g800);line-height:2;">
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 產 token 接 IDE 流程</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 一句話 commit + push</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 多頁 prompt 模板</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 新專案 prompt 模板</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 49 M2-4 預告 ══ -->
+<div class="slide dataviz" data-act="Round 6：回顧">
+  <h2>下一堂 M2-4 預告</h2>
+  <div class="info-box blue">
+    <div class="label">申請 API 串接</div>
+    <p>今天的網站都是靜態的　下一堂課接 AI API　讓你的網頁能即時回應使用者　例如 AI 翻譯 摘要 客服</p>
+  </div>
+  <div class="card-grid">
+    <div class="card accent-top">
+      <h3>LV1</h3>
+      <p>申請一個免費 API 串一個簡單工具</p>
+    </div>
+    <div class="card accent-top-blue">
+      <h3>LV2 必做主線</h3>
+      <p>串到既有網站 例如客服分流 PDF 摘要</p>
+    </div>
+    <div class="card accent-top-gold">
+      <h3>LV3 加做</h3>
+      <p>體驗 AI 自己列計畫 改 測 回報 的 agent 模式</p>
+    </div>
+  </div>
+  <div class="bottom-line">
+    <h3>Stage 2 終點在即</h3>
+    <p>下一堂結束 你的個人作品 / 工具 / 客服系統都會是真實能用的線上服務</p>
+  </div>
+</div>
+
+</div>
+
+<!-- Chapter Menu -->
+<div class="chapter-menu" id="chapterMenu">
+  <div class="chapter-btn" onclick="toggleChapterMenu()">
+    <span class="chapter-icon">◈</span>
+    <span id="chapterLabel">章節</span>
+    <span class="chapter-arrow">▲</span>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+</div>
+
+<div class="progress-bar" id="progress"></div>
+<div class="slide-counter"><span id="cur">1</span> / <span id="total">50</span></div>
+<div class="controls">
+  <button onclick="prev()">◂</button>
+  <button onclick="next()">▸</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let idx = 0;
+const curEl = document.getElementById('cur');
+const totalEl = document.getElementById('total');
+const progress = document.getElementById('progress');
+totalEl.textContent = total;
+const chapters = [];
+let lastAct = '';
+slides.forEach((s, i) => {
+  const act = s.dataset.act || '';
+  if(act && act !== lastAct){ chapters.push({act, idx: i}); lastAct = act; }
+});
+const list = document.getElementById('chapterList');
+chapters.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'chapter-item';
+  item.dataset.idx = c.idx;
+  item.innerHTML = `<span class="chapter-dot"></span>${c.act}`;
+  item.onclick = () => { goTo(c.idx); closeChapterMenu(); };
+  list.appendChild(item);
+});
+function show(){
+  slides.forEach((s,i)=>s.classList.toggle('active', i===idx));
+  curEl.textContent = idx+1;
+  progress.style.width = ((idx+1)/total*100) + '%';
+  let curAct = '';
+  for(let i = chapters.length-1; i >= 0; i--){
+    if(idx >= chapters[i].idx){ curAct = chapters[i].act; break; }
+  }
+  document.getElementById('chapterLabel').textContent = curAct || '章節';
+  document.querySelectorAll('.chapter-item').forEach(item => {
+    const ci = +item.dataset.idx;
+    let end = total;
+    for(let c of chapters){ if(c.idx > ci){ end = c.idx; break; } }
+    item.classList.toggle('active', idx >= ci && idx < end);
+  });
+}
+function next(){ if(idx<total-1){idx++;show();} }
+function prev(){ if(idx>0){idx--;show();} }
+function goTo(n){ idx = Math.max(0, Math.min(total-1, n)); show(); }
+function toggleChapterMenu(){ document.getElementById('chapterMenu').classList.toggle('open'); }
+function closeChapterMenu(){ document.getElementById('chapterMenu').classList.remove('open'); }
+document.addEventListener('keydown', e=>{
+  if(['ArrowRight',' ','PageDown','.','n','N'].includes(e.key)){ e.preventDefault(); next(); }
+  else if(['ArrowLeft','PageUp','p','P','Backspace'].includes(e.key)){ e.preventDefault(); prev(); }
+  else if(e.key==='Home'){ e.preventDefault(); goTo(0); }
+  else if(e.key==='End'){ e.preventDefault(); goTo(total-1); }
+  else if(e.key==='Escape'){ closeChapterMenu(); }
+  else if(e.key==='f'||e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.chapter-menu')) closeChapterMenu();
+});
+show();
+</script>
+</body>
+</html>

@@ -455,23 +455,6 @@ h3{font-size:1.05rem;font-weight:700;margin-bottom:.4rem;}
       <input type="email" name="stage1_email" placeholder="當初報名 Stage 1 用的 Email（選填）">
     </div>
     <div class="form-row">
-      <label>你有用過哪些 AI 工具（可複選）</label>
-      <div style="display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.3rem;">
-        <label style="font-size:.9rem;font-weight:400;color:#fff;display:flex;align-items:center;gap:.4rem;cursor:pointer;">
-          <input type="checkbox" name="tools" value="ChatGPT" style="width:18px;height:18px;accent-color:var(--blue);"> ChatGPT
-        </label>
-        <label style="font-size:.9rem;font-weight:400;color:#fff;display:flex;align-items:center;gap:.4rem;cursor:pointer;">
-          <input type="checkbox" name="tools" value="Claude" style="width:18px;height:18px;accent-color:var(--blue);"> Claude
-        </label>
-        <label style="font-size:.9rem;font-weight:400;color:#fff;display:flex;align-items:center;gap:.4rem;cursor:pointer;">
-          <input type="checkbox" name="tools" value="Gemini" style="width:18px;height:18px;accent-color:var(--blue);"> Gemini
-        </label>
-        <label style="font-size:.9rem;font-weight:400;color:#fff;display:flex;align-items:center;gap:.4rem;cursor:pointer;">
-          <input type="checkbox" name="tools" value="GitHub" style="width:18px;height:18px;accent-color:var(--blue);"> GitHub
-        </label>
-      </div>
-    </div>
-    <div class="form-row">
       <label>你最想學到什麼</label>
       <textarea name="goal" placeholder="例如：想把我的工具部署到網路上、想串免費 AI API 做應用..."></textarea>
     </div>
@@ -512,9 +495,6 @@ async function submitForm(e) {
 
   const fd = new FormData(form);
   const data = Object.fromEntries(fd.entries());
-  // 複選 checkbox 要手動收集
-  const tools = [...form.querySelectorAll('input[name="tools"]:checked')].map(c => c.value);
-  data.tools = tools.join(', ');
 
   btn.disabled = true;
   btn.textContent = '送出中...';

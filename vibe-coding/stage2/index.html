@@ -1,0 +1,554 @@
+---
+layout: null
+title: "Vibe Coding 學習路徑 Stage 2"
+description: "從「用現成工具」到「讓作品真正上線」— Stage 2 串 AI，4 模組 12 小時，GitHub 上線 + IDE 開發 + 免費 AI API 串接"
+---
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding 學習路徑 Stage 2 — 課程簡章</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --navy:#0B3C5D;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:22px;}
+body{font-family:'Noto Sans TC',sans-serif;color:var(--g900);line-height:1.7;background:var(--white);font-weight:400;}
+
+/* ── Reading Glasses: 老花眼友善 ── */
+/* 正文 22px, 最小 16px, CJK 行高 1.7, 內容寬 720px, 按鈕 48px+ */
+
+/* ── Layout ── */
+.container{max-width:720px;margin:0 auto;padding:2.5rem 1.5rem;}
+
+/* ── Hero（Stage 2 用 navy → blue 區隔 Stage 1 的 navy → teal）── */
+.hero{background:linear-gradient(135deg,#0B3C5D 0%,#1A73E8 100%);color:#fff;padding:4rem 2rem;text-align:center;}
+.hero h1{font-size:2.2rem;font-weight:900;line-height:1.3;margin-bottom:.8rem;}
+.hero .tagline{font-size:1.1rem;font-weight:400;opacity:.85;margin-bottom:1.5rem;}
+.hero .badges{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;}
+.hero .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:.4rem 1.2rem;font-size:.82rem;font-weight:500;}
+
+/* ── Section ── */
+section{padding:3rem 0;border-bottom:1px solid var(--g100);}
+section:last-of-type{border:none;}
+.section-label{font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:.4rem;}
+h2{font-size:1.45rem;font-weight:900;margin-bottom:1rem;line-height:1.3;}
+h3{font-size:1.05rem;font-weight:700;margin-bottom:.4rem;}
+
+/* ── Target ── */
+.target-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.2rem;}
+.target-card{background:var(--offwhite);border-radius:12px;padding:1.4rem;border-left:4px solid var(--blue);}
+.target-card p{font-size:.9rem;color:var(--g600);line-height:1.7;}
+@media(max-width:600px){.target-grid{grid-template-columns:1fr;}}
+
+/* ── Stage Card ── */
+.stage-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;margin-top:1.5rem;}
+.stage-num{flex-shrink:0;width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;color:#fff;}
+.stage-num.s1{background:var(--green);}
+.stage-num.s2{background:var(--blue);}
+.stage-num.s3{background:var(--navy);}
+.stage-title{font-size:1.25rem;font-weight:900;}
+.stage-subtitle{font-size:.85rem;color:var(--g600);font-weight:400;margin-top:.15rem;}
+
+/* ── Module List ── */
+.module-list{display:flex;flex-direction:column;gap:1rem;}
+.module{background:var(--white);border:1.5px solid var(--g100);border-radius:14px;padding:1.4rem 1.5rem;transition:border-color .2s;}
+.module:hover{border-color:var(--blue);}
+.module .mod-head{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:.5rem;}
+.module .mod-id{flex-shrink:0;font-size:.75rem;font-weight:700;color:#fff;border-radius:6px;padding:.2rem .6rem;margin-top:.2rem;}
+.module .mod-id.s1{background:var(--green);}
+.module .mod-id.s2{background:var(--blue);}
+.module .mod-id.s3{background:var(--navy);}
+.module .mod-name{font-size:1.05rem;font-weight:700;line-height:1.4;}
+.module .mod-desc{font-size:.9rem;color:var(--g600);line-height:1.7;margin-left:3.4rem;}
+.module .mod-learn{font-size:.9rem;color:var(--g800);line-height:1.7;margin-left:3.4rem;margin-top:.5rem;}
+.module .mod-learn strong{color:var(--blue);font-weight:700;}
+.module .mod-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.7rem;margin-left:3.4rem;}
+.module .tag{font-size:.73rem;padding:.2rem .65rem;border-radius:100px;font-weight:500;border:1px solid var(--g200);color:var(--g600);background:var(--offwhite);}
+.module .tag.highlight{border-color:var(--blue);color:var(--blue);background:var(--blue-lt);}
+
+/* ── Info Grid ── */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem;}
+.info-box{text-align:center;background:var(--offwhite);border-radius:12px;padding:1.3rem 1rem;}
+.info-box .val{font-size:1.8rem;font-weight:900;color:var(--blue);line-height:1.1;}
+.info-box .label{font-size:.82rem;color:var(--g600);margin-top:.3rem;}
+@media(max-width:600px){.info-grid{grid-template-columns:1fr;}}
+
+/* ── Upgrade Path (3-column Stage view) ── */
+.upgrade-path{margin:1.5rem 0;padding:1.4rem;background:var(--offwhite);border-radius:12px;}
+.upgrade-path .path-label{font-size:.73rem;font-weight:700;color:var(--blue);letter-spacing:.1em;margin-bottom:.8rem;}
+.stage-path{display:flex;align-items:stretch;gap:0;justify-content:center;}
+.sp-col{flex:1;text-align:center;padding:.8rem .6rem;background:var(--white);border-radius:10px;border:1.5px solid var(--g200);}
+.sp-col.current{border-color:var(--blue);border-width:2px;box-shadow:0 4px 14px rgba(26,115,232,.18);}
+.sp-label{font-size:.75rem;font-weight:700;color:#fff;padding:.25rem .8rem;border-radius:100px;display:inline-block;margin-bottom:.5rem;}
+.sp-label.s1-bg{background:var(--green);}
+.sp-label.s2-bg{background:var(--blue);}
+.sp-label.s3-bg{background:var(--navy);}
+.sp-item{font-size:.85rem;font-weight:500;color:var(--g800);line-height:1.8;}
+.sp-arrow{display:flex;align-items:center;padding:0 .5rem;color:var(--blue);font-weight:900;font-size:1.1rem;}
+
+/* ── CTA / Registration Form ── */
+.cta-section{background:var(--navy);color:#fff;padding:3rem 2rem;text-align:center;border-radius:16px;margin:2.5rem 0;}
+.cta-section h2{color:#fff;font-size:1.35rem;margin-bottom:.5rem;}
+.cta-section p{opacity:.8;margin-bottom:1.5rem;font-size:.95rem;}
+
+/* ── Form ── */
+.reg-form{max-width:520px;margin:0 auto;text-align:left;}
+.form-row{margin-bottom:1rem;}
+.form-row label{display:block;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.85);margin-bottom:.3rem;}
+.form-row .required{color:var(--gold);}
+.form-row input,.form-row select,.form-row textarea{
+  width:100%;font-family:inherit;font-size:.9rem;padding:.65rem .9rem;
+  border:1.5px solid rgba(255,255,255,.2);border-radius:10px;
+  background:rgba(255,255,255,.08);color:#fff;outline:none;transition:border-color .2s;
+}
+.form-row input::placeholder,.form-row textarea::placeholder{color:rgba(255,255,255,.35);}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--blue);}
+.form-row select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239AA0A6' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .8rem center;}
+.form-row select option{background:var(--navy);color:#fff;}
+.form-row textarea{resize:vertical;min-height:60px;}
+.form-hint{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:.25rem;font-weight:400;}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:600px){.form-2col{grid-template-columns:1fr;}}
+.submit-btn{
+  display:block;width:100%;background:var(--blue);color:#fff;
+  font-size:1rem;font-weight:700;padding:.85rem 2rem;
+  border:none;border-radius:100px;cursor:pointer;
+  min-height:48px;margin-top:1.2rem;
+  transition:transform .15s,box-shadow .15s;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,115,232,.4);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.form-msg{text-align:center;margin-top:1rem;font-size:.9rem;padding:.8rem;border-radius:10px;display:none;}
+.form-msg.success{display:block;background:var(--green-lt);color:var(--green);}
+.form-msg.error{display:block;background:var(--red-lt);color:var(--red);}
+
+/* ── Feature Grid ── */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem;}
+.feature-card{background:var(--offwhite);border-radius:12px;padding:1.4rem;border-top:3px solid var(--blue);}
+.feature-card h3{font-size:.95rem;margin-bottom:.4rem;}
+.feature-card p{font-size:.85rem;color:var(--g600);line-height:1.7;}
+@media(max-width:600px){.feature-grid{grid-template-columns:1fr;}}
+
+/* ── Schedule ── */
+.schedule-card{background:var(--offwhite);border-radius:12px;padding:1.4rem 1.6rem;border-left:4px solid var(--blue);margin-top:1rem;}
+.sch-row{display:flex;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--g100);align-items:baseline;}
+.sch-row:last-child{border:none;}
+.sch-label{flex-shrink:0;width:3.5rem;font-size:.82rem;font-weight:700;color:var(--g400);}
+.sch-val{font-size:.95rem;font-weight:500;color:var(--g900);}
+
+/* ── Prereq note ── */
+.prereq{background:var(--blue-lt);border-radius:12px;padding:1.4rem 1.6rem;border-left:4px solid var(--blue);margin-top:1rem;}
+.prereq .p-label{font-size:.82rem;font-weight:700;color:var(--blue);letter-spacing:.1em;margin-bottom:.6rem;}
+.prereq p{font-size:.95rem;color:var(--g800);line-height:1.8;}
+.prereq a{color:var(--blue);font-weight:700;text-decoration:none;}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:2.5rem 1rem;font-size:.82rem;color:var(--g400);}
+.footer a{color:var(--blue);text-decoration:none;}
+
+/* ── Mobile RWD ── */
+@media(max-width:600px){
+  html{font-size:19px;}
+  .hero{padding:2.5rem 1.2rem;}
+  .hero h1{font-size:1.8rem;}
+  .hero .tagline{font-size:1rem;}
+  .hero .badges{gap:.4rem;}
+  .hero .badge{font-size:.75rem;padding:.3rem .8rem;}
+  .container{padding:1.5rem 1rem;}
+  section{padding:2rem 0;}
+  h2{font-size:1.25rem;}
+  h3{font-size:1rem;}
+  .stage-header{gap:.6rem;}
+  .stage-num{width:42px;height:42px;font-size:.9rem;}
+  .stage-title{font-size:1.1rem;}
+  .stage-subtitle{font-size:.8rem;}
+  .module{padding:1.1rem 1rem;}
+  .module .mod-desc,.module .mod-learn{margin-left:0;margin-top:.4rem;}
+  .module .mod-tags{margin-left:0;}
+  .module .mod-name{font-size:1rem;}
+  .module .mod-head{gap:.6rem;}
+  .stage-path{flex-direction:column;gap:.5rem;}
+  .sp-arrow{transform:rotate(90deg);padding:.2rem 0;justify-content:center;}
+  .sp-col{padding:.7rem .8rem;}
+  .info-grid{grid-template-columns:repeat(3,1fr);gap:.6rem;}
+  .info-box{padding:.8rem .5rem;}
+  .info-box .val{font-size:1.5rem;}
+  .info-box .label{font-size:.75rem;}
+  .feature-card{padding:1.1rem;}
+  .feature-card h3{font-size:.9rem;}
+  .feature-card p{font-size:.82rem;}
+  .cta-section{padding:2rem 1.2rem;margin:1.5rem 0;border-radius:12px;}
+  .cta-section h2{font-size:1.15rem;}
+  .cta-section p{font-size:.85rem;}
+}
+
+/* ── Print ── */
+@media print{
+  .hero{padding:2rem 1rem;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .cta-section{display:none;}
+  html{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ Hero ══ -->
+<div class="hero">
+  <h1>Vibe Coding<br>Stage 2 — 串 AI</h1>
+  <p class="tagline">從「用現成工具」到「讓作品真正上線」</p>
+  <div class="badges">
+    <span class="badge">Stage 2 × 4 模組</span>
+    <span class="badge">建議先完成 Stage 1</span>
+    <span class="badge">每個模組都有作品上線</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ 適合對象 ══ -->
+<section>
+  <div class="section-label">適合對象</div>
+  <h2>你已經會用 AI 做東西，接下來學讓它上線、串起來</h2>
+  <div class="target-grid">
+    <div class="target-card">
+      <h3>完成 Stage 1，想再往上一步</h3>
+      <p>你已經能用 AI 做出網頁和自動化工具<br>接下來學把它部署到網路上、別人連得到</p>
+    </div>
+    <div class="target-card">
+      <h3>想讓作品有公開網址的人</h3>
+      <p>不要只存在自己電腦<br>用 GitHub Pages 給作品一個短網址和版本紀錄</p>
+    </div>
+    <div class="target-card">
+      <h3>在意資安、想做得正確的人</h3>
+      <p>API Key、密碼怎麼安全存放<br>什麼該公開、什麼該保密，建立自己的 Checklist</p>
+    </div>
+    <div class="target-card">
+      <h3>想串免費 AI API 做應用的人</h3>
+      <p>認識 5 個以上免費 AI API<br>了解額度和限制，做出部署上線的 AI 應用</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Stage 2 模組 ══ -->
+<section>
+  <div class="stage-header">
+    <div class="stage-num s2">S2</div>
+    <div>
+      <div class="stage-title">Stage 2 — 串 AI</div>
+      <div class="stage-subtitle">跨越第二跳：從「用現成工具」到「讓 AI 幫你串流程」</div>
+    </div>
+  </div>
+
+  <div class="module-list">
+
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s2">M2-1</span>
+        <span class="mod-name">GitHub 平台熟悉</span>
+      </div>
+      <p class="mod-desc">把 Stage 1 做的網頁，搬上全世界都看得到的地方<br>— 你的作品有了公開網址和版本紀錄</p>
+      <p class="mod-learn"><strong>你會學到：</strong>GitHub 帳號申請與基本操作、檔案上傳並部署 GitHub Pages、Commit 版本控制概念、Public 與 Private 的判斷、跟 AI 一起的 4 步除錯儀式</p>
+      <p class="mod-learn"><strong>帶走：</strong>1 個上線的 GitHub Pages 網頁（你的 username.github.io 網址）+ 累積的 commit 紀錄</p>
+      <div class="mod-tags">
+        <span class="tag highlight">GitHub Pages</span>
+        <span class="tag highlight">Commit 版本控制</span>
+        <span class="tag">Public / Private</span>
+        <span class="tag">4 步除錯儀式</span>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s2">M2-2</span>
+        <span class="mod-name">IDE 工具登場</span>
+      </div>
+      <p class="mod-desc">第一次進到 IDE 開發環境<br>— 讓 AI 幫你改網頁、讀 PDF 整理重點、再產出一份簡報</p>
+      <p class="mod-learn"><strong>你會學到：</strong>認識 IDE 介面三大區塊、AI 編程三大工具的差異、用 AI 改 HTML / 讀 PDF / 產簡報、信任資料夾與下清楚指令的訣竅、實際操作一輪 AI IDE 工作流</p>
+      <p class="mod-learn"><strong>帶走：</strong>改過的網頁 + 一份 PDF 整理出的重點文件 + 一份自動生成的簡報</p>
+      <div class="mod-tags">
+        <span class="tag highlight">IDE 開發環境</span>
+        <span class="tag highlight">AI 編程工具對比</span>
+        <span class="tag">PDF 整理</span>
+        <span class="tag">簡報生成</span>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s2">M2-3</span>
+        <span class="mod-name">IDE 接 GitHub 直接部署</span>
+      </div>
+      <p class="mod-desc">把 M2-2 做的作品，從 IDE 一路 push 到網路上<br>— 不再手動上傳，一句話就完成上線</p>
+      <p class="mod-learn"><strong>你會學到：</strong>SSH 金鑰與認證機制、IDE 接上 GitHub 的完整流程、一句話就 commit + push、做多頁網站的 prompt 模板、從零開新專案部署上線</p>
+      <p class="mod-learn"><strong>帶走：</strong>升級版多頁網站 + 一個全新的 repo 和新網址 + 累積的 commit 紀錄</p>
+      <div class="mod-tags">
+        <span class="tag highlight">SSH Key</span>
+        <span class="tag highlight">IDE 接 GitHub</span>
+        <span class="tag">一句話 commit + push</span>
+        <span class="tag">多頁網站</span>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="mod-head">
+        <span class="mod-id s2">M2-4</span>
+        <span class="mod-name">申請 API + 串接應用場景</span>
+      </div>
+      <p class="mod-desc">從串一個 API、到真實應用場景、再到體驗 agent 模式<br>— 做出你的 Stage 2 期末成品</p>
+      <p class="mod-learn"><strong>你會學到：</strong>認識三大免費 AI API 平台、了解 API 額度與 RPM 限制、API Key 安全流程（.env / .gitignore）、實作 AI 應用場景、第一次體驗 Agent 模式</p>
+      <p class="mod-learn"><strong>帶走：</strong>個人介紹多頁網站 + 一個會議摘要器（含歷史紀錄的升級版）</p>
+      <div class="mod-tags">
+        <span class="tag highlight">免費 AI API</span>
+        <span class="tag highlight">API Key 安全</span>
+        <span class="tag">.env / .gitignore</span>
+        <span class="tag">Agent 模式</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 學習路徑 ══ -->
+<section>
+  <div class="section-label">你現在的位置</div>
+  <h2>三次跳躍，你正在跨第二跳</h2>
+  <div class="upgrade-path">
+    <div class="path-label">學習升級路徑</div>
+    <div class="stage-path">
+      <div class="sp-col">
+        <div class="sp-label s1-bg">Stage 1</div>
+        <div class="sp-item">用 AI 工作</div>
+        <div class="sp-item">打包 AI 助手</div>
+      </div>
+      <div class="sp-arrow">→</div>
+      <div class="sp-col current">
+        <div class="sp-label s2-bg">Stage 2</div>
+        <div class="sp-item">GitHub 上線</div>
+        <div class="sp-item">IDE 串 API</div>
+      </div>
+      <div class="sp-arrow">→</div>
+      <div class="sp-col">
+        <div class="sp-label s3-bg">Stage 3</div>
+        <div class="sp-item">IDE 串接</div>
+        <div class="sp-item">CLI 建系統</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 課程特色 ══ -->
+<section>
+  <div class="section-label">課程特色</div>
+  <h2>每堂課都在做，不只是在聽</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h3>40% 講解 / 60% 實作</h3>
+      <p>每堂課實際操作<br>每一輪都有明確的體感與收穫</p>
+    </div>
+    <div class="feature-card">
+      <h3>作品真正上線</h3>
+      <p>不只在自己電腦跑<br>每個模組都把成果部署到網路上</p>
+    </div>
+    <div class="feature-card">
+      <h3>資安觀念</h3>
+      <p>密碼管理、權限設定、安全 Checklist<br>做出來的東西上得了線、守得住</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Schedule ══ -->
+<section>
+  <div class="section-label">開課時間</div>
+  <h2>Stage 2 第一期</h2>
+  <div class="schedule-card">
+    <div class="sch-row">
+      <div class="sch-label">日期</div>
+      <div class="sch-val">2026 / 7 / 4（六）、7 / 5（日）</div>
+    </div>
+    <div class="sch-row">
+      <div class="sch-label">時間</div>
+      <div class="sch-val">9:30 — 16:30（含午休）</div>
+    </div>
+    <div class="sch-row">
+      <div class="sch-label">地點</div>
+      <div class="sch-val">台北市（詳細地址報名後通知）</div>
+    </div>
+    <div class="sch-row">
+      <div class="sch-label">內容</div>
+      <div class="sch-val">M2-1 ~ M2-4，共 4 模組 12 小時</div>
+    </div>
+    <div class="sch-row">
+      <div class="sch-label">費用</div>
+      <div class="sch-val"><span style="text-decoration:line-through;color:var(--g400);">原價 12,000 元</span>&nbsp; <span style="color:var(--orange);font-weight:700;">優惠價 6,000 元</span><span style="font-size:.82rem;color:var(--g600);">（需輸入小珂優惠碼）</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 先修建議 ══ -->
+<section>
+  <div class="prereq">
+    <div class="p-label">先修建議</div>
+    <p>
+      Stage 2 建議先完成 Stage 1，<br>因為會直接用到 Stage 1 學的 AI 對話做網頁、GAS 自動化基礎。<br>
+      但如果你已經有相關基礎，<br>也歡迎直接從 Stage 2 開始，報名時填一下你目前的狀態即可。
+    </p>
+    <p style="font-size:.9rem;color:var(--g600);margin-top:1rem;">
+      還沒上過 Stage 1？可先看 <a href="../">Stage 1 課程簡章</a>。<br>
+      如對課程有任何問題，請洽 <a href="https://line.me/R/ti/p/@640tusbi" style="color:#06C755;">Line@ 官方帳號</a>。
+    </p>
+  </div>
+</section>
+
+<!-- ══ Registration Form ══ -->
+<div class="cta-section" id="register">
+  <h2>報名 Stage 2 第一期</h2>
+  <p>7/4 — 7/5 台北市<br>12 小時，讓你的作品真正上線、串起免費 AI API</p>
+
+  <form class="reg-form" id="regForm" onsubmit="return submitForm(event)">
+    <div class="form-2col">
+      <div class="form-row">
+        <label>姓名 <span class="required">*</span></label>
+        <input type="text" name="name" required placeholder="你的姓名">
+      </div>
+      <div class="form-row">
+        <label>Email <span class="required">*</span></label>
+        <input type="email" name="email" required placeholder="name@example.com">
+      </div>
+    </div>
+    <div class="form-2col">
+      <div class="form-row">
+        <label>電話</label>
+        <input type="tel" name="phone" placeholder="0912-345-678">
+      </div>
+      <div class="form-row">
+        <label>報名階段 <span class="required">*</span></label>
+        <select name="stage" required>
+          <option value="" disabled selected>請選擇</option>
+          <option value="Stage 2" selected>Stage 2 — 串 AI（12hr）</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>你的 Stage 1 狀態 <span class="required">*</span></label>
+      <select name="stage1_status" required>
+        <option value="" disabled selected>請選擇</option>
+        <option value="已完成 Stage 1 第一期">已完成 Stage 1 第一期</option>
+        <option value="未上過 Stage 1，但有 AI 自動化基礎">未上過 Stage 1，但有 AI 自動化基礎</option>
+        <option value="未上過，想直接挑戰 Stage 2">未上過，想直接挑戰 Stage 2</option>
+      </select>
+      <p class="form-hint">建議先完成 Stage 1，但不限定，填這題只是方便我們了解你的程度</p>
+    </div>
+    <div class="form-row">
+      <label>Stage 1 報名 Email（如有，方便比對）</label>
+      <input type="email" name="stage1_email" placeholder="當初報名 Stage 1 用的 Email（選填）">
+    </div>
+    <div class="form-row">
+      <label>你有用過哪些 AI 工具（可複選）</label>
+      <div style="display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.3rem;">
+        <label style="font-size:.9rem;font-weight:400;color:#fff;display:flex;align-items:center;gap:.4rem;cursor:pointer;">
+          <input type="checkbox" name="tools" value="ChatGPT" style="width:18px;height:18px;accent-color:var(--blue);"> ChatGPT
+        </label>
+        <label style="font-size:.9rem;font-weight:400;color:#fff;display:flex;align-items:center;gap:.4rem;cursor:pointer;">
+          <input type="checkbox" name="tools" value="Claude" style="width:18px;height:18px;accent-color:var(--blue);"> Claude
+        </label>
+        <label style="font-size:.9rem;font-weight:400;color:#fff;display:flex;align-items:center;gap:.4rem;cursor:pointer;">
+          <input type="checkbox" name="tools" value="Gemini" style="width:18px;height:18px;accent-color:var(--blue);"> Gemini
+        </label>
+        <label style="font-size:.9rem;font-weight:400;color:#fff;display:flex;align-items:center;gap:.4rem;cursor:pointer;">
+          <input type="checkbox" name="tools" value="GitHub" style="width:18px;height:18px;accent-color:var(--blue);"> GitHub
+        </label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>你最想學到什麼</label>
+      <textarea name="goal" placeholder="例如：想把我的工具部署到網路上、想串免費 AI API 做應用..."></textarea>
+    </div>
+    <div class="form-row">
+      <label>備註</label>
+      <textarea name="note" placeholder="任何想跟講師說的話"></textarea>
+    </div>
+    <div class="form-row">
+      <label>優惠碼</label>
+      <input type="text" name="promo" placeholder="如有優惠碼請輸入">
+    </div>
+    <button type="submit" class="submit-btn" id="submitBtn">送出報名</button>
+  </form>
+
+  <div class="form-msg" id="formMsg"></div>
+</div>
+
+<script>
+// ⚠️ Stage 2 獨立 GAS — 部署 gas-registration-stage2.js 後，把下面這行換成「新的」部署網址
+//    不要沿用 Stage 1 的網址，兩者寫入不同的試算表。
+const FORM_ACTION = 'https://script.google.com/macros/s/AKfycbzpJutdi46ufvl0v4zfZj0wbOtkQOfqgQpVrBXldAp_wwcJDLtEqK_AD_NFsRnMqtCwpQ/exec';
+
+async function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('formMsg');
+  const form = document.getElementById('regForm');
+
+  msg.className = 'form-msg';
+  msg.style.display = 'none';
+
+  if (!FORM_ACTION) {
+    msg.textContent = '表單尚未設定後端網址，請先部署 Stage 2 的 GAS 並填入 FORM_ACTION';
+    msg.className = 'form-msg error';
+    msg.style.display = 'block';
+    return false;
+  }
+
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+  // 複選 checkbox 要手動收集
+  const tools = [...form.querySelectorAll('input[name="tools"]:checked')].map(c => c.value);
+  data.tools = tools.join(', ');
+
+  btn.disabled = true;
+  btn.textContent = '送出中...';
+
+  try {
+    await fetch(FORM_ACTION, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    msg.innerHTML = '報名成功！請匯款至中國信託（822）277541203704，金額 6,000 元<br>匯款後請透過 <a href="https://line.me/R/ti/p/@640tusbi" style="color:#06C755;font-weight:700;">Line@</a> 或 Email 通知我們，附上帳號後五碼';
+    msg.className = 'form-msg success';
+    msg.style.display = 'block';
+    form.reset();
+  } catch (err) {
+    msg.textContent = '送出時發生錯誤，請稍後再試';
+    msg.className = 'form-msg error';
+    msg.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '送出報名';
+  }
+
+  return false;
+}
+</script>
+
+<!-- ══ Footer ══ -->
+<div class="footer">
+  <p>Vibe Coding 學習路徑 Stage 2<br>— 陳重光 老師</p>
+  <p style="margin-top:.3rem;">課程諮詢：<a href="mailto:alan.chen75@gmail.com">Email</a> ／ <a href="https://line.me/R/ti/p/@640tusbi">Line@ 官方帳號</a></p>
+</div>
+
+</div>
+</body>
+</html>

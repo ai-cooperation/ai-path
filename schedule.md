@@ -27,11 +27,11 @@ description: "AI 能力升級 L1–L4 課程時間表，含開課日期、上課
         <div class="scard-facts">
           <div class="scard-fact">
             <span class="sfact-label">開課日期</span>
-            <span class="sfact-val">5/16（六）、5/17（日）</span>
+            <span class="sfact-val">7/25（六）、8/1（六）</span>
           </div>
           <div class="scard-fact">
             <span class="sfact-label">上課時間</span>
-            <span class="sfact-val">10:00 — 17:00</span>
+            <span class="sfact-val">9:30 — 16:30</span>
           </div>
           <div class="scard-fact">
             <span class="sfact-label">上課地點</span>
@@ -58,7 +58,7 @@ description: "AI 能力升級 L1–L4 課程時間表，含開課日期、上課
       <div class="scard-head">
         <div class="scard-top">
           <div class="scard-badge">L2</div>
-          <span class="scard-status">規劃中</span>
+          <span class="scard-status scard-status--open">報名中</span>
         </div>
         <span class="scard-icon">⚖️</span>
         <h2 class="scard-name">選工具</h2>
@@ -67,16 +67,16 @@ description: "AI 能力升級 L1–L4 課程時間表，含開課日期、上課
       <div class="scard-body">
         <div class="scard-facts">
           <div class="scard-fact">
-            <span class="sfact-label">預計開課</span>
-            <span class="sfact-val">2026 Q2</span>
+            <span class="sfact-label">開課日期</span>
+            <span class="sfact-val">7/4（六）、7/5（日）</span>
           </div>
           <div class="scard-fact">
-            <span class="sfact-label">課程天數</span>
-            <span class="sfact-val">2 天</span>
+            <span class="sfact-label">上課時間</span>
+            <span class="sfact-val">9:30 — 16:30</span>
           </div>
           <div class="scard-fact">
-            <span class="sfact-label">上課形式</span>
-            <span class="sfact-val">線下工作坊</span>
+            <span class="sfact-label">上課地點</span>
+            <span class="sfact-val">台北市</span>
           </div>
           <div class="scard-fact">
             <span class="sfact-label">人數上限</span>
@@ -84,14 +84,14 @@ description: "AI 能力升級 L1–L4 課程時間表，含開課日期、上課
           </div>
         </div>
         <div class="scard-topics">
-          <span class="stopic">AI 工具判斷力</span>
-          <span class="stopic">Claude Projects</span>
-          <span class="stopic">Agent 工作流</span>
-          <span class="stopic">Codex</span>
-          <span class="stopic">Claude Code</span>
-          <span class="stopic">GAS API 串接</span>
+          <span class="stopic">GitHub Pages</span>
+          <span class="stopic">IDE 開發環境</span>
+          <span class="stopic">SSH 部署</span>
+          <span class="stopic">免費 AI API</span>
+          <span class="stopic">會議摘要器</span>
+          <span class="stopic">Agent 模式</span>
         </div>
-        <a href="mailto:{{ site.contact_email }}?subject=L2 選工具 課程諮詢" class="scard-cta">來信諮詢 →</a>
+        <a href="{{ '/vibe-coding/stage2/' | relative_url }}" class="scard-cta scard-cta--open">立即報名 →</a>
       </div>
     </div>
 

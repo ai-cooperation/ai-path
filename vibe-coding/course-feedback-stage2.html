@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding 學習路徑 — Stage 2 課後回饋</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#FFF; --offwhite:#F8F9FA; --g50:#F1F3F4; --g100:#E8EAED;
+  --g200:#DADCE0; --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --green:#0F9D8A; --green-lt:#E6F4F1;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3E8FF;
+  --orange:#E8710A; --orange-lt:#FEF0E1;
+  --navy:#0B3C5D;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:22px;}
+body{font-family:'Noto Sans TC',sans-serif;color:var(--g900);line-height:1.7;background:var(--white);font-weight:400;}
+
+.container{max-width:720px;margin:0 auto;padding:2.5rem 1.5rem;}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,#0B3C5D 0%,#0F9D8A 100%);color:#fff;padding:4rem 2rem;text-align:center;}
+.hero h1{font-size:2.2rem;font-weight:900;line-height:1.3;margin-bottom:.8rem;}
+.hero .tagline{font-size:1.1rem;font-weight:400;opacity:.9;margin-bottom:1.2rem;line-height:1.8;}
+.hero .badges{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;}
+.hero .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:100px;padding:.4rem 1.2rem;font-size:.82rem;font-weight:500;}
+
+/* ── Thank You Block ── */
+.thanks-block{background:var(--green-lt);border-left:4px solid var(--green);border-radius:0 12px 12px 0;padding:1.4rem 1.6rem;margin:2rem 0;}
+.thanks-block h3{color:var(--green);font-size:1.05rem;margin-bottom:.6rem;}
+.thanks-block p{font-size:.92rem;color:var(--g800);line-height:1.8;}
+
+/* ── Section ── */
+section{padding:2.2rem 0;border-bottom:1px solid var(--g100);}
+section:last-of-type{border:none;}
+.section-label{font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:.4rem;}
+h2{font-size:1.45rem;font-weight:900;margin-bottom:.4rem;line-height:1.3;}
+.section-hint{font-size:.88rem;color:var(--g600);margin-bottom:1.4rem;line-height:1.7;}
+
+/* ── Form ── */
+.form-row{margin-bottom:1.2rem;}
+.form-row label.field-label{display:block;font-size:.95rem;font-weight:700;color:var(--g900);margin-bottom:.5rem;}
+.form-row label.field-label .required{color:var(--red);font-weight:700;}
+.form-row label.field-label .hint{font-size:.78rem;color:var(--g600);font-weight:400;margin-left:.4rem;}
+.form-row input[type=text],.form-row input[type=email],.form-row textarea,.form-row select{
+  width:100%;font-family:inherit;font-size:.95rem;padding:.7rem .9rem;
+  border:1.5px solid var(--g200);border-radius:10px;
+  background:#fff;color:var(--g900);outline:none;transition:border-color .2s;
+}
+.form-row input::placeholder,.form-row textarea::placeholder{color:var(--g400);}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{border-color:var(--green);}
+.form-row textarea{resize:vertical;min-height:90px;line-height:1.7;}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:600px){.form-2col{grid-template-columns:1fr;}}
+
+/* ── 1-5 Rating Scale ── */
+.rating-row{background:var(--offwhite);border-radius:12px;padding:1.1rem 1.2rem;margin-bottom:.9rem;}
+.rating-row .r-label{font-size:.95rem;font-weight:700;color:var(--g900);margin-bottom:.2rem;}
+.rating-row .r-sub{font-size:.8rem;color:var(--g600);margin-bottom:.7rem;line-height:1.6;}
+.rating-scale{display:flex;gap:.5rem;}
+.rating-scale label{
+  flex:1;text-align:center;padding:.55rem .3rem;
+  background:#fff;border:1.5px solid var(--g200);border-radius:8px;
+  font-size:.95rem;font-weight:700;color:var(--g600);
+  cursor:pointer;transition:all .15s;user-select:none;
+  min-height:44px;display:flex;align-items:center;justify-content:center;
+}
+.rating-scale input{position:absolute;opacity:0;width:0;height:0;}
+.rating-scale label:hover{border-color:var(--green);color:var(--green);}
+.rating-scale input:checked + span,
+.rating-scale label.checked{background:var(--green);color:#fff;border-color:var(--green);}
+.rating-anchors{display:flex;justify-content:space-between;font-size:.72rem;color:var(--g400);margin-top:.35rem;padding:0 .2rem;}
+
+/* ── NPS Scale (0-10) ── */
+.nps-row{background:var(--gold-lt);border-radius:12px;padding:1.2rem 1.3rem;margin-bottom:.9rem;border:1px solid #FCD86F;}
+.nps-row .r-label{font-size:1rem;font-weight:900;color:var(--g900);margin-bottom:.3rem;}
+.nps-row .r-sub{font-size:.82rem;color:var(--g600);margin-bottom:.8rem;}
+.nps-scale{display:grid;grid-template-columns:repeat(11,1fr);gap:.35rem;}
+.nps-scale label{
+  text-align:center;padding:.55rem .2rem;background:#fff;
+  border:1.5px solid var(--g200);border-radius:6px;
+  font-size:.88rem;font-weight:700;color:var(--g600);
+  cursor:pointer;transition:all .15s;min-height:42px;
+  display:flex;align-items:center;justify-content:center;
+}
+.nps-scale input{position:absolute;opacity:0;width:0;height:0;}
+.nps-scale label:hover{border-color:var(--gold);color:var(--gold);}
+.nps-scale label.checked{background:var(--gold);color:#fff;border-color:var(--gold);}
+.nps-anchors{display:flex;justify-content:space-between;font-size:.7rem;color:var(--g600);margin-top:.4rem;padding:0 .1rem;}
+@media(max-width:600px){
+  .nps-scale{grid-template-columns:repeat(6,1fr);}
+}
+
+/* ── 意願選項 ── */
+.choice-grid{display:grid;grid-template-columns:1fr;gap:.7rem;margin-top:.4rem;}
+.choice-opt{display:flex;align-items:center;gap:.6rem;background:var(--offwhite);padding:.9rem 1.1rem;border-radius:10px;border:1.5px solid var(--g200);cursor:pointer;font-weight:500;font-size:.92rem;transition:all .15s;}
+.choice-opt input{accent-color:var(--green);width:18px;height:18px;flex-shrink:0;}
+.choice-opt:hover{border-color:var(--green);}
+
+/* ── MCP Block ── */
+.mcp-block{background:var(--purple-lt);border-radius:14px;padding:1.5rem 1.6rem;margin-top:1rem;border:1px solid #DDD0FF;}
+.mcp-block h3{font-size:1.05rem;color:var(--purple);margin-bottom:.4rem;}
+.mcp-block .mcp-intro{font-size:.88rem;color:var(--g800);line-height:1.8;margin-bottom:1.2rem;}
+.mcp-block .mcp-intro a{color:var(--purple);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--purple);}
+.mcp-block .choice-opt input{accent-color:var(--purple);}
+.mcp-block .choice-opt:hover{border-color:var(--purple);}
+
+.mcp-detail{display:none;animation:slidedown .25s ease-out;margin-top:1rem;}
+.mcp-detail.show{display:block;}
+@keyframes slidedown{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── Submit ── */
+.submit-section{background:var(--navy);color:#fff;padding:2.2rem 1.8rem;border-radius:16px;margin-top:2.5rem;text-align:center;}
+.submit-section p{font-size:.9rem;opacity:.85;margin-bottom:1.2rem;}
+.submit-btn{
+  display:inline-block;width:100%;max-width:340px;background:var(--green);color:#fff;
+  font-family:inherit;font-size:1rem;font-weight:700;padding:.95rem 2rem;
+  border:none;border-radius:100px;cursor:pointer;
+  min-height:52px;
+  transition:transform .15s,box-shadow .15s;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,157,138,.4);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+
+.form-msg{margin-top:1.2rem;font-size:.92rem;padding:1rem 1.2rem;border-radius:10px;display:none;line-height:1.7;}
+.form-msg.success{display:block;background:rgba(15,157,138,.15);color:#fff;border:1px solid var(--green);}
+.form-msg.error{display:block;background:rgba(217,48,37,.15);color:#fff;border:1px solid var(--red);}
+
+/* ── Done Screen ── */
+.done-screen{display:none;text-align:center;padding:3rem 1.5rem;}
+.done-screen.show{display:block;}
+.done-icon{width:72px;height:72px;border-radius:50%;background:var(--green);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:2.2rem;font-weight:900;margin-bottom:1.2rem;}
+.done-screen h2{font-size:1.6rem;margin-bottom:.8rem;}
+.done-screen p{font-size:1rem;color:var(--g600);line-height:1.8;margin-bottom:.6rem;}
+.done-line{display:inline-flex;align-items:center;gap:.6rem;background:#06C755;color:#fff;padding:.7rem 1.4rem;border-radius:100px;font-weight:700;font-size:.95rem;text-decoration:none;margin-top:1.2rem;}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:2.5rem 1rem;font-size:.82rem;color:var(--g400);}
+.footer a{color:var(--green);text-decoration:none;}
+
+/* ── Mobile ── */
+@media(max-width:600px){
+  html{font-size:19px;}
+  .hero{padding:2.5rem 1.2rem;}
+  .hero h1{font-size:1.7rem;}
+  .hero .tagline{font-size:.95rem;}
+  .container{padding:1.5rem 1rem;}
+  section{padding:1.8rem 0;}
+  h2{font-size:1.2rem;}
+  .rating-scale label{font-size:.88rem;padding:.5rem .2rem;min-height:42px;}
+  .submit-section{padding:1.8rem 1.2rem;}
+  .mcp-block{padding:1.2rem 1.2rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ Hero ══ -->
+<div class="hero">
+  <h1>謝謝你，走完整條路徑了</h1>
+  <p class="tagline">Stage 1 到 Stage 2，你已經從「用 AI」走到「讓 AI 幫你串出一套服務」<br>你的回饋會決定下一步怎麼設計</p>
+  <div class="badges">
+    <span class="badge">大約 3–5 分鐘</span>
+    <span class="badge">所有意見我會親自看</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══ Thank You ══ -->
+  <div class="thanks-block">
+    <h3>來自講師的話</h3>
+    <p>謝謝你走完 Stage 2。這兩天從 M2-1 用 GitHub 平台把作品推上公開網址、M2-2 進 IDE 讓 AI 幫你操作開發工具、M2-3 把東西真的部署上線、到 M2-4 串起免費 API 做出會自己動的 agent —— 你手上現在有的，已經是一條「從想法到上線」的完整能力。<br><br>這份回饋我會親自看。誠實的批評比客氣的鼓勵更有用，你的意見會直接決定後續（進階主題、實戰陪跑）要怎麼設計。</p>
+  </div>
+
+  <form id="feedbackForm">
+    <input type="hidden" name="type" value="feedback_stage2">
+    <input type="hidden" name="stage" value="Stage 2 第一期（7/4-7/5）">
+
+    <!-- ══ 基本資訊 ══ -->
+    <section>
+      <div class="section-label">基本資訊</div>
+      <h2>讓我知道你是誰</h2>
+      <div class="section-hint">回饋不公開，僅老師個人看。填 Email 我才能把你 Stage 1 跟 Stage 2 的成長對照起來看，也會寄一份備份給你。</div>
+
+      <div class="form-2col">
+        <div class="form-row">
+          <label class="field-label">姓名 <span class="required">*</span></label>
+          <input type="text" name="name" required placeholder="陳同學">
+        </div>
+        <div class="form-row">
+          <label class="field-label">Email <span class="required">*</span></label>
+          <input type="email" name="email" required placeholder="you@example.com">
+        </div>
+      </div>
+      <div class="section-hint" style="margin:0;">提醒：請盡量用你 Stage 1 填過的同一個 Email，這樣兩期回饋才對得起來。</div>
+    </section>
+
+    <!-- ══ 量化評分 ══ -->
+    <section>
+      <div class="section-label">量化評分</div>
+      <h2>3 個面向，每項 1–5 分</h2>
+      <div class="section-hint">1 = 很差，3 = 普通，5 = 非常好。刻度跟 Stage 1 一樣，方便我對照你兩期的感受變化。誠實就好。</div>
+
+      <div class="rating-row" data-rating="design">
+        <div class="r-label">課程設計</div>
+        <div class="r-sub">架構安排、學習曲線、模組之間的銜接</div>
+        <div class="rating-scale">
+          <label><input type="radio" name="score_design" value="1" required><span>1</span></label>
+          <label><input type="radio" name="score_design" value="2"><span>2</span></label>
+          <label><input type="radio" name="score_design" value="3"><span>3</span></label>
+          <label><input type="radio" name="score_design" value="4"><span>4</span></label>
+          <label><input type="radio" name="score_design" value="5"><span>5</span></label>
+        </div>
+        <div class="rating-anchors"><span>很差</span><span>普通</span><span>非常好</span></div>
+      </div>
+
+      <div class="rating-row" data-rating="content">
+        <div class="r-label">內容深度</div>
+        <div class="r-sub">實用性、難度適中、能不能帶回工作用</div>
+        <div class="rating-scale">
+          <label><input type="radio" name="score_content" value="1" required><span>1</span></label>
+          <label><input type="radio" name="score_content" value="2"><span>2</span></label>
+          <label><input type="radio" name="score_content" value="3"><span>3</span></label>
+          <label><input type="radio" name="score_content" value="4"><span>4</span></label>
+          <label><input type="radio" name="score_content" value="5"><span>5</span></label>
+        </div>
+        <div class="rating-anchors"><span>太淺/太深</span><span>剛好</span><span>非常實用</span></div>
+      </div>
+
+      <div class="rating-row" data-rating="time">
+        <div class="r-label">時間安排</div>
+        <div class="r-sub">總長度、單元節奏、休息間隔</div>
+        <div class="rating-scale">
+          <label><input type="radio" name="score_time" value="1" required><span>1</span></label>
+          <label><input type="radio" name="score_time" value="2"><span>2</span></label>
+          <label><input type="radio" name="score_time" value="3"><span>3</span></label>
+          <label><input type="radio" name="score_time" value="4"><span>4</span></label>
+          <label><input type="radio" name="score_time" value="5"><span>5</span></label>
+        </div>
+        <div class="rating-anchors"><span>很差</span><span>普通</span><span>非常好</span></div>
+      </div>
+
+      <div class="nps-row" data-rating="nps">
+        <div class="r-label">推薦度</div>
+        <div class="r-sub">你有多願意把這條學習路徑推薦給朋友？（0 = 完全不會，10 = 一定會推）</div>
+        <div class="nps-scale">
+          <label><input type="radio" name="score_nps" value="0" required><span>0</span></label>
+          <label><input type="radio" name="score_nps" value="1"><span>1</span></label>
+          <label><input type="radio" name="score_nps" value="2"><span>2</span></label>
+          <label><input type="radio" name="score_nps" value="3"><span>3</span></label>
+          <label><input type="radio" name="score_nps" value="4"><span>4</span></label>
+          <label><input type="radio" name="score_nps" value="5"><span>5</span></label>
+          <label><input type="radio" name="score_nps" value="6"><span>6</span></label>
+          <label><input type="radio" name="score_nps" value="7"><span>7</span></label>
+          <label><input type="radio" name="score_nps" value="8"><span>8</span></label>
+          <label><input type="radio" name="score_nps" value="9"><span>9</span></label>
+          <label><input type="radio" name="score_nps" value="10"><span>10</span></label>
+        </div>
+        <div class="nps-anchors"><span>不會推</span><span>一定推</span></div>
+      </div>
+    </section>
+
+    <!-- ══ 文字回饋 ══ -->
+    <section>
+      <div class="section-label">文字回饋</div>
+      <h2>有什麼想跟我說</h2>
+      <div class="section-hint">不用每題都填，挑你最想講的寫。具體比客套更有用。</div>
+
+      <div class="form-row">
+        <label class="field-label">最有收穫的部分 <span class="required">*</span>
+          <span class="hint">哪個段落 / 練習 / 觀念讓你印象最深？</span>
+        </label>
+        <textarea name="best" required placeholder="例：M2-1 把作品用 GitHub Pages 推上公開網址那刻很有成就感；或 M2-4 第一次自己串起免費 API 讓程式會回話那段很驚豔..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <label class="field-label">覺得可以更好的地方
+          <span class="hint">哪段太快/太慢、哪個練習卡關、哪個觀念講不清楚</span>
+        </label>
+        <textarea name="improve" placeholder="例：M2-3 部署上線碰到 SSH / 權限那段我跟得有點吃力；或某個 IDE 操作想多看老師示範幾次"></textarea>
+      </div>
+
+      <div class="form-row">
+        <label class="field-label">想給講師的話
+          <span class="hint">私訊用，老師會親自回</span>
+        </label>
+        <textarea name="message" placeholder="想說的都可以寫，吐槽也可以"></textarea>
+      </div>
+    </section>
+
+    <!-- ══ 往前看 ══ -->
+    <section>
+      <div class="section-label">往前看</div>
+      <h2>接下來，你想往哪走</h2>
+      <div class="section-hint">你已經有整條路徑的基礎了。我想知道你接下來最想做什麼，好決定後續要不要開進階主題或實戰陪跑。</div>
+
+      <div class="form-row">
+        <label class="field-label">上完整條路徑後，你最想繼續深入或實作的方向 <span class="required">*</span>
+          <span class="hint">越具體越好，這會直接影響我後續開什麼</span>
+        </label>
+        <textarea name="next_focus" required placeholder="例：想把課堂做的東西變成真的能收費的小產品；或想學怎麼把多個 API 串成一個完整 agent；或想自己接案但不知道怎麼交付..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <label class="field-label">如果之後有進階主題 / 實戰陪跑，你的意願 <span class="required">*</span></label>
+        <div class="choice-grid">
+          <label class="choice-opt">
+            <input type="radio" name="next_interest" value="很想" required>
+            <span>很想，有後續請優先讓我知道</span>
+          </label>
+          <label class="choice-opt">
+            <input type="radio" name="next_interest" value="看情況" required>
+            <span>看情況，先給我資訊參考</span>
+          </label>
+          <label class="choice-opt">
+            <input type="radio" name="next_interest" value="暫時不用" required>
+            <span>暫時想自己練，之後再說</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="field-label">有什麼卡住你、或想先問的
+          <span class="hint">老師會親自回</span>
+        </label>
+        <textarea name="next_question" placeholder="例：想接案但不知從哪開始、擔心沒案子練手、想找同學一起做專題、不確定自己程度夠不夠..."></textarea>
+      </div>
+    </section>
+
+    <!-- ══ MCP 回訪 ══ -->
+    <section>
+      <div class="section-label">課後福利回訪</div>
+      <h2>agent-kb MCP 用得如何</h2>
+      <div class="section-hint">agent-kb 是老師的教學知識庫（真實案例、Vibe Coding 模組、概念字典、工作流模板）。你 Stage 1 可能申請過，這裡想了解實際使用狀況。</div>
+
+      <div class="mcp-block">
+        <p class="mcp-intro">接上之後可以直接在 Claude / ChatGPT 裡查老師的教學知識庫。<a href="https://agent-kb.cooperation.tw" target="_blank">了解 agent-kb 是什麼 →</a></p>
+
+        <div class="choice-grid">
+          <label class="choice-opt">
+            <input type="radio" name="mcp_status" value="有在用">
+            <span>有接上，也有在用</span>
+          </label>
+          <label class="choice-opt">
+            <input type="radio" name="mcp_status" value="申請沒用">
+            <span>申請了，但還沒真的用起來</span>
+          </label>
+          <label class="choice-opt">
+            <input type="radio" name="mcp_status" value="想補申請">
+            <span>當時沒申請，現在想補申請</span>
+          </label>
+          <label class="choice-opt">
+            <input type="radio" name="mcp_status" value="不需要">
+            <span>暫時不需要</span>
+          </label>
+        </div>
+
+        <div class="mcp-detail" id="mcpDetail">
+          <div class="form-row">
+            <label class="field-label">你都拿它做什麼 / 想怎麼用
+              <span class="hint">有在用就講實際用途；想補申請就講預計用途</span>
+            </label>
+            <textarea name="mcp_purpose" placeholder="例：平常工作查真實案例、複習 vibe coding 流程、引用課程模組到自己的專案..."></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Submit ══ -->
+    <div class="submit-section">
+      <p>送出後你會收到一份備份信，老師也會親自看每一份回饋</p>
+      <button type="submit" class="submit-btn" id="submitBtn">送出回饋</button>
+      <div class="form-msg" id="formMsg"></div>
+    </div>
+  </form>
+
+  <!-- ══ Done Screen ══ -->
+  <div class="done-screen" id="doneScreen">
+    <div class="done-icon">&#10003;</div>
+    <h2>收到了，謝謝你</h2>
+    <p>備份信已寄到你的 Email<br>有任何補充想說的，直接回覆那封信就好</p>
+    <p style="margin-top:1.5rem;">想跟上後續課程資訊？</p>
+    <a href="https://line.me/R/ti/p/@640tusbi" target="_blank" class="done-line">加入 Line@ 官方帳號</a>
+  </div>
+
+  <div class="footer">
+    陳重光 老師 — Vibe Coding 學習路徑 Stage 2<br>
+    有問題寫信給 <a href="mailto:alan.chen75@gmail.com">alan.chen75@gmail.com</a>
+  </div>
+
+</div>
+
+<script>
+const FORM_ACTION = 'https://script.google.com/macros/s/AKfycbxK5PN3J-nyFFF1hMz8uzP6ZhYCZlBu4jSEctwD9tJzrgLvC3g48St5FlfAxfXxa5sK/exec';
+
+// ── Rating button visual feedback (radio 點選後 label 變色) ──
+document.querySelectorAll('.rating-scale, .nps-scale').forEach(scale => {
+  scale.addEventListener('change', (e) => {
+    if (e.target.type !== 'radio') return;
+    scale.querySelectorAll('label').forEach(l => l.classList.remove('checked'));
+    e.target.closest('label').classList.add('checked');
+  });
+});
+
+// ── MCP purpose 展開：選了「有在用 / 申請沒用 / 想補申請」就顯示用途欄 ──
+const mcpDetail = document.getElementById('mcpDetail');
+document.querySelectorAll('input[name="mcp_status"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    const wantDetail = radio.checked && radio.value !== '不需要';
+    mcpDetail.classList.toggle('show', wantDetail);
+  });
+});
+
+// ── Submit handler ──
+const form = document.getElementById('feedbackForm');
+const submitBtn = document.getElementById('submitBtn');
+const formMsg = document.getElementById('formMsg');
+const doneScreen = document.getElementById('doneScreen');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '送出中...';
+  formMsg.className = 'form-msg';
+  formMsg.textContent = '';
+
+  const fd = new FormData(form);
+  const payload = {};
+  fd.forEach((v, k) => { payload[k] = v; });
+
+  try {
+    await fetch(FORM_ACTION, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    });
+    // no-cors 模式下 res 是 opaque，無法讀內容，只能假定成功
+    form.style.display = 'none';
+    doneScreen.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    formMsg.className = 'form-msg error';
+    formMsg.textContent = '送出失敗：' + err.message + '。可重試或寫信給老師 alan.chen75@gmail.com';
+    submitBtn.disabled = false;
+    submitBtn.textContent = '送出回饋';
+  }
+});
+</script>
+</body>
+</html>

@@ -39,7 +39,7 @@ html,body{font-family:'Noto Sans TC',sans-serif;color:var(--g900);background:#F2
 .settings-body{display:none;padding:0 1.4rem 1.2rem;border-top:1px solid var(--g100);}
 .settings.open .settings-body{display:block;}
 
-.apply-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:1rem 0;}
+.apply-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin:1rem 0;}
 .apply-step{background:var(--offwhite);border:1px solid var(--g100);border-radius:10px;padding:.7rem .9rem;}
 .apply-step .n{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-bottom:.35rem;}
 .apply-step p{font-size:.82rem;line-height:1.6;color:var(--g800);}
@@ -211,9 +211,10 @@ details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8re
     </div>
     <div class="settings-body">
       <div class="apply-steps">
-        <div class="apply-step"><span class="n">1</span><p>打開 <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a><br>用 Google 帳號登入</p></div>
-        <div class="apply-step"><span class="n">2</span><p>按 <strong>Create API Key</strong><br>名稱隨便取 例如 playground</p></div>
-        <div class="apply-step"><span class="n">3</span><p>複製 gsk_ 開頭的 Key<br>貼到下面輸入框 就完成了</p></div>
+        <div class="apply-step"><span class="n">1</span><p>打開 <a href="https://console.groq.com" target="_blank" rel="noopener">console.groq.com</a><br>用 Google 帳號登入</p></div>
+        <div class="apply-step"><span class="n">2</span><p>先點 <a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank" rel="noopener">這個語音模型頁</a><br>按 <strong>Accept terms</strong> 同意條款<br><span style="color:var(--g500);font-size:.75rem;">站 3 語音會用到 現在按好 30 秒的事</span></p></div>
+        <div class="apply-step"><span class="n">3</span><p>開 <a href="https://console.groq.com/keys" target="_blank" rel="noopener">API Keys 頁</a> 按 <strong>Create API Key</strong><br><span style="color:var(--g500);font-size:.75rem;">跟步驟 2 連著做 中間不要切換 Console 左上角的組織</span></p></div>
+        <div class="apply-step"><span class="n">4</span><p>複製 gsk_ 開頭的 Key<br>貼到下面輸入框 就完成了</p></div>
       </div>
       <div class="key-line">
         <input type="password" id="groqKey" placeholder="貼上 API Key 例 gsk_..." onchange="saveKey()">
@@ -346,7 +347,7 @@ details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8re
     </div>
     <div class="st-body">
       <p class="st-lead">Orpheus 語音模型目前<strong>只會說英文和阿拉伯文</strong> 所以中文逐字稿要先過一次翻譯 API 再送語音 API　<strong>兩個 API 手牽手 就是串接</strong>　這也是查證模型能力邊界的一課 不是每個模型什麼都會</p>
-      <div class="note-box"><strong>第一次玩這站 要先按一次同意條款</strong>　Orpheus 是 preview 模型 Groq 規定組織要先同意一次使用條款才能呼叫<br><a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank" rel="noopener">點這裡開 Groq Console</a>（用你申請 Key 的同一個 Google 帳號登入）按 <strong>Accept terms</strong> 回來就能播放了<br><strong>按過還是被擋</strong>　代表你的 Key 跟同意條款的不是同一個組織　在剛剛 Playground 能播的那個組織<a href="https://console.groq.com/keys" target="_blank" rel="noopener">重開一把新 Key</a> 回來換上即可</div>
+      <div class="note-box"><strong>被擋說要同意條款？</strong>　那是最上方申請流程的步驟 2 還沒做　<a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank" rel="noopener">點這裡開 Orpheus 模型頁</a> 按 <strong>Accept terms</strong> 回來重試<br><strong>按過了還是被擋</strong>　代表 Key 跟條款同意的不是同一個組織　在剛剛按同意的那個組織<a href="https://console.groq.com/keys" target="_blank" rel="noopener">重開一把新 Key</a> 回來換上即可</div>
       <div class="speak-grid">
         <div class="speak-col">
           <div class="lbl">中文原文（站 1 唸完會自動帶入）</div>

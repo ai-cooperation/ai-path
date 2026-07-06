@@ -346,7 +346,7 @@ details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8re
     </div>
     <div class="st-body">
       <p class="st-lead">Orpheus 語音模型目前<strong>只會說英文和阿拉伯文</strong> 所以中文逐字稿要先過一次翻譯 API 再送語音 API　<strong>兩個 API 手牽手 就是串接</strong>　這也是查證模型能力邊界的一課 不是每個模型什麼都會</p>
-      <div class="note-box"><strong>第一次玩這站 要先按一次同意條款</strong>　Orpheus 是 preview 模型 Groq 規定每個帳號要先同意一次使用條款才能呼叫<br><a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank" rel="noopener">點這裡開 Groq Console</a>（用你申請 Key 的同一個 Google 帳號登入）按 <strong>Accept terms</strong> 回來就能播放了</div>
+      <div class="note-box"><strong>第一次玩這站 要先按一次同意條款</strong>　Orpheus 是 preview 模型 Groq 規定組織要先同意一次使用條款才能呼叫<br><a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank" rel="noopener">點這裡開 Groq Console</a>（用你申請 Key 的同一個 Google 帳號登入）按 <strong>Accept terms</strong> 回來就能播放了<br><strong>按過還是被擋</strong>　代表你的 Key 跟同意條款的不是同一個組織　在剛剛 Playground 能播的那個組織<a href="https://console.groq.com/keys" target="_blank" rel="noopener">重開一把新 Key</a> 回來換上即可</div>
       <div class="speak-grid">
         <div class="speak-col">
           <div class="lbl">中文原文（站 1 唸完會自動帶入）</div>
@@ -518,9 +518,11 @@ function errorTip(msg){
   const m = String(msg).toLowerCase();
   if(m.includes('terms acceptance') || m.includes('terms_acceptance') || m.includes('accept the terms')){
     const u = String(msg).match(/https:\/\/console\.groq\.com[^\s"'<>]+/);
-    return '<strong>建議</strong>　這個模型第一次用要先同意條款（每個帳號按一次就好 不用錢）<br>' +
+    return '<strong>建議</strong>　這個模型要先在 Groq Console 同意一次條款（免費）<br>' +
       (u ? '<a href="' + u[0] + '" target="_blank" rel="noopener">點這裡開 Groq Console 按 Accept terms</a>　' : '去 console.groq.com 開這個模型按 Accept terms　') +
-      '記得用申請 Key 的同一個帳號登入 按完回來再試一次';
+      '按完回來再試一次<br>' +
+      '<strong>按過了還是跳這個錯誤？</strong>　同意跟 Key 都是綁「組織」的 你的 Key 大概是在另一個組織建的<br>' +
+      '最快解法 在剛剛 Playground 能播放的那個組織 重新 <a href="https://console.groq.com/keys" target="_blank" rel="noopener">Create API Key</a> 把新 Key 貼回本頁最上方（先按清除 Key 再貼新的）';
   }
   if(m.includes('401') || m.includes('invalid api key') || m.includes('unauthorized'))
     return '<strong>建議</strong>　Key 無效 確認完整複製了 gsk_ 開頭整串 或回 console.groq.com/keys 重產一把';

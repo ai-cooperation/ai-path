@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Groq 多模態 Playground | Vibe Coding M2-4</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#fff; --offwhite:#F8F9FA; --g100:#E8EAED; --g200:#DADCE0;
+  --g400:#9AA0A6; --g500:#80868B; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --green:#0F9D8A; --green-lt:#E6F4F1; --green-dk:#0B7A6B;
+  --navy:#0B3C5D; --blue:#1A73E8; --blue-lt:#E8F0FE;
+  --gold:#F9AB00; --gold-lt:#FEF7E0;
+  --red:#D93025; --red-lt:#FCE8E6;
+  --purple:#7C3AED; --purple-lt:#F3EEFD; --orange:#E8710A; --orange-lt:#FEEFE3;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{font-family:'Noto Sans TC',sans-serif;color:var(--g900);background:#F2F4F7;min-height:100vh;font-size:16px;line-height:1.65;}
+
+/* Header */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0d2a44 45%,#f97316 130%);color:#fff;padding:2rem 1.2rem 1.5rem;text-align:center;}
+.hero h1{font-size:1.8rem;font-weight:900;margin-bottom:.4rem;}
+.hero .sub{font-size:.95rem;color:rgba(255,255,255,.82);}
+.hero .badges{margin-top:.8rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;}
+.hero .badges span{background:rgba(255,255,255,.15);padding:.2rem .8rem;border-radius:100px;font-size:.78rem;font-weight:600;}
+
+.wrap{max-width:1080px;margin:0 auto;padding:1.5rem 1.2rem;}
+
+/* Settings / key panel */
+.settings{background:#fff;border:1px solid var(--g200);border-radius:14px;margin-bottom:1.2rem;overflow:hidden;}
+.settings-toggle{padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:#fff;}
+.settings-toggle:hover{background:var(--offwhite);}
+.settings-toggle .title{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:.5rem;}
+.settings-toggle .status{font-size:.82rem;color:var(--g500);}
+.settings-toggle .status.ok{color:var(--green);font-weight:600;}
+.settings-toggle .arrow{transition:transform .2s;color:var(--g400);}
+.settings.open .arrow{transform:rotate(180deg);}
+.settings-body{display:none;padding:0 1.4rem 1.2rem;border-top:1px solid var(--g100);}
+.settings.open .settings-body{display:block;}
+
+.apply-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:1rem 0;}
+.apply-step{background:var(--offwhite);border:1px solid var(--g100);border-radius:10px;padding:.7rem .9rem;}
+.apply-step .n{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin-bottom:.35rem;}
+.apply-step p{font-size:.82rem;line-height:1.6;color:var(--g800);}
+.apply-step a{color:var(--blue);text-decoration:none;font-weight:600;}
+.apply-step a:hover{text-decoration:underline;}
+
+.key-line{display:flex;gap:.6rem;margin-top:.3rem;}
+.key-line input{flex:1;padding:.6rem .8rem;border:1.5px solid var(--g200);border-radius:8px;font-family:'Fira Code',monospace;font-size:.88rem;}
+.key-line input:focus{outline:none;border-color:var(--green);}
+.key-line input.has-value{background:var(--green-lt);border-color:var(--green);}
+.key-line button{background:#fff;border:1px solid var(--g200);color:var(--g800);padding:.4rem .9rem;border-radius:8px;font-size:.82rem;cursor:pointer;white-space:nowrap;}
+.key-line button:hover{background:var(--offwhite);}
+.settings-note{background:var(--gold-lt);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:.85rem;color:var(--g800);margin-top:.8rem;line-height:1.7;}
+.settings-note strong{color:#b07d00;}
+
+/* Pipeline bar */
+.pipeline{background:#fff;border:1px solid var(--g200);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.4rem;}
+.pipeline .pl-title{font-size:.82rem;font-weight:700;color:var(--g500);letter-spacing:.08em;margin-bottom:.6rem;}
+.pipeline .pl-flow{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.88rem;font-weight:600;}
+.pl-node{padding:.35rem .9rem;border-radius:100px;border:1.5px solid var(--g200);color:var(--g500);background:var(--offwhite);transition:all .3s;}
+.pl-node.on{border-color:var(--green);color:var(--green);background:var(--green-lt);}
+.pl-arrow{color:var(--g400);}
+.pl-hint{font-size:.8rem;color:var(--g500);margin-top:.5rem;line-height:1.6;}
+
+/* Station card */
+.station{background:#fff;border:1px solid var(--g200);border-radius:16px;margin-bottom:1.6rem;overflow:hidden;scroll-margin-top:1rem;}
+.station .st-head{padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem;border-bottom:1px solid var(--g100);}
+.station .st-num{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:900;color:#fff;flex-shrink:0;}
+.station .st-title{font-size:1.15rem;font-weight:900;}
+.station .st-model{font-family:'Fira Code',monospace;font-size:.72rem;color:var(--g500);margin-top:.1rem;}
+.station .st-real{margin-left:auto;text-align:right;font-size:.75rem;color:var(--g500);line-height:1.5;max-width:280px;}
+.station .st-body{padding:1.2rem 1.4rem;}
+.station.listen .st-num{background:var(--green);}
+.station.see .st-num{background:var(--blue);}
+.station.speak .st-num{background:var(--orange);}
+.station.tag .st-num{background:var(--purple);}
+
+.st-lead{font-size:.92rem;color:var(--g800);margin-bottom:1rem;line-height:1.75;}
+.st-lead strong{color:var(--g900);}
+
+/* Buttons */
+.big-btn{background:var(--green);color:#fff;border:none;padding:.8rem 1.8rem;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;transition:background .15s;font-family:inherit;}
+.big-btn:hover{background:var(--green-dk);}
+.big-btn:disabled{background:var(--g400);cursor:not-allowed;}
+.big-btn.rec{background:var(--red);}
+.big-btn.blue{background:var(--blue);}
+.big-btn.blue:hover{background:#1557b0;}
+.big-btn.orange{background:var(--orange);}
+.big-btn.orange:hover{background:#c25e08;}
+.big-btn.purple{background:var(--purple);}
+.big-btn.purple:hover{background:#6428c9;}
+.ghost-btn{background:#fff;border:1.5px solid var(--g200);color:var(--g800);padding:.55rem 1.1rem;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;}
+.ghost-btn:hover{border-color:var(--green);color:var(--green);}
+
+/* Script example chips */
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 1rem;}
+.chip{background:var(--green-lt);color:var(--green-dk);border:1px solid rgba(15,157,138,.25);padding:.4rem .9rem;border-radius:100px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.chip:hover{background:var(--green);color:#fff;}
+.script-card{background:var(--offwhite);border:1px solid var(--g100);border-radius:10px;padding:.9rem 1.1rem;font-size:.95rem;line-height:1.9;color:var(--g800);display:none;margin-bottom:1rem;}
+.script-card.show{display:block;}
+.script-card .sc-label{font-size:.72rem;font-weight:700;color:var(--g500);letter-spacing:.08em;margin-bottom:.3rem;}
+
+/* Output boxes */
+.out-box{background:var(--offwhite);border:1.5px solid var(--g100);border-radius:10px;padding:1rem 1.1rem;font-size:.95rem;line-height:1.8;white-space:pre-wrap;word-break:break-word;min-height:64px;margin-top:1rem;}
+.out-box.empty{color:var(--g400);font-style:italic;}
+.out-box.error{color:var(--red);background:var(--red-lt);border-color:rgba(217,48,37,.3);white-space:normal;}
+.out-meta{display:flex;gap:1.2rem;font-size:.78rem;color:var(--g500);margin-top:.5rem;flex-wrap:wrap;}
+.out-meta strong{color:var(--g800);font-family:'Fira Code',monospace;}
+.err-tip{background:var(--gold-lt);border-left:3px solid var(--gold);padding:.5rem .8rem;border-radius:0 6px 6px 0;font-size:.85rem;margin-top:.6rem;line-height:1.7;color:var(--g800);}
+
+/* textarea */
+.ta{width:100%;padding:.8rem 1rem;border:1.5px solid var(--g200);border-radius:10px;font-family:inherit;font-size:.95rem;line-height:1.7;resize:vertical;background:#fff;}
+.ta:focus{outline:none;border-color:var(--green);}
+
+/* Station 1 record area */
+.rec-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.rec-timer{font-family:'Fira Code',monospace;font-size:1.3rem;font-weight:700;color:var(--red);display:none;}
+.rec-timer.show{display:block;}
+.upload-alt{font-size:.82rem;color:var(--g500);}
+.upload-alt label{color:var(--blue);cursor:pointer;font-weight:600;}
+.upload-alt label:hover{text-decoration:underline;}
+.handoff{display:none;gap:.7rem;margin-top:.9rem;flex-wrap:wrap;}
+.handoff.show{display:flex;}
+
+/* Station 2 layout */
+.see-grid{display:grid;grid-template-columns:300px 1fr;gap:1.2rem;align-items:start;}
+.img-drop{border:2px dashed var(--g200);border-radius:12px;background:var(--offwhite);padding:.6rem;text-align:center;cursor:pointer;transition:border-color .15s;}
+.img-drop:hover,.img-drop.drag{border-color:var(--blue);}
+.img-drop img{max-width:100%;max-height:340px;border-radius:8px;display:block;margin:0 auto;}
+.img-drop .drop-hint{font-size:.78rem;color:var(--g500);padding:.4rem 0 .2rem;line-height:1.6;}
+
+/* Station 3 speak */
+.speak-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.speak-col .lbl{font-size:.82rem;font-weight:700;color:var(--g600);margin-bottom:.35rem;}
+audio{width:100%;margin-top:1rem;display:none;}
+audio.show{display:block;}
+
+/* Station 4 tags */
+.tag-result{display:none;margin-top:1.2rem;}
+.tag-result.show{display:block;}
+.badge-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem;}
+.badge{padding:.45rem 1.1rem;border-radius:100px;font-size:.9rem;font-weight:700;display:inline-flex;align-items:center;gap:.45rem;}
+.badge .k{font-size:.7rem;font-weight:600;opacity:.75;}
+.badge.b-blue{background:var(--blue-lt);color:var(--blue);}
+.badge.b-green{background:var(--green-lt);color:var(--green-dk);}
+.badge.b-gray{background:var(--g100);color:var(--g600);}
+.badge.b-red{background:var(--red-lt);color:var(--red);}
+.badge.b-amber{background:var(--gold-lt);color:#b07d00;}
+.kv-rows{display:grid;gap:.4rem;margin-bottom:1rem;}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:.6rem;font-size:.92rem;}
+.kv .k{color:var(--g500);font-weight:600;}
+.json-pre{background:#1e2530;color:#cce4ff;border-radius:10px;padding:1rem 1.2rem;font-family:'Fira Code',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;white-space:pre;}
+.punchline{background:var(--purple-lt);border-left:3px solid var(--purple);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:.9rem;color:var(--g800);margin-top:1rem;line-height:1.7;}
+.punchline strong{color:var(--purple);}
+
+/* curl details */
+details.curl{margin-top:1rem;}
+details.curl summary{font-size:.8rem;color:var(--g500);cursor:pointer;font-weight:600;list-style:none;}
+details.curl summary::-webkit-details-marker{display:none;}
+details.curl[open] summary{color:var(--green);}
+details.curl summary:hover{color:var(--green);}
+details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8rem 1rem;font-family:'Fira Code',monospace;font-size:.74rem;line-height:1.7;overflow-x:auto;margin-top:.5rem;white-space:pre;}
+
+.note-box{background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:.85rem;color:var(--g800);margin:.8rem 0;line-height:1.7;}
+.note-box strong{color:var(--blue);}
+
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;}
+.spinner.dark{border-color:var(--g200);border-top-color:var(--green);}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.page-footer{text-align:center;padding:2rem 1rem;font-size:.85rem;color:var(--g500);}
+.page-footer a{color:var(--green);text-decoration:none;}
+.page-footer a:hover{text-decoration:underline;}
+
+@media(max-width:760px){
+  .hero h1{font-size:1.45rem;}
+  .wrap{padding:1rem .8rem;}
+  .apply-steps{grid-template-columns:1fr;}
+  .see-grid{grid-template-columns:1fr;}
+  .speak-grid{grid-template-columns:1fr;}
+  .station .st-real{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Groq 多模態 Playground</h1>
+  <p class="sub">一把免費 Key 讓 AI 聽你說話 看你的圖 開口說英文 吐出程式吃得下的 JSON</p>
+  <div class="badges">
+    <span>Vibe Coding M2-4 補充單元</span>
+    <span>聽 ・ 看 ・ 說 ・ 貼標籤</span>
+    <span>Key 只存你的瀏覽器</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- Key setup -->
+  <div class="settings" id="settings">
+    <div class="settings-toggle" onclick="toggleSettings()">
+      <div>
+        <div class="title">第一步 申請並貼上你的 Groq API Key</div>
+        <div class="status" id="keyStatus">尚未設定 點開申請 免費 不用綁信用卡</div>
+      </div>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="settings-body">
+      <div class="apply-steps">
+        <div class="apply-step"><span class="n">1</span><p>打開 <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a><br>用 Google 帳號登入</p></div>
+        <div class="apply-step"><span class="n">2</span><p>按 <strong>Create API Key</strong><br>名稱隨便取 例如 playground</p></div>
+        <div class="apply-step"><span class="n">3</span><p>複製 gsk_ 開頭的 Key<br>貼到下面輸入框 就完成了</p></div>
+      </div>
+      <div class="key-line">
+        <input type="password" id="groqKey" placeholder="貼上 API Key 例 gsk_..." onchange="saveKey()">
+        <button onclick="clearKey()">清除 Key</button>
+      </div>
+      <div class="settings-note">
+        <strong>安全提醒</strong>　Key 只存在你瀏覽器的 localStorage 不會上傳任何伺服器　所有 API 呼叫都從你的瀏覽器直接打到 Groq　共用電腦記得用完按清除<br>
+        <strong>回想 Round 2</strong>　這種「Key 貼在瀏覽器」只適合自己練習　做給別人用的網站要像會議摘要器一樣把 Key 藏在後端
+      </div>
+    </div>
+  </div>
+
+  <!-- Pipeline bar -->
+  <div class="pipeline">
+    <div class="pl-title">今天的路線 站 1 的逐字稿會自動流進站 3 和站 4 這就是 API 串接</div>
+    <div class="pl-flow">
+      <span class="pl-node" id="plListen">1 聽 你講話</span>
+      <span class="pl-arrow">→</span>
+      <span class="pl-node" id="plText">逐字稿</span>
+      <span class="pl-arrow">→</span>
+      <span class="pl-node" id="plSpeak">3 說 英文朗讀</span>
+      <span class="pl-arrow">+</span>
+      <span class="pl-node" id="plTag">4 貼標籤 JSON</span>
+    </div>
+    <div class="pl-hint">站 2 看圖是獨立支線 用同一把 Key 換一個模型就能看圖　四站用完你就體會過語音 視覺 語音合成 結構化輸出四種 API</div>
+  </div>
+
+  <!-- ═══ Station 1: Listen ═══ -->
+  <div class="station listen" id="st1">
+    <div class="st-head">
+      <div class="st-num">1</div>
+      <div>
+        <div class="st-title">聽 講一段話 秒出逐字稿</div>
+        <div class="st-model">whisper-large-v3-turbo ・ 語音轉文字</div>
+      </div>
+      <div class="st-real">真實世界對應<br>會議記錄 客服錄音質檢 訪談逐字稿</div>
+    </div>
+    <div class="st-body">
+      <p class="st-lead">按下錄音 <strong>照著下面任一段講稿唸</strong> 唸完按停止　你的聲音會送到 Whisper 模型 回來就是文字　這段文字等下會餵給站 3 和站 4</p>
+      <div class="chips">
+        <div class="chip" onclick="showScript(0)">講稿 A 客訴</div>
+        <div class="chip" onclick="showScript(1)">講稿 B 詢價</div>
+        <div class="chip" onclick="showScript(2)">講稿 C 課後回饋</div>
+      </div>
+      <div class="script-card" id="scriptCard">
+        <div class="sc-label" id="scLabel"></div>
+        <div id="scText"></div>
+      </div>
+      <div class="rec-row">
+        <button class="big-btn" id="recBtn" onclick="toggleRec()">開始錄音</button>
+        <span class="rec-timer" id="recTimer">0:00</span>
+        <span class="upload-alt">不方便開麥克風？<label for="audioFile">上傳音檔</label>（mp3 / m4a / wav）<input type="file" id="audioFile" accept="audio/*" style="display:none" onchange="uploadAudio(this)"></span>
+      </div>
+      <div class="out-box empty" id="sttOut">逐字稿會出現在這裡</div>
+      <div class="out-meta" id="sttMeta" style="display:none;">
+        <span>耗時 <strong id="sttTime">—</strong></span>
+        <span>音檔長度 <strong id="sttDur">—</strong></span>
+        <span>偵測語言 <strong id="sttLang">—</strong></span>
+      </div>
+      <div class="handoff" id="handoff">
+        <button class="ghost-btn" onclick="sendToSpeak()">→ 送到站 3 朗讀英文版</button>
+        <button class="ghost-btn" onclick="sendToTag()">→ 送到站 4 自動貼標籤</button>
+      </div>
+      <details class="curl">
+        <summary>▸ 這一站背後打的 API 長這樣（你的程式也能打）</summary>
+        <pre>curl https://api.groq.com/openai/v1/audio/transcriptions \
+  -H "Authorization: Bearer $GROQ_API_KEY" \
+  -F model=whisper-large-v3-turbo \
+  -F response_format=verbose_json \
+  -F file=@recording.webm</pre>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═══ Station 2: See ═══ -->
+  <div class="station see" id="st2">
+    <div class="st-head">
+      <div class="st-num">2</div>
+      <div>
+        <div class="st-title">看 丟一張發票 抽出品項和金額</div>
+        <div class="st-model" id="visionModelLabel">meta-llama/llama-4-scout-17b-16e-instruct ・ 圖片理解</div>
+      </div>
+      <div class="st-real">真實世界對應<br>報帳自動化 表單辨識 商品圖整理</div>
+    </div>
+    <div class="st-body">
+      <p class="st-lead">已經幫你放了一張示範發票 直接按辨識　也可以<strong>手機拍你桌上任何收據或名片</strong>換上去試</p>
+      <div class="see-grid">
+        <div>
+          <div class="img-drop" id="imgDrop" onclick="document.getElementById('imgFile').click()">
+            <img id="previewImg" src="receipt-demo.png" alt="示範發票">
+            <div class="drop-hint">點擊換圖 或直接把圖拖進來</div>
+          </div>
+          <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="pickImage(this)">
+        </div>
+        <div>
+          <div style="font-size:.82rem;font-weight:700;color:var(--g600);margin-bottom:.35rem;">要 AI 做什麼（可以改）</div>
+          <textarea class="ta" id="visionPrompt" rows="4">這是一張收據或發票。請用繁體中文抽出：商家名稱、日期、發票號碼、每個品項的名稱和金額、總金額。用條列呈現。</textarea>
+          <div style="margin-top:.8rem;">
+            <button class="big-btn blue" id="visionBtn" onclick="runVision()">辨識這張圖</button>
+          </div>
+          <div class="out-box empty" id="visionOut">辨識結果會出現在這裡</div>
+          <div class="out-meta" id="visionMeta" style="display:none;">
+            <span>耗時 <strong id="visionTime">—</strong></span>
+            <span>模型 <strong id="visionUsed">—</strong></span>
+          </div>
+        </div>
+      </div>
+      <details class="curl">
+        <summary>▸ 這一站背後打的 API 長這樣</summary>
+        <pre>curl https://api.groq.com/openai/v1/chat/completions \
+  -H "Authorization: Bearer $GROQ_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"meta-llama/llama-4-scout-17b-16e-instruct",
+       "messages":[{"role":"user","content":[
+         {"type":"text","text":"抽出這張發票的品項和金額"},
+         {"type":"image_url","image_url":{"url":"data:image/jpeg;base64,..."}}]}]}'</pre>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═══ Station 3: Speak ═══ -->
+  <div class="station speak" id="st3">
+    <div class="st-head">
+      <div class="st-num">3</div>
+      <div>
+        <div class="st-title">說 把逐字稿翻成英文 AI 開口唸給你聽</div>
+        <div class="st-model">llama-3.1-8b-instant 翻譯 + canopylabs/orpheus-v1-english 語音合成</div>
+      </div>
+      <div class="st-real">真實世界對應<br>語音通知 有聲內容 無障礙朗讀</div>
+    </div>
+    <div class="st-body">
+      <p class="st-lead">Orpheus 語音模型目前<strong>只會說英文和阿拉伯文</strong> 所以中文逐字稿要先過一次翻譯 API 再送語音 API　<strong>兩個 API 手牽手 就是串接</strong>　這也是查證模型能力邊界的一課 不是每個模型什麼都會</p>
+      <div class="speak-grid">
+        <div class="speak-col">
+          <div class="lbl">中文原文（站 1 唸完會自動帶入）</div>
+          <textarea class="ta" id="zhText" rows="4" placeholder="先去站 1 錄一段 或直接在這裡打中文"></textarea>
+          <div style="margin-top:.6rem;"><button class="ghost-btn" id="transBtn" onclick="runTranslate()">翻譯成英文 →</button></div>
+        </div>
+        <div class="speak-col">
+          <div class="lbl">英文版（也可以直接改）</div>
+          <textarea class="ta" id="enText" rows="4" placeholder="翻譯結果會出現在這裡"></textarea>
+          <div style="margin-top:.6rem;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;">
+            <button class="big-btn orange" id="ttsBtn" onclick="runTTS()">播放語音</button>
+            <select id="voiceSel" style="padding:.5rem .7rem;border:1.5px solid var(--g200);border-radius:8px;font-family:inherit;font-size:.85rem;">
+              <option value="hannah">hannah 女聲</option>
+              <option value="troy">troy 男聲</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <audio id="ttsAudio" controls></audio>
+      <div class="out-box error" id="speakErr" style="display:none;"></div>
+      <div class="out-meta" id="speakMeta" style="display:none;">
+        <span>翻譯 <strong id="transTime">—</strong></span>
+        <span>語音合成 <strong id="ttsTime">—</strong></span>
+      </div>
+      <details class="curl">
+        <summary>▸ 這一站背後打的 API 長這樣</summary>
+        <pre>curl https://api.groq.com/openai/v1/audio/speech \
+  -H "Authorization: Bearer $GROQ_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"canopylabs/orpheus-v1-english",
+       "voice":"hannah",
+       "input":"Your English text here",
+       "response_format":"wav"}' \
+  --output speech.wav</pre>
+      </details>
+    </div>
+  </div>
+
+  <!-- ═══ Station 4: Tag ═══ -->
+  <div class="station tag" id="st4">
+    <div class="st-head">
+      <div class="st-num">4</div>
+      <div>
+        <div class="st-title">貼標籤 一段話進去 結構化 JSON 出來</div>
+        <div class="st-model">llama-3.3-70b-versatile ・ JSON mode</div>
+      </div>
+      <div class="st-real">真實世界對應<br>客訴分流 輿情監控 表單自動歸檔</div>
+    </div>
+    <div class="st-body">
+      <p class="st-lead">把站 1 的逐字稿（或任何一段客戶訊息）丟進來 AI 回的<strong>不是文章 是固定欄位的 JSON</strong>　分類 情緒 緊急度 一秒變成彩色標籤　這就是客服系統自動分流的原理</p>
+      <div class="chips">
+        <div class="chip" onclick="fillTag(0)">範例 A 客訴</div>
+        <div class="chip" onclick="fillTag(1)">範例 B 詢價</div>
+        <div class="chip" onclick="fillTag(2)">範例 C 課後回饋</div>
+      </div>
+      <textarea class="ta" id="tagText" rows="4" placeholder="貼一段客戶訊息 或先去站 1 錄一段"></textarea>
+      <div style="margin-top:.8rem;">
+        <button class="big-btn purple" id="tagBtn" onclick="runTag()">分析 輸出 JSON</button>
+      </div>
+      <div class="out-box error" id="tagErr" style="display:none;"></div>
+      <div class="tag-result" id="tagResult">
+        <div class="badge-row" id="badgeRow"></div>
+        <div class="kv-rows">
+          <div class="kv"><span class="k">一句話摘要</span><span id="tagSummary"></span></div>
+          <div class="kv"><span class="k">建議下一步</span><span id="tagAction"></span></div>
+        </div>
+        <div style="font-size:.82rem;font-weight:700;color:var(--g600);margin-bottom:.35rem;">程式實際收到的原始 JSON</div>
+        <pre class="json-pre" id="tagJson"></pre>
+        <div class="out-meta" style="margin-top:.5rem;"><span>耗時 <strong id="tagTime">—</strong></span></div>
+        <div class="punchline"><strong>看懂了嗎</strong>　ChatGPT 的答案是給人看的 API 的答案是給程式吃的　上面每個欄位都能直接接進你的系統 資料庫 報表 通知　這就是 API 跟聊天視窗的分水嶺</div>
+      </div>
+      <details class="curl">
+        <summary>▸ 這一站背後打的 API 長這樣</summary>
+        <pre>curl https://api.groq.com/openai/v1/chat/completions \
+  -H "Authorization: Bearer $GROQ_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"llama-3.3-70b-versatile",
+       "response_format":{"type":"json_object"},
+       "messages":[
+         {"role":"system","content":"你是客服訊息分析器 只輸出 JSON..."},
+         {"role":"user","content":"客戶訊息"}]}'</pre>
+      </details>
+    </div>
+  </div>
+
+  <div class="note-box" style="margin-top:.4rem;">
+    <strong>玩完四站之後想一想</strong>　剛剛每一站都是「你的瀏覽器 直接打 Groq API」　如果要把這些做成給客戶用的正式網站 Key 該放哪裡？答案就是 Round 3 的三層架構　前端 GitHub Pages + 後端 GAS 藏 Key
+  </div>
+
+</div>
+
+<div class="page-footer">
+  Vibe Coding · Stage 2 · M2-4 補充單元 ·
+  <a href="https://aipath.cooperation.tw/vibe-coding/three-api-compare/" target="_blank">三家 API 比較器</a> ·
+  <a href="https://aipath.cooperation.tw/vibe-coding/" target="_blank">課程首頁</a>
+</div>
+
+<script>
+const STORAGE_KEY = 'groq-playground-v1';
+const SIBLING_KEY = 'three-api-keys-v2'; // three-api-compare 已存過 Groq key 就直接沿用
+
+const SCRIPTS = [
+  {label:'講稿 A 客訴', text:'我上週訂的除濕機到今天都還沒出貨，客服電話打了三次都沒有人接。如果明天還是沒有消息，我就要申請退款了。'},
+  {label:'講稿 B 詢價', text:'你好，我想詢問企業內訓的AI課程。我們部門大約三十個人，想了解八月還有沒有檔期，還有費用怎麼計算。'},
+  {label:'講稿 C 課後回饋', text:'今天的課程比我想像的有趣，特別是自己動手串API那一段。希望之後可以再開進階班，我一定第一個報名。'}
+];
+
+const VISION_MODELS = ['meta-llama/llama-4-scout-17b-16e-instruct','qwen/qwen3.6-27b'];
+const TTS_MAX_CHARS = 500;
+
+// ── Key management ──
+function getKey(){
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  if(saved.groq) return saved.groq;
+  const sib = JSON.parse(localStorage.getItem(SIBLING_KEY) || '{}');
+  return sib.groq || '';
+}
+function requireKey(){
+  const k = getKey();
+  if(!k){
+    alert('請先在最上方申請並貼上 Groq API Key（免費 三分鐘搞定）');
+    const s = document.getElementById('settings');
+    s.classList.add('open');
+    s.scrollIntoView({behavior:'smooth'});
+  }
+  return k;
+}
+function saveKey(){
+  const v = document.getElementById('groqKey').value.trim();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({groq:v}));
+  updateKeyUI();
+}
+function clearKey(){
+  if(!confirm('確定清除 Key？')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  document.getElementById('groqKey').value = '';
+  updateKeyUI();
+}
+function updateKeyUI(){
+  const input = document.getElementById('groqKey');
+  const status = document.getElementById('keyStatus');
+  input.classList.toggle('has-value', !!input.value.trim());
+  if(input.value.trim()){
+    status.textContent = 'Key 已設定 四站都可以玩了';
+    status.classList.add('ok');
+  } else {
+    status.textContent = '尚未設定 點開申請 免費 不用綁信用卡';
+    status.classList.remove('ok');
+  }
+}
+function toggleSettings(){
+  document.getElementById('settings').classList.toggle('open');
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const k = getKey();
+  if(k) document.getElementById('groqKey').value = k;
+  else document.getElementById('settings').classList.add('open');
+  updateKeyUI();
+  loadDefaultImage();
+});
+
+// ── Shared helpers ──
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function errorTip(msg){
+  const m = String(msg).toLowerCase();
+  if(m.includes('401') || m.includes('invalid api key') || m.includes('unauthorized'))
+    return '<strong>建議</strong>　Key 無效 確認完整複製了 gsk_ 開頭整串 或回 console.groq.com/keys 重產一把';
+  if(m.includes('429') || m.includes('rate limit') || m.includes('too many'))
+    return '<strong>建議</strong>　撞到免費額度的每分鐘上限了 等 60 秒再按一次';
+  if(m.includes('model_not_found') || m.includes('decommissioned') || m.includes('does not exist'))
+    return '<strong>建議</strong>　這個模型可能改名或下架了（preview 模型會這樣） 跟老師說一聲';
+  if(m.includes('413') || m.includes('too large'))
+    return '<strong>建議</strong>　檔案太大 圖片換小一點 錄音短一點';
+  return '';
+}
+function showErr(boxId, msg){
+  const el = document.getElementById(boxId);
+  const tip = errorTip(msg);
+  el.innerHTML = '<div style="font-size:.88rem;">錯誤: ' + escapeHtml(msg) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
+  el.style.display = 'block';
+  el.classList.remove('empty');
+  el.classList.add('error');
+}
+function fmtSec(ms){ return (ms/1000).toFixed(1) + 's'; }
+
+// ── Station 1: Listen ──
+let mediaRecorder = null, recChunks = [], recTimerInt = null, recStart = 0;
+let transcript = '';
+
+function showScript(i){
+  const card = document.getElementById('scriptCard');
+  document.getElementById('scLabel').textContent = SCRIPTS[i].label + ' 照著唸';
+  document.getElementById('scText').textContent = SCRIPTS[i].text;
+  card.classList.add('show');
+}
+
+function pickMime(){
+  const cands = ['audio/webm;codecs=opus','audio/webm','audio/mp4'];
+  for(const c of cands){ if(window.MediaRecorder && MediaRecorder.isTypeSupported(c)) return c; }
+  return '';
+}
+
+async function toggleRec(){
+  const btn = document.getElementById('recBtn');
+  if(mediaRecorder && mediaRecorder.state === 'recording'){
+    mediaRecorder.stop();
+    return;
+  }
+  if(!requireKey()) return;
+  if(!navigator.mediaDevices?.getUserMedia){
+    showErr('sttOut','這個瀏覽器不支援錄音 改用「上傳音檔」'); return;
+  }
+  let stream;
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({audio:true});
+  }catch(e){
+    showErr('sttOut','麥克風權限被拒絕 點網址列左邊的鎖頭圖示 允許麥克風 再試一次'); return;
+  }
+  const mime = pickMime();
+  mediaRecorder = new MediaRecorder(stream, mime ? {mimeType:mime} : undefined);
+  recChunks = [];
+  mediaRecorder.ondataavailable = e => { if(e.data.size) recChunks.push(e.data); };
+  mediaRecorder.onstop = () => {
+    clearInterval(recTimerInt);
+    document.getElementById('recTimer').classList.remove('show');
+    btn.textContent = '開始錄音';
+    btn.classList.remove('rec');
+    stream.getTracks().forEach(t => t.stop());
+    const type = mediaRecorder.mimeType || 'audio/webm';
+    const ext = type.includes('mp4') ? 'mp4' : 'webm';
+    const blob = new Blob(recChunks, {type});
+    if(blob.size < 2000){ showErr('sttOut','沒收到聲音 再錄一次 講久一點'); return; }
+    transcribe(blob, 'recording.' + ext);
+  };
+  mediaRecorder.start();
+  recStart = Date.now();
+  btn.textContent = '停止錄音';
+  btn.classList.add('rec');
+  const timerEl = document.getElementById('recTimer');
+  timerEl.classList.add('show');
+  recTimerInt = setInterval(() => {
+    const s = Math.floor((Date.now()-recStart)/1000);
+    timerEl.textContent = Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+    if(s >= 60) mediaRecorder.stop(); // 免費額度保護 最長 60 秒
+  }, 250);
+}
+
+function uploadAudio(input){
+  const f = input.files?.[0];
+  if(!f) return;
+  if(!requireKey()) return;
+  if(f.size > 20*1024*1024){ showErr('sttOut','音檔超過 20MB 剪短一點'); return; }
+  transcribe(f, f.name);
+  input.value = '';
+}
+
+async function transcribe(blob, filename){
+  const out = document.getElementById('sttOut');
+  out.classList.remove('error');
+  out.classList.add('empty');
+  out.innerHTML = '<span class="spinner dark"></span> Whisper 聽寫中...';
+  const t0 = performance.now();
+  try{
+    const fd = new FormData();
+    fd.append('file', blob, filename);
+    fd.append('model', 'whisper-large-v3-turbo');
+    fd.append('response_format', 'verbose_json');
+    const res = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+      method:'POST',
+      headers:{'Authorization':'Bearer ' + getKey()},
+      body: fd
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+    transcript = (data.text || '').trim();
+    if(!transcript){ showErr('sttOut','沒聽出內容 靠近麥克風再錄一次'); return; }
+    out.textContent = transcript;
+    out.classList.remove('empty');
+    document.getElementById('sttMeta').style.display = 'flex';
+    document.getElementById('sttTime').textContent = fmtSec(performance.now()-t0);
+    document.getElementById('sttDur').textContent = data.duration ? data.duration.toFixed(1)+'s' : '—';
+    document.getElementById('sttLang').textContent = data.language || '—';
+    document.getElementById('handoff').classList.add('show');
+    document.getElementById('zhText').value = transcript;
+    document.getElementById('tagText').value = transcript;
+    document.getElementById('plListen').classList.add('on');
+    document.getElementById('plText').classList.add('on');
+  }catch(e){
+    showErr('sttOut', e.message);
+  }
+}
+
+function sendToSpeak(){
+  document.getElementById('zhText').value = transcript;
+  document.getElementById('st3').scrollIntoView({behavior:'smooth'});
+}
+function sendToTag(){
+  document.getElementById('tagText').value = transcript;
+  document.getElementById('st4').scrollIntoView({behavior:'smooth'});
+}
+
+// ── Station 2: See ──
+let imageDataUrl = '';
+
+async function loadDefaultImage(){
+  try{
+    const res = await fetch('receipt-demo.png');
+    const blob = await res.blob();
+    imageDataUrl = await compressImage(blob);
+  }catch(e){ /* file:// 本機直開時抓不到 上傳後仍可用 */ }
+}
+
+function pickImage(input){
+  const f = input.files?.[0];
+  if(f) setImage(f);
+  input.value = '';
+}
+
+const drop = document.getElementById('imgDrop');
+drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag'); });
+drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+drop.addEventListener('drop', e => {
+  e.preventDefault(); drop.classList.remove('drag');
+  const f = e.dataTransfer.files?.[0];
+  if(f && f.type.startsWith('image/')) setImage(f);
+});
+
+async function setImage(file){
+  imageDataUrl = await compressImage(file);
+  document.getElementById('previewImg').src = imageDataUrl;
+}
+
+// 縮圖 + 轉 JPEG 控制 base64 大小（Groq base64 request 上限 4MB）
+function compressImage(blob){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 1568;
+      let w = img.width, h = img.height;
+      if(Math.max(w,h) > MAX){
+        const r = MAX / Math.max(w,h);
+        w = Math.round(w*r); h = Math.round(h*r);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0,0,w,h);
+      ctx.drawImage(img, 0, 0, w, h);
+      let url = canvas.toDataURL('image/jpeg', 0.85);
+      if(url.length > 3500000) url = canvas.toDataURL('image/jpeg', 0.6);
+      URL.revokeObjectURL(img.src);
+      resolve(url);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(blob);
+  });
+}
+
+async function runVision(){
+  if(!requireKey()) return;
+  if(!imageDataUrl){ showErr('visionOut','圖還沒載入 重新整理頁面 或自己上傳一張'); return; }
+  const btn = document.getElementById('visionBtn');
+  const out = document.getElementById('visionOut');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> 辨識中...';
+  out.classList.remove('error');
+  out.classList.add('empty');
+  out.textContent = 'AI 看圖中...';
+  const prompt = document.getElementById('visionPrompt').value.trim() || '描述這張圖片';
+  const t0 = performance.now();
+  let lastErr = '';
+  for(const model of VISION_MODELS){
+    try{
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method:'POST',
+        headers:{'Authorization':'Bearer ' + getKey(),'Content-Type':'application/json'},
+        body: JSON.stringify({
+          model,
+          messages:[{role:'user', content:[
+            {type:'text', text: prompt},
+            {type:'image_url', image_url:{url: imageDataUrl}}
+          ]}],
+          max_tokens: 1200
+        })
+      });
+      const data = await res.json();
+      if(!res.ok){
+        lastErr = data?.error?.message || res.statusText;
+        const m = lastErr.toLowerCase();
+        if(m.includes('model_not_found') || m.includes('decommissioned') || m.includes('does not exist')) continue; // preview 模型下架就換下一個
+        throw new Error(lastErr);
+      }
+      const ans = (data.choices?.[0]?.message?.content || '(空回應)').trim();
+      out.textContent = ans;
+      out.classList.remove('empty');
+      document.getElementById('visionMeta').style.display = 'flex';
+      document.getElementById('visionTime').textContent = fmtSec(performance.now()-t0);
+      document.getElementById('visionUsed').textContent = model;
+      btn.disabled = false; btn.textContent = '辨識這張圖';
+      return;
+    }catch(e){
+      lastErr = e.message;
+      break;
+    }
+  }
+  showErr('visionOut', lastErr || '兩個視覺模型都失敗了');
+  btn.disabled = false; btn.textContent = '辨識這張圖';
+}
+
+// ── Station 3: Speak ──
+async function runTranslate(){
+  if(!requireKey()) return;
+  const zh = document.getElementById('zhText').value.trim();
+  if(!zh){ alert('先在左邊放一段中文 或去站 1 錄一段'); return; }
+  const btn = document.getElementById('transBtn');
+  btn.disabled = true; btn.textContent = '翻譯中...';
+  hideSpeakErr();
+  const t0 = performance.now();
+  try{
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{'Authorization':'Bearer ' + getKey(),'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'llama-3.1-8b-instant',
+        messages:[
+          {role:'system', content:'Translate the user message into natural spoken English. Output ONLY the translation, nothing else.'},
+          {role:'user', content: zh}
+        ],
+        max_tokens: 600
+      })
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+    const en = (data.choices?.[0]?.message?.content || '').trim();
+    document.getElementById('enText').value = en;
+    document.getElementById('speakMeta').style.display = 'flex';
+    document.getElementById('transTime').textContent = fmtSec(performance.now()-t0);
+  }catch(e){
+    showSpeakErr(e.message);
+  }
+  btn.disabled = false; btn.textContent = '翻譯成英文 →';
+}
+
+async function runTTS(){
+  if(!requireKey()) return;
+  let en = document.getElementById('enText').value.trim();
+  if(!en){ alert('右邊還沒有英文 先按「翻譯成英文」或直接輸入英文'); return; }
+  if(en.length > TTS_MAX_CHARS) en = en.slice(0, TTS_MAX_CHARS);
+  const btn = document.getElementById('ttsBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> 合成中...';
+  hideSpeakErr();
+  const t0 = performance.now();
+  try{
+    const res = await fetch('https://api.groq.com/openai/v1/audio/speech', {
+      method:'POST',
+      headers:{'Authorization':'Bearer ' + getKey(),'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'canopylabs/orpheus-v1-english',
+        voice: document.getElementById('voiceSel').value,
+        input: en,
+        response_format:'wav'
+      })
+    });
+    if(!res.ok){
+      let msg = res.statusText;
+      try{ const j = await res.json(); msg = j?.error?.message || msg; }catch(_){}
+      throw new Error(msg);
+    }
+    const buf = await res.arrayBuffer();
+    const audio = document.getElementById('ttsAudio');
+    audio.src = URL.createObjectURL(new Blob([buf], {type:'audio/wav'}));
+    audio.classList.add('show');
+    audio.play();
+    document.getElementById('speakMeta').style.display = 'flex';
+    document.getElementById('ttsTime').textContent = fmtSec(performance.now()-t0);
+    document.getElementById('plSpeak').classList.add('on');
+  }catch(e){
+    showSpeakErr(e.message);
+  }
+  btn.disabled = false; btn.textContent = '播放語音';
+}
+
+function showSpeakErr(msg){
+  const el = document.getElementById('speakErr');
+  const tip = errorTip(msg);
+  el.innerHTML = '<div style="font-size:.88rem;">錯誤: ' + escapeHtml(msg) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
+  el.style.display = 'block';
+}
+function hideSpeakErr(){ document.getElementById('speakErr').style.display = 'none'; }
+
+// ── Station 4: Tag ──
+function fillTag(i){
+  document.getElementById('tagText').value = SCRIPTS[i].text;
+}
+
+const TAG_SYSTEM = `你是客服訊息分析器。分析使用者的訊息，只輸出 JSON，不要任何其他文字。格式如下：
+{"category":"物流出貨 | 客服服務 | 業務詢價 | 產品回饋 | 其他 擇一",
+"sentiment":"正面 | 中性 | 負面 擇一",
+"urgency":"高 | 中 | 低 擇一",
+"summary":"15 字以內的一句話摘要",
+"action":"給客服人員的下一步建議 20 字以內"}`;
+
+async function runTag(){
+  if(!requireKey()) return;
+  const text = document.getElementById('tagText').value.trim();
+  if(!text){ alert('先貼一段訊息 或去站 1 錄一段'); return; }
+  const btn = document.getElementById('tagBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> 分析中...';
+  document.getElementById('tagErr').style.display = 'none';
+  const t0 = performance.now();
+  try{
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method:'POST',
+      headers:{'Authorization':'Bearer ' + getKey(),'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'llama-3.3-70b-versatile',
+        response_format:{type:'json_object'},
+        messages:[
+          {role:'system', content: TAG_SYSTEM},
+          {role:'user', content: text}
+        ],
+        max_tokens: 400
+      })
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+    const raw = data.choices?.[0]?.message?.content || '{}';
+    const obj = JSON.parse(raw);
+    renderTags(obj, raw, performance.now()-t0);
+    document.getElementById('plTag').classList.add('on');
+  }catch(e){
+    const el = document.getElementById('tagErr');
+    const tip = errorTip(e.message);
+    el.innerHTML = '<div style="font-size:.88rem;">錯誤: ' + escapeHtml(e.message) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
+    el.style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = '分析 輸出 JSON';
+}
+
+function renderTags(obj, raw, ms){
+  const row = document.getElementById('badgeRow');
+  const sentClass = {'正面':'b-green','中性':'b-gray','負面':'b-red'}[obj.sentiment] || 'b-gray';
+  const urgClass = {'高':'b-red','中':'b-amber','低':'b-green'}[obj.urgency] || 'b-gray';
+  row.innerHTML =
+    '<span class="badge b-blue"><span class="k">分類</span>' + escapeHtml(obj.category || '—') + '</span>' +
+    '<span class="badge ' + sentClass + '"><span class="k">情緒</span>' + escapeHtml(obj.sentiment || '—') + '</span>' +
+    '<span class="badge ' + urgClass + '"><span class="k">緊急度</span>' + escapeHtml(obj.urgency || '—') + '</span>';
+  document.getElementById('tagSummary').textContent = obj.summary || '—';
+  document.getElementById('tagAction').textContent = obj.action || '—';
+  let pretty = raw;
+  try{ pretty = JSON.stringify(JSON.parse(raw), null, 2); }catch(_){}
+  document.getElementById('tagJson').textContent = pretty;
+  document.getElementById('tagTime').textContent = fmtSec(ms);
+  document.getElementById('tagResult').classList.add('show');
+}
+</script>
+</body>
+</html>

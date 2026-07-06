@@ -138,8 +138,9 @@ audio{width:100%;margin-top:1rem;display:none;}
 audio.show{display:block;}
 
 /* Station 4 tags */
-.tag-result{display:none;margin-top:1.2rem;}
+.tag-result{display:none;margin-top:1.2rem;background:var(--offwhite);border:2px solid var(--purple);border-radius:14px;padding:1.1rem 1.3rem;box-shadow:0 2px 10px rgba(124,58,237,.12);}
 .tag-result.show{display:block;}
+.tag-result .tr-label{display:inline-flex;align-items:center;gap:.4rem;background:var(--purple);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:.2rem .7rem;border-radius:100px;margin-bottom:.9rem;}
 .badge-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem;}
 .badge{padding:.45rem 1.1rem;border-radius:100px;font-size:.9rem;font-weight:700;display:inline-flex;align-items:center;gap:.45rem;}
 .badge .k{font-size:.7rem;font-weight:600;opacity:.75;}
@@ -339,7 +340,7 @@ details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8re
       <div class="st-num">3</div>
       <div>
         <div class="st-title">說 把逐字稿翻成英文 AI 開口唸給你聽</div>
-        <div class="st-model">llama-3.1-8b-instant 翻譯 + canopylabs/orpheus-v1-english 語音合成</div>
+        <div class="st-model">llama-3.3-70b-versatile 翻譯 + canopylabs/orpheus-v1-english 語音合成</div>
       </div>
       <div class="st-real">真實世界對應<br>語音通知 有聲內容 無障礙朗讀</div>
     </div>
@@ -407,6 +408,7 @@ details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8re
       </div>
       <div class="out-box error" id="tagErr" style="display:none;"></div>
       <div class="tag-result" id="tagResult">
+        <div class="tr-label">輸出結果</div>
         <div class="badge-row" id="badgeRow"></div>
         <div class="kv-rows">
           <div class="kv"><span class="k">一句話摘要</span><span id="tagSummary"></span></div>
@@ -768,6 +770,37 @@ async function runVision(){
 }
 
 // ── Station 3: Speak ──
+// 機械閘: 模型偶爾會不聽話 混中文或加開場白 靠程式檢查擋下 不靠模型自律
+const CJK_RE = /[㐀-䶿一-鿿豈-﫿]/g;
+function cjkRatio(s){
+  const m = String(s).match(CJK_RE);
+  return s.length ? (m ? m.length : 0) / s.length : 0;
+}
+
+async function translateOnce(zh, prevBad){
+  const messages = [
+    {role:'system', content:'You are a professional translator. Translate the user message from Chinese into natural spoken English. Rules: output ONLY the English translation. No preamble, no explanations, no quotation marks, and absolutely no Chinese characters in the output.'},
+    {role:'user', content: zh}
+  ];
+  if(prevBad){
+    messages.push({role:'assistant', content: prevBad});
+    messages.push({role:'user', content:'Your previous answer was not pure English. Reply again with ONLY the English translation of my original message, nothing else.'});
+  }
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method:'POST',
+    headers:{'Authorization':'Bearer ' + getKey(),'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'llama-3.3-70b-versatile',
+      temperature: 0.2,
+      messages,
+      max_tokens: 600
+    })
+  });
+  const data = await res.json();
+  if(!res.ok) throw new Error(data?.error?.message || res.statusText);
+  return (data.choices?.[0]?.message?.content || '').trim().replace(/^["'「『]+|["'」』]+$/g, '');
+}
+
 async function runTranslate(){
   if(!requireKey()) return;
   const zh = document.getElementById('zhText').value.trim();
@@ -777,21 +810,14 @@ async function runTranslate(){
   hideSpeakErr();
   const t0 = performance.now();
   try{
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method:'POST',
-      headers:{'Authorization':'Bearer ' + getKey(),'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'llama-3.1-8b-instant',
-        messages:[
-          {role:'system', content:'Translate the user message into natural spoken English. Output ONLY the translation, nothing else.'},
-          {role:'user', content: zh}
-        ],
-        max_tokens: 600
-      })
-    });
-    const data = await res.json();
-    if(!res.ok) throw new Error(data?.error?.message || res.statusText);
-    const en = (data.choices?.[0]?.message?.content || '').trim();
+    let en = await translateOnce(zh);
+    if(!en || cjkRatio(en) > 0.05){
+      // 閘沒過 帶著壞答案重試一次 讓模型看到自己上次錯在哪
+      en = await translateOnce(zh, en || '(empty)');
+    }
+    if(!en || cjkRatio(en) > 0.05){
+      throw new Error('模型連續兩次沒交出純英文（AI 偶爾會這樣 這就是為什麼輸出要加程式檢查） 再按一次重試');
+    }
     document.getElementById('enText').value = en;
     document.getElementById('speakMeta').style.display = 'flex';
     document.getElementById('transTime').textContent = fmtSec(performance.now()-t0);
@@ -805,6 +831,7 @@ async function runTTS(){
   if(!requireKey()) return;
   let en = document.getElementById('enText').value.trim();
   if(!en){ alert('右邊還沒有英文 先按「翻譯成英文」或直接輸入英文'); return; }
+  if(cjkRatio(en) > 0.3){ showSpeakErr('英文框裡看起來還是中文 Orpheus 只會唸英文 先按「翻譯成英文」', '語音合成'); return; }
   if(en.length > TTS_MAX_CHARS) en = en.slice(0, TTS_MAX_CHARS);
   const btn = document.getElementById('ttsBtn');
   btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> 合成中...';

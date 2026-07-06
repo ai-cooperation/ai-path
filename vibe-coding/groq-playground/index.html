@@ -305,9 +305,10 @@ details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8re
         <div>
           <div class="img-drop" id="imgDrop" onclick="document.getElementById('imgFile').click()">
             <img id="previewImg" src="receipt-demo.png" alt="示範發票">
-            <div class="drop-hint">點擊換圖 或直接把圖拖進來</div>
+            <div class="drop-hint">點圖片也能換圖 或直接把圖拖進來</div>
           </div>
           <input type="file" id="imgFile" accept="image/*" style="display:none" onchange="pickImage(this)">
+          <button class="ghost-btn" style="width:100%;margin-top:.6rem;border-color:var(--blue);color:var(--blue);" onclick="document.getElementById('imgFile').click()">上傳圖片　手機點這裡可直接拍照</button>
         </div>
         <div>
           <div style="font-size:.82rem;font-weight:700;color:var(--g600);margin-bottom:.35rem;">要 AI 做什麼（可以改）</div>

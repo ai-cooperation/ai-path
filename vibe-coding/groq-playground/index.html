@@ -165,6 +165,7 @@ details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8re
 
 .note-box{background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:.7rem 1rem;font-size:.85rem;color:var(--g800);margin:.8rem 0;line-height:1.7;}
 .note-box strong{color:var(--blue);}
+.note-box a,.err-tip a{color:var(--blue);font-weight:600;word-break:break-all;}
 
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;}
 .spinner.dark{border-color:var(--g200);border-top-color:var(--green);}
@@ -344,6 +345,7 @@ details.curl pre{background:#1e2530;color:#9fd6a8;border-radius:8px;padding:.8re
     </div>
     <div class="st-body">
       <p class="st-lead">Orpheus 語音模型目前<strong>只會說英文和阿拉伯文</strong> 所以中文逐字稿要先過一次翻譯 API 再送語音 API　<strong>兩個 API 手牽手 就是串接</strong>　這也是查證模型能力邊界的一課 不是每個模型什麼都會</p>
+      <div class="note-box"><strong>第一次玩這站 要先按一次同意條款</strong>　Orpheus 是 preview 模型 Groq 規定每個帳號要先同意一次使用條款才能呼叫<br><a href="https://console.groq.com/playground?model=canopylabs%2Forpheus-v1-english" target="_blank" rel="noopener">點這裡開 Groq Console</a>（用你申請 Key 的同一個 Google 帳號登入）按 <strong>Accept terms</strong> 回來就能播放了</div>
       <div class="speak-grid">
         <div class="speak-col">
           <div class="lbl">中文原文（站 1 唸完會自動帶入）</div>
@@ -512,6 +514,12 @@ function escapeHtml(s){
 }
 function errorTip(msg){
   const m = String(msg).toLowerCase();
+  if(m.includes('terms acceptance') || m.includes('terms_acceptance') || m.includes('accept the terms')){
+    const u = String(msg).match(/https:\/\/console\.groq\.com[^\s"'<>]+/);
+    return '<strong>建議</strong>　這個模型第一次用要先同意條款（每個帳號按一次就好 不用錢）<br>' +
+      (u ? '<a href="' + u[0] + '" target="_blank" rel="noopener">點這裡開 Groq Console 按 Accept terms</a>　' : '去 console.groq.com 開這個模型按 Accept terms　') +
+      '記得用申請 Key 的同一個帳號登入 按完回來再試一次';
+  }
   if(m.includes('401') || m.includes('invalid api key') || m.includes('unauthorized'))
     return '<strong>建議</strong>　Key 無效 確認完整複製了 gsk_ 開頭整串 或回 console.groq.com/keys 重產一把';
   if(m.includes('429') || m.includes('rate limit') || m.includes('too many'))
@@ -522,10 +530,13 @@ function errorTip(msg){
     return '<strong>建議</strong>　檔案太大 圖片換小一點 錄音短一點';
   return '';
 }
+function withLinks(escaped){
+  return escaped.replace(/https?:\/\/[^\s<]+/g, u => '<a href="' + u + '" target="_blank" rel="noopener" style="word-break:break-all;">' + u + '</a>');
+}
 function showErr(boxId, msg){
   const el = document.getElementById(boxId);
   const tip = errorTip(msg);
-  el.innerHTML = '<div style="font-size:.88rem;">錯誤: ' + escapeHtml(msg) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
+  el.innerHTML = '<div style="font-size:.88rem;">錯誤: ' + withLinks(escapeHtml(msg)) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
   el.style.display = 'block';
   el.classList.remove('empty');
   el.classList.add('error');
@@ -785,7 +796,7 @@ async function runTranslate(){
     document.getElementById('speakMeta').style.display = 'flex';
     document.getElementById('transTime').textContent = fmtSec(performance.now()-t0);
   }catch(e){
-    showSpeakErr(e.message);
+    showSpeakErr(e.message, '翻譯');
   }
   btn.disabled = false; btn.textContent = '翻譯成英文 →';
 }
@@ -824,15 +835,16 @@ async function runTTS(){
     document.getElementById('ttsTime').textContent = fmtSec(performance.now()-t0);
     document.getElementById('plSpeak').classList.add('on');
   }catch(e){
-    showSpeakErr(e.message);
+    showSpeakErr(e.message, '語音合成');
   }
   btn.disabled = false; btn.textContent = '播放語音';
 }
 
-function showSpeakErr(msg){
+function showSpeakErr(msg, source){
   const el = document.getElementById('speakErr');
   const tip = errorTip(msg);
-  el.innerHTML = '<div style="font-size:.88rem;">錯誤: ' + escapeHtml(msg) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
+  const label = source ? source + '失敗　' : '';
+  el.innerHTML = '<div style="font-size:.88rem;">' + label + '錯誤: ' + withLinks(escapeHtml(msg)) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
   el.style.display = 'block';
 }
 function hideSpeakErr(){ document.getElementById('speakErr').style.display = 'none'; }
@@ -880,7 +892,7 @@ async function runTag(){
   }catch(e){
     const el = document.getElementById('tagErr');
     const tip = errorTip(e.message);
-    el.innerHTML = '<div style="font-size:.88rem;">錯誤: ' + escapeHtml(e.message) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
+    el.innerHTML = '<div style="font-size:.88rem;">錯誤: ' + withLinks(escapeHtml(e.message)) + '</div>' + (tip ? '<div class="err-tip">' + tip + '</div>' : '');
     el.style.display = 'block';
   }
   btn.disabled = false; btn.textContent = '分析 輸出 JSON';

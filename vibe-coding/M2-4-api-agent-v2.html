@@ -16,6 +16,8 @@
   --purple:#7C3AED; --purple-lt:#F3E8FF;
   --navy:#0B3C5D;
   --orange:#E8710A; --orange-lt:#FEF0E1;
+  --gh-fg:#1f2328; --gh-mute:#59636e; --gh-border:#d1d9e0;
+  --gh-canvas:#f6f8fa; --gh-green:#1f883d; --gh-link:#0969da;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;overflow:hidden;font-family:'Noto Sans TC',sans-serif;color:var(--g900);font-size:22px;line-height:1.7;background:var(--white);}
@@ -33,28 +35,28 @@ h2{font-size:2rem;font-weight:700;margin-bottom:1rem;line-height:1.4;color:var(-
 h3{font-size:1.3rem;font-weight:700;margin-bottom:.4rem;}
 p,li{font-size:1.1rem;line-height:1.8;}
 .poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
-.poster-tag{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.85rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin:.3rem;}
+.poster-tag{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:1.1rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin:.3rem;}
 
 .step-list{text-align:left;max-width:800px;width:100%;}
 .step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
 .step:last-child{border:none;}
-.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
-.step-content strong{font-size:1.1rem;color:var(--g900);}
-.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;line-height:1.7;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;}
+.step-content strong{font-size:1.15rem;color:var(--g900);}
+.step-content p{font-size:1.1rem;color:var(--g600);margin-top:.15rem;line-height:1.7;}
 
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
 .stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
 .stat-box .val{font-size:2.4rem;font-weight:900;color:var(--green);line-height:1.1;}
-.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+.stat-box .label{font-size:1.1rem;color:var(--g600);margin-top:.3rem;}
 .big-stat{text-align:center;margin:1rem 0;}
 .big-stat .num{font-size:5rem;font-weight:900;color:var(--green);line-height:1;}
 .big-stat .unit{font-size:1.4rem;font-weight:700;color:var(--g600);margin-left:.3rem;}
-.big-stat .caption{font-size:1.05rem;color:var(--g600);margin-top:.4rem;}
+.big-stat .caption{font-size:1.1rem;color:var(--g600);margin-top:.4rem;}
 
-.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:1100px;}
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:1280px;}
 .card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.3rem 1.5rem;min-width:220px;max-width:320px;flex:1;}
 .card h3{color:var(--g900);margin-bottom:.3rem;}
-.card p{font-size:.95rem;color:var(--g600);line-height:1.7;}
+.card p{font-size:1.1rem;color:var(--g600);line-height:1.7;}
 .card.accent-top{border-top:4px solid var(--green);}
 .card.accent-top-blue{border-top:4px solid var(--blue);}
 .card.accent-top-gold{border-top:4px solid var(--gold);}
@@ -63,66 +65,66 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .card.accent-top-orange{border-top:4px solid var(--orange);}
 
 .flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
-.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1.1rem;font-weight:700;text-align:center;color:var(--g900);}
 .flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
 .flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
 
 .info-box{border-radius:12px;padding:1.1rem 1.5rem;max-width:820px;width:100%;text-align:left;margin-top:.8rem;}
 .info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
-.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
-.info-box.tip .label{color:#b07d00;font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip .label{color:#b07d00;font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
-.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
-.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
-.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
-.info-box p{font-size:1rem;line-height:1.75;color:var(--g800);}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
+.info-box p{font-size:1.1rem;line-height:1.75;color:var(--g800);}
 
 .quote-box{max-width:820px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.6rem 2rem;margin:1rem 0;text-align:left;}
 .quote-box .quote-text{font-size:1.35rem;font-weight:700;line-height:1.6;color:var(--g900);}
 
 .code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1rem 1.4rem;max-width:820px;width:100%;text-align:left;margin:.8rem 0;}
-.code-block pre{font-family:'Fira Code',monospace;font-size:.92rem;color:var(--g900);line-height:1.8;white-space:pre-wrap;word-break:break-word;}
-.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.4rem;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:1.1rem;color:var(--g900);line-height:1.8;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:1.1rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.4rem;}
 
 .compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:1000px;width:100%;margin-top:.8rem;}
 .compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
 .compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
 .compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
-.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col .col-label{font-size:1.1rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
 .compare-col.bad .col-label{color:var(--red);}
 .compare-col.good .col-label{color:var(--green);}
-.compare-col p,.compare-col li{font-size:1rem;line-height:1.8;color:var(--g800);}
+.compare-col p,.compare-col li{font-size:1.1rem;line-height:1.8;color:var(--g800);}
 
 .cycle-ring{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;max-width:780px;width:100%;margin:1rem 0;}
 .cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.7rem 1rem;text-align:center;color:var(--g800);}
-.cycle-step .cycle-label{font-size:.78rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
-.cycle-step .cycle-name{font-size:1.05rem;font-weight:700;}
+.cycle-step .cycle-label{font-size:1.1rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step .cycle-name{font-size:1.2rem;font-weight:700;}
 .cycle-step.active{border-color:var(--green);background:var(--green-lt);color:var(--green);}
 .cycle-step.active .cycle-label{color:var(--green);}
 
 .bottom-line{max-width:820px;width:100%;background:var(--green-lt);border:2px solid rgba(15,157,138,.3);border-radius:16px;padding:1.6rem 2rem;text-align:center;margin-top:1rem;}
 .bottom-line h3{font-size:1.4rem;color:var(--green);margin-bottom:.4rem;}
-.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:680px;margin:0 auto;line-height:1.7;}
+.bottom-line p{font-size:1.1rem;color:var(--g800);max-width:680px;margin:0 auto;line-height:1.7;}
 
 .page-title{text-align:center;margin-bottom:.6rem;}
-.page-title .stage-tag{font-size:.7rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;}
+.page-title .stage-tag{font-size:1.1rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;}
 .page-title h2{margin-bottom:.2rem;}
-.page-title .sub{color:var(--g600);font-size:.95rem;}
+.page-title .sub{color:var(--g600);font-size:1.1rem;}
 
 /* LV row */
 .lv-row{background:#f7fafc;padding:1rem .8rem .8rem;border-radius:14px;display:flex;align-items:stretch;gap:.3rem;max-width:1280px;width:100%;height:75%;max-height:520px;}
 .lv-col{display:flex;flex-direction:column;}
 .lv-label{text-align:center;margin-bottom:.4rem;}
-.lv-label .num{font-size:.85rem;font-weight:700;letter-spacing:.08em;}
+.lv-label .num{font-size:1.1rem;font-weight:700;letter-spacing:.08em;}
 .lv-label.lv1 .num{color:#64748b;}
 .lv-label.lv2 .num{color:var(--green);}
 .lv-label.lv3 .num{color:#d97706;}
-.lv-caption{text-align:center;font-size:.82rem;color:var(--g700);margin-top:.5rem;font-weight:500;}
-.lv-caption.lv2{color:var(--green);font-weight:600;font-size:.85rem;}
-.lv-caption.lv3{color:#d97706;font-weight:600;font-size:.82rem;}
+.lv-caption{text-align:center;font-size:1.1rem;color:var(--g700);margin-top:.5rem;font-weight:500;}
+.lv-caption.lv2{color:var(--green);font-weight:600;font-size:1.1rem;}
+.lv-caption.lv3{color:#d97706;font-weight:600;font-size:1.1rem;}
 .lv-connector{display:flex;align-items:center;padding:0 .15rem;align-self:center;}
 .lv-connector span:first-child,.lv-connector span:last-child{width:5px;height:5px;border-radius:50%;background:#94a3b8;}
 .lv-connector span:nth-child(2){width:18px;border-top:1px dashed #cbd5e1;}
@@ -132,11 +134,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .api-card{background:#fff;border:2px solid var(--g100);border-radius:14px;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem;}
 .api-card.primary{border-color:var(--green);}
 .api-card .api-name{font-size:1.2rem;font-weight:900;color:var(--g900);}
-.api-card .api-by{font-size:.78rem;color:var(--gh-mute,var(--g500));}
+.api-card .api-by{font-size:1.1rem;color:var(--gh-mute,var(--g500));}
 .api-card .api-quota{background:var(--green-lt);border-radius:6px;padding:.4rem .6rem;margin-top:.3rem;}
 .api-card .api-quota .qval{font-size:1.1rem;font-weight:700;color:var(--green);}
-.api-card .api-quota .qlabel{font-size:.75rem;color:var(--g700);}
-.api-card .api-desc{font-size:.85rem;color:var(--g700);line-height:1.7;margin-top:.3rem;}
+.api-card .api-quota .qlabel{font-size:1.1rem;color:var(--g700);}
+.api-card .api-desc{font-size:1.1rem;color:var(--g700);line-height:1.7;margin-top:.3rem;}
 
 /* Mock browser for API platform */
 .api-browser{background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;border:1px solid #d1d9e0;}
@@ -144,6 +146,13 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .api-bar .dot{width:7px;height:7px;border-radius:50%;background:#bbb;}
 .api-bar .url{margin-left:.4rem;color:#666;font-family:'Fira Code',monospace;font-size:.48rem;}
 .api-body{background:#fff;padding:.5rem .7rem;font-size:.5rem;color:#1f2328;}
+
+/* GitHub-style browser mockup (reuse from M2-1/3) */
+.gh-frame{background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;border:1px solid var(--gh-border);display:flex;flex-direction:column;}
+.gh-browser{background:#e8eaee;padding:.3rem .5rem;display:flex;gap:5px;align-items:center;font-size:.5rem;}
+.gh-browser .dot{width:7px;height:7px;border-radius:50%;background:#bbb;}
+.gh-browser .url{margin-left:.4rem;color:#666;font-family:'Fira Code',monospace;font-size:.48rem;}
+.gh-body{flex:1;background:#fff;padding:.4rem .55rem;font-size:.45rem;color:var(--gh-fg);}
 
 /* IDE mockup (reuse from M2-2/3) */
 .ide-frame{background:#fff;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;flex:1;display:flex;flex-direction:column;border:1px solid #d1d9e0;}
@@ -185,22 +194,22 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 /* Wow / Pitfall / TimeMap */
 .wow-slide{text-align:center;justify-content:center !important;padding-top:2rem;}
-.wow-badge{display:inline-block;background:var(--gold);color:#fff;padding:.35rem 1.4rem;border-radius:100px;font-size:.95rem;font-weight:700;letter-spacing:.12em;margin-bottom:1rem;}
+.wow-badge{display:inline-block;background:var(--gold);color:#fff;padding:.35rem 1.4rem;border-radius:100px;font-size:1.1rem;font-weight:700;letter-spacing:.12em;margin-bottom:1rem;}
 .wow-heading{font-size:2.6rem;font-weight:900;line-height:1.35;color:var(--g900);margin:.4rem 0 .8rem;max-width:900px;}
 .wow-sub{font-size:1.15rem;color:var(--g600);max-width:680px;margin:0 auto 1rem;line-height:1.7;}
-.pitfall-badge{display:inline-block;background:var(--red);color:#fff;padding:.3rem 1.2rem;border-radius:100px;font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.8rem;}
+.pitfall-badge{display:inline-block;background:var(--red);color:#fff;padding:.3rem 1.2rem;border-radius:100px;font-size:1.1rem;font-weight:700;letter-spacing:.1em;margin-bottom:.8rem;}
 .pitfall-card{background:#fff;border:2px solid var(--red);border-top:5px solid var(--red);border-radius:14px;padding:1rem 1.3rem;max-width:1100px;width:100%;margin-top:.5rem;}
 .pitfall-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:.6rem;}
 .pitfall-item{background:var(--red-lt);border-radius:10px;padding:.7rem .9rem;}
-.pitfall-item .ptitle{font-size:1rem;font-weight:700;color:var(--g900);margin-bottom:.2rem;}
-.pitfall-item .pdesc{font-size:.82rem;color:var(--g700);line-height:1.6;}
+.pitfall-item .ptitle{font-size:1.15rem;font-weight:700;color:var(--g900);margin-bottom:.2rem;}
+.pitfall-item .pdesc{font-size:1.1rem;color:var(--g700);line-height:1.6;}
 .time-map{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;max-width:1200px;width:100%;margin:.8rem 0;}
 .time-block{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:2px solid var(--g100);}
 .time-block .tb-head{padding:.5rem .6rem;color:#fff;text-align:center;}
-.time-block .tb-head .tb-time{font-size:.75rem;font-weight:600;opacity:.85;}
-.time-block .tb-head .tb-name{font-size:.95rem;font-weight:700;margin-top:.15rem;}
-.time-block .tb-body{flex:1;background:#fff;padding:.5rem .6rem;font-size:.78rem;color:var(--g700);line-height:1.55;}
-.time-block .tb-body strong{color:var(--g900);font-size:.85rem;display:block;margin-bottom:.2rem;}
+.time-block .tb-head .tb-time{font-size:1.1rem;font-weight:600;opacity:.85;}
+.time-block .tb-head .tb-name{font-size:1.15rem;font-weight:700;margin-top:.15rem;}
+.time-block .tb-body{flex:1;background:#fff;padding:.5rem .6rem;font-size:1.1rem;color:var(--g700);line-height:1.55;}
+.time-block .tb-body strong{color:var(--g900);font-size:1.15rem;display:block;margin-bottom:.2rem;}
 
 /* Chapter Menu */
 .chapter-menu{position:fixed;bottom:16px;left:16px;z-index:150;font-family:system-ui,-apple-system,sans-serif;}
@@ -235,7 +244,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 <!-- ══ 0 Cover ══ -->
 <div class="slide poster active" data-act="開場" style="background:linear-gradient(135deg,#1a1a2e 0%,#7c2d12 40%,#E8710A 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 上線網頁</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 2 · 上線網頁</p>
   <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">申請 API<br><span style="color:#fdba74;">串接應用場景</span></h1>
   <p class="poster-subtitle" style="margin-top:1.2rem;">讓你的網頁從靜態變成能跟使用者對話的 AI 工具</p>
   <div style="margin-top:2rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
@@ -244,7 +253,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <span class="poster-tag">6 輪循環</span>
     <span class="poster-tag">Stage 2 結業</span>
   </div>
-  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:1.1rem;">按 → 或空白鍵開始</p>
 </div>
 
 <!-- ══ 1 Page 2 LV 全景 ══ -->
@@ -324,7 +333,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     </div>
   </div>
   <div class="info-box success" style="max-width:1100px;margin-top:1rem;">
-    <p style="text-align:center;font-size:1.05rem;"><strong style="color:var(--green);">你的網頁從靜態變成能回應使用者</strong> 從工具變成系統 從系統變成 agent</p>
+    <p style="text-align:center;font-size:1.1rem;"><strong style="color:var(--green);">你的網頁從靜態變成能回應使用者</strong> 從工具變成系統 從系統變成 agent</p>
   </div>
 </div>
 
@@ -336,12 +345,12 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <div class="cycle-step"><span class="cycle-label">Round 2</span><span class="cycle-name">申請 + 安全</span></div>
     <div class="cycle-step"><span class="cycle-label">Round 3</span><span class="cycle-name">LV1 串 API</span></div>
     <div class="cycle-step"><span class="cycle-label">Round 4</span><span class="cycle-name">LV2 應用場景</span></div>
-    <div class="cycle-step"><span class="cycle-label">Round 5</span><span class="cycle-name">LV3 agent 預埋</span></div>
+    <div class="cycle-step"><span class="cycle-label">Round 5</span><span class="cycle-name">LV3 agent 體驗</span></div>
     <div class="cycle-step"><span class="cycle-label">Round 6</span><span class="cycle-name">Stage 2 結業</span></div>
   </div>
   <div class="info-box note">
     <div class="label">每一輪的節奏</div>
-    <p>操作指令 → 補強版參考 → 操作計時 → 分享觀察 → 小結反思</p>
+    <p>操作指令 → 補強版參考 → 換你操作 → 分享觀察 → 小結反思</p>
   </div>
 </div>
 
@@ -359,7 +368,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     </div>
     <div class="time-block">
       <div class="tb-head" style="background:linear-gradient(135deg,#0d2a44,#1A73E8);"><div class="tb-time">1:00 – 1:30</div><div class="tb-name">Round 3</div></div>
-      <div class="tb-body"><strong>LV1 串 API</strong>會議摘要器 GitHub Pages + GAS proxy 三層架構</div>
+      <div class="tb-body"><strong>LV1 串 API</strong>會議摘要器<br>Pages + GAS<br>三層架構</div>
     </div>
     <div class="time-block">
       <div class="tb-head" style="background:linear-gradient(135deg,#2a2a44,#7C3AED);"><div class="tb-time">1:30 – 2:00</div><div class="tb-name">Round 4</div></div>
@@ -367,11 +376,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
     </div>
     <div class="time-block">
       <div class="tb-head" style="background:linear-gradient(135deg,#9a3412,#E8710A);"><div class="tb-time">2:00 – 2:30</div><div class="tb-name">Round 5</div></div>
-      <div class="tb-body"><strong>LV3 agent 預埋</strong>AI 自己列計畫 改 測 回報</div>
+      <div class="tb-body"><strong>LV3 agent<br>體驗</strong>AI 自己列計畫 改 測 回報</div>
     </div>
     <div class="time-block">
       <div class="tb-head" style="background:linear-gradient(135deg,#065f46,#0F9D8A);"><div class="tb-time">2:30 – 3:00</div><div class="tb-name">Round 6</div></div>
-      <div class="tb-body"><strong>Stage 2 結業</strong>四模組回顧 Stage 3 預告</div>
+      <div class="tb-body"><strong>Stage 2 結業</strong>四模組回顧 + 帶走清單</div>
     </div>
   </div>
 </div>
@@ -382,7 +391,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 <!-- ══ 4 R1 Poster ══ -->
 <div class="slide poster" data-act="Round 1：三大免費 API" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:30</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:30</p>
   <h1 style="color:#fff;font-size:2.8rem;">API 是什麼<br><span style="color:#6ee7d4;">三大平台比較</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">免費額度玩到爽 不用綁信用卡</p>
 </div>
@@ -395,11 +404,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <p>API 是 <strong style="color:var(--blue);">Application Programming Interface</strong> 應用程式介面<br>不用懂英文 就理解成 你的網頁打電話給 AI 服務 用 API 講話</p>
   </div>
   <div class="flow" style="margin:1rem 0;">
-    <div class="flow-box">你的網頁<br><span style="font-size:.8rem;font-weight:400;">把問題包好</span></div>
+    <div class="flow-box">你的網頁<br><span style="font-size:1.1rem;font-weight:400;">把問題包好</span></div>
     <div class="flow-arrow">→</div>
-    <div class="flow-box accent">AI 平台 API<br><span style="font-size:.8rem;font-weight:400;">處理 + 回答</span></div>
+    <div class="flow-box accent">AI 平台 API<br><span style="font-size:1.1rem;font-weight:400;">處理 + 回答</span></div>
     <div class="flow-arrow">→</div>
-    <div class="flow-box">你的網頁<br><span style="font-size:.8rem;font-weight:400;">顯示答案</span></div>
+    <div class="flow-box">你的網頁<br><span style="font-size:1.1rem;font-weight:400;">顯示答案</span></div>
   </div>
   <div class="info-box success">
     <div class="label">關鍵差別</div>
@@ -415,23 +424,23 @@ p,li{font-size:1.1rem;line-height:1.8;}
       <div class="api-name">Groq</div>
       <div class="api-by">主力日常用</div>
       <div class="api-quota"><div class="qval">30 RPM</div><div class="qlabel">每分鐘 30 次 不限總量</div></div>
-      <div class="api-desc">速度最快 LPU 晶片　llama qwen 多模型可選　M1-4 用過你已熟</div>
+      <div class="api-desc">速度最快 LPU 晶片<br>多款開源模型可選<br>M1-4 用過你已熟</div>
     </div>
     <div class="api-card">
       <div class="api-name">Google AI Studio</div>
       <div class="api-by">長文本專家</div>
       <div class="api-quota"><div class="qval">15 RPM</div><div class="qlabel">每天 1500 次</div></div>
-      <div class="api-desc">Gemini 模型 1M context 適合處理長 PDF 或文件</div>
+      <div class="api-desc">Gemini 模型 1M context<br>適合處理長 PDF 或文件</div>
     </div>
     <div class="api-card">
       <div class="api-name">OpenRouter</div>
       <div class="api-by">備援多模型</div>
       <div class="api-quota"><div class="qval">20 RPM</div><div class="qlabel">每天 50 次</div></div>
-      <div class="api-desc">一個 API 通 28 個免費模型 包含 Claude DeepSeek 等大廠</div>
+      <div class="api-desc">一個 API 通多家免費模型<br>DeepSeek 等常駐免費<br>陣容常變動 以 openrouter.ai 為準</div>
     </div>
   </div>
   <div class="info-box note">
-    <p style="font-size:.95rem;">RPM 是 Request Per Minute 每分鐘最多打幾次　超過會被擋　今天用 Google AI Studio 因為它跟 agy 整合最好</p>
+    <p style="font-size:1.1rem;">RPM 是 Request Per Minute 每分鐘最多打幾次　超過會被擋　今天用 Google AI Studio 因為它跟 agy 整合最好</p>
   </div>
 </div>
 
@@ -441,10 +450,10 @@ p,li{font-size:1.1rem;line-height:1.8;}
   <div style="text-align:center;margin:1rem 0;">
     <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">你不用申請　看老師用同一題<br>問 Groq / Gemini / OpenRouter 比答案差別</p>
   </div>
-  <a href="https://aipath.cooperation.tw/vibe-coding/three-api-compare/" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--green-lt));border:2px solid var(--green);border-radius:14px;padding:1rem 1.4rem;max-width:820px;width:100%;display:flex;flex-direction:column;gap:.3rem;margin-top:.6rem;transition:transform .15s,box-shadow .15s;box-shadow:0 2px 12px rgba(15,157,138,.18);">
-    <div style="font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:.08em;">老師示範用的網站　學員 R3 會自己做一個</div>
-    <div style="font-size:1.15rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;">aipath.cooperation.tw/vibe-coding/three-api-compare/</div>
-    <div style="font-size:.82rem;color:var(--g700);line-height:1.6;">點開可即時輸入同一題 問三家 比回應風格 速度 字數　每家可挑不同免費模型試</div>
+  <a href="https://aipath.cooperation.tw/vibe-coding/three-api-compare/" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--green-lt));border:2px solid var(--green);border-radius:14px;padding:1rem 1.4rem;max-width:980px;width:100%;display:flex;flex-direction:column;gap:.3rem;margin-top:.6rem;transition:transform .15s,box-shadow .15s;box-shadow:0 2px 12px rgba(15,157,138,.18);">
+    <div style="font-size:1.1rem;color:var(--green);font-weight:700;letter-spacing:.08em;">老師示範用的網站　R3 換你自己做一個</div>
+    <div style="font-size:1.1rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;">aipath.cooperation.tw/vibe-coding/three-api-compare/</div>
+    <div style="font-size:1.1rem;color:var(--g700);line-height:1.6;">點開可即時輸入同一題 問三家 比回應風格 速度 字數　每家可挑不同免費模型試</div>
   </a>
   <div class="info-box note">
     <div class="label">老師會示範的事</div>
@@ -456,21 +465,51 @@ p,li{font-size:1.1rem;line-height:1.8;}
   </div>
 </div>
 
+<!-- ══ 7b 換你操作: 同一題自己跑三家 ══ -->
+<div class="slide dataviz" data-act="Round 1：三大免費 API">
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">5 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">同一題自己跑三家 挑出你的主力</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>打開<br>aipath.cooperation.tw/vibe-coding/three-api-compare/</strong><p style="font-size:1.1rem;">老師剛示範的那個網站 不用申請 Key</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>輸入一個你工作上的真問題 跑三家</strong><p style="font-size:1.1rem;">看回應風格 速度 字數的差別</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>記下你挑哪家 為什麼</strong><p style="font-size:1.1rem;">等一下分享用</p></div>
+    </div>
+  </div>
+  <div class="info-box success" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">三家都跑出回應 你說得出最適合你的那家跟一句理由 = 完成</p>
+  </div>
+  <div class="info-box note" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手 或看老師畫面用同一題跟著跑</p>
+  </div>
+</div>
+
 <!-- ══ 8 補強版: API 平台對照表 ══ -->
 <div class="slide dataviz" data-act="Round 1：三大免費 API">
   <h2>怎麼挑 API 平台</h2>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1180px;width:100%;">
     <div class="card accent-top">
       <h3>要快</h3>
-      <p>客服回覆 即時翻譯 聊天機器人　<strong style="color:var(--green);">選 Groq</strong></p>
+      <p>客服回覆 即時翻譯<br>聊天機器人<br><strong style="color:var(--green);">選 Groq</strong></p>
     </div>
     <div class="card accent-top-blue">
       <h3>要看長文件</h3>
-      <p>讀 PDF 整理報告 分析論文　<strong style="color:var(--blue);">選 Google AI Studio</strong></p>
+      <p>讀 PDF 整理報告<br>分析論文<br><strong style="color:var(--blue);">選 Google AI Studio</strong></p>
     </div>
     <div class="card accent-top-purple">
       <h3>要多家比較</h3>
-      <p>同問題試 Claude Gemini DeepSeek　<strong style="color:var(--purple);">選 OpenRouter</strong></p>
+      <p>同問題一次試<br>多家免費模型<br><strong style="color:var(--purple);">選 OpenRouter</strong></p>
     </div>
   </div>
   <div class="info-box success">
@@ -516,7 +555,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 <!-- ══ 11 R2 Poster ══ -->
 <div class="slide poster" data-act="Round 2：申請 + 安全" style="background:linear-gradient(135deg,#0d2a44 0%,#1A73E8 50%,#7C3AED 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:30–1:00</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:30–1:00</p>
   <h1 style="color:#fff;font-size:2.8rem;">申請 + 安全<br><span style="color:#93c5fd;">.env 標準流程</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">拿 API Key 千萬不要 push 上 GitHub</p>
 </div>
@@ -568,7 +607,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <div class="flow-arrow">→</div>
     <div class="flow-box">把 Key 放裡面</div>
     <div class="flow-arrow">→</div>
-    <div class="flow-box accent">.gitignore 排除 .env<br><span style="font-size:.8rem;font-weight:400;">不會 push 上 GitHub</span></div>
+    <div class="flow-box accent">.gitignore 排除 .env<br><span style="font-size:1.1rem;font-weight:400;">不會 push 上 GitHub</span></div>
   </div>
   <div class="info-box warning">
     <div class="label">為什麼一定要這樣做</div>
@@ -576,7 +615,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
   </div>
   <div class="info-box success">
     <div class="label">這就是 M2-3 token 安全的延伸</div>
-    <p>跟 SSH token 一樣 任何鑰匙都要放 .env 別 push　GitHub Secrets 還能設定更安全的儲存 R5 會提</p>
+    <p>跟 SSH token 一樣 任何鑰匙都要放 .env 別 push</p>
   </div>
 </div>
 
@@ -613,19 +652,37 @@ p,li{font-size:1.1rem;line-height:1.8;}
     </div>
   </div>
   <div class="info-box note">
-    <p style="font-size:.95rem;">一句話請 AI 幫你建　它會在 .env 寫 GEMINI_API_KEY=你的 Key　在 .gitignore 加 .env 那行</p>
+    <p style="font-size:1.1rem;">一句話請 AI 幫你建　它會在 .env 寫 GEMINI_API_KEY=你的 Key　在 .gitignore 加 .env 那行</p>
   </div>
 </div>
 
-<!-- ══ 16 操作計時 ══ -->
+<!-- ══ 16 換你操作 ══ -->
 <div class="slide dataviz" data-act="Round 2：申請 + 安全">
-  <h2>操作計時</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat"><span class="num">20</span><span class="unit">分鐘</span><div class="caption">含申請 + 設定 .env</div></div>
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">20 分鐘</span>
   </div>
-  <div class="info-box note">
-    <div class="label">完成目標</div>
-    <p>你有一支 Gemini API Key<br>已存在 .env 檔 .gitignore 排除了它<br>準備好 R3 開始串</p>
+  <h2 style="margin-bottom:.6rem;">申請你的 Gemini Key 收進 .env</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>aistudio.google.com 申請 Key</strong><p style="font-size:1.1rem;">照前面三步驟 Create API key 後 cmd+A 整段複製</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>請 AI 建 .env + .gitignore</strong><p style="font-size:1.1rem;">一句話 幫我建 .env 跟 .gitignore 把 API Key 安全管理</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>自己打開 .gitignore 檢查</strong><p style="font-size:1.1rem;">第一行要是 .env</p></div>
+    </div>
+  </div>
+  <div class="info-box success" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">Key 存在 .env 裡 .gitignore 排除了它 = 完成 R3 直接用</p>
+  </div>
+  <div class="info-box note" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手 或回看 API Key 介面跟 .env 設定那兩頁照著走</p>
   </div>
 </div>
 
@@ -673,13 +730,13 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <!-- ══ INSERT: 回頭清 M2-1 故意 commit 的假 Key ══ -->
 <div class="slide dataviz" data-act="Round 2：申請 + 安全">
   <h2>還記得 M2-1 故意 commit 的假 Key 嗎</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">現在你會 .env 機制了 回頭把那段假 Key 清掉</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">現在你會 .env 機制了 回頭把那段假 Key 清掉</p>
   <div class="flow" style="margin:1rem 0;">
     <div class="flow-box">M2-1 故意留的假 Key</div>
     <div class="flow-arrow">→</div>
     <div class="flow-box">IDE 自動掃</div>
     <div class="flow-arrow">→</div>
-    <div class="flow-box accent">清掉 + commit<br><span style="font-size:.8rem;font-weight:400;">repo 變乾淨</span></div>
+    <div class="flow-box accent">清掉 + commit<br><span style="font-size:1.1rem;font-weight:400;">repo 變乾淨</span></div>
   </div>
   <div class="info-box note">
     <div class="label">這次怎麼做</div>
@@ -699,11 +756,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <div style="display:grid;grid-template-rows:1fr 1fr;gap:1rem;">
       <div class="info-box success" style="margin:0;max-width:none;">
         <div class="label">為什麼要建 skill</div>
-        <p style="font-size:.95rem;line-height:1.75;">掃 API Key 殘留是你以後每個專案都要做的事<br>每次手寫 prompt 麻煩<br>把它變 skill 之後一句話就跑</p>
+        <p style="font-size:1.1rem;line-height:1.75;">掃 API Key 殘留是你以後每個專案都要做的事<br>每次手寫 prompt 麻煩<br>把它變 skill 之後一句話就跑</p>
       </div>
       <div class="info-box tip" style="margin:0;max-width:none;">
         <div class="label">之後怎麼用</div>
-        <p style="font-size:.95rem;line-height:1.75;">任何新專案 任何時候<br>跟 agy 說 跑 check-secrets<br>10 秒掃完整個 repo 告訴你有沒有殘留<br>這個 skill 是你帶得走的安全資產</p>
+        <p style="font-size:1.1rem;line-height:1.75;">任何新專案 任何時候<br>跟 agy 說 跑 check-secrets<br>10 秒掃完整個 repo 告訴你有沒有殘留<br>這個 skill 是你帶得走的安全資產</p>
       </div>
     </div>
     <div class="code-block" style="margin:0;max-width:none;height:100%;display:flex;flex-direction:column;">
@@ -726,39 +783,39 @@ skill 名稱 check-secrets
 <!-- ══ INSERT: R2 補充單元 groq-playground ══ -->
 <div class="slide dataviz" data-act="Round 2：申請 + 安全">
   <h2>補充單元 你的 Key 不只會聊天</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">API 還能聽你說話 看你的圖 開口說英文 吐出程式吃得下的 JSON　一頁玩完四種</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">API 還能聽你說話 看你的圖 開口說英文 吐出程式吃得下的 JSON　一頁玩完四種</p>
 
   <a href="https://aipath.cooperation.tw/vibe-coding/groq-playground/" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--green-lt));border:2px solid var(--green);border-radius:14px;padding:1rem 1.4rem;max-width:1180px;width:100%;display:flex;flex-direction:column;gap:.3rem;transition:transform .15s;box-shadow:0 2px 12px rgba(15,157,138,.18);">
     <div style="display:flex;align-items:center;gap:.5rem;">
-      <div style="background:var(--green);color:#fff;font-size:.65rem;padding:.18rem .55rem;border-radius:100px;font-weight:700;letter-spacing:.08em;">互動教學頁</div>
-      <div style="background:var(--green-lt);color:var(--green);font-size:.7rem;padding:.18rem .5rem;border-radius:100px;font-weight:700;">已上線 免費 Key 就能玩</div>
+      <div style="background:var(--green);color:#fff;font-size:1.1rem;padding:.18rem .55rem;border-radius:100px;font-weight:700;letter-spacing:.08em;">互動教學頁</div>
+      <div style="background:var(--green-lt);color:var(--green);font-size:1.1rem;padding:.18rem .5rem;border-radius:100px;font-weight:700;">已上線 免費 Key 就能玩</div>
     </div>
     <div style="font-size:1.15rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;word-break:break-all;">aipath.cooperation.tw/vibe-coding/groq-playground/</div>
-    <div style="font-size:.85rem;color:var(--g700);line-height:1.7;">頁面內建 Key 申請流程 含語音模型條款同意　允許麥克風 照講稿唸一段話 逐字稿自動流進後面兩站</div>
+    <div style="font-size:1.1rem;color:var(--g700);line-height:1.7;">頁面內建 Key 申請流程 含語音模型條款同意　允許麥克風 照講稿唸一段話 逐字稿自動流進後面兩站</div>
   </a>
 
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;max-width:1180px;width:100%;margin-top:.8rem;">
     <div class="card" style="border-top:4px solid var(--green);">
       <h3 style="color:var(--green);">1 聽</h3>
-      <p style="font-size:.85rem;">講一段話 秒出逐字稿<br><span style="color:var(--g500);font-size:.75rem;">whisper 語音轉文字</span></p>
+      <p style="font-size:1.1rem;">講一段話<br>秒出逐字稿<br><span style="color:var(--g500);font-size:1.1rem;">whisper 語音辨識</span></p>
     </div>
     <div class="card" style="border-top:4px solid var(--blue);">
       <h3 style="color:var(--blue);">2 看</h3>
-      <p style="font-size:.85rem;">拍張發票 抽品項金額<br><span style="color:var(--g500);font-size:.75rem;">llama-4 圖片理解</span></p>
+      <p style="font-size:1.1rem;">拍張發票<br>抽品項金額<br><span style="color:var(--g500);font-size:1.1rem;">llama-4 圖片理解</span></p>
     </div>
     <div class="card" style="border-top:4px solid var(--orange);">
       <h3 style="color:var(--orange);">3 說</h3>
-      <p style="font-size:.85rem;">逐字稿翻英文 唸給你聽<br><span style="color:var(--g500);font-size:.75rem;">兩個 API 串接</span></p>
+      <p style="font-size:1.1rem;">逐字稿翻英文<br>唸給你聽<br><span style="color:var(--g500);font-size:1.1rem;">兩個 API 串接</span></p>
     </div>
     <div class="card" style="border-top:4px solid var(--purple);">
       <h3 style="color:var(--purple);">4 貼標籤</h3>
-      <p style="font-size:.85rem;">一段話變 JSON 彩色標籤<br><span style="color:var(--g500);font-size:.75rem;">結構化輸出</span></p>
+      <p style="font-size:1.1rem;">一段話變 JSON<br>彩色標籤<br><span style="color:var(--g500);font-size:1.1rem;">結構化輸出</span></p>
     </div>
   </div>
 
   <div class="info-box note" style="margin-top:.8rem;">
     <div class="label">指定任務 至少玩完站 1 和站 4</div>
-    <p style="font-size:.95rem;line-height:1.7;">錄一段講稿 → 逐字稿 → 一鍵變成 分類 情緒 緊急度 的 JSON 標籤<br>看懂站 4 那包 JSON 你就懂了<br>ChatGPT 的答案是給人看的　API 的答案是給程式吃的</p>
+    <p style="font-size:1.1rem;line-height:1.7;">錄一段講稿 → 逐字稿 → 一鍵變成 分類 情緒 緊急度 的 JSON 標籤<br>看懂站 4 那包 JSON 你就懂了<br>ChatGPT 的答案是給人看的　API 的答案是給程式吃的</p>
   </div>
 </div>
 
@@ -780,7 +837,7 @@ skill 名稱 check-secrets
 
 <!-- ══ 20 R3 Poster ══ -->
 <div class="slide poster" data-act="Round 3：LV1 串 API" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 1:00–1:30</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 1:00–1:30</p>
   <h1 style="color:#fff;font-size:2.8rem;">LV1<br><span style="color:#6ee7d4;">會議摘要器</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">逐字稿丟進來 自動產出結論 + email 通知</p>
 </div>
@@ -788,26 +845,26 @@ skill 名稱 check-secrets
 <!-- ══ 21 概念: 三層架構 + clasp 是什麼 ══ -->
 <div class="slide dataviz" data-act="Round 3：LV1 串 API">
   <h2>三層架構 GitHub Pages + GAS proxy + Gemini</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">前端 GitHub Pages　後端 GAS Web App 帶 Key　學員 M1 已會 GAS 直接接上</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">前端 GitHub Pages　後端 GAS Web App 帶 Key　M1 你已會 GAS 直接接上</p>
   <div class="flow" style="margin:.8rem 0;">
     <div class="flow-box">使用者瀏覽器</div>
     <div class="flow-arrow">→</div>
-    <div class="flow-box">GitHub Pages<br><span style="font-size:.78rem;font-weight:400;">純前端 不藏 Key</span></div>
+    <div class="flow-box">GitHub Pages<br><span style="font-size:1.1rem;font-weight:400;">純前端 不藏 Key</span></div>
     <div class="flow-arrow">→</div>
-    <div class="flow-box accent">GAS proxy<br><span style="font-size:.78rem;font-weight:400;">Script Properties 存 Key</span></div>
+    <div class="flow-box accent">GAS proxy<br><span style="font-size:1.1rem;font-weight:400;">Script Properties 存 Key</span></div>
     <div class="flow-arrow">→</div>
     <div class="flow-box">Gemini API</div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:1100px;width:100%;margin-top:.6rem;align-items:stretch;">
     <div style="background:#fff;border:2px solid var(--g100);border-top:4px solid var(--blue);border-radius:14px;padding:.9rem 1.1rem;">
-      <div style="font-size:.78rem;color:var(--blue);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">M2-3 你已學過</div>
+      <div style="font-size:1.1rem;color:var(--blue);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">M2-3 你已學過</div>
       <h3 style="color:var(--g900);">SSH key</h3>
-      <p style="font-size:.88rem;color:var(--g700);line-height:1.75;">IDE → GitHub<br>一次 OAuth 之後 git push 全自動</p>
+      <p style="font-size:1.1rem;color:var(--g700);line-height:1.75;">IDE → GitHub<br>一次 OAuth 之後 git push 全自動</p>
     </div>
     <div style="background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);border-radius:14px;padding:.9rem 1.1rem;">
-      <div style="font-size:.78rem;color:var(--green);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">M2-4 R3 你會學</div>
+      <div style="font-size:1.1rem;color:var(--green);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">M2-4 R3 你會學</div>
       <h3 style="color:var(--g900);">clasp</h3>
-      <p style="font-size:.88rem;color:var(--g700);line-height:1.75;">IDE → GAS<br>一次 OAuth 之後 clasp push 全自動</p>
+      <p style="font-size:1.1rem;color:var(--g700);line-height:1.75;">IDE → GAS<br>一次 OAuth 之後 clasp push 全自動</p>
     </div>
   </div>
 </div>
@@ -815,13 +872,13 @@ skill 名稱 check-secrets
 <!-- ══ 22 操作指令: 兩個 prompt 變體 ══ -->
 <div class="slide dataviz" data-act="Round 3：LV1 串 API">
   <h2>操作指令 兩個 prompt 變體自選</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">便利 vs 安全 你選一個體驗</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">便利 vs 安全 你選一個體驗</p>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:1280px;width:100%;align-items:stretch;">
     <div style="display:flex;flex-direction:column;">
-      <div style="font-size:.78rem;color:#b07d00;font-weight:700;letter-spacing:.08em;margin-bottom:.3rem;">變體 A 便利 Key 寫進 prompt</div>
+      <div style="font-size:1.1rem;color:#b07d00;font-weight:700;letter-spacing:.08em;margin-bottom:.3rem;">變體 A 便利 Key 寫進 prompt</div>
       <div class="code-block" style="margin:0;flex:1;">
         <div class="code-label" style="color:#b07d00;">複製貼上</div>
-        <pre style="font-size:.85rem;line-height:1.75;">做會議摘要器
+        <pre style="font-size:1.1rem;line-height:1.75;">做會議摘要器
 前端 index.html 用 SSH 登入放 GitHub Pages
 後端用 clasp 幫我設好 GAS 存 GEMINI_KEY
 key: AIzaSy你的 Key 整段貼這
@@ -831,14 +888,14 @@ key: AIzaSy你的 Key 整段貼這
       </div>
       <div class="info-box warning" style="margin-top:.5rem;max-width:none;">
         <div class="label">便利但有風險</div>
-        <p style="font-size:.85rem;">agy 一次搞定 Key 自動填　但 Key 會出現在 chat 對話紀錄</p>
+        <p style="font-size:1.1rem;">agy 一次搞定 Key 自動填　但 Key 會出現在 chat 對話紀錄</p>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;">
-      <div style="font-size:.78rem;color:var(--green);font-weight:700;letter-spacing:.08em;margin-bottom:.3rem;">變體 B 安全 推薦 自己貼 Key</div>
+      <div style="font-size:1.1rem;color:var(--green);font-weight:700;letter-spacing:.08em;margin-bottom:.3rem;">變體 B 安全 推薦 自己貼 Key</div>
       <div class="code-block" style="margin:0;flex:1;background:var(--green-lt);">
         <div class="code-label">複製貼上</div>
-        <pre style="font-size:.85rem;line-height:1.75;">做會議摘要器
+        <pre style="font-size:1.1rem;line-height:1.75;">做會議摘要器
 前端 index.html 用 SSH 登入放 GitHub Pages
 後端用 clasp 幫我設好 GAS 存 GEMINI_KEY
 保護好 Key 避免上傳洩漏
@@ -847,7 +904,7 @@ key: AIzaSy你的 Key 整段貼這
       </div>
       <div class="info-box success" style="margin-top:.5rem;max-width:none;">
         <div class="label">多一步手動 但 Key 從來不在 chat 出現</div>
-        <p style="font-size:.85rem;">agy 部署完 引導你去 GAS UI 自己貼 Key 進 Script Properties</p>
+        <p style="font-size:1.1rem;">agy 部署完 引導你去 GAS UI 自己貼 Key 進 Script Properties</p>
       </div>
     </div>
   </div>
@@ -856,38 +913,38 @@ key: AIzaSy你的 Key 整段貼這
 <!-- ══ INSERT: 老師示範完成範例 line URLs ══ -->
 <div class="slide dataviz" data-act="Round 3：LV1 串 API">
   <h2>老師示範用的完成範例</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">用同樣 prompt 跑出來的真實作品 學員 R3 會自己做一個</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">用同樣 prompt 跑出來的真實作品 R3 換你自己做一個</p>
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:1280px;width:100%;align-items:stretch;">
 
     <a href="http://cooperation.tw/meeting-summarizer/" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--green-lt));border:2px solid var(--green);border-radius:14px;padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.4rem;transition:transform .15s;box-shadow:0 2px 12px rgba(15,157,138,.18);">
       <div style="display:flex;align-items:center;gap:.5rem;">
-        <div style="background:var(--green);color:#fff;font-size:.65rem;padding:.18rem .55rem;border-radius:100px;font-weight:700;letter-spacing:.08em;">前端 GitHub Pages</div>
-        <div style="background:var(--green-lt);color:var(--green);font-size:.7rem;padding:.18rem .5rem;border-radius:100px;font-weight:700;">已上線</div>
+        <div style="background:var(--green);color:#fff;font-size:1.1rem;padding:.18rem .55rem;border-radius:100px;font-weight:700;letter-spacing:.08em;">前端 GitHub Pages</div>
+        <div style="background:var(--green-lt);color:var(--green);font-size:1.1rem;padding:.18rem .5rem;border-radius:100px;font-weight:700;">已上線</div>
       </div>
-      <div style="font-size:1.05rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;word-break:break-all;">cooperation.tw/meeting-summarizer/</div>
-      <div style="font-size:.85rem;color:var(--g700);line-height:1.7;">點開貼一段會議逐字稿 看 AI 產出結論 + Action items + email 草稿</div>
+      <div style="font-size:1.1rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;word-break:break-all;">cooperation.tw/meeting-summarizer/</div>
+      <div style="font-size:1.1rem;color:var(--g700);line-height:1.7;">點開貼一段會議逐字稿 看 AI 產出結論 + Action items + email 草稿</div>
     </a>
 
-    <a href="https://script.google.com" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--blue-lt));border:2px solid var(--blue);border-radius:14px;padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.4rem;transition:transform .15s;box-shadow:0 2px 12px rgba(26,115,232,.18);">
+    <a href="https://script.google.com/macros/s/AKfycbypwikHpuWlOPBmQf_2k9wNKAF_P23nXEf_vHIATFKoTTWTDOQmNpUlkm8HtAKO5EkBbA/exec" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--blue-lt));border:2px solid var(--blue);border-radius:14px;padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.4rem;transition:transform .15s;box-shadow:0 2px 12px rgba(26,115,232,.18);">
       <div style="display:flex;align-items:center;gap:.5rem;">
-        <div style="background:var(--blue);color:#fff;font-size:.65rem;padding:.18rem .55rem;border-radius:100px;font-weight:700;letter-spacing:.08em;">後端 GAS Web App</div>
-        <div style="background:var(--gold-lt);color:#b07d00;font-size:.7rem;padding:.18rem .5rem;border-radius:100px;font-weight:700;">需一次手動授權</div>
+        <div style="background:var(--blue);color:#fff;font-size:1.1rem;padding:.18rem .55rem;border-radius:100px;font-weight:700;letter-spacing:.08em;">後端 GAS Web App</div>
+        <div style="background:var(--gold-lt);color:#b07d00;font-size:1.1rem;padding:.18rem .5rem;border-radius:100px;font-weight:700;">需一次手動授權</div>
       </div>
-      <div style="font-size:1.05rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;word-break:break-all;">script.google.com/macros/s/AKfycby.../exec</div>
-      <div style="font-size:.85rem;color:var(--g700);line-height:1.7;">前端 fetch 這個 endpoint　帶逐字稿 → GAS 帶 GEMINI_KEY 呼叫 Gemini → 回傳結論</div>
+      <div style="font-size:1.1rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;word-break:break-all;">script.google.com/macros/s/…/exec</div>
+      <div style="font-size:1.1rem;color:var(--g700);line-height:1.7;">前端 fetch 這個 endpoint　帶逐字稿 → GAS 帶 GEMINI_KEY 呼叫 Gemini → 回傳結論</div>
     </a>
 
   </div>
 
   <div class="info-box note" style="margin-top:.8rem;">
     <div class="label">老師示範流程</div>
-    <p style="font-size:.95rem;line-height:1.7;">點前端網址 → 貼一段會議逐字稿 → 按產出摘要 → 學員看到三層架構真實跑起來的樣子<br>等下你自己用 R3 兩變體 prompt 也能做出同款</p>
+    <p style="font-size:1.1rem;line-height:1.7;">點前端網址 → 貼一段會議逐字稿 → 按產出摘要 → 三層架構真實跑起來給你看<br>等下你自己用 R3 兩變體 prompt 也能做出同款</p>
   </div>
 
   <div class="info-box warning" style="margin-top:.6rem;">
     <div class="label">後端第一次點開會看到 Google 授權頁</div>
-    <p style="font-size:.95rem;line-height:1.7;">GAS Web App 第一次跑會要求一次手動授權　Google 安全沙盒要求 這不是 bug 是設計<br>老師示範時按一次同意 之後學員存取就不會再跳了</p>
+    <p style="font-size:1.1rem;line-height:1.7;">GAS Web App 第一次跑會要求一次手動授權　Google 安全沙盒要求 這不是 bug 是設計<br>老師示範時按一次同意 之後你再打開就不會再跳了</p>
   </div>
 </div>
 
@@ -932,7 +989,7 @@ key: AIzaSy你的 Key 整段貼這
     </div>
   </div>
   <div class="info-box success">
-    <p style="font-size:.95rem;">你只做兩件事 <strong>OAuth 授權 clasp 一次</strong> + <strong>到 GAS UI 貼 Key 一次</strong>　其他 agy 全包</p>
+    <p style="font-size:1.1rem;">你只做兩件事 <strong>OAuth 授權 clasp 一次</strong> + <strong>到 GAS UI 貼 Key 一次</strong>　其他 agy 全包</p>
   </div>
 </div>
 
@@ -941,7 +998,7 @@ key: AIzaSy你的 Key 整段貼這
   <h2>資料夾長這樣 Key 放這裡</h2>
   <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:1rem;max-width:1280px;width:100%;align-items:stretch;">
     <div style="background:#f7fafc;border-radius:14px;padding:.8rem;">
-      <div style="font-size:.78rem;color:var(--g600);font-weight:700;letter-spacing:.08em;margin-bottom:.4rem;text-align:center;">你的 meeting-summary 資料夾</div>
+      <div style="font-size:1.1rem;color:var(--g600);font-weight:700;letter-spacing:.08em;margin-bottom:.4rem;text-align:center;">你的 meeting-summary 資料夾</div>
       <div class="ide-frame" style="height:260px;">
         <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ meeting-summary/</span></div>
         <div class="ide-body">
@@ -958,10 +1015,10 @@ key: AIzaSy你的 Key 整段貼這
           </div>
         </div>
       </div>
-      <div style="font-size:.78rem;color:var(--g700);text-align:center;margin-top:.4rem;line-height:1.7;">前端後端兩個檔在同一個資料夾<br>agy 自己知道哪個 push 到哪</div>
+      <div style="font-size:1.1rem;color:var(--g700);text-align:center;margin-top:.4rem;line-height:1.7;">前端後端兩個檔在同一個資料夾<br>agy 自己知道哪個 push 到哪</div>
     </div>
     <div style="background:#f7fafc;border-radius:14px;padding:.8rem;">
-      <div style="font-size:.78rem;color:var(--g600);font-weight:700;letter-spacing:.08em;margin-bottom:.4rem;text-align:center;">變體 B 最後一步 你到 GAS UI 貼 Key</div>
+      <div style="font-size:1.1rem;color:var(--g600);font-weight:700;letter-spacing:.08em;margin-bottom:.4rem;text-align:center;">變體 B 最後一步 你到 GAS UI 貼 Key</div>
       <div class="gh-frame" style="height:260px;">
         <div class="gh-browser"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">script.google.com/.../settings</span></div>
         <div class="gh-body" style="background:#fff;padding:.4rem .5rem;">
@@ -981,7 +1038,7 @@ key: AIzaSy你的 Key 整段貼這
           <div style="font-size:.4rem;color:var(--gh-mute);margin-top:.3rem;line-height:1.5;">Key 存在 GAS 後端 Code.gs 用 PropertiesService 讀取　永遠不會出現在前端</div>
         </div>
       </div>
-      <div style="font-size:.78rem;color:var(--g700);text-align:center;margin-top:.4rem;line-height:1.7;">agy 會自動開 GAS 編輯器到這頁<br>你貼上 Save 完成</div>
+      <div style="font-size:1.1rem;color:var(--g700);text-align:center;margin-top:.4rem;line-height:1.7;">agy 會自動開 GAS 編輯器到這頁<br>你貼上 Save 完成</div>
     </div>
   </div>
 </div>
@@ -1008,19 +1065,60 @@ key: AIzaSy你的 Key 整段貼這
     </div>
   </div>
   <div class="info-box success">
-    <p style="font-size:.95rem;">逐字稿丟進去 結論 + Action items + email 草稿　以前 30 分鐘整理現在 30 秒</p>
+    <p style="font-size:1.1rem;">逐字稿丟進去 結論 + Action items + email 草稿　以前 30 分鐘整理現在 30 秒</p>
   </div>
 </div>
 
-<!-- ══ 24 操作計時 ══ -->
+<!-- ══ 23b 課堂測試素材: 共用逐字稿 ══ -->
 <div class="slide dataviz" data-act="Round 3：LV1 串 API">
-  <h2>操作計時</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat"><span class="num">25</span><span class="unit">分鐘</span><div class="caption">含 AI 產出 + 測試 + push 上線</div></div>
+  <h2>測試用逐字稿 全班同一份</h2>
+  <div class="code-block" style="margin:.5rem 0;">
+    <div class="code-label">複製這段 等一下貼進你的摘要器</div>
+    <pre>【春陽茶飲 週會逐字稿】出席 店長阿凱 小美 阿哲 小玲
+店長阿凱：人到齊了 今天三件事 新品 外送抽成 值班表
+小美：芝麻鮮奶茶試賣一週 賣了 120 杯 比預期好
+店長阿凱：好 下週一正式上架 海報小美負責
+小美：OK 我週五前把海報印好貼出來
+阿哲：外送平台上個月抽成漲到 35% 我覺得該去談
+店長阿凱：這個我來 下週三約平台業務 目標壓回 30%
+小玲：下週六我想跟阿哲換班 家裡有事
+阿哲：可以啊 我那天沒排事
+店長阿凱：值班表我今晚改好貼群組
+小美：對了 樓下新開的咖啡店你們吃過嗎 蛋糕不錯
+店長阿凱：改天團購 今天就到這 散會</pre>
   </div>
-  <div class="info-box note">
-    <div class="label">完成目標</div>
-    <p>會議摘要器網頁能跑 貼逐字稿產出結論 + Action items<br>push 到 GitHub Pages 線上可用<br>把網址貼到群組</p>
+  <div class="info-box note" style="margin-top:.4rem;padding:.7rem 1.4rem;">
+    <p>全班用同一份 分享時才比得出誰的摘要抓得準　想測自己的會議紀錄 當課後加碼</p>
+  </div>
+</div>
+
+<!-- ══ 24 換你操作 ══ -->
+<div class="slide dataviz" data-act="Round 3：LV1 串 API">
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">25 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">用變體 prompt 做出你的會議摘要器</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>挑變體 A 或 B 整段貼給 agy</strong><p style="font-size:1.1rem;">推薦 B Key 不會出現在對話紀錄</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>照引導完成 clasp 授權 跟貼 Key</strong><p style="font-size:1.1rem;">各只做一次 其他 agy 全包</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>開你的網址 貼前頁那份週會逐字稿測試</strong><p style="font-size:1.1rem;">測完把網址貼到群組</p></div>
+    </div>
+  </div>
+  <div class="info-box success" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">線上網址貼逐字稿 能產出結論 + Action items = 完成</p>
+  </div>
+  <div class="info-box note" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手 或回看 agy 跑變體 B 完整流程那頁 對照卡在哪一步</p>
   </div>
 </div>
 
@@ -1030,9 +1128,9 @@ key: AIzaSy你的 Key 整段貼這
   <div class="wow-heading">你的網頁從今天起<br>它真的會跟人對話</div>
   <p class="wow-sub">過去網頁只能看 不能回應　今天 你的網頁長出了大腦　它能聽 能想 能回答　而且只用了 25 分鐘建出來</p>
   <div style="background:var(--green-lt);border-radius:14px;padding:1.2rem 2rem;margin-top:1rem;max-width:900px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;text-align:center;">
-    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">靜態</div><div style="font-size:.85rem;color:var(--g700);margin-top:.2rem;">M2-1 ~ M2-3</div></div>
-    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">會說話</div><div style="font-size:.85rem;color:var(--g700);margin-top:.2rem;">M2-4 從現在開始</div></div>
-    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">能服務人</div><div style="font-size:.85rem;color:var(--g700);margin-top:.2rem;">Stage 3 系統化</div></div>
+    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">靜態</div><div style="font-size:1.1rem;color:var(--g700);margin-top:.2rem;">M2-1 ~ M2-3</div></div>
+    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">會說話</div><div style="font-size:1.1rem;color:var(--g700);margin-top:.2rem;">M2-4 從現在開始</div></div>
+    <div><div style="font-size:1.4rem;font-weight:900;color:var(--green);">能服務人</div><div style="font-size:1.1rem;color:var(--g700);margin-top:.2rem;">R4 接你的工作場景</div></div>
   </div>
 </div>
 
@@ -1042,7 +1140,7 @@ key: AIzaSy你的 Key 整段貼這
   <div class="step-list">
     <div class="step">
       <div class="step-num">1</div>
-      <div class="step-content"><strong>把你的會議摘要器網址貼到群組</strong><p>用一份範例逐字稿測試 看摘要品質</p></div>
+      <div class="step-content"><strong>把你的會議摘要器網址貼到群組</strong><p>用剛才那份週會逐字稿測試 看摘要品質</p></div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
@@ -1073,7 +1171,7 @@ key: AIzaSy你的 Key 整段貼這
 
 <!-- ══ 28 R4 Poster ══ -->
 <div class="slide poster" data-act="Round 4：LV2 應用場景" style="background:linear-gradient(135deg,#0d2a44 0%,#0B3C5D 40%,#1A73E8 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:30–2:00</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:30–2:00</p>
   <h1 style="color:#fff;font-size:2.8rem;">LV2<br><span style="color:#93c5fd;">應用場景</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">客服分流 PDF 摘要器 工作真實會用的</p>
 </div>
@@ -1101,41 +1199,103 @@ key: AIzaSy你的 Key 整段貼這
 <div class="slide dataviz" data-act="Round 4：LV2 應用場景">
   <h2>操作指令</h2>
   <div style="text-align:center;margin:1rem 0;">
-    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">挑一個你工作真實會用的場景<br>下一張有模板可以套</p>
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">今天全班做同一個場景<br>手搖飲料店客服分流</p>
+  </div>
+  <div class="info-box success">
+    <div class="label">為什麼用同一個</div>
+    <p>模板已填好 複製就能跑　分享時大家測同一套規則 才比得出誰的分流答得準</p>
   </div>
   <div class="info-box note">
-    <div class="label">建議場景</div>
-    <p>客服分流 / 客戶提問 → 分類 + 建議回覆<br>PDF 摘要器 / 文件 → 重點摘要<br>會議摘要 / 逐字稿 → 結論 + Action items<br>市場研究 / 競品名 → 自動整理對比表</p>
+    <div class="label">課後加碼</div>
+    <p>把模板換成你公司的場景　客服分流 / PDF 摘要 / 市場研究對比表 都是同一套改法</p>
   </div>
 </div>
 
 <!-- ══ 31 補強版: 客服分流 prompt 架構 ══ -->
 <div class="slide dataviz" data-act="Round 4：LV2 應用場景">
-  <h2>客服分流 prompt 架構</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">簡報只給架構 完整版見 prompt 教材</p>
+  <h2>客服分流 prompt 直接可跑</h2>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">手搖飲場景已填好 整段複製不用改</p>
   <div class="code-block">
     <div class="code-label">複製這段</div>
     <pre>幫我做客服分流網頁 串 Gemini
-- 我賣 [產品/服務]
+- 我開手搖飲料店 賣珍珠奶茶 鮮奶茶 水果茶
 - 客戶提問分三類 售前 / 售後 / 抱怨
-- 各類給不同建議回覆
-- 抱怨類自動轉真人</pre>
+- 售前 問品項或推薦 → 介紹品項 給一個推薦
+- 售後 問訂單進度 → 請客人給訂單編號 說明查法
+- 抱怨 → 先道歉 說明會升級真人處理</pre>
   </div>
   <div class="info-box tip">
     <div class="label">比 LV1 強在哪</div>
-    <p>會議摘要器你只是用 AI　客服分流還告訴 AI 你公司怎麼運作　商業規則內化 價值高 10 倍</p>
+    <p>會議摘要器你只是用 AI　客服分流還告訴 AI 這家店怎麼運作　商業規則內化 價值高 10 倍</p>
   </div>
 </div>
 
-<!-- ══ 32 操作計時 ══ -->
+<!-- ══ 31b 補強版: R4 老師示範完成範例 ══ -->
 <div class="slide dataviz" data-act="Round 4：LV2 應用場景">
-  <h2>操作計時</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat"><span class="num">25</span><span class="unit">分鐘</span><div class="caption">含 AI 產出 + push + 用真實情境測</div></div>
+  <h2>老師示範用的完成範例</h2>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">用同一套規則跑出來的真實作品 三句測試句可以直接按</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:1280px;width:100%;align-items:stretch;">
+
+    <a href="https://cooperation.tw/support-triage/" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--green-lt));border:2px solid var(--green);border-radius:14px;padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.4rem;transition:transform .15s;box-shadow:0 2px 12px rgba(15,157,138,.18);">
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        <div style="background:var(--green);color:#fff;font-size:1.1rem;padding:.18rem .55rem;border-radius:100px;font-weight:700;letter-spacing:.08em;">前端 GitHub Pages</div>
+        <div style="background:var(--green-lt);color:var(--green);font-size:1.1rem;padding:.18rem .5rem;border-radius:100px;font-weight:700;">已上線</div>
+      </div>
+      <div style="font-size:1.1rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;word-break:break-all;">cooperation.tw/support-triage/</div>
+      <div style="font-size:1.1rem;color:var(--g700);line-height:1.7;">頁面上就有三句測試句按鈕　按一句 → 看分類 + 建議回覆</div>
+    </a>
+
+    <a href="https://script.google.com/macros/s/AKfycbzoU0dqpvfuP1i9l_K79SbcSilpNruSSp9tctOWwMqnlvGnp3BQSxFbQheO59xAr1K3lQ/exec" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#fff,var(--blue-lt));border:2px solid var(--blue);border-radius:14px;padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.4rem;transition:transform .15s;box-shadow:0 2px 12px rgba(26,115,232,.18);">
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        <div style="background:var(--blue);color:#fff;font-size:1.1rem;padding:.18rem .55rem;border-radius:100px;font-weight:700;letter-spacing:.08em;">後端 GAS Web App</div>
+        <div style="background:var(--blue-lt);color:var(--blue);font-size:1.1rem;padding:.18rem .5rem;border-radius:100px;font-weight:700;">Key 在 Script Properties</div>
+      </div>
+      <div style="font-size:1.1rem;font-weight:700;color:var(--g900);font-family:'Fira Code',monospace;word-break:break-all;">script.google.com/macros/s/…/exec</div>
+      <div style="font-size:1.1rem;color:var(--g700);line-height:1.7;">前端 fetch 這個 endpoint　帶提問 → GAS 帶商業規則呼叫 Gemini → 回分類 + 回覆</div>
+    </a>
+
   </div>
-  <div class="info-box note">
-    <div class="label">完成目標</div>
-    <p>應用場景網頁能跑　至少測 3 個真實案例<br>能截圖貼出來說 這個能用<br>push 到 GitHub Pages 線上可用</p>
+
+  <div class="info-box note" style="margin-top:.8rem;">
+    <div class="label">老師示範流程</div>
+    <p style="font-size:1.1rem;line-height:1.7;">點前端網址 → 按測試句 1 售前 → 換測試句 3 抱怨 → 同一套規則兩種回法<br>規則就在前頁 prompt 那五行 — 等下你貼給 agy 就是做出這個</p>
+  </div>
+</div>
+
+<!-- ══ 32 換你操作 ══ -->
+<div class="slide dataviz" data-act="Round 4：LV2 應用場景">
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">25 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">做出手搖飲客服分流</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>複製前頁模板 整段貼給 agy</strong><p style="font-size:1.1rem;">手搖飲場景已填好 不用改</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>做完 push 上線</strong><p style="font-size:1.1rem;">流程跟 R3 一樣 這次你已經會了</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>用下面 3 句測試句 一句一句測</strong><p style="font-size:1.1rem;">售前 售後 抱怨 各一句</p></div>
+    </div>
+  </div>
+  <div class="code-block" style="margin:.4rem 0;max-width:780px;padding:.6rem 1.2rem;">
+    <div class="code-label">3 句測試句</div>
+    <pre>我第一次來 想喝不要太甜的 推薦哪一杯
+我半小時前訂的兩杯珍奶 到底做好了沒
+等了 40 分鐘還拿錯單 你們怎麼搞的</pre>
+  </div>
+  <div class="info-box success" style="margin-top:.4rem;padding:.6rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">網頁上線 3 句測試句都分對類 = 完成</p>
+  </div>
+  <div class="info-box note" style="margin-top:.4rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手 或回前頁把模板重貼一次　<strong>做完還有時間</strong> — 把產品跟規則換成你公司的</p>
   </div>
 </div>
 
@@ -1145,15 +1305,15 @@ key: AIzaSy你的 Key 整段貼這
   <div class="step-list">
     <div class="step">
       <div class="step-num">1</div>
-      <div class="step-content"><strong>你的應用場景是什麼</strong><p>講一句話 解決誰的什麼問題</p></div>
+      <div class="step-content"><strong>3 句測試句 你的分流答得怎麼樣</strong><p>哪一句分最準 哪一句最不準</p></div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
-      <div class="step-content"><strong>互測三位同學的場景</strong><p>不同產業看不同設計 你可能會發現你也能用</p></div>
+      <div class="step-content"><strong>拿同一句抱怨測三位同學的</strong><p>同樣的規則 看建議回覆的語氣差在哪</p></div>
     </div>
     <div class="step">
       <div class="step-num">3</div>
-      <div class="step-content"><strong>記下你想實際用它做什麼</strong><p>回家可以接著優化 真的丟給客戶用</p></div>
+      <div class="step-content"><strong>記下你公司會用的場景</strong><p>課後把模板的產品跟規則換成你的 真的丟給客戶用</p></div>
     </div>
   </div>
 </div>
@@ -1166,17 +1326,17 @@ key: AIzaSy你的 Key 整段貼這
   </div>
   <div class="info-box success">
     <div class="label">這一輪你拿到</div>
-    <p>一個真實場景應用 ・ 領域知識內化進 prompt 的方法 ・ 場景 prompt 模板 ・ LV2 主線達成</p>
+    <p>一個上線的客服分流應用 ・ 領域知識內化進 prompt 的方法 ・ 場景 prompt 模板 ・ LV2 主線達成</p>
   </div>
 </div>
 
 <!-- ════════════════════════════════════════
-     ROUND 5: LV3 agent 預埋
+     ROUND 5: LV3 agent 體驗
      ════════════════════════════════════════ -->
 
 <!-- ══ 35 R5 Poster ══ -->
 <div class="slide poster" data-act="Round 5：LV3 agent" style="background:linear-gradient(135deg,#7c2d12 0%,#9a3412 40%,#E8710A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 2:00–2:30</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 2:00–2:30</p>
   <h1 style="color:#fff;font-size:2.8rem;">LV3<br><span style="color:#fdba74;">體驗 agent 模式</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">AI 自己列計畫 改檔 測試 回報</p>
 </div>
@@ -1196,7 +1356,7 @@ key: AIzaSy你的 Key 整段貼這
   </div>
   <div class="info-box success">
     <div class="label">關鍵差別</div>
-    <p>agent 自己想步驟 自己決定下一步要做什麼<br>它跟 AI 工具的差別 就像員工跟工具的差別<br>Stage 3 整堂課都在學怎麼跟 agent 工作</p>
+    <p>agent 自己想步驟 自己決定下一步要做什麼<br>它跟 AI 工具的差別 就像員工跟工具的差別<br>這一輪先體驗一次 感受這個差別</p>
   </div>
 </div>
 
@@ -1219,11 +1379,11 @@ key: AIzaSy你的 Key 整段貼這
     <div style="display:grid;grid-template-rows:1fr 1fr;gap:1rem;">
       <div class="info-box tip" style="margin:0;max-width:none;">
         <div class="label">關鍵差別</div>
-        <p style="font-size:.95rem;line-height:1.75;">不要每一步都問我 自己判斷　這句話讓 AI 進入 agent 模式<br>它會自己一步一步跑 你只看最後結果</p>
+        <p style="font-size:1.1rem;line-height:1.75;">不要每一步都問我 自己判斷　這句話讓 AI 進入 agent 模式<br>它會自己一步一步跑 你只看最後結果</p>
       </div>
       <div class="info-box success" style="margin:0;max-width:none;">
         <div class="label">什麼時候適合用</div>
-        <p style="font-size:.95rem;line-height:1.75;">任務超過 3 步驟而且每步明確<br>例如 加 3 個功能 / 改版部署上線 / 跑完一輪測試<br>不適合 模糊需求 你也不清楚要什麼</p>
+        <p style="font-size:1.1rem;line-height:1.75;">任務超過 3 步驟而且每步明確<br>例如 加 3 個功能 / 改版部署上線 / 跑完一輪測試<br>不適合 模糊需求 你也不清楚要什麼</p>
       </div>
     </div>
     <div class="code-block" style="margin:0;max-width:none;height:100%;display:flex;flex-direction:column;">
@@ -1280,15 +1440,33 @@ key: AIzaSy你的 Key 整段貼這
   </div>
 </div>
 
-<!-- ══ 40 操作計時 ══ -->
+<!-- ══ 40 換你操作 ══ -->
 <div class="slide dataviz" data-act="Round 5：LV3 agent">
-  <h2>操作計時</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat"><span class="num">25</span><span class="unit">分鐘</span><div class="caption">從給目標到拿到結果</div></div>
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">25 分鐘</span>
   </div>
-  <div class="info-box note">
-    <div class="label">這 25 分鐘你要做的</div>
-    <p>給目標 不要中途干涉　看 agent 自己跑　遇到它做錯記下來 R6 討論<br>大部分時候你不用做事 只是等它跑完</p>
+  <h2 style="margin-bottom:.6rem;">給 agent 一個 4 步任務 看它自己跑完</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>複製 agent prompt 模板貼給 agy</strong><p style="font-size:1.1rem;">目標換成你自己的任務也可以</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>不要中途干涉 看它自己跑</strong><p style="font-size:1.1rem;">大部分時候你不用做事 只是看它列計畫跑每一步</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>它做錯的地方記下來</strong><p style="font-size:1.1rem;">等一下分享時講</p></div>
+    </div>
+  </div>
+  <div class="info-box success" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">4 步跑完 拿到網址 測到新功能 = 完成</p>
+  </div>
+  <div class="info-box note" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手 或把錯誤訊息整段貼回給 agent 讓它自己修</p>
   </div>
 </div>
 
@@ -1306,7 +1484,7 @@ key: AIzaSy你的 Key 整段貼這
     </div>
     <div class="step">
       <div class="step-num">3</div>
-      <div class="step-content"><strong>你會想用 agent 模式做什麼工作</strong><p>未來 Stage 3 整堂課都在學這個</p></div>
+      <div class="step-content"><strong>你會想用 agent 模式做什麼工作</strong><p>講一個你想丟給它自己跑的任務</p></div>
     </div>
   </div>
 </div>
@@ -1319,7 +1497,7 @@ key: AIzaSy你的 Key 整段貼這
   </div>
   <div class="info-box success">
     <div class="label">這一輪你拿到</div>
-    <p>agent 模式體驗 ・ 多步任務交給 AI 自跑 ・ agent prompt 模板 ・ Stage 3 的鋪墊</p>
+    <p>agent 模式體驗 ・ 多步任務交給 AI 自跑 ・ agent prompt 模板 ・ 知道什麼任務適合交給 agent</p>
   </div>
 </div>
 
@@ -1329,9 +1507,9 @@ key: AIzaSy你的 Key 整段貼這
 
 <!-- ══ 43 R6 Poster ══ -->
 <div class="slide poster" data-act="Round 6：Stage 2 結業" style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:30–3:00</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:30–3:00</p>
   <h1 style="color:#fff;font-size:2.8rem;">Stage 2 結業<br><span style="color:#6ee7d4;">12 小時走完了</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">回顧四模組 預告 Stage 3</p>
+  <p class="poster-subtitle" style="margin-top:.8rem;">回顧四模組 帶走你的作品</p>
 </div>
 
 <!-- ══ 44 Stage 2 四模組回顧 ══ -->
@@ -1339,24 +1517,24 @@ key: AIzaSy你的 Key 整段貼這
   <h2>Stage 2 四模組你都走過了</h2>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;max-width:1200px;width:100%;">
     <div class="card accent-top">
-      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;">M2-1</div>
+      <div style="font-size:1.1rem;color:var(--g500);letter-spacing:.08em;font-weight:700;">M2-1</div>
       <h3>GitHub 平台</h3>
-      <p style="font-size:.85rem;">註冊 開 repo 部署 commit Public Private</p>
+      <p style="font-size:1.1rem;">註冊 開 repo<br>部署 commit<br>Public Private</p>
     </div>
     <div class="card accent-top-blue">
-      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;">M2-2</div>
+      <div style="font-size:1.1rem;color:var(--g500);letter-spacing:.08em;font-weight:700;">M2-2</div>
       <h3>IDE 改檔</h3>
-      <p style="font-size:.85rem;">改 HTML 讀 PDF 產簡報</p>
+      <p style="font-size:1.1rem;">改 HTML 讀 PDF<br>產簡報</p>
     </div>
     <div class="card accent-top-purple">
-      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;">M2-3</div>
+      <div style="font-size:1.1rem;color:var(--g500);letter-spacing:.08em;font-weight:700;">M2-3</div>
       <h3>IDE 接 GitHub</h3>
-      <p style="font-size:.85rem;">token 串接 多頁網站 新專案部署</p>
+      <p style="font-size:1.1rem;">token 串接<br>多頁網站<br>新專案部署</p>
     </div>
     <div class="card accent-top-orange">
-      <div style="font-size:.7rem;color:var(--g500);letter-spacing:.08em;font-weight:700;">M2-4</div>
+      <div style="font-size:1.1rem;color:var(--g500);letter-spacing:.08em;font-weight:700;">M2-4</div>
       <h3>API 串接</h3>
-      <p style="font-size:.85rem;">會議摘要器 應用場景 agent 模式</p>
+      <p style="font-size:1.1rem;">會議摘要器<br>應用場景<br>agent 模式</p>
     </div>
   </div>
   <div class="bottom-line">
@@ -1370,8 +1548,8 @@ key: AIzaSy你的 Key 整段貼這
   <h2>Stage 2 完整帶走清單</h2>
   <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);max-width:920px;">
     <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
-      <div style="font-size:.78rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">作品產出</div>
-      <ul style="list-style:none;padding:0;font-size:.95rem;color:var(--g800);line-height:2;">
+      <div style="font-size:1.1rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">作品產出</div>
+      <ul style="list-style:none;padding:0;font-size:1.1rem;color:var(--g800);line-height:2;">
         <li><span style="color:var(--green);font-weight:900;">✓</span> 個人介紹多頁網站</li>
         <li><span style="color:var(--green);font-weight:900;">✓</span> 會議摘要器</li>
         <li><span style="color:var(--green);font-weight:900;">✓</span> 應用場景 AI 工具</li>
@@ -1379,8 +1557,8 @@ key: AIzaSy你的 Key 整段貼這
       </ul>
     </div>
     <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
-      <div style="font-size:.78rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">能力習慣</div>
-      <ul style="list-style:none;padding:0;font-size:.95rem;color:var(--g800);line-height:2;">
+      <div style="font-size:1.1rem;color:var(--g500);letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">能力習慣</div>
+      <ul style="list-style:none;padding:0;font-size:1.1rem;color:var(--g800);line-height:2;">
         <li><span style="color:var(--green);font-weight:900;">✓</span> GitHub 完整流程</li>
         <li><span style="color:var(--green);font-weight:900;">✓</span> IDE + AI 工作流</li>
         <li><span style="color:var(--green);font-weight:900;">✓</span> API + .env 安全</li>
@@ -1400,11 +1578,11 @@ key: AIzaSy你的 Key 整段貼這
   <div class="card-grid">
     <div class="card accent-top">
       <h3>M3-1</h3>
-      <p>Claude Code CLI 進階　harness 觀念 CLAUDE.md Skills Rules</p>
+      <p>Claude Code CLI 進階<br>harness 觀念<br>CLAUDE.md<br>Skills Rules</p>
     </div>
     <div class="card accent-top-blue">
       <h3>M3-2</h3>
-      <p>SDD + TDD　跟 agent 一起設計系統</p>
+      <p>SDD + TDD<br>跟 agent<br>一起設計系統</p>
     </div>
     <div class="card accent-top-purple">
       <h3>M3-3</h3>
@@ -1412,7 +1590,7 @@ key: AIzaSy你的 Key 整段貼這
     </div>
     <div class="card accent-top-orange">
       <h3>M3-4</h3>
-      <p>GitHub Actions + Cloudflare Worker 雲端自動化</p>
+      <p>GitHub Actions +<br>Cloudflare Worker<br>雲端自動化</p>
     </div>
   </div>
   <div class="bottom-line">
@@ -1434,7 +1612,7 @@ key: AIzaSy你的 Key 整段貼這
 </div>
 
 <div class="progress-bar" id="progress"></div>
-<div class="slide-counter"><span id="cur">1</span> / <span id="total">47</span></div>
+<div class="slide-counter"><span id="cur">1</span> / <span id="total">55</span></div>
 <div class="controls">
   <button onclick="prev()">◂</button>
   <button onclick="next()">▸</button>
@@ -1496,6 +1674,19 @@ document.addEventListener('click', e=>{
   if(!e.target.closest('.chapter-menu')) closeChapterMenu();
 });
 show();
+
+/* hash router: #round-N 跳到該 Round 第一頁（KB docs 錨點用） */
+function routeHash(){
+  const m=(location.hash||'').match(/^#round-(\d+)/i);
+  if(!m) return;
+  const pats=[new RegExp('^Round\\s*'+m[1]+'[\uff1a:\\s]')];
+  for(let i=0;i<slides.length;i++){
+    const act=slides[i].getAttribute('data-act')||'';
+    if(pats.some(p=>p.test(act))){ goTo(i); return; }
+  }
+}
+window.addEventListener('hashchange', routeHash);
+routeHash();
 </script>
 </body>
 </html>

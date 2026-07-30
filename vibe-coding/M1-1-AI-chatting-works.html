@@ -60,24 +60,24 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .step-list{text-align:left;max-width:800px;width:100%;}
 .step{display:flex;gap:1.2rem;align-items:flex-start;padding:.8rem 0;border-bottom:1px solid var(--g100);}
 .step:last-child{border:none;}
-.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;}
+.step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;}
 .step-content{flex:1;}
 .step-content strong{font-size:1.1rem;color:var(--g900);}
-.step-content p{font-size:1rem;color:var(--g600);margin-top:.15rem;}
+.step-content p{font-size:1.1rem;color:var(--g600);margin-top:.15rem;}
 
 /* ── Stat Grid (white mode) ── */
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;width:100%;margin-top:1rem;}
 .stat-box{background:var(--offwhite);border:2px solid var(--g100);border-radius:16px;padding:1.3rem;text-align:center;}
 .stat-box .val{font-size:2.4rem;font-weight:900;color:var(--green);line-height:1.1;}
-.stat-box .label{font-size:.9rem;color:var(--g600);margin-top:.3rem;}
+.stat-box .label{font-size:1.1rem;color:var(--g600);margin-top:.3rem;}
 
 /* ── Card Grid (white mode) ── */
-.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:960px;}
+.card-grid{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;max-width:960px;width:100%;}
 .card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.5rem;min-width:200px;max-width:280px;flex:1;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.06);}
 .card:hover{border-color:var(--green);}
 .card .icon{font-size:2.2rem;margin-bottom:.5rem;}
 .card h3{color:var(--g900);margin-bottom:.3rem;}
-.card p{font-size:.95rem;color:var(--g600);line-height:1.6;}
+.card p{font-size:1.1rem;color:var(--g600);line-height:1.6;}
 .card.accent-top{border-top:4px solid var(--green);}
 .card.accent-top-blue{border-top:4px solid var(--blue);}
 .card.accent-top-gold{border-top:4px solid var(--gold);}
@@ -86,7 +86,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 /* ── Flow (white mode) ── */
 .flow{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.2rem 0;}
-.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1rem;font-weight:700;text-align:center;color:var(--g900);}
+.flow-box{background:var(--offwhite);border:2px solid var(--g200);border-radius:12px;padding:.7rem 1rem;font-size:1.1rem;font-weight:700;text-align:center;color:var(--g900);}
 .flow-box.accent{border-color:var(--green);background:var(--green-lt);color:var(--green);}
 .flow-arrow{color:var(--green);font-size:1.5rem;font-weight:900;}
 
@@ -94,68 +94,68 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:920px;margin:.6rem auto 0;}
 .arch-col{display:flex;flex-direction:column;align-items:center;gap:.35rem;background:var(--col-bg,var(--offwhite));border:1px solid var(--g200);border-top:4px solid var(--col-color,var(--g600));border-radius:12px;padding:.9rem .7rem;}
 .arch-head{font-size:1.1rem;font-weight:700;color:var(--col-color,var(--g900));margin-bottom:.2rem;}
-.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:.9rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
-.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:.85rem;padding:.55rem .7rem;line-height:1.55;}
+.arch-cell{background:#fff;border:1px solid var(--g200);border-radius:8px;padding:.4rem .9rem;font-size:1.1rem;font-weight:600;color:var(--g800);text-align:center;width:100%;line-height:1.45;}
+.arch-cell.src{background:var(--offwhite);border-color:var(--col-color,var(--g200));font-weight:500;color:var(--g800);font-size:1.1rem;padding:.55rem .7rem;line-height:1.55;}
 .arch-arrow{color:var(--col-color,var(--g600));font-size:1rem;font-weight:900;line-height:1;}
 
 /* swim lane: 雙泳道 mini 流程（用於 data-index 6 / 5 之類） */
 .lane-wrap{display:flex;flex-direction:column;gap:.5rem;max-width:900px;margin:.4rem auto .6rem;}
 .lane{display:flex;align-items:center;gap:.4rem;background:var(--lane-bg,var(--offwhite));border:1px solid var(--g200);border-left:4px solid var(--lane-color,var(--g400));border-radius:10px;padding:.45rem .7rem;}
-.lane-label{font-size:.8rem;font-weight:700;color:var(--lane-color,var(--g800));min-width:7em;}
-.lane-step{background:#fff;border:1px solid var(--g200);border-radius:6px;padding:.25rem .6rem;font-size:.78rem;color:var(--g800);white-space:nowrap;}
+.lane-label{font-size:1.1rem;font-weight:700;color:var(--lane-color,var(--g800));min-width:7em;}
+.lane-step{background:#fff;border:1px solid var(--g200);border-radius:6px;padding:.25rem .6rem;font-size:1.1rem;color:var(--g800);white-space:nowrap;}
 .lane-arrow{color:var(--lane-color,var(--g400));font-size:.85rem;font-weight:900;}
-.lane-merge{font-size:.78rem;color:var(--g600);text-align:center;padding:.2rem;}
+.lane-merge{font-size:1.1rem;color:var(--g600);text-align:center;padding:.2rem;}
 
 /* insight cards: 心態 BEFORE → AFTER 轉變（用於帶走清單） */
 .insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:920px;width:100%;margin:.6rem 0;}
 .insight-card{display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--g200);border-top:4px solid var(--card-color,var(--green));border-radius:12px;padding:1rem .9rem;gap:.4rem;text-align:center;min-width:0;}
-.insight-before{font-size:.82rem;color:var(--g500);line-height:1.55;}
+.insight-before{font-size:1.1rem;color:var(--g500);line-height:1.55;}
 .insight-arrow{color:var(--card-color,var(--green));font-size:1rem;line-height:1;}
-.insight-after{font-size:.98rem;font-weight:700;color:var(--g900);line-height:1.45;}
+.insight-after{font-size:1.1rem;font-weight:700;color:var(--g900);line-height:1.45;}
 
 /* anchor banner：課程設計者視角的單元核心觀念，置於 h2 與 6 卡之間 */
 .anchor-banner{display:inline-flex;align-items:center;gap:.5rem;margin:.2rem 0 .6rem;padding:.4rem 1rem;background:var(--green-lt);border-left:4px solid var(--green);border-radius:8px;}
-.anchor-label{font-size:.7rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
-.anchor-text{font-size:1.05rem;font-weight:700;color:var(--g900);}
+.anchor-label{font-size:1.1rem;font-weight:700;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.anchor-text{font-size:1.1rem;font-weight:700;color:var(--g900);}
 
 /* ── Info Boxes (white mode) ── */
 .info-box{border-radius:12px;padding:1.3rem 1.8rem;max-width:800px;width:100%;text-align:left;margin-top:.8rem;}
 .info-box.success{background:var(--green-lt);border-left:4px solid var(--green);}
-.info-box.success .label{color:var(--green);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.success .label{color:var(--green);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.success p{color:var(--g800);}
 .info-box.tip{background:var(--gold-lt);border-left:4px solid var(--gold);}
-.info-box.tip .label{color:var(--g800);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.tip .label{color:var(--g800);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.tip p{color:var(--g800);}
 .info-box.note{background:var(--offwhite);border-left:4px solid var(--g400);}
-.info-box.note .label{color:var(--g600);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.note .label{color:var(--g600);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.note p{color:var(--g800);}
 .info-box.blue{background:var(--blue-lt);border-left:4px solid var(--blue);}
-.info-box.blue .label{color:var(--blue);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.blue .label{color:var(--blue);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.blue p{color:var(--g800);}
 .info-box.warning{background:var(--red-lt);border-left:4px solid var(--red);}
-.info-box.warning .label{color:var(--red);font-weight:700;font-size:.95rem;margin-bottom:.3rem;}
+.info-box.warning .label{color:var(--red);font-weight:700;font-size:1.1rem;margin-bottom:.3rem;}
 .info-box.warning p{color:var(--g800);}
 
 /* ── Quote Box (white mode) ── */
 .quote-box{max-width:800px;width:100%;background:var(--offwhite);border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.5rem 2rem;margin:.8rem 0;text-align:left;}
 .quote-box .quote-text{font-size:1.3rem;font-weight:700;line-height:1.6;color:var(--g900);}
-.quote-box .quote-src{font-size:.9rem;color:var(--g400);margin-top:.5rem;}
+.quote-box .quote-src{font-size:1.1rem;color:var(--g400);margin-top:.5rem;}
 
 /* ── Code Block (white mode) ── */
 .code-block{background:var(--offwhite);border:1px solid var(--g100);border-radius:12px;padding:1.2rem 1.5rem;max-width:800px;width:100%;text-align:left;margin:.8rem 0;}
-.code-block pre{font-family:'Fira Code',monospace;font-size:.9rem;color:var(--g900);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
-.code-block .code-label{font-size:.8rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.5rem;}
+.code-block pre{font-family:'Fira Code',monospace;font-size:1.1rem;color:var(--g900);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.code-block .code-label{font-size:1.1rem;font-weight:700;color:var(--green);letter-spacing:.05em;margin-bottom:.5rem;}
 
 /* ── Two-Column Compare ── */
 .compare-two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;max-width:860px;width:100%;margin-top:.8rem;}
 .compare-col{border-radius:16px;padding:1.3rem 1.5rem;}
 .compare-col.bad{background:var(--red-lt);border:2px solid var(--red);border-top:4px solid var(--red);}
 .compare-col.good{background:var(--green-lt);border:2px solid var(--green);border-top:4px solid var(--green);}
-.compare-col .col-label{font-size:.85rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
+.compare-col .col-label{font-size:1.1rem;font-weight:700;letter-spacing:.1em;margin-bottom:.7rem;}
 .compare-col.bad .col-label{color:var(--red);}
 .compare-col.good .col-label{color:var(--green);}
 .compare-col p,
-.compare-col li{font-size:1rem;line-height:1.7;color:var(--g800);}
+.compare-col li{font-size:1.1rem;line-height:1.7;color:var(--g800);}
 .compare-col ul{padding-left:1.2rem;}
 
 /* ── Theme Grid (topic selection) ── */
@@ -163,8 +163,8 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .theme-card{background:var(--white);border:2px solid var(--g100);border-radius:16px;padding:1.2rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:border-color .2s,box-shadow .2s;}
 .theme-card:hover{border-color:var(--green);box-shadow:0 4px 16px rgba(15,157,138,.15);}
 .theme-card .t-icon{font-size:2rem;margin-bottom:.4rem;}
-.theme-card .t-name{font-size:1rem;font-weight:700;color:var(--g900);}
-.theme-card .t-desc{font-size:.85rem;color:var(--g600);margin-top:.2rem;line-height:1.5;}
+.theme-card .t-name{font-size:1.1rem;font-weight:700;color:var(--g900);}
+.theme-card .t-desc{font-size:1.1rem;color:var(--g600);margin-top:.2rem;line-height:1.5;}
 
 /* ── Checklist ── */
 .checklist{max-width:800px;width:100%;}
@@ -173,12 +173,12 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .check-icon{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
 .check-icon.done{background:var(--green-lt);color:var(--green);}
 .check-icon.todo{background:var(--offwhite);color:var(--g400);border:2px solid var(--g200);}
-.check-text strong{font-size:1.05rem;color:var(--g900);}
-.check-text p{font-size:.95rem;color:var(--g600);}
+.check-text strong{font-size:1.1rem;color:var(--g900);}
+.check-text p{font-size:1.1rem;color:var(--g600);}
 
 /* ── Prompt 四要素 tag style ── */
 .prompt-tags{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.8rem;justify-content:center;}
-.ptag{padding:.5rem 1.2rem;border-radius:100px;font-size:1rem;font-weight:700;}
+.ptag{padding:.5rem 1.2rem;border-radius:100px;font-size:1.1rem;font-weight:700;}
 .ptag.role{background:var(--blue-lt);color:var(--blue);}
 .ptag.task{background:var(--green-lt);color:var(--green);}
 .ptag.format{background:var(--gold-lt);color:#b07d00;}
@@ -188,7 +188,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .big-stat{text-align:center;margin:1rem 0;}
 .big-stat .num{font-size:4rem;font-weight:900;color:var(--green);line-height:1;}
 .big-stat .unit{font-size:1.2rem;font-weight:700;color:var(--g600);}
-.big-stat .caption{font-size:1rem;color:var(--g600);margin-top:.3rem;}
+.big-stat .caption{font-size:1.1rem;color:var(--g600);margin-top:.3rem;}
 
 /* ── Highlight Text ── */
 .hl-green{color:var(--green);font-weight:700;}
@@ -199,11 +199,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
 /* ── Bottom Line Summary ── */
 .bottom-line{max-width:800px;width:100%;background:var(--green-lt);border:2px solid rgba(15,157,138,.3);border-radius:16px;padding:2rem;text-align:center;margin-top:1rem;}
 .bottom-line h3{font-size:1.5rem;color:var(--green);margin-bottom:.6rem;}
-.bottom-line p{font-size:1.05rem;color:var(--g800);max-width:640px;margin:0 auto;line-height:1.7;}
+.bottom-line p{font-size:1.1rem;color:var(--g800);max-width:640px;margin:0 auto;line-height:1.7;}
 
 /* ── Poster text helpers ── */
 .poster-subtitle{font-size:1.3rem;font-weight:500;color:rgba(255,255,255,.75);}
-.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:.9rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin-top:.8rem;}
+.poster-badge{display:inline-block;padding:.3rem 1rem;border-radius:100px;font-size:1.1rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;margin-top:.8rem;}
 
 /* ── Controls (light themed) ── */
 .progress{position:fixed;bottom:0;left:0;height:4px;background:var(--green);transition:width .4s;z-index:100;}
@@ -256,9 +256,9 @@ p,li{font-size:1.1rem;line-height:1.8;}
 
 /* ── Cycle Ring (6-round diagram) ── */
 .cycle-ring{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;max-width:860px;width:100%;margin:1rem 0;}
-.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.6rem 1rem;font-size:.95rem;font-weight:700;text-align:center;min-width:120px;color:var(--g800);position:relative;}
+.cycle-step{background:var(--offwhite);border:2px solid var(--g200);border-radius:14px;padding:.6rem 1rem;font-size:1.1rem;font-weight:700;text-align:center;min-width:120px;color:var(--g800);position:relative;}
 .cycle-step.active-step{border-color:var(--green);background:var(--green-lt);color:var(--green);}
-.cycle-step .cycle-label{font-size:.75rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
+.cycle-step .cycle-label{font-size:1.1rem;font-weight:500;color:var(--g400);display:block;margin-bottom:.15rem;}
 .cycle-step.active-step .cycle-label{color:var(--green);}
 
 /* ── Theme Grid 2x2 ── */
@@ -279,25 +279,25 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <!-- Height: poster page, no calculation needed -->
 <div class="slide poster overlay-heavy active" data-act="開場" data-index="0"
      style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 1 · 用 AI</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem;letter-spacing:.12em;">Vibe Coding 實戰課 — Stage 1 · 用 AI</p>
   <h1 style="color:#fff;font-size:3.4rem;line-height:1.2;">AI 聊天<br><span style="color:#6ee7d4;">做作品</span></h1>
   <p class="poster-subtitle" style="margin-top:1.2rem;">從指令品質到產出品質的因果關係</p>
   <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">M1-1</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">3 小時</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">6 輪循環</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">帶走作品</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:1.1rem;color:#fff;">M1-1</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:1.1rem;color:#fff;">3 小時</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:1.1rem;color:#fff;">6 輪循環</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:1.1rem;color:#fff;">帶走作品</span>
   </div>
-  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:.85rem;">按 → 或空白鍵開始</p>
+  <p style="color:rgba(255,255,255,.25);margin-top:3rem;font-size:1.1rem;">按 → 或空白鍵開始</p>
 </div>
 
 <!-- ══ 1: 全貌揭露 — 三個 browser mock-up,同一個網頁三階段成長 ══ -->
 <div class="slide dataviz" data-act="開場" data-index="1">
   <!-- 頂部標題 -->
   <div style="text-align:center;margin-bottom:.8rem;">
-    <p style="font-size:.7rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;">M1-1 ・ 3 小時</p>
+    <p style="font-size:1.1rem;color:var(--g500);letter-spacing:.15em;margin-bottom:.2rem;">M1-1 ・ 3 小時</p>
     <h2 style="margin-bottom:.2rem;">本模組你會做出什麼?</h2>
-    <p style="color:var(--g600);font-size:.9rem;">同一個個人網頁,從陽春草稿長成有質感的作品</p>
+    <p style="color:var(--g600);font-size:1.1rem;">同一個個人網頁,從陽春草稿長成有質感的作品</p>
   </div>
 
   <!-- 中段 — 三個 browser mock-up -->
@@ -306,7 +306,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <!-- LV1 (25%, 灰階, 含真實文字) -->
     <div class="fragment" data-order="0" style="flex:25;display:flex;flex-direction:column;">
       <div style="text-align:center;margin-bottom:.4rem;">
-        <div style="font-size:.75rem;color:#64748b;font-weight:700;letter-spacing:.08em;">LV1</div>
+        <div style="font-size:1.1rem;color:#64748b;font-weight:700;letter-spacing:.08em;">LV1</div>
       </div>
       <div style="background:#fff;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;">
         <div style="background:#e8e8e8;padding:.35rem .55rem;display:flex;gap:5px;align-items:center;">
@@ -329,7 +329,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
           <div style="background:#888;color:#fff;font-size:.55rem;padding:.2rem .5rem;border-radius:2px;width:fit-content;margin-top:.3rem;">聯絡我</div>
         </div>
       </div>
-      <p style="text-align:center;font-size:.82rem;color:var(--g700);margin-top:.5rem;font-weight:500;">一句話先做出來</p>
+      <p style="text-align:center;font-size:1.1rem;color:var(--g700);margin-top:.5rem;font-weight:500;">一句話先做出來</p>
     </div>
 
     <!-- 連接細線 1→2 -->
@@ -342,7 +342,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <!-- LV2 (36%, 主線最大, 主色 + 結構, 含真實文字) -->
     <div class="fragment" data-order="1" style="flex:36;display:flex;flex-direction:column;">
       <div style="text-align:center;margin-bottom:.4rem;">
-        <div style="font-size:.75rem;color:#0F9D8A;font-weight:700;letter-spacing:.08em;">LV2 ・ 必做主線</div>
+        <div style="font-size:1.1rem;color:#0F9D8A;font-weight:700;letter-spacing:.08em;">LV2 ・ 必做主線</div>
       </div>
       <div style="background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(15,157,138,.15);overflow:hidden;flex:1;border:1px solid #d1e7e2;">
         <div style="background:#e8f0fe;padding:.35rem .55rem;display:flex;gap:5px;align-items:center;">
@@ -386,7 +386,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
           <div style="background:#0F9D8A;color:#fff;font-size:.62rem;font-weight:600;padding:.25rem;text-align:center;border-radius:11px;width:55%;margin:.1rem auto 0;">加我 Line 聊聊</div>
         </div>
       </div>
-      <p style="text-align:center;font-size:.85rem;color:var(--green);margin-top:.5rem;font-weight:600;">套四要素,變成完整頁面</p>
+      <p style="text-align:center;font-size:1.1rem;color:var(--green);margin-top:.5rem;font-weight:600;">套四要素,變成完整頁面</p>
     </div>
 
     <!-- 連接細線 2→3 -->
@@ -399,7 +399,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <!-- LV3 (31%, 個人品牌色, 含真實文字) -->
     <div class="fragment" data-order="2" style="flex:31;display:flex;flex-direction:column;">
       <div style="text-align:center;margin-bottom:.4rem;">
-        <div style="font-size:.75rem;color:#d97706;font-weight:700;letter-spacing:.08em;">LV3 ・ 完成後加做</div>
+        <div style="font-size:1.1rem;color:#d97706;font-weight:700;letter-spacing:.08em;">LV3 ・ 完成後加做</div>
       </div>
       <div style="background:linear-gradient(180deg,#fdfaf6 0%,#fff 60%);border-radius:8px;box-shadow:0 3px 12px rgba(217,119,6,.18);overflow:hidden;flex:1;border:1px solid #ffe8b5;">
         <div style="background:#fef3c7;padding:.35rem .55rem;display:flex;gap:5px;align-items:center;">
@@ -433,14 +433,14 @@ p,li{font-size:1.1rem;line-height:1.8;}
           <div style="font-size:.5rem;color:#888;text-align:center;font-style:italic;">過去 10 年,幫過 50+ 品牌</div>
         </div>
       </div>
-      <p style="text-align:center;font-size:.82rem;color:#d97706;margin-top:.5rem;font-weight:600;">升級質感,做出你的味道</p>
+      <p style="text-align:center;font-size:1.1rem;color:#d97706;margin-top:.5rem;font-weight:600;">升級質感,做出你的味道</p>
     </div>
 
   </div>
 
   <!-- 底部收束 -->
-  <p class="fragment" data-order="3" style="text-align:center;font-size:1rem;color:var(--g700);margin-top:.9rem;line-height:1.5;">
-    <strong style="color:var(--green);">今天不是學語法,</strong>是把一句想法變成可以展示的作品。
+  <p class="fragment" data-order="3" style="text-align:center;font-size:1.1rem;color:var(--g700);margin-top:.9rem;line-height:1.5;">
+    <strong style="color:var(--green);">今天不是學語法,</strong>是把一句想法變成可以展示的作品
   </p>
 </div>
 
@@ -451,27 +451,47 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <!-- ══ 3: Chapter poster — Round 1 ══ -->
 <div class="slide poster overlay-heavy" data-act="Round 1：操作" data-index="2"
      style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 1 · 0:00–0:20</p>
   <h1 style="color:#fff;font-size:2.8rem;">先操作<br><span style="color:#6ee7d4;">後分析</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">目前的能力水位，就是後續升級的基準線</p>
 </div>
 
-<!-- ══ 4: 操作指令 ══ -->
-<!-- Height: h2(77) + big-text(60) + info-box(88) + stat(80) + margins(48) = 353px ✅ -->
+<!-- ══ 4: 換你操作 — Round 1 裸做 ══ -->
 <div class="slide dataviz" data-act="Round 1：操作" data-index="3">
-  <h2>操作指令</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <p style="font-size:1.4rem;font-weight:700;color:var(--green);line-height:1.6;">打開 Claude 或 ChatGPT<br>輸入一句指令，請 AI 產出一個個人網頁</p>
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">7 分鐘</span>
   </div>
-  <div class="info-box note fragment" data-order="0">
-    <div class="label">操作條件</div>
-    <p>用你現在想得到的方式描述需求<br>不需要任何技巧 — 這一輪的目的是建立基準，不是追求品質</p>
-  </div>
-  <div class="stat-grid fragment" data-order="1" style="max-width:500px;grid-template-columns:1fr;">
-    <div class="stat-box">
-      <div class="val">7 min</div>
-      <div class="label">操作時間</div>
+  <h2 style="margin-bottom:.6rem;">用一句話讓 AI 做出你的第一個網頁</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>打開 Claude 或 ChatGPT</strong>
+        <p style="font-size:1.1rem;">用你現在想得到的方式，輸入一句指令請 AI 做一個個人網頁</p>
+      </div>
     </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>取得連結</strong>
+        <p style="font-size:1.1rem;">Claude 按 Publish、ChatGPT 按 Preview，或存成 .html 直接開啟</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>連結貼到群組</strong>
+        <p style="font-size:1.1rem;">不用修改、不用美化 — 這一輪先建立基準線，不追求品質</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">群組裡有你的連結，點開能看到網頁 = 完成</p>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手，或翻下一頁的三個常見起點</p>
   </div>
 </div>
 
@@ -479,14 +499,14 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <!-- Height: h2(77) + p(42) + 3×code-block(3×80=240) + margins(48) = 407px ✅ -->
 <div class="slide dataviz" data-act="Round 1：操作" data-index="4">
   <h2>常見起點（剛才若卡住可參考）</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">以下三個是常見起點，下次可以嘗試<br>Round 1 結束後再回來看</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">以下三個是常見起點，下次可以嘗試<br>Round 1 結束後再回來看</p>
   <div class="code-block fragment" data-order="0" style="padding:.7rem 1.2rem;margin:.4rem 0;">
-    <pre style="font-size:.85rem;line-height:1.5;">A：幫我做一個自我介紹網頁
+    <pre style="font-size:1.1rem;line-height:1.5;">A：幫我做一個自我介紹網頁
 B：做一個我的作品集頁面
 C：做一個活動報名頁</pre>
   </div>
   <div class="info-box note fragment" data-order="1" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">差距會在後續輪次中被量化</p>
+    <p style="font-size:1.1rem;">差距會在後續輪次中被量化</p>
   </div>
 </div>
 
@@ -546,7 +566,7 @@ C：做一個活動報名頁</pre>
   <div class="card-grid" style="margin-top:1rem;">
     <div class="card accent-top fragment" data-order="1">
       <h3>版面結構</h3>
-      <p>清晰的區塊分隔<br>資訊層次<br>是否可辨</p>
+      <p>區塊分隔清晰<br>資訊層次可辨</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="2">
       <h3>視覺一致性</h3>
@@ -575,7 +595,7 @@ C：做一個活動報名頁</pre>
 <!-- ══ 10: Chapter poster — Round 2 ══ -->
 <div class="slide poster overlay-heavy" data-act="Round 2：指令" data-index="9"
      style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:50</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 2 · 0:20–0:50</p>
   <h1 style="color:#fff;font-size:2.8rem;">指令結構<br><span style="color:#6ee7d4;">決定產出品質</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">從 Round 1 的差異中提取可複製的方法</p>
 </div>
@@ -588,12 +608,12 @@ C：做一個活動報名頁</pre>
   <div class="compare-two" style="margin-top:.5rem;">
     <div class="compare-col bad fragment" data-order="0">
       <div class="col-label">結構不足的指令</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">幫我做一個網頁</p>
+      <p style="font-family:'Fira Code',monospace;font-size:1.1rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">幫我做一個網頁</p>
       <p style="margin-top:.5rem;">AI 缺乏上下文，只能產出最基礎的框架</p>
     </div>
     <div class="compare-col good fragment" data-order="1">
       <div class="col-label">結構完整的指令</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.85rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">你是前端工程師<br>製作個人名片網頁，含姓名、技能標籤、聯絡方式<br>白色背景，現代簡約風格</p>
+      <p style="font-family:'Fira Code',monospace;font-size:1.1rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">你是前端工程師<br>製作個人名片網頁，含姓名、技能標籤、聯絡方式<br>白色背景，現代簡約風格</p>
       <p style="margin-top:.5rem;">角色、任務、內容、風格<br>四個維度都有交代</p>
     </div>
   </div>
@@ -613,22 +633,22 @@ C：做一個活動報名頁</pre>
     <span class="ptag format">格式 Format</span>
     <span class="ptag limit">限制 Constraint</span>
   </div>
-  <div class="card-grid">
+  <div class="card-grid" style="max-width:1080px;">
     <div class="card accent-top-blue fragment" data-order="1" style="min-width:180px;">
       <h3>角色</h3>
-      <p>設定 AI 的專業<br>決定回應的程度</p>
+      <p>設定 AI 專業<br>決定回應程度</p>
     </div>
     <div class="card accent-top fragment" data-order="2" style="min-width:180px;">
       <h3>任務</h3>
-      <p>需求的顆粒度<br>決定產出的完整度</p>
+      <p>需求顆粒度<br>決定完整度</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="3" style="min-width:180px;">
       <h3>格式</h3>
-      <p>控制視覺呈現<br>方式與風格方向</p>
+      <p>控制視覺呈現<br>與風格方向</p>
     </div>
     <div class="card accent-top-orange fragment" data-order="4" style="min-width:180px;">
       <h3>限制</h3>
-      <p>排除不要的變數<br>縮小 AI<br>的決策空間</p>
+      <p>排除多餘變數<br>縮小決策空間</p>
     </div>
   </div>
 </div>
@@ -637,16 +657,16 @@ C：做一個活動報名頁</pre>
 <!-- Height: h2(77) + p(42) + code-block(120) + info-box(88) + margins(48) = 375px ✅ -->
 <div class="slide dataviz" data-act="Round 2：指令" data-index="12">
   <h2>要素一：角色定位</h2>
-  <p style="color:var(--g600);margin-bottom:.4rem;font-size:.95rem;">角色設定改變 AI 的回應框架<br>同一個問題，工程師和設計師給出不同答案</p>
+  <p style="color:var(--g600);margin-bottom:.4rem;font-size:1.1rem;">角色設定改變 AI 的回應框架<br>同一個問題，工程師和設計師給出不同答案</p>
   <div class="code-block fragment" data-order="0" style="margin:.4rem 0;padding:.8rem 1.2rem;">
-    <pre style="font-size:.85rem;line-height:1.5;">無角色：「幫我做一個網頁」
+    <pre style="font-size:1.1rem;line-height:1.5;">無角色：「幫我做一個網頁」
 → 泛用回應，缺乏專業判斷
 
 有角色：「你是一位有 10 年經驗的前端工程師」
 → 結構化程式碼、手機自適應、效能考量</pre>
   </div>
   <div class="info-box success fragment" data-order="1" style="margin-top:.3rem;padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">角色設定的本質是調整 AI 的輸出分佈<br>指定角色 → AI 優先從該領域知識取樣回應</p>
+    <p style="font-size:1.1rem;">角色設定的本質是調整 AI 的輸出分佈<br>指定角色 → AI 優先從該領域知識取樣回應</p>
   </div>
 </div>
 
@@ -654,21 +674,21 @@ C：做一個活動報名頁</pre>
 <!-- Height: h2(77) + p(42) + compare-two(200) + info-box(88) + margins(48) = 455px ✅ -->
 <div class="slide dataviz" data-act="Round 2：指令" data-index="13">
   <h2>要素二：任務描述</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">任務的顆粒度決定產出的完整度</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.4rem;">任務的顆粒度決定產出的完整度</p>
   <div class="compare-two" style="margin-top:.5rem;">
     <div class="compare-col bad fragment" data-order="0">
       <div class="col-label">模糊的指令</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">做一個個人網頁</p>
-      <p style="margin-top:.5rem;">AI 需要自行猜測內容、區塊、資訊架構</p>
+      <p style="font-family:'Fira Code',monospace;font-size:1.1rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">做一個個人網頁</p>
+      <p style="margin-top:.5rem;">AI 需要自行猜測<br>內容、區塊、資訊架構</p>
     </div>
     <div class="compare-col good fragment" data-order="1">
       <div class="col-label">具體的指令</div>
-      <p style="font-family:'Fira Code',monospace;font-size:.9rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">製作個人品牌網頁，包含首屏區塊、關於我、技能列表、聯絡方式</p>
+      <p style="font-family:'Fira Code',monospace;font-size:1.1rem;background:rgba(0,0,0,.05);padding:.6rem;border-radius:8px;">製作個人品牌網頁，包含<br>首屏區塊、關於我<br>技能列表、聯絡方式</p>
       <p style="margin-top:.5rem;">每個區塊有名稱，AI 不需猜測</p>
     </div>
   </div>
   <div class="info-box tip fragment" data-order="2" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">用「包含：」加列點，把需要的區塊逐一列出</p>
+    <p style="font-size:1.1rem;">用「包含：」加列點，把需要的區塊逐一列出</p>
   </div>
 </div>
 
@@ -714,15 +734,15 @@ C：做一個活動報名頁</pre>
   <div class="card-grid" style="margin-top:1rem;">
     <div class="card accent-top fragment" data-order="0">
       <h3>配色</h3>
-      <p>色碼 > 色系 > 不指定<br>縮小決策空間</p>
+      <p>色碼優先於色系<br>縮小決策空間</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="1">
       <h3>版型</h3>
-      <p>卡片式、左右分欄、全螢幕滾動 — 定義空間結構</p>
+      <p>卡片式、分欄<br>全螢幕滾動<br>定義空間結構</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="2">
       <h3>風格參照</h3>
-      <p>「類似 Apple 官網」「極簡科技感」— 用案例錨定方向</p>
+      <p>類似 Apple 官網<br>極簡科技感<br>用案例錨定方向</p>
     </div>
   </div>
   <div class="info-box note fragment" data-order="3" style="margin-top:1rem;">
@@ -735,7 +755,7 @@ C：做一個活動報名頁</pre>
 <!-- Height: h2(77) + p(42) + code-block(120) + info-box(88) + margins(48) = 375px ✅ -->
 <div class="slide dataviz" data-act="Round 2：指令" data-index="17">
   <h2>要素四：限制條件</h2>
-  <p style="color:var(--g600);margin-bottom:.4rem;font-size:.95rem;">限制的功能是排除變數<br>沒有限制，AI 可能引入你不需要的框架或依賴</p>
+  <p style="color:var(--g600);margin-bottom:.4rem;font-size:1.1rem;">限制的功能是排除變數<br>沒有限制，AI 可能引入你不需要的框架或依賴</p>
   <div class="code-block fragment" data-order="0" style="margin:.5rem 0;">
     <div class="code-label">限制指令範例</div>
     <pre>單頁式設計，不要分多個頁面
@@ -746,7 +766,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   </div>
   <div class="info-box success fragment" data-order="1" style="margin-top:.4rem;padding:1rem 1.5rem;">
     <div class="label">機制</div>
-    <p style="font-size:.95rem;">每多一條限制，AI 的自由度下降，但可預測性上升<br>限制是「用確定性換取控制權」</p>
+    <p style="font-size:1.1rem;">每多一條限制，AI 的自由度下降，但可預測性上升<br>限制是「用確定性換取控制權」</p>
   </div>
 </div>
 
@@ -756,7 +776,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:900px;width:100%;margin:.5rem 0;">
     <div class="code-block fragment" data-order="0" style="margin:0;padding:1rem 1.2rem;">
       <div class="code-label">角色 + 任務</div>
-      <pre style="font-size:.8rem;line-height:1.5;">你是一位專業的前端工程師
+      <pre style="font-size:1.1rem;line-height:1.5;">你是一位專業的前端工程師
 
 製作個人簡介網頁，包含：
 - 姓名 + 職稱
@@ -766,7 +786,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="code-block fragment" data-order="1" style="margin:0;padding:1rem 1.2rem;">
       <div class="code-label">格式 + 限制</div>
-      <pre style="font-size:.8rem;line-height:1.5;">設計要求：
+      <pre style="font-size:1.1rem;line-height:1.5;">設計要求：
 - 白色背景，現代簡約風格
 - 主色深藍綠（#0B3C5D）
 - 漸層圓形代替大頭照
@@ -784,29 +804,42 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   </div>
 </div>
 
-<!-- ══ 21: 升級操作 ══ -->
-<!-- Height: h2(77) + big-stat(120) + flow(55) + info-box(88) + margins(48) = 388px ✅ -->
+<!-- ══ 21: 換你操作 — Round 2 四要素重寫 ══ -->
 <div class="slide dataviz" data-act="Round 2：指令" data-index="19">
-  <h2>升級操作</h2>
-  <div style="text-align:center;margin:.6rem 0;">
-    <div class="big-stat" style="margin:.6rem 0;">
-      <div class="num">10</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">用四要素重新撰寫指令，重新產出網頁</div>
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">10 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">用四要素重寫指令，產出第二版</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>用四要素重寫你的指令</strong>
+        <p style="font-size:1.1rem;">把 [ ] 中的內容換成你的真實資訊 — 真實內容的作品可以直接用</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>開新對話貼給 AI</strong>
+        <p style="font-size:1.1rem;">取得第二版的 Publish / Preview 連結</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>連結貼到群組</strong>
+        <p style="font-size:1.1rem;">把第一版和第二版並排打開</p>
+      </div>
     </div>
   </div>
-  <div class="flow" style="margin:.6rem 0;">
-    <div class="flow-box accent">寫結構化指令</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">貼給 AI</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">取得第二版</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">與第一版對比</div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">兩版並排，看得出指令結構帶來的差距 = 完成</p>
   </div>
-  <div class="info-box tip fragment" data-order="0" style="margin-top:.4rem;padding:1rem 1.5rem;">
-    <div class="label">操作要點</div>
-    <p style="font-size:.95rem;">把 [ ] 中的內容替換成你的真實資訊<br>真實內容產出的作品可以直接使用</p>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手，或回看上一頁的完整指令，照抄後再替換內容</p>
   </div>
 </div>
 
@@ -819,27 +852,27 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
       <div class="step-num">1</div>
       <div class="step-content">
         <strong>把第二版連結貼到群組</strong>
-        <p style="font-size:.95rem;">Publish / Preview 連結或 .html 檔案</p>
+        <p style="font-size:1.1rem;">Publish / Preview 連結或 .html 檔案</p>
       </div>
     </div>
     <div class="step fragment" data-order="1">
       <div class="step-num">2</div>
       <div class="step-content">
         <strong>並排對比 Round 1 與 Round 2</strong>
-        <p style="font-size:.95rem;">觀察版面結構、配色、內容完整度的變化幅度</p>
+        <p style="font-size:1.1rem;">觀察版面結構、配色、內容完整度的變化幅度</p>
       </div>
     </div>
     <div class="step fragment" data-order="2">
       <div class="step-num">3</div>
       <div class="step-content">
         <strong>觀察同學的升級幅度</strong>
-        <p style="font-size:.95rem;">哪些指令結構產出了最大的品質差距？</p>
+        <p style="font-size:1.1rem;">哪些指令結構產出了最大的品質差距？</p>
       </div>
     </div>
   </div>
   <div class="bottom-line" data-order="3" style="padding:1.2rem;margin-top:.6rem;">
-    <h3 style="font-size:1.3rem;">指令結構化不是技巧，是工作方法</h3>
-    <p style="font-size:.95rem;">你剛才親身驗證了指令結構與產出品質之間的因果關係</p>
+    <h3 style="font-size:1.3rem;">指令結構化不是技巧　是工作方法</h3>
+    <p style="font-size:1.1rem;">你剛才親身驗證了指令結構與產出品質之間的因果關係</p>
   </div>
 </div>
 
@@ -850,7 +883,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- ══ 23: Chapter poster — Round 3 ══ -->
 <div class="slide poster overlay-heavy" data-act="Round 3：介面" data-index="21"
      style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:50–1:20</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 3 · 0:50–1:20</p>
   <h1 style="color:#fff;font-size:2.8rem;">產出品質的<br><span style="color:#6ee7d4;">第二層：介面設計</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">五個判斷點，從「能用」升級到「好用」</p>
 </div>
@@ -862,33 +895,33 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <div class="compare-two" style="margin-top:.8rem;">
     <div class="compare-col good fragment" data-order="0" style="background:var(--blue-lt);border-color:var(--blue);">
       <div class="col-label" style="color:var(--blue);">使用者介面（UI）</div>
-      <p style="font-size:1.05rem;font-weight:700;margin-bottom:.5rem;">使用者看到的所有視覺元素</p>
+      <p style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem;">使用者看到的所有視覺元素</p>
       <ul>
         <li>顏色、字體、按鈕樣式</li>
         <li>排版、圖片、間距</li>
         <li>視覺風格與一致性</li>
       </ul>
-      <p style="margin-top:.5rem;font-size:.9rem;color:var(--blue);">餐廳的空間設計 — 決定第一印象</p>
+      <p style="margin-top:.5rem;font-size:1.1rem;color:var(--blue);">餐廳的空間設計<br>決定第一印象</p>
     </div>
     <div class="compare-col good fragment" data-order="1">
       <div class="col-label">使用者體驗（UX）</div>
-      <p style="font-size:1.05rem;font-weight:700;margin-bottom:.5rem;">使用者操作時的整體感受</p>
+      <p style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem;">使用者操作時的整體感受</p>
       <ul>
         <li>資訊是否容易找到？</li>
         <li>操作流程是否順暢？</li>
         <li>下一步動作是否明確？</li>
       </ul>
-      <p style="margin-top:.5rem;font-size:.9rem;color:var(--green);">從入座到結帳的動線 — 決定回訪率</p>
+      <p style="margin-top:.5rem;font-size:1.1rem;color:var(--green);">從入座到結帳的動線<br>決定回訪率</p>
     </div>
   </div>
-  <p style="color:var(--g700);font-size:1rem;margin-top:.6rem;text-align:center;">UI 是視覺線索，UX 是任務完成路徑</p>
+  <p style="color:var(--g700);font-size:1.1rem;margin-top:.6rem;text-align:center;">UI 是視覺線索，UX 是任務完成路徑</p>
 </div>
 
 <!-- ══ 25: 判斷點一：首屏 ══ -->
 <!-- Height: h2(77) + p(42) + compare-two(200) + code-block(80) + margins(48) = 447px ✅ -->
 <div class="slide dataviz" data-act="Round 3：介面" data-index="23">
   <h2>判斷點一：打開網頁的第一眼</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">訪客在 3 秒內決定去留 — 首屏（Hero Section）要在這 3 秒傳達核心資訊</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.4rem;">訪客在 3 秒內決定去留 — 首屏（Hero Section）要在這 3 秒傳達核心資訊</p>
   <div class="compare-two" style="margin-top:.5rem;">
     <div class="compare-col bad fragment" data-order="0">
       <div class="col-label">無效的首屏</div>
@@ -904,7 +937,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
   </div>
   <div class="info-box note fragment" data-order="2" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.9rem;">指令：「首屏要有一句標語（20 字內）和一個『聯絡我』按鈕」</p>
+    <p style="font-size:1.1rem;">指令：「首屏要有一句標語（20 字內）和一個『聯絡我』按鈕」</p>
   </div>
 </div>
 
@@ -920,7 +953,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div style="padding:2rem;text-align:center;">
       <div style="font-size:1.8rem;font-weight:900;color:var(--g900);">Financial infrastructure<br>for the internet</div>
-      <p style="color:var(--g600);margin-top:.8rem;font-size:.95rem;">一句話說清定位 + 兩個行動按鈕</p>
+      <p style="color:var(--g600);margin-top:.8rem;font-size:1.1rem;">一句話說清定位 + 兩個行動按鈕</p>
       <div style="margin-top:1rem;display:flex;gap:.8rem;justify-content:center;">
         <span style="background:var(--blue);color:#fff;padding:.4rem 1.2rem;border-radius:100px;font-size:.85rem;">Start now →</span>
         <span style="background:var(--offwhite);border:1px solid var(--g200);padding:.4rem 1.2rem;border-radius:100px;font-size:.85rem;color:var(--g800);">Contact sales</span>
@@ -928,7 +961,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
   </div>
   <div class="info-box note" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.85rem;">Stripe 的首屏：一句定位 + 兩個 CTA<br>3 秒內讓訪客知道「這是什麼」和「下一步做什麼」</p>
+    <p style="font-size:1.1rem;">Stripe 的首屏：一句定位 + 兩個 CTA<br>3 秒內讓訪客知道「這是什麼」和「下一步做什麼」</p>
   </div>
 </div>
 
@@ -972,18 +1005,18 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
       <div style="display:flex;gap:2rem;align-items:center;">
         <div style="flex:1;">
           <div style="font-size:1.5rem;font-weight:900;color:var(--g900);">Write. Plan. Organize.</div>
-          <p style="color:var(--g600);margin-top:.5rem;font-size:.9rem;">黑+白+一個強調色</p>
+          <p style="color:var(--g600);margin-top:.5rem;font-size:1.1rem;">黑+白+一個強調色</p>
         </div>
         <div style="display:flex;gap:.5rem;">
-          <div style="width:50px;height:50px;border-radius:8px;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;">主色</div>
-          <div style="width:50px;height:50px;border-radius:8px;background:#fff;border:2px solid var(--g200);display:flex;align-items:center;justify-content:center;font-size:.7rem;">背景</div>
-          <div style="width:50px;height:50px;border-radius:8px;background:#2383e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;">強調</div>
+          <div style="width:66px;height:66px;border-radius:8px;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;">主色</div>
+          <div style="width:66px;height:66px;border-radius:8px;background:#fff;border:2px solid var(--g200);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">背景</div>
+          <div style="width:66px;height:66px;border-radius:8px;background:#2383e2;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;">強調</div>
         </div>
       </div>
     </div>
   </div>
   <div class="info-box note" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.85rem;">Notion 全站只用 3 色：黑、白、藍<br>視覺極度統一，使用者注意力不被分散</p>
+    <p style="font-size:1.1rem;">Notion 全站只用 3 色：黑、白、藍<br>視覺極度統一，使用者注意力不被分散</p>
   </div>
 </div>
 
@@ -1025,12 +1058,12 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div style="padding:2rem 3rem;text-align:center;">
       <div style="font-size:2rem;font-weight:900;color:var(--g900);letter-spacing:-.02em;">iPhone 16 Pro</div>
-      <p style="color:var(--g600);margin-top:1rem;font-size:1rem;">標題極大、留白極多、內文精簡</p>
-      <p style="color:var(--g400);margin-top:.5rem;font-size:.85rem;">每個層級的字級差距明確<br>讓視覺自然引導閱讀順序</p>
+      <p style="color:var(--g600);margin-top:1rem;font-size:1.1rem;">標題極大、留白極多、內文精簡</p>
+      <p style="color:var(--g400);margin-top:.5rem;font-size:1.1rem;">每個層級的字級差距明確<br>讓視覺自然引導閱讀順序</p>
     </div>
   </div>
   <div class="info-box note" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.85rem;">Apple 的設計：標題 > 副標 > 內文，三級字級<br>大量留白讓內容「呼吸」，不擠壓閱讀體驗</p>
+    <p style="font-size:1.1rem;">Apple 的設計：標題 > 副標 > 內文，三級字級<br>大量留白讓內容「呼吸」，不擠壓閱讀體驗</p>
   </div>
 </div>
 
@@ -1038,7 +1071,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- Height: h2(77) + p(42) + card-grid(176) + code-block(80) + margins(48) = 423px ✅ -->
 <div class="slide dataviz" data-act="Round 3：介面" data-index="29">
   <h2>判斷點四：你希望訪客做什麼</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">每個頁面需要一個明確的「下一步動作按鈕」（CTA, Call to Action）</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.4rem;">每個頁面需要一個明確的「下一步動作按鈕」（CTA, Call to Action）</p>
   <div class="card-grid">
     <div class="card accent-top fragment" data-order="0">
       <h3>個人名片</h3>
@@ -1054,7 +1087,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
   </div>
   <div class="info-box note fragment" data-order="3" style="padding:.8rem 1.2rem;">
-    <p style="font-size:.9rem;">指令範例：「頁面底部加一個醒目的行動按鈕，顏色突出，文字為『聯絡我』」</p>
+    <p style="font-size:1.1rem;">指令範例：「頁面底部加一個醒目的行動按鈕<br>顏色突出，文字為『聯絡我』」</p>
   </div>
 </div>
 
@@ -1074,11 +1107,11 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
         <span style="background:#611f69;color:#fff;padding:.6rem 1.5rem;border-radius:4px;font-size:.95rem;font-weight:700;">GET STARTED FREE</span>
         <span style="background:transparent;border:1px solid #611f69;color:#611f69;padding:.6rem 1.5rem;border-radius:4px;font-size:.95rem;font-weight:700;">TALK TO SALES</span>
       </div>
-      <p style="color:var(--g400);margin-top:.8rem;font-size:.8rem;">主要按鈕（實底色）+ 次要按鈕（線框）<br>視覺層級清楚，引導優先行動</p>
+      <p style="color:var(--g400);margin-top:.8rem;font-size:1.1rem;">主要按鈕（實底色）+ 次要按鈕（線框）<br>視覺層級清楚，引導優先行動</p>
     </div>
   </div>
   <div class="info-box note" style="padding:.7rem 1.2rem;">
-    <p style="font-size:.85rem;">Slack 的 CTA：主按鈕實底色搶眼，次按鈕線框退讓<br>「免費開始」降低門檻，「聯繫銷售」服務進階需求</p>
+    <p style="font-size:1.1rem;">Slack 的 CTA：主按鈕實底色搶眼，次按鈕線框退讓<br>「免費開始」降低門檻，「聯繫銷售」服務進階需求</p>
   </div>
 </div>
 
@@ -1135,24 +1168,24 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <h2>判斷點對應指令</h2>
   <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;max-width:900px;width:100%;margin-top:1rem;">
     <div class="card accent-top fragment" data-order="0" style="min-width:0;max-width:none;padding:1rem .8rem;text-align:center;">
-      <h3 style="font-size:1rem;">首屏區塊</h3>
-      <p style="font-size:.85rem;">視覺焦點</p>
+      <h3 style="font-size:1.1rem;">首屏區塊</h3>
+      <p style="font-size:1.1rem;">視覺焦點</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="1" style="min-width:0;max-width:none;padding:1rem .8rem;text-align:center;">
-      <h3 style="font-size:1rem;">配色</h3>
-      <p style="font-size:.85rem;">三色配色</p>
+      <h3 style="font-size:1.1rem;">配色</h3>
+      <p style="font-size:1.1rem;">三色配色</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="2" style="min-width:0;max-width:none;padding:1rem .8rem;text-align:center;">
-      <h3 style="font-size:1rem;">字級留白</h3>
-      <p style="font-size:.85rem;">字級層次</p>
+      <h3 style="font-size:1.1rem;">字級留白</h3>
+      <p style="font-size:1.1rem;">字級層次</p>
     </div>
     <div class="card accent-top-orange fragment" data-order="3" style="min-width:0;max-width:none;padding:1rem .8rem;text-align:center;">
-      <h3 style="font-size:1rem;">手機適應</h3>
-      <p style="font-size:.85rem;">自動單欄</p>
+      <h3 style="font-size:1.1rem;">手機適應</h3>
+      <p style="font-size:1.1rem;">自動單欄</p>
     </div>
     <div class="card accent-top-purple fragment" data-order="4" style="min-width:0;max-width:none;padding:1rem .8rem;text-align:center;">
-      <h3 style="font-size:1rem;">行動按鈕</h3>
-      <p style="font-size:.85rem;">引導行動</p>
+      <h3 style="font-size:1.1rem;">行動按鈕</h3>
+      <p style="font-size:1.1rem;">引導行動</p>
     </div>
   </div>
   <div class="info-box success fragment" data-order="5" style="margin-top:1rem;">
@@ -1161,20 +1194,42 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   </div>
 </div>
 
-<!-- ══ 32: 升級操作 ══ -->
-<!-- Height: h2(77) + big-stat(120) + info-box(88) + margins(32) = 317px ✅ -->
+<!-- ══ 32: 換你操作 — Round 3 介面設計指令 ══ -->
 <div class="slide dataviz" data-act="Round 3：介面" data-index="34">
-  <h2>升級操作</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat">
-      <div class="num">10</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">在指令中加入介面設計指令，產出第三版</div>
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">10 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">加上介面設計指令，產出第三版</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>開一個新對話</strong>
+        <p style="font-size:1.1rem;">新對話能排除舊上下文的干擾，看清指令本身的效果</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Round 2 指令 + 介面設計指令一起貼入</strong>
+        <p style="font-size:1.1rem;">介面設計指令照前面的模板頁，接在原指令後面</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>取得第三版連結，貼到群組</strong>
+        <p style="font-size:1.1rem;">與第二版並排，觀察介面層的差異</p>
+      </div>
     </div>
   </div>
-  <div class="info-box tip fragment" data-order="0">
-    <div class="label">操作方式</div>
-    <p>開一個新對話 → Round 2 的指令 + 介面設計指令一起貼入<br>→ 觀察差異</p>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">第三版首屏有標語與行動按鈕、配色不超過三色 = 完成</p>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手，或回模板頁按「複製」把整段指令帶走</p>
   </div>
 </div>
 
@@ -1206,28 +1261,28 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <h2>三輪產出對比</h2>
   <div class="flow" style="margin:1rem 0;">
     <div class="flow-box fragment" data-order="0" style="min-width:150px;">
-      <div style="font-size:.75rem;color:var(--g400);">Round 1</div>
+      <div style="font-size:1.1rem;color:var(--g400);">Round 1</div>
       裸指令
     </div>
     <div class="flow-arrow fragment" data-order="1">→</div>
     <div class="flow-box fragment" data-order="2" style="min-width:150px;">
-      <div style="font-size:.75rem;color:var(--g400);">Round 2</div>
+      <div style="font-size:1.1rem;color:var(--g400);">Round 2</div>
       指令結構
     </div>
     <div class="flow-arrow fragment" data-order="3">→</div>
     <div class="flow-box accent fragment" data-order="4" style="min-width:150px;">
-      <div style="font-size:.75rem;color:var(--green);">Round 3</div>
+      <div style="font-size:1.1rem;color:var(--green);">Round 3</div>
       介面設計
     </div>
   </div>
   <div class="stat-grid fragment" data-order="5">
     <div class="stat-box">
       <div class="val" style="font-size:1.6rem;">Round 1</div>
-      <div class="label">功能框架，不可交付</div>
+      <div class="label">功能框架<br>不可交付</div>
     </div>
     <div class="stat-box">
       <div class="val" style="font-size:1.6rem;">Round 2</div>
-      <div class="label">內容到位，視覺粗糙</div>
+      <div class="label">內容到位<br>視覺粗糙</div>
     </div>
     <div class="stat-box">
       <div class="val" style="font-size:1.6rem;">Round 3</div>
@@ -1241,7 +1296,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <div class="slide dataviz" data-act="Round 3：介面" data-index="37">
   <h2>Round 3 小結</h2>
   <div class="bottom-line" data-order="0">
-    <h3>指令結構決定內容品質，介面指令決定呈現品質</h3>
+    <h3>指令結構決定內容品質　介面指令決定呈現品質</h3>
     <p>兩層疊加是完整的產出控制<br>只控制內容不控制介面，等於只完成了一半的指令設計</p>
   </div>
 </div>
@@ -1253,7 +1308,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- ══ 36: Chapter poster — Round 4 ══ -->
 <div class="slide poster overlay-heavy" data-act="Round 4：風險" data-index="38"
      style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:20–1:50</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 4 · 1:20–1:50</p>
   <h1 style="color:#fff;font-size:2.8rem;">AI 的能力邊界<br><span style="color:#6ee7d4;">與平台差異</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">使用 AI 前，先理解可靠性模型</p>
 </div>
@@ -1276,7 +1331,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- Height: h2(77) + card-grid(176) + margins(16) = 269px ✅ -->
 <div class="slide dataviz" data-act="Round 4：風險" data-index="40">
   <h2>你剛才遇到的 AI 錯誤</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">前三輪操作中，AI 一定做錯過什麼<br>— 排版跑掉、功能不能用、給了你沒要求的東西</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">前三輪操作中，AI 一定做錯過什麼<br>— 排版跑掉、功能不能用、給了你沒要求的東西</p>
   <div class="card-grid" style="margin-top:.5rem;">
     <div class="card accent-top-orange fragment" data-order="0">
       <h3>為什麼會錯</h3>
@@ -1284,10 +1339,10 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card accent-top fragment" data-order="1">
       <h3>你怎麼修的</h3>
-      <p>描述問題 → AI 自己修<br>這就是迭代的一部分</p>
+      <p>描述問題<br>AI 自己修正<br>迭代的一部分</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="2">
-      <h3>更大的風險場景</h3>
+      <h3>更大的風險</h3>
       <p>做網頁只是 bug<br>如果是醫療<br>法律、財務呢</p>
     </div>
   </div>
@@ -1297,7 +1352,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- Height: h2(77) + card-grid(176) + margins(16) = 269px ✅ -->
 <div class="slide dataviz" data-act="Round 4：風險" data-index="41">
   <h2>使用 AI 工具的安全邊界</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">做網頁的風險低，但養成好習慣<br>未來用 AI 處理工作時，這三條是底線</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">做網頁的風險低，但養成好習慣<br>未來用 AI 處理工作時，這三條是底線</p>
   <div class="card-grid" style="margin-top:.3rem;">
     <div class="card accent-top fragment" data-order="0">
       <h3>不丟機敏資料</h3>
@@ -1305,11 +1360,11 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card accent-top-gold fragment" data-order="1">
       <h3>不當作事實</h3>
-      <p>AI 會自信地說錯話<br>重要資訊要交叉驗證</p>
+      <p>AI 說錯話時<br>語氣一樣自信<br>重要資訊要驗證</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="2">
       <h3>人做最後決定</h3>
-      <p>AI 加速你的思考<br>決策權永遠在你手上</p>
+      <p>AI 加速你的思考<br>決策權在你手上</p>
     </div>
   </div>
 </div>
@@ -1344,7 +1399,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- ══ 41: 跨平台比較說明 ══ -->
 <!-- Height: h2(77) + p(42) + card-grid(176) + margins(32) = 327px ✅ -->
 <div class="slide dataviz" data-act="Round 4：風險" data-index="43">
-  <h2>跨平台比較：同一指令，三個平台</h2>
+  <h2>跨平台比較：同一指令　三個平台</h2>
   <p style="color:var(--g600);margin-bottom:.8rem;">將你最完整的指令分別輸入 ChatGPT、Claude、Gemini<br>觀察三個維度的差異</p>
   <div class="card-grid">
     <div class="card accent-top-gold fragment" data-order="0" style="text-align:center;">
@@ -1362,25 +1417,42 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   </div>
 </div>
 
-<!-- ══ 42: 三平台實測 ══ -->
-<!-- Height: h2(77) + big-stat(120) + flow(55) + margins(32) = 284px ✅ -->
+<!-- ══ 42: 換你操作 — Round 4 三平台實測 ══ -->
 <div class="slide dataviz" data-act="Round 4：風險" data-index="44">
-  <h2>三平台實測操作</h2>
-  <div style="text-align:center;margin:1rem 0;">
-    <div class="big-stat">
-      <div class="num">7</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">同一個指令，三個平台各做一次</div>
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">7 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">同一個指令，三個平台各跑一次</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>複製你目前最完整的指令</strong>
+        <p style="font-size:1.1rem;">用 Round 3 的第三版指令，不用重寫</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>貼入另外兩個平台</strong>
+        <p style="font-size:1.1rem;">ChatGPT、Claude、Gemini 湊滿三份產出</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>三份結果並排</strong>
+        <p style="font-size:1.1rem;">開三個視窗並排，準備進入下一頁的四個觀察維度</p>
+      </div>
     </div>
   </div>
-  <div class="flow" style="margin:1rem 0;">
-    <div class="flow-box accent">複製完整指令</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">貼入第二個平台</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">貼入第三個平台</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">三份結果並排</div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">三個平台各有一份產出可對照 = 完成</p>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 某平台額度用完就先跑兩個，兩份也能比較</p>
   </div>
 </div>
 
@@ -1392,7 +1464,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <div class="card-grid" style="display:grid;grid-template-columns:repeat(2,1fr);max-width:760px;">
     <div class="card accent-top fragment" data-order="0">
       <h3>回應速度</h3>
-      <p>從提交到<br>完整輸出的耗時差異</p>
+      <p>從提交到輸出完成<br>耗時差異</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="1">
       <h3>設計風格</h3>
@@ -1404,7 +1476,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card accent-top-purple fragment" data-order="3">
       <h3>自主添加的元素</h3>
-      <p>哪個平台自行加功能<br>是加分還是干擾</p>
+      <p>哪個平台自行添加<br>是加分還是干擾</p>
     </div>
   </div>
 </div>
@@ -1420,7 +1492,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
     <div class="card fragment" data-order="1" style="border-top:4px solid var(--purple);text-align:center;">
       <h3>Claude</h3>
-      <p>Artifacts 渲染<br>遵從度高<br>程式碼品質穩定<br>免費版有次數限制</p>
+      <p>Artifacts 渲染<br>遵從度高<br>程式碼品質穩定<br>免費版次數有限</p>
     </div>
     <div class="card fragment" data-order="2" style="border-top:4px solid var(--blue);text-align:center;">
       <h3>Gemini</h3>
@@ -1433,7 +1505,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- Height: h2(77) + p(42) + arch-grid(~340) + info-box(72) + margins(40) = 571px ✅ -->
 <div class="slide dataviz" data-act="Round 4：風險" data-index="47">
   <h2>平台記憶機制的差異</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">同一指令在不同平台產生差異，常來自可讀取的上下文來源</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">同一指令在不同平台產生差異，常來自可讀取的上下文來源</p>
   <div class="arch-grid">
     <!-- Claude 欄 -->
     <div class="arch-col fragment" data-order="0" style="--col-color:var(--blue);--col-bg:var(--blue-lt);">
@@ -1464,7 +1536,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
     </div>
   </div>
   <div class="info-box note fragment" data-order="3" style="margin-top:.6rem;padding:.8rem 1.5rem;">
-    <p style="font-size:.9rem;">差異不是誰比較聰明，是可讀取的上下文來源不同</p>
+    <p style="font-size:1.1rem;">差異不是誰比較聰明，是可讀取的上下文來源不同</p>
   </div>
 </div>
 
@@ -1498,7 +1570,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 <!-- ══ 48: Chapter poster — Round 5 ══ -->
 <div class="slide poster overlay-heavy" data-act="Round 5：互動" data-index="50"
      style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:50–2:30</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 1:50–2:30</p>
   <h1 style="color:#fff;font-size:2.8rem;">從靜態頁面<br><span style="color:#6ee7d4;">到互動產品</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">指令結構相同，產品複雜度提升一個量級</p>
 </div>
@@ -1509,56 +1581,95 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   <h2>四個互動產品，各有不同的互動複雜度</h2>
   <div class="theme-grid-2x2" style="margin:1rem auto;">
     <div class="theme-card fragment" data-order="0">
-      <div class="t-icon">🐍</div>
+      <div class="t-icon" style="color:var(--green);">●</div>
       <div class="t-name">貪食蛇</div>
-      <div class="t-desc">方向鍵控制、碰撞偵測、成長機制<br>互動複雜度：中</div>
+      <div class="t-desc">方向鍵控制、碰撞偵測<br>成長機制<br>互動複雜度：中</div>
     </div>
     <div class="theme-card fragment" data-order="1">
-      <div class="t-icon">🧱</div>
+      <div class="t-icon" style="color:var(--blue);">■</div>
       <div class="t-name">打磚塊</div>
-      <div class="t-desc">物理反彈、磚塊消除、計分系統<br>互動複雜度：中</div>
+      <div class="t-desc">物理反彈、磚塊消除<br>計分系統<br>互動複雜度：中</div>
     </div>
     <div class="theme-card fragment" data-order="2">
-      <div class="t-icon">🃏</div>
+      <div class="t-icon" style="color:var(--purple);">◆</div>
       <div class="t-name">記憶翻牌</div>
-      <div class="t-desc">翻牌配對、計時計步、狀態管理<br>互動複雜度：中</div>
+      <div class="t-desc">翻牌配對、計時計步<br>狀態管理<br>互動複雜度：中</div>
     </div>
     <div class="theme-card fragment" data-order="3">
-      <div class="t-icon">⭕</div>
+      <div class="t-icon" style="color:var(--gold);">▲</div>
       <div class="t-name">井字遊戲</div>
-      <div class="t-desc">輪流下棋、勝負判定、重置機制<br>互動複雜度：低</div>
+      <div class="t-desc">輪流下棋、勝負判定<br>重置機制<br>互動複雜度：低</div>
     </div>
+  </div>
+</div>
+
+<!-- ══ 49b: 換你操作 — Round 5 先裸試一輪 ══ -->
+<div class="slide dataviz" data-act="Round 5：互動" data-index="52">
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">5 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">先用現有方法做一個小遊戲</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>選猜拳或翻牌其中一個</strong>
+        <p style="font-size:1.1rem;">選簡單的 — 這一輪測的是方法，不是遊戲難度</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>用四要素 + 五判斷點寫指令，貼給 AI</strong>
+        <p style="font-size:1.1rem;">就用前兩輪學會的結構，不用新方法</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>實際玩一次自己的遊戲</strong>
+        <p style="font-size:1.1rem;">點得動嗎？分得出輸贏嗎？能重來嗎？</p>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">遊戲畫面出現、點了有反應 = 完成　卡住也是正常結果</p>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 記下卡在哪裡，卡住的點就是下一頁要分析的素材</p>
   </div>
 </div>
 
 <!-- ══ 50: 互動產品指令要點 ══ -->
 <!-- Height: h2(77) + p(42) + card-grid(176) + margins(32) = 327px ✅ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="52">
+<div class="slide dataviz" data-act="Round 5：互動" data-index="53">
   <h2>Round 5 觀察：哪些地方卡住？</h2>
-  <p style="color:var(--g600);margin-bottom:.8rem;">先用 Round 2/3 已學的四要素與五判斷，做一個猜拳或翻牌遊戲（5 分鐘）<br>卡住的原因常見三類</p>
+  <p style="color:var(--g600);margin-bottom:.8rem;">剛才的試做如果卡住，不是能力問題<br>卡住的原因常見三類</p>
   <div class="card-grid" style="margin-top:.5rem;">
     <div class="card accent-top fragment" data-order="0">
-      <h3>操作規則不清楚</h3>
-      <p>使用者要點哪裡<br>成功或失敗如何判定</p>
+      <h3>操作規則不清</h3>
+      <p>使用者要點哪裡<br>成敗如何判定</p>
     </div>
     <div class="card accent-top-blue fragment" data-order="1">
       <h3>回饋機制不足</h3>
-      <p>分數、倒數<br>翻牌次數<br>沒有形成可觀察結果</p>
+      <p>分數、倒數<br>翻牌次數<br>缺少可觀察結果</p>
     </div>
     <div class="card accent-top-gold fragment" data-order="2">
       <h3>狀態轉換漏掉</h3>
-      <p>開始、進行中、結束<br>重新開始<br>沒有完整交代</p>
+      <p>開始、進行<br>結束、重新開始<br>沒有完整交代</p>
     </div>
   </div>
 </div>
 
 <!-- ══ 51: 遊戲 Prompt 範例 ══ -->
 <!-- Height: h2(77) + code-block(220) + margins(16) = 313px ✅ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="53">
+<div class="slide dataviz" data-act="Round 5：互動" data-index="54">
   <h2>補強版範例（卡住後參考）</h2>
   <div class="code-block fragment" data-order="0" style="padding:1rem 1.3rem;">
     <div class="code-label">完整指令 — 角色 + 任務 + 規則 + 介面</div>
-    <pre style="font-size:.85rem;line-height:1.6;">你是一位前端遊戲開發者
+    <pre style="font-size:1.1rem;line-height:1.6;">你是一位前端遊戲開發者
 用 HTML/CSS/JS 做一個記憶翻牌遊戲：
 - 4×4 共 16 張牌（8 對 emoji）
 - 翻兩張配對，成功留著，失敗翻回
@@ -1569,64 +1680,81 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   </div>
 </div>
 
-<!-- ══ 52: 操作時間 ══ -->
-<!-- Height: h2(77) + big-stat(120) + flow(55) + margins(32) = 284px ✅ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="54">
-  <h2>操作時間</h2>
-  <div style="text-align:center;margin:1.5rem 0;">
-    <div class="big-stat">
-      <div class="num">10</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">選一個遊戲，用完整的指令結構產出</div>
+<!-- ══ 52: 換你操作 — Round 5 完整指令做遊戲 ══ -->
+<div class="slide dataviz" data-act="Round 5：互動" data-index="55">
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">10 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">用完整指令結構做出你的遊戲</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>從四個遊戲中選定一個</strong>
+        <p style="font-size:1.1rem;">貪食蛇 / 打磚塊 / 記憶翻牌 / 井字遊戲</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>參考補強版結構撰寫完整指令，貼給 AI</strong>
+        <p style="font-size:1.1rem;">操作規則、回饋機制、狀態轉換三類都要交代</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>實際測試操作</strong>
+        <p style="font-size:1.1rem;">自己先玩一輪，確認功能都有作用</p>
+      </div>
     </div>
   </div>
-  <div class="flow" style="margin:1rem 0;">
-    <div class="flow-box accent">選擇遊戲</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">撰寫完整指令</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">貼給 AI</div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-box accent">測試操作</div>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">遊戲能開始、能結束、能重新開始 = 完成</p>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手，或回上一頁按「複製」，把補強版範例換成你的遊戲</p>
   </div>
 </div>
 
 <!-- ══ 53: 除錯方法 ══ -->
 <!-- Height: h2(77) + 3×step(198) + info-box(88) + margins(48) = 411px ✅ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="55">
+<div class="slide dataviz" data-act="Round 5：互動" data-index="56">
   <h2>產出無法運作時的處理流程</h2>
   <div class="step-list" style="margin-top:.5rem;">
     <div class="step fragment" data-order="0">
       <div class="step-num">1</div>
       <div class="step-content">
         <strong>描述具體問題</strong>
-        <p style="font-size:.95rem;">「蛇吃到食物後沒有變長」「翻牌後沒有翻回去」— 越具體，修正越精準</p>
+        <p style="font-size:1.1rem;">「蛇吃到食物後沒有變長」「翻牌後沒有翻回去」— 越具體，修正越精準</p>
       </div>
     </div>
     <div class="step fragment" data-order="1">
       <div class="step-num">2</div>
       <div class="step-content">
         <strong>要求 AI 說明修正內容</strong>
-        <p style="font-size:.95rem;">「請說明你修正了哪些問題」— 理解問題本質有助於後續避免</p>
+        <p style="font-size:1.1rem;">「請說明你修正了哪些問題」— 理解問題本質有助於後續避免</p>
       </div>
     </div>
     <div class="step fragment" data-order="2">
       <div class="step-num">3</div>
       <div class="step-content">
         <strong>取得完整程式碼重新測試</strong>
-        <p style="font-size:.95rem;">修正後的完整程式碼，重新部署並測試所有功能</p>
+        <p style="font-size:1.1rem;">修正後的完整程式碼，重新部署並測試所有功能</p>
       </div>
     </div>
   </div>
   <div class="info-box note fragment" data-order="3" style="margin-top:.3rem;padding:1rem 1.5rem;">
     <div class="label">正常流程</div>
-    <p style="font-size:.95rem;">「描述問題 → AI 修正 → 再測試」是 AI 協作的標準除錯循環，不是例外狀況</p>
+    <p style="font-size:1.1rem;">「描述問題 → AI 修正 → 再測試」是 AI 協作的標準除錯循環，不是例外狀況</p>
   </div>
 </div>
 
 <!-- ══ 54: 分享與互測 ══ -->
 <!-- Height: h2(77) + 3×step(198) + margins(32) = 307px ✅ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="56">
+<div class="slide dataviz" data-act="Round 5：互動" data-index="57">
   <h2>分享與互測</h2>
   <div class="step-list">
     <div class="step fragment" data-order="0">
@@ -1655,7 +1783,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 
 <!-- ══ 55: 迭代升級方向 ══ -->
 <!-- Height: h2(77) + p(42) + card-grid(176) + margins(32) = 327px ✅ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="57">
+<div class="slide dataviz" data-act="Round 5：互動" data-index="58">
   <h2>從同學作品中提取升級方向</h2>
   <p style="color:var(--g600);margin-bottom:.8rem;">觀察別人的作品後，選擇一個或多個功能升級你的遊戲：</p>
   <div class="card-grid" style="display:grid;grid-template-columns:repeat(2,1fr);max-width:760px;">
@@ -1678,26 +1806,48 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
   </div>
 </div>
 
-<!-- ══ 56: 迭代操作 ══ -->
-<!-- Height: h2(77) + big-stat(120) + info-box(88) + margins(32) = 317px ✅ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="58">
-  <h2>迭代操作</h2>
-  <div style="text-align:center;margin:1.5rem 0;">
-    <div class="big-stat">
-      <div class="num">8</div>
-      <div class="unit">分鐘</div>
-      <div class="caption">基於觀察，對遊戲下達升級指令</div>
+<!-- ══ 56: 換你操作 — Round 5 迭代升級 ══ -->
+<div class="slide dataviz" data-act="Round 5：互動" data-index="59">
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">8 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">給你的遊戲加一個新功能</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step fragment" data-order="0">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>從同學作品挑一個值得加的功能</strong>
+        <p style="font-size:1.1rem;">音效回饋 / 計分系統 / 難度等級 / 視覺動畫擇一</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="1">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>在同一個對話中下達升級指令</strong>
+        <p style="font-size:1.1rem;">「幫我的遊戲加上 [功能名稱]，請輸出完整更新後的 HTML 檔案」</p>
+      </div>
+    </div>
+    <div class="step fragment" data-order="2">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>重新測試</strong>
+        <p style="font-size:1.1rem;">確認新功能有作用，原有功能沒有壞掉</p>
+      </div>
     </div>
   </div>
-  <div class="info-box tip fragment" data-order="0">
-    <div class="label">操作方式</div>
-    <p>在同一個對話中繼續：<br>「幫我的遊戲加上 [功能名稱]，請輸出完整更新後的 HTML 檔案」</p>
+  <div class="info-box success fragment" data-order="3" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">新功能實際可操作，原有功能正常 = 完成</p>
+  </div>
+  <div class="info-box note fragment" data-order="4" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 把功能改小一點，先加計分就好</p>
   </div>
 </div>
 
 <!-- ══ 57: 版本對比 + Round 5 小結 ══ -->
 <!-- Height: h2(77) + compare-two(200) + info-box(88) + margins(32) = 397px ✅ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="59">
+<div class="slide dataviz" data-act="Round 5：互動" data-index="60">
   <h2>版本對比：第一版 vs 升級版</h2>
   <div class="compare-two" style="margin-top:.8rem;">
     <div class="compare-col bad fragment" data-order="0" style="background:var(--offwhite);border-color:var(--g200);">
@@ -1726,37 +1876,37 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 </div>
 
 <!-- ══ NEW: 評分反思 ══ -->
-<div class="slide dataviz" data-act="Round 5：互動" data-index="60">
+<div class="slide dataviz" data-act="Round 5：互動" data-index="61">
   <h2>從同學作品中反思</h2>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.5rem;">用這六個維度評估自己和同學的作品</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.5rem;">用這六個維度評估自己和同學的作品</p>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:700px;width:100%;margin:.5rem 0;">
     <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">1</div>
-      <div style="font-weight:700;font-size:.95rem;">功能完整度</div>
+      <div style="font-size:1.1rem;color:var(--g400);margin-bottom:.2rem;">1</div>
+      <div style="font-weight:700;font-size:1.1rem;">功能完整度</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">2</div>
-      <div style="font-weight:700;font-size:.95rem;">畫面品質</div>
+      <div style="font-size:1.1rem;color:var(--g400);margin-bottom:.2rem;">2</div>
+      <div style="font-weight:700;font-size:1.1rem;">畫面品質</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">3</div>
-      <div style="font-weight:700;font-size:.95rem;">幾步完成</div>
+      <div style="font-size:1.1rem;color:var(--g400);margin-bottom:.2rem;">3</div>
+      <div style="font-weight:700;font-size:1.1rem;">幾步完成</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">4</div>
-      <div style="font-weight:700;font-size:.95rem;">花多少時間</div>
+      <div style="font-size:1.1rem;color:var(--g400);margin-bottom:.2rem;">4</div>
+      <div style="font-weight:700;font-size:1.1rem;">花多少時間</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">5</div>
-      <div style="font-weight:700;font-size:.95rem;">操作難易度</div>
+      <div style="font-size:1.1rem;color:var(--g400);margin-bottom:.2rem;">5</div>
+      <div style="font-weight:700;font-size:1.1rem;">操作難易度</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.7rem .5rem;">
-      <div style="font-size:.75rem;color:var(--g400);margin-bottom:.2rem;">6</div>
-      <div style="font-weight:700;font-size:.95rem;">總體效果</div>
+      <div style="font-size:1.1rem;color:var(--g400);margin-bottom:.2rem;">6</div>
+      <div style="font-weight:700;font-size:1.1rem;">總體效果</div>
     </div>
   </div>
   <div class="info-box note" style="padding:.8rem 1.2rem;margin-top:.3rem;">
-    <p style="font-size:.9rem;">對比自己 Round 1 和 Round 5 的作品<br>再對比自己和同學的差異 — 差距來自哪裡</p>
+    <p style="font-size:1.1rem;">對比自己 Round 1 和 Round 5 的作品<br>再對比自己和同學的差異 — 差距來自哪裡</p>
   </div>
 </div>
 
@@ -1765,41 +1915,41 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
      ══════════════════════════════════════ -->
 
 <!-- ══ 58: Chapter poster — Round 6 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 6：回顧" data-index="61"
+<div class="slide poster overlay-heavy" data-act="Round 6：回顧" data-index="62"
      style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:30–3:00</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 6 · 2:30–3:00</p>
   <h1 style="color:#fff;font-size:2.8rem;">定位今天的學習<br><span style="color:#6ee7d4;">在整體路線中的位置</span></h1>
   <p class="poster-subtitle" style="margin-top:.8rem;">回顧六輪循環，釐清下一步方向</p>
 </div>
 
 <!-- ══ 59: 六輪回顧 ══ -->
 <!-- Height: h2(77) + cycle-ring(126) + stat-grid(110) + margins(32) = 345px ✅ -->
-<div class="slide dataviz" data-act="Round 6：回顧" data-index="62">
+<div class="slide dataviz" data-act="Round 6：回顧" data-index="63">
   <h2>六輪回顧</h2>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;max-width:650px;width:100%;margin:.6rem 0;">
     <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R1</div>
-      <div style="font-weight:700;font-size:.9rem;">裸做</div>
+      <div style="font-size:1.1rem;color:var(--g400);">R1</div>
+      <div style="font-weight:700;font-size:1.1rem;">裸做</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R2</div>
-      <div style="font-weight:700;font-size:.9rem;">指令結構</div>
+      <div style="font-size:1.1rem;color:var(--g400);">R2</div>
+      <div style="font-weight:700;font-size:1.1rem;">指令結構</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R3</div>
-      <div style="font-weight:700;font-size:.9rem;">介面設計</div>
+      <div style="font-size:1.1rem;color:var(--g400);">R3</div>
+      <div style="font-weight:700;font-size:1.1rem;">介面設計</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R4</div>
-      <div style="font-weight:700;font-size:.9rem;">風險+平台</div>
+      <div style="font-size:1.1rem;color:var(--g400);">R4</div>
+      <div style="font-weight:700;font-size:1.1rem;">風險+平台</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R5</div>
-      <div style="font-weight:700;font-size:.9rem;">互動產品</div>
+      <div style="font-size:1.1rem;color:var(--g400);">R5</div>
+      <div style="font-weight:700;font-size:1.1rem;">互動產品</div>
     </div>
     <div class="flow-box accent" style="text-align:center;padding:.6rem .4rem;">
-      <div style="font-size:.7rem;color:var(--g400);">R6</div>
-      <div style="font-weight:700;font-size:.9rem;">回顧</div>
+      <div style="font-size:1.1rem;color:var(--g400);">R6</div>
+      <div style="font-weight:700;font-size:1.1rem;">回顧</div>
     </div>
   </div>
   <div class="stat-grid" style="margin-top:.6rem;">
@@ -1820,43 +1970,43 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 
 <!-- ══ 60: 三層升級路線 ══ -->
 <!-- Height: h2(77) + flow(55) + info-box(88) + margins(32) = 252px ✅ -->
-<div class="slide dataviz" data-act="Round 6：回顧" data-index="63">
+<div class="slide dataviz" data-act="Round 6：回顧" data-index="64">
   <h2>四層升級路線</h2>
   <div class="flow" style="margin:1.5rem 0;">
     <div class="flow-box accent fragment" data-order="0" style="min-width:160px;">
-      <div style="font-size:.75rem;color:var(--green);">Level 1 — 今天</div>
+      <div style="font-size:1.1rem;color:var(--green);">Level 1 — 今天</div>
       AI 對話做作品
     </div>
     <div class="flow-arrow fragment" data-order="1">→</div>
     <div class="flow-box fragment" data-order="2" style="min-width:160px;">
-      <div style="font-size:.75rem;color:var(--g400);">Level 2 — M1-2</div>
+      <div style="font-size:1.1rem;color:var(--g400);">Level 2 — M1-2</div>
       封裝 AI 助手
     </div>
     <div class="flow-arrow fragment" data-order="3">→</div>
     <div class="flow-box fragment" data-order="4" style="min-width:160px;">
-      <div style="font-size:.75rem;color:var(--g400);">Level 3 — M1-3/M1-4</div>
+      <div style="font-size:1.1rem;color:var(--g400);">Level 3 — M1-3/M1-4</div>
       自動化 + 部署
     </div>
     <div class="flow-arrow fragment" data-order="5">→</div>
     <div class="flow-box fragment" data-order="6" style="min-width:160px;">
-      <div style="font-size:.75rem;color:var(--g400);">Level 4 — M3</div>
+      <div style="font-size:1.1rem;color:var(--g400);">Level 4 — M3</div>
       系統建造
     </div>
   </div>
   <div class="info-box note fragment" data-order="7">
     <div class="label">定位</div>
-    <p>今天完成的是 Level 1 的基礎<br>下一堂 M1-2 會把對話能力封裝成可重複使用的 AI 助手</p>
+    <p>今天完成的是 Level 1 的基礎<br>後面每一層，都建立在今天的指令能力上</p>
   </div>
 </div>
 
 <!-- ══ 61: 帶走清單（核心定位 + 6 個心態轉變 3×2 grid） ══ -->
-<div class="slide dataviz" data-act="Round 6：回顧" data-index="64">
+<div class="slide dataviz" data-act="Round 6：回顧" data-index="65">
   <h2>帶走清單</h2>
   <div class="anchor-banner">
     <span class="anchor-label">本堂定位</span>
     <span class="anchor-text">學會辨識的第一堂課</span>
   </div>
-  <p style="color:var(--g600);font-size:.95rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了</p>
+  <p style="color:var(--g600);font-size:1.1rem;margin-bottom:.4rem;">不只學了什麼，是想法怎麼變了</p>
   <div class="insight-grid">
     <div class="insight-card fragment" data-order="0" style="--card-color:var(--green);">
       <div class="insight-before">從「碰運氣寫指令」</div>
@@ -1864,12 +2014,12 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
       <div class="insight-after">指令是可設計的工程</div>
     </div>
     <div class="insight-card fragment" data-order="1" style="--card-color:var(--blue);">
-      <div class="insight-before">從「AI 給什麼我接受什麼」</div>
+      <div class="insight-before">從「AI 給什麼都接受」</div>
       <div class="insight-arrow">↓</div>
       <div class="insight-after">審美觀決定產出的質感</div>
     </div>
     <div class="insight-card fragment" data-order="2" style="--card-color:var(--red);">
-      <div class="insight-before">從「AI 不可信」或「AI 全能」</div>
+      <div class="insight-before">從「AI 不可信」<br>或「AI 全能」</div>
       <div class="insight-arrow">↓</div>
       <div class="insight-after">認識邊界才能用得對</div>
     </div>
@@ -1893,7 +2043,7 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 
 <!-- ══ 63: 課後操作 ══ -->
 <!-- Height: h2(77) + info-box(88) + info-box(88) + margins(32) = 285px ✅ -->
-<div class="slide dataviz" data-act="Round 6：回顧" data-index="65">
+<div class="slide dataviz" data-act="Round 6：回顧" data-index="66">
   <h2>課後操作</h2>
   <div class="info-box blue fragment" data-order="0">
     <div class="label">實踐任務</div>
@@ -1906,24 +2056,24 @@ CSS 全部寫在 &lt;style&gt; 裡，不要外部框架</pre>
 </div>
 
 <!-- ══ 64: 預告 M1-2 ══ -->
-<div class="slide poster overlay-heavy" data-act="Round 6：回顧" data-index="66"
+<div class="slide poster overlay-heavy" data-act="Round 6：回顧" data-index="67"
      style="background:linear-gradient(135deg,#0B3C5D 0%,#065f46 40%,#0F9D8A 100%);">
-  <p style="font-size:.9rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M1-2</p>
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">下一堂課 — M1-2</p>
   <h1 style="color:#fff;font-size:2.8rem;">你產出了作品<br><span style="color:#6ee7d4;">但每次都要重新描述需求</span></h1>
   <p class="poster-subtitle" style="margin-top:1rem;">下一堂課的主題：將指令封裝成可重複調用的 AI 助手</p>
   <div style="margin-top:2rem;display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">GPTs</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">Gems</span>
-    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:.9rem;color:#fff;">助手架構</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:1.1rem;color:#fff;">GPTs</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:1.1rem;color:#fff;">Gems</span>
+    <span style="background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem 1rem;font-size:1.1rem;color:#fff;">助手架構</span>
   </div>
-  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:.9rem;">M1-1 完成</p>
+  <p style="color:rgba(255,255,255,.35);margin-top:2.5rem;font-size:1.1rem;">M1-1 完成</p>
 </div>
 
 </div><!-- end .slides -->
 
 <!-- ── Controls ── -->
 <div class="progress" id="progress"></div>
-<div class="slide-counter" id="counter">1 / 67</div>
+<div class="slide-counter" id="counter">1 / 68</div>
 <div class="controls">
   <button id="prevBtn" onclick="navigate(-1)" disabled>‹</button>
   <button id="nextBtn" onclick="navigate(1)">›</button>

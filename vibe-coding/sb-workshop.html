@@ -1,0 +1,242 @@
+---
+layout: null
+title: "部署你自己的第二大腦 — 一日工作坊報名"
+description: "8/25 一日工作坊：從零建起、養得起你自己的 AI 第二大腦。限上過 Stage 2 的學員，名額 15 位。"
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>部署你自己的第二大腦 — 一日工作坊報名</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#fff; --offwhite:#F8F9FA; --g100:#E8EAED; --g200:#DADCE0;
+  --g400:#9AA0A6; --g600:#5F6368; --g800:#3C4043; --g900:#202124;
+  --green:#0F9D8A; --green-lt:#E6F4F1; --gold:#F9AB00;
+  --red:#D93025; --navy:#0B3C5D; --blue:#1A73E8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:20px;scroll-behavior:smooth;}
+body{font-family:'Noto Sans TC',sans-serif;color:var(--g900);line-height:1.75;background:var(--white);}
+/* CJK 斷行核心：自動平衡、避免孤字行、長英文 fallback */
+h1,h2,h3,p,.tagline,.lead,.outcome p,.c-t,.c-d,.f-txt,.i-v,.sub{text-wrap:pretty;overflow-wrap:break-word;}
+.wrap{max-width:760px;margin:0 auto;padding:0 1.4rem;}
+
+.hero{background:linear-gradient(135deg,#0B3C5D 0%,#0F9D8A 100%);color:#fff;padding:3.5rem 1.4rem;text-align:center;}
+.hero .kicker{font-size:.85rem;letter-spacing:.15em;font-weight:700;opacity:.9;margin-bottom:.8rem;}
+.hero h1{font-size:2.1rem;font-weight:900;line-height:1.3;margin-bottom:.8rem;}
+.hero .tagline{font-size:1.05rem;opacity:.92;line-height:1.8;}
+.hero .prereq-badge{display:inline-block;margin-top:1.4rem;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:100px;padding:.5rem 1.3rem;font-size:.9rem;font-weight:700;}
+
+section{padding:2.4rem 0;border-bottom:1px solid var(--g100);}
+h2{font-size:1.4rem;font-weight:900;margin-bottom:1rem;line-height:1.3;}
+.lead{font-size:1rem;color:var(--g800);line-height:1.9;}
+.lead strong{color:var(--navy);}
+
+.outcome{background:var(--green-lt);border-left:4px solid var(--green);border-radius:0 12px 12px 0;padding:1.4rem 1.6rem;margin-top:1rem;}
+.outcome p{font-size:1rem;color:var(--g900);line-height:1.9;margin:0;}
+
+.concepts{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:1rem;}
+.concept{background:var(--offwhite);border-radius:12px;padding:1.1rem 1.2rem;}
+.concept .c-t{font-weight:700;color:var(--navy);font-size:.98rem;margin-bottom:.3rem;}
+.concept .c-d{font-size:.85rem;color:var(--g600);line-height:1.7;}
+@media(max-width:600px){.concepts{grid-template-columns:1fr;}}
+
+.flow{margin-top:1rem;}
+.flow-row{display:flex;gap:1rem;padding:.7rem 0;border-bottom:1px dashed var(--g200);}
+.flow-row:last-child{border:none;}
+.flow-row .f-tag{flex-shrink:0;width:112px;font-weight:700;color:var(--green);font-size:.9rem;white-space:nowrap;}
+.flow-row .f-txt{font-size:.92rem;color:var(--g800);line-height:1.7;}
+
+.info{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1rem;}
+.info .i-item{background:var(--offwhite);border-radius:10px;padding:.9rem 1.1rem;}
+.info .i-l{font-size:.78rem;color:var(--g600);font-weight:700;margin-bottom:.2rem;}
+.info .i-v{font-size:1rem;color:var(--g900);font-weight:700;}
+.info .i-v small{font-weight:400;color:var(--g600);font-size:.82rem;}
+@media(max-width:600px){.info{grid-template-columns:1fr;}}
+
+.cta-section{background:var(--navy);color:#fff;padding:2.6rem 1.6rem;border-radius:16px;margin:2.5rem 0;}
+.cta-section h2{color:#fff;text-align:center;}
+.cta-section .sub{text-align:center;opacity:.85;font-size:.92rem;margin-bottom:1.6rem;line-height:1.8;}
+.reg-form{max-width:520px;margin:0 auto;}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:600px){.form-2col{grid-template-columns:1fr;}}
+.form-row{margin-bottom:1rem;}
+.form-row label{display:block;font-size:.9rem;font-weight:700;margin-bottom:.4rem;color:#fff;}
+.form-row .required{color:#FFC24B;}
+.form-row input,.form-row select,.form-row textarea{
+  width:100%;font-family:inherit;font-size:.95rem;padding:.7rem .9rem;border-radius:10px;
+  border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;outline:none;
+}
+.form-row input::placeholder,.form-row textarea::placeholder{color:rgba(255,255,255,.5);}
+.form-row select option{color:#202124;}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--green);background:rgba(255,255,255,.16);}
+.form-row textarea{resize:vertical;min-height:80px;line-height:1.7;}
+.submit-btn{width:100%;background:var(--green);color:#fff;font-family:inherit;font-size:1.05rem;font-weight:700;
+  padding:1rem;border:none;border-radius:100px;cursor:pointer;margin-top:.6rem;transition:transform .15s;min-height:54px;}
+.submit-btn:hover{transform:translateY(-2px);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.form-msg{display:none;margin-top:1.2rem;padding:1rem 1.2rem;border-radius:10px;font-size:.92rem;line-height:1.8;}
+.form-msg.success{display:block;background:rgba(15,157,138,.2);border:1px solid var(--green);}
+.form-msg.error{display:block;background:rgba(217,48,37,.2);border:1px solid var(--red);}
+
+.footer{text-align:center;padding:2.5rem 1.4rem;font-size:.85rem;color:var(--g400);}
+.footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:600px){
+  html{font-size:18px;}
+  .hero{padding:2.6rem 1.2rem;}
+  .hero h1{font-size:1.65rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="kicker">VIBE CODING · 一日工作坊</div>
+  <h1>部署你自己的第二大腦</h1>
+  <p class="tagline">從零建起、養得起<br>一個完全屬於你的第二大腦<br>資料你掌控、介面隨你換、功能你自己加</p>
+  <div class="prereq-badge">限已上過 Stage 2 的學員 · 名額 15 位</div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <h2>這一天你會做出什麼</h2>
+    <p class="lead">
+      市面上的 AI 筆記工具<br>
+      資料在別人手上、功能不能改、漲價只能搬家<br><br>
+      這堂課帶你<strong>親手建一個自己擁有的第二大腦</strong><br>
+      它是一個 MCP server、能用 ChatGPT 直接對話你的知識<br>
+      跑在你自己的 Cloudflare 帳號、月費 $0
+    </p>
+    <div class="outcome">
+      <p><strong>離場時你會帶走</strong><br>一個活的、你自己部署的第二大腦<br>裡面有你課程前半累積的筆記、能用 ChatGPT 對話<br>而且你有能力在 IDE 自己維護它、幫它加新功能<br>不必再回來找老師</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>你會建立的 5 個核心能力</h2>
+    <div class="concepts">
+      <div class="concept"><div class="c-t">MCP 是 AI 的介面</div><div class="c-d">讓 AI 直接讀寫你的知識、換 AI 不用搬家</div></div>
+      <div class="concept"><div class="c-t">Serverless 免費經濟</div><div class="c-d">跑在雲端邊緣、用多少算多少、個人幾乎永遠 $0</div></div>
+      <div class="concept"><div class="c-t">資料是你的、可多介面</div><div class="c-d">同一份知識、可從網頁、Notion、git 備份存取</div></div>
+      <div class="concept"><div class="c-t">資料主權</div><div class="c-d">資料在你帳號、你掌控、不被任何平台綁死</div></div>
+      <div class="concept"><div class="c-t">你能自己維護升級</div><div class="c-d">在 IDE 用 AI 協助改 code、加功能、重新上線</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>一天的流程</h2>
+    <div class="flow">
+      <div class="flow-row"><div class="f-tag">上午 · 熱身</div><div class="f-txt">先用老師現有的 agent-kb 上手、寫下你自己的筆記<br>這些筆記就是你之後要搬進新家的備料</div></div>
+      <div class="flow-row"><div class="f-tag">部署練習</div><div class="f-txt">學會 Cloudflare 帳號、綁定 token（Stage 2 沒教過這塊）<br>用部署引導把一個小專案部署上去<br>重點在部署後——跟著 AI 一步步互動驗證系統真的活了</div></div>
+      <div class="flow-row"><div class="f-tag">交接</div><div class="f-txt">搞懂為什麼要有「自己的」<br>把你的筆記匯出、準備裝進你即將親手蓋好的系統</div></div>
+      <div class="flow-row"><div class="f-tag">下午 · 建你的</div><div class="f-txt">親手部署你自己的第二大腦<br>灌入筆記 → 接上 ChatGPT 對話 → 在 IDE 幫它加新功能（例：推 email 通知）</div></div>
+      <div class="flow-row"><div class="f-tag">收束</div><div class="f-txt">確認帶回去的系統養得起、加得動<br>語意搜尋、RSS 等進階回家自己延伸</div></div>
+    </div>
+    <p class="lead" style="font-size:.88rem;color:var(--g600);margin-top:1rem;">前置：下午要在 IDE 部署與維護<br><strong>本工作坊限已上過 Stage 2 的學員</strong>（具備 GitHub、IDE、部署基礎）。</p>
+  </section>
+
+  <section>
+    <h2>課程資訊</h2>
+    <div class="info">
+      <div class="i-item"><div class="i-l">日期</div><div class="i-v">8/25（二）</div></div>
+      <div class="i-item"><div class="i-l">時間</div><div class="i-v">09:30 – 16:30 <small>（含午休）</small></div></div>
+      <div class="i-item"><div class="i-l">地點</div><div class="i-v">台北市 <small>捷運站附近，確認後通知</small></div></div>
+      <div class="i-item"><div class="i-l">費用</div><div class="i-v">NT$ 6,000</div></div>
+      <div class="i-item"><div class="i-l">名額</div><div class="i-v">15 位 <small>（額滿為止）</small></div></div>
+      <div class="i-item"><div class="i-l">前置</div><div class="i-v">上過 Stage 2</div></div>
+    </div>
+  </section>
+
+  <div class="cta-section" id="register">
+    <h2>報名工作坊</h2>
+    <p class="sub">名額 15 位，額滿為止。送出後會收到匯款資訊。</p>
+
+    <form class="reg-form" id="regForm" onsubmit="return submitForm(event)">
+      <input type="hidden" name="type" value="reg_sb_workshop">
+      <input type="hidden" name="stage" value="部署你自己的第二大腦工作坊 (8/25)">
+
+      <div class="form-2col">
+        <div class="form-row">
+          <label>姓名 <span class="required">*</span></label>
+          <input type="text" name="name" required placeholder="你的姓名">
+        </div>
+        <div class="form-row">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" name="email" required placeholder="name@example.com">
+        </div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row">
+          <label>電話</label>
+          <input type="tel" name="phone" placeholder="0912-345-678">
+        </div>
+        <div class="form-row">
+          <label>你上過 Stage 2？ <span class="required">*</span></label>
+          <select name="stage2_taken" required>
+            <option value="" disabled selected>請選擇</option>
+            <option value="是，上過 Stage 2">是，上過 Stage 2</option>
+            <option value="還沒（想先了解）">還沒（想先了解）</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>你最想用第二大腦解決什麼</label>
+        <textarea name="goal" placeholder="例如：把工作筆記變成能問 AI 的知識庫、整理研究資料、經營自己的內容素材庫..."></textarea>
+      </div>
+      <div class="form-row">
+        <label>備註</label>
+        <textarea name="note" placeholder="任何想先跟講師說的（飲食、需求、疑問...）"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">送出報名</button>
+      <div class="form-msg" id="formMsg"></div>
+    </form>
+  </div>
+
+  <div class="footer">
+    部署你自己的第二大腦 · 一日工作坊<br>
+    陳重光 老師 · 課程諮詢 <a href="https://line.me/R/ti/p/@640tusbi">Line@ 官方帳號</a> 或 <a href="mailto:alan.chen75@gmail.com">Email</a>
+  </div>
+
+</div>
+
+<script>
+const FORM_ACTION = 'https://script.google.com/macros/s/AKfycbxK5PN3J-nyFFF1hMz8uzP6ZhYCZlBu4jSEctwD9tJzrgLvC3g48St5FlfAxfXxa5sK/exec';
+
+async function submitForm(e){
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('formMsg');
+  const form = document.getElementById('regForm');
+  msg.className = 'form-msg';
+
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+
+  btn.disabled = true; btn.textContent = '送出中...';
+  try{
+    await fetch(FORM_ACTION, {
+      method:'POST', mode:'no-cors',
+      body: JSON.stringify(data),
+      headers:{'Content-Type':'text/plain'}
+    });
+    msg.innerHTML = '報名已送出！請匯款至 <strong>中國信託（822）277541203704</strong>，金額 <strong>NT$ 6,000</strong>。<br>匯款後請透過 <a href="https://line.me/R/ti/p/@640tusbi" style="color:#8AB4F8;font-weight:700;">Line@</a> 或回信通知我們，附上帳號後五碼。上課地點會於確認後另行通知。';
+    msg.className = 'form-msg success';
+    form.reset();
+    btn.textContent = '報名完成';
+  }catch(err){
+    msg.textContent = '送出時發生錯誤，請稍後再試，或直接透過 Line@ 報名。';
+    msg.className = 'form-msg error';
+    btn.disabled = false; btn.textContent = '送出報名';
+  }
+  return false;
+}
+</script>
+</body>
+</html>

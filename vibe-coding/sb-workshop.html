@@ -146,7 +146,7 @@ h2{font-size:1.4rem;font-weight:900;margin-bottom:1rem;line-height:1.3;}
     <div class="info">
       <div class="i-item"><div class="i-l">日期</div><div class="i-v">8/25（二）</div></div>
       <div class="i-item"><div class="i-l">時間</div><div class="i-v">09:30 – 16:30 <small>（含午休）</small></div></div>
-      <div class="i-item"><div class="i-l">地點</div><div class="i-v">台北市 <small>捷運站附近，確認後通知</small></div></div>
+      <div class="i-item"><div class="i-l">地點</div><div class="i-v">臺北科技大學 <small>捷運忠孝新生站，教室課前公告</small></div></div>
       <div class="i-item"><div class="i-l">費用</div><div class="i-v">NT$ 6,000</div></div>
       <div class="i-item"><div class="i-l">名額</div><div class="i-v">15 位 <small>（額滿為止）</small></div></div>
       <div class="i-item"><div class="i-l">前置</div><div class="i-v">上過 Stage 2</div></div>
@@ -226,7 +226,7 @@ async function submitForm(e){
       body: JSON.stringify(data),
       headers:{'Content-Type':'text/plain'}
     });
-    msg.innerHTML = '報名已送出！請匯款至 <strong>中國信託（822）277541203704</strong>，金額 <strong>NT$ 6,000</strong>。<br>匯款後請透過 <a href="https://line.me/R/ti/p/@640tusbi" style="color:#8AB4F8;font-weight:700;">Line@</a> 或回信通知我們，附上帳號後五碼。上課地點會於確認後另行通知。';
+    msg.innerHTML = '報名已送出！請匯款至 <strong>中國信託（822）277541203704</strong>，金額 <strong>NT$ 6,000</strong>。<br>匯款後請透過 <a href="https://line.me/R/ti/p/@640tusbi" style="color:#8AB4F8;font-weight:700;">Line@</a> 或回信通知我們，附上帳號後五碼。上課地點：臺北科技大學（捷運忠孝新生站），教室位置課前公告。';
     msg.className = 'form-msg success';
     form.reset();
     btn.textContent = '報名完成';

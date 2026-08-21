@@ -1,6 +1,6 @@
 ---
 layout: null
-title: "午餐調查"
+title: "午餐調查 — 部署你自己的第二大腦 工作坊"
 sitemap: false
 ---
 <!DOCTYPE html>
@@ -9,13 +9,72 @@ sitemap: false
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0;url=https://script.google.com/macros/s/AKfycbxK5PN3J-nyFFF1hMz8uzP6ZhYCZlBu4jSEctwD9tJzrgLvC3g48St5FlfAxfXxa5sK/exec?action=sb_meal">
-<title>午餐調查</title>
+<title>午餐調查 — 部署你自己的第二大腦 工作坊</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif; background:#F1F3F4; color:#202124; }
+  .card { max-width:440px; margin:40px auto; background:#fff; border-radius:12px; padding:32px 24px; box-shadow:0 1px 3px rgba(0,0,0,.1); text-align:center; }
+  h1 { color:#0F9D8A; font-size:22px; margin:0 0 6px; }
+  .sub { color:#5F6368; font-size:14px; margin:0 0 20px; }
+  p.hint { color:#5F6368; font-size:15px; line-height:1.7; }
+  input { width:100%; padding:14px; font-size:16px; border:1px solid #DADCE0; border-radius:8px; margin:6px 0; }
+  input:focus { outline:2px solid #0F9D8A; border-color:#0F9D8A; }
+  .btn { display:block; width:100%; margin:12px 0; padding:16px 0; background:#0F9D8A; color:#fff; border:none; border-radius:8px; font-weight:700; font-size:17px; cursor:pointer; font-family:inherit; }
+  .btn:disabled { background:#9AA0A6; }
+  .msg { margin-top:16px; font-size:15px; line-height:1.7; display:none; padding:14px; border-radius:8px; }
+  .msg.success { display:block; background:#E6F4EA; color:#188038; }
+  .msg.error { display:block; background:#FCE8E6; color:#C5221F; }
+  .done { display:none; }
+  .done .ok { font-size:48px; color:#188038; margin:0 0 8px; }
+</style>
 </head>
 <body>
-<p style="font-family:'Noto Sans TC',sans-serif;text-align:center;padding-top:40px;">
-轉往午餐調查頁⋯ 若未自動跳轉，<a href="https://script.google.com/macros/s/AKfycbxK5PN3J-nyFFF1hMz8uzP6ZhYCZlBu4jSEctwD9tJzrgLvC3g48St5FlfAxfXxa5sK/exec?action=sb_meal">點這裡</a>
-</p>
-<script>location.replace("https://script.google.com/macros/s/AKfycbxK5PN3J-nyFFF1hMz8uzP6ZhYCZlBu4jSEctwD9tJzrgLvC3g48St5FlfAxfXxa5sK/exec?action=sb_meal");</script>
+<div class="card" id="formCard">
+  <h1>午餐調查</h1>
+  <p class="sub">部署你自己的第二大腦 一日工作坊（8/25 二）</p>
+  <p class="hint">請填寫報名時的姓名與 Email，<br>再點選飲食習慣。<br><strong>送出＝同時回報「已收到開課通知」</strong></p>
+  <input id="nm" type="text" placeholder="姓名（與報名時相同）" autocomplete="name">
+  <input id="em" type="email" placeholder="Email（與報名時相同）" autocomplete="email">
+  <button class="btn" onclick="send('葷')">葷</button>
+  <button class="btn" onclick="send('蛋奶素')">蛋奶素</button>
+  <button class="btn" onclick="send('全素')">全素</button>
+  <div class="msg" id="msg"></div>
+</div>
+<div class="card done" id="doneCard">
+  <p class="ok">✓</p>
+  <h1>已收到</h1>
+  <p class="hint" id="doneText"></p>
+</div>
+<script>
+const FORM_ACTION = 'https://script.google.com/macros/s/AKfycbxK5PN3J-nyFFF1hMz8uzP6ZhYCZlBu4jSEctwD9tJzrgLvC3g48St5FlfAxfXxa5sK/exec';
+let sending = false;
+async function send(choice){
+  if (sending) return;
+  const name = document.getElementById('nm').value.trim();
+  const email = document.getElementById('em').value.trim();
+  const msg = document.getElementById('msg');
+  msg.className = 'msg';
+  if (!name) { msg.textContent = '請填寫姓名'; msg.className = 'msg error'; return; }
+  if (!email || email.indexOf('@') === -1) { msg.textContent = '請填寫正確的 Email'; msg.className = 'msg error'; return; }
+  sending = true;
+  document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+  try {
+    await fetch(FORM_ACTION, {
+      method: 'POST', mode: 'no-cors',
+      body: JSON.stringify({ type: 'meal_sb_workshop', name: name, email: email, choice: choice }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('doneText').innerHTML =
+      name + '，你的飲食習慣「<strong>' + choice + '</strong>」已記錄，<br>並已回報收到開課通知。8/25 週二見！';
+    document.getElementById('doneCard').style.display = 'block';
+  } catch (err) {
+    msg.textContent = '送出失敗，請稍後再試，或透過 Line@ 告知。';
+    msg.className = 'msg error';
+    sending = false;
+    document.querySelectorAll('.btn').forEach(b => b.disabled = false);
+  }
+}
+</script>
 </body>
 </html>

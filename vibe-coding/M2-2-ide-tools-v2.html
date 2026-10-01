@@ -142,6 +142,11 @@ p,li{font-size:1.1rem;line-height:1.8;}
 .ide-titlebar .url{margin-left:.4rem;color:#666;font-family:'Fira Code',monospace;font-size:.48rem;}
 .ide-titlebar.lv2 .url{color:#1a73e8;}
 .ide-titlebar.lv3 .url{color:#d97706;}
+.ide-frame.lv4{box-shadow:0 3px 14px rgba(124,58,237,.18);border-color:#d8c4fb;}
+.ide-titlebar.lv4{background:#f3e8ff;}
+.ide-titlebar.lv4 .dot{background:#7c3aed;}
+.ide-titlebar.lv4 .url{color:#7c3aed;}
+.chat-msg.ai .meta.warn{color:#f28b82;}
 
 .ide-body{display:flex;flex:1;min-height:0;background:#1e1e1e;color:#d4d4d4;font-family:'Fira Code',monospace;}
 .ide-sidebar{width:30%;background:#252526;padding:.35rem .3rem;font-size:.42rem;border-right:1px solid #3e3e42;overflow:hidden;}
@@ -348,7 +353,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
           </div>
         </div>
       </div>
-      <p class="lv-caption lv3">md 變成可呈現的簡報</p>
+      <p class="lv-caption lv3">md 變成簡報 再裝 skill 升級</p>
     </div>
   </div>
   <div class="info-box success" style="max-width:1100px;margin-top:1rem;">
@@ -396,7 +401,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     </div>
     <div class="time-block">
       <div class="tb-head" style="background:linear-gradient(135deg,#9a3412,#E8710A);"><div class="tb-time">2:00 – 2:30</div><div class="tb-name">Round 5</div></div>
-      <div class="tb-body"><strong>LV3 產簡報</strong>md 變成可呈現的簡報 html</div>
+      <div class="tb-body"><strong>LV3 產簡報</strong>md 變成簡報<br>再裝 skill 升級</div>
     </div>
     <div class="time-block">
       <div class="tb-head" style="background:linear-gradient(135deg,#065f46,#0F9D8A);"><div class="tb-time">2:30 – 3:00</div><div class="tb-name">Round 6</div></div>
@@ -1204,7 +1209,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 <div class="slide poster" data-act="Round 5：LV3 產簡報" style="background:linear-gradient(135deg,#7c2d12 0%,#9a3412 40%,#E8710A 100%);">
   <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">ROUND 5 · 2:00–2:30</p>
   <h1 style="color:#fff;font-size:2.8rem;">LV3<br><span style="color:#fdba74;">md 轉成多格式輸出</span></h1>
-  <p class="poster-subtitle" style="margin-top:.8rem;">HTML 簡報 PDF 報告 pptx 一份 md 三種格式</p>
+  <p class="poster-subtitle" style="margin-top:.8rem;">一份 md 三種格式 再裝一個 skill 升級簡報</p>
 </div>
 
 <!-- ══ 40 概念: 一份 md 多格式輸出 ══ -->
@@ -1310,13 +1315,129 @@ p,li{font-size:1.1rem;line-height:1.8;}
   </div>
 </div>
 
+<!-- ══ 44a LV3+ 概念: 裝 skill 升級簡報 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>簡報做好了 再裝一個 skill 升級</h2>
+  <div class="flow" style="margin:1rem 0;">
+    <div class="flow-box">slides.html<br><span style="font-size:1.1rem;font-weight:400;">AI 預設的長相</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">裝上 skill<br><span style="font-size:1.1rem;font-weight:400;">frontend-design</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box accent">slides-v2.html<br><span style="font-size:1.1rem;font-weight:400;">有設計主張的版本</span></div>
+  </div>
+  <div class="info-box blue">
+    <div class="label">skill 是什麼</div>
+    <p>寫給 AI 的技能卡 一個資料夾放一份 SKILL.md 說明書<br>裝進專案的 .agents/skills/　agy 需要時自己翻出來用</p>
+  </div>
+  <div class="info-box success">
+    <div class="label">今天裝的這張 frontend-design</div>
+    <p>Anthropic 官方開源 只有一份說明文件 沒有要執行的程式<br>專門處理 AI 做出來千篇一律的樣板長相</p>
+  </div>
+</div>
+
+<!-- ══ 44b LV3+ 操作指令: 指定來源找 skill ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:.6rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">指定來源找 skill 先聽 AI 說明再裝</p>
+  </div>
+  <div class="code-block" style="max-width:1100px;">
+    <div class="code-label">第一句 找 skill 先說明再安裝</div>
+    <pre>到 github.com/anthropics/skills 找適合升級簡報視覺的 skill
+先告訴我它會做什麼 有沒有要執行的程式
+我確認後 再裝到這個資料夾的 .agents/skills/</pre>
+  </div>
+  <div class="code-block" style="max-width:1100px;">
+    <div class="code-label">第二句 用 skill 升級</div>
+    <pre>用 frontend-design 把 slides.html 升級 另存成 slides-v2.html
+每頁內容和翻頁功能都不能變</pre>
+  </div>
+  <div class="info-box warning" style="max-width:1100px;">
+    <p><strong style="color:var(--red);">為什麼要指定來源</strong>　skill 是別人寫給 AI 的指令 裝了就照做<br>來路不明或帶程式的 skill 跟亂下載軟體一樣危險</p>
+  </div>
+</div>
+
+<!-- ══ 44c LV3+ 補強版: 裝好 skill mockup ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <h2>裝好 skill 會看到這樣</h2>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="height:340px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ my-research/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar">
+          <div class="section">EXPLORER</div>
+          <div class="folder">▾ my-research</div>
+          <div class="file">▾ .agents/skills</div>
+          <div class="file" style="padding-left:1rem;">▾ frontend-design</div>
+          <div class="file new active" style="padding-left:1.5rem;">SKILL.md</div>
+          <div class="file">report.md</div>
+          <div class="file">slides.html</div>
+          <div class="file new">slides-v2.html ●</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab active">SKILL.md</div><div class="ide-tab">slides-v2.html</div></div>
+          <div class="ide-code">
+            <div class="line"><span class="ln">1</span>&nbsp;<span class="txt">---</span></div>
+            <div class="line"><span class="ln">2</span>&nbsp;<span class="tag">name:</span>&nbsp;<span class="str">frontend-design</span></div>
+            <div class="line"><span class="ln">3</span>&nbsp;<span class="tag">description:</span>&nbsp;<span class="txt">Guidance for distinctive…</span></div>
+            <div class="line"><span class="ln">4</span>&nbsp;<span class="tag">license:</span>&nbsp;<span class="txt">Complete terms in LICENSE.txt</span></div>
+            <div class="line"><span class="ln">5</span>&nbsp;<span class="txt">---</span></div>
+            <div class="line"><span class="ln">6</span>&nbsp;</div>
+            <div class="line"><span class="ln">7</span>&nbsp;<span class="tag"># Frontend Design</span></div>
+          </div>
+        </div>
+        <div class="ide-chat">
+          <div class="chat-header">▸ Chat</div>
+          <div class="chat-msg user">到 anthropics/skills 找升級簡報的 skill</div>
+          <div class="chat-msg ai">找到 frontend-design<span class="meta">✓ 只有一份 SKILL.md 說明</span><span class="meta">✓ 沒有要執行的程式</span></div>
+          <div class="chat-msg user">可以 裝好後升級 slides.html</div>
+          <div class="chat-msg ai">已產出 slides-v2.html<span class="meta">✓ 8 頁內容不變</span><span class="meta">✓ 翻頁正常</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:1.1rem;">.agents 開頭有一個點 Mac 的 Finder 預設隱藏<br>在 agy 左邊檔案樹看得到</p>
+  </div>
+</div>
+
+<!-- ══ 44d LV3+ 換你操作 ══ -->
+<div class="slide dataviz" data-act="Round 5：LV3 產簡報">
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">10 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">裝 frontend-design 升級你的簡報</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>請 agy 到 anthropics/skills 找 skill</strong><p style="font-size:1.1rem;">先聽它說明 確認沒有要執行的程式</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>確認後裝進 .agents/skills/</strong><p style="font-size:1.1rem;">左邊檔案樹看得到 SKILL.md 才算裝好</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>升級成 slides-v2.html 跟原版並排打開</strong><p style="font-size:1.1rem;">內容一樣 看配色 字體 版面差在哪</p></div>
+    </div>
+  </div>
+  <div class="info-box success" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">slides-v2.html 翻頁正常 跟原版並排看得出差別 = 完成</p>
+  </div>
+  <div class="info-box note" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手，或跟 AI 說 以 slides.html 為準 把翻頁修回來</p>
+  </div>
+</div>
+
 <!-- ══ 45 分享觀察 ══ -->
 <div class="slide dataviz" data-act="Round 5：LV3 產簡報">
   <h2>分享與觀察</h2>
   <div class="step-list">
     <div class="step">
       <div class="step-num">1</div>
-      <div class="step-content"><strong>把你的簡報截圖貼到群組</strong><p>不用真的傳 html 截兩三頁畫面就行</p></div>
+      <div class="step-content"><strong>把升級前後截圖貼到群組</strong><p>slides.html 跟 slides-v2.html 各截一頁</p></div>
     </div>
     <div class="step">
       <div class="step-num">2</div>
@@ -1324,7 +1445,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     </div>
     <div class="step">
       <div class="step-num">3</div>
-      <div class="step-content"><strong>找一個你覺得最美的</strong><p>之後可以叫 AI 學它的風格幫你升級</p></div>
+      <div class="step-content"><strong>skill 改變了什麼</strong><p>配色 字體 版面 哪一項差最多 你想留哪一版</p></div>
     </div>
   </div>
 </div>
@@ -1337,7 +1458,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
   </div>
   <div class="info-box success">
     <div class="label">這一輪你拿到</div>
-    <p>slides.html 簡報作品 ・ PDF 到簡報的完整工作流 ・ md 跟 html 的分工觀念 ・ LV3 達成</p>
+    <p>slides.html 簡報作品 ・ PDF 到簡報的完整工作流<br>md 跟 html 的分工觀念 ・ 裝 skill 升級作品 ・ LV3 達成</p>
   </div>
 </div>
 
@@ -1385,7 +1506,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
     <div class="card accent-top-orange" style="border-color:#d97706;">
       <div style="font-size:1.1rem;color:#d97706;letter-spacing:.08em;font-weight:700;margin-bottom:.3rem;">LV3 完成後加做</div>
       <h3>md 產簡報</h3>
-      <p>md 變成可呈現的 8 頁簡報　配色字體 AI 自己處理　簡報 prompt 模板</p>
+      <p>md 變成 8 頁簡報　再裝 frontend-design 升級視覺　簡報 prompt 模板</p>
     </div>
   </div>
   <div class="bottom-line">
@@ -1403,7 +1524,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
       <ul style="list-style:none;padding:0;font-size:1.1rem;color:var(--g800);line-height:1.9;">
         <li><span style="color:var(--green);font-weight:900;">✓</span> 改過的 index.html</li>
         <li><span style="color:var(--green);font-weight:900;">✓</span> 一份 report.md</li>
-        <li><span style="color:var(--green);font-weight:900;">✓</span> 一份 slides.html</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> slides.html 跟升級版 v2</li>
       </ul>
     </div>
     <div class="stat-box" style="text-align:left;padding:1rem 1.2rem;">
@@ -1412,6 +1533,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
         <li><span style="color:var(--green);font-weight:900;">✓</span> agy 操作流程</li>
         <li><span style="color:var(--green);font-weight:900;">✓</span> 信任資料夾的觀念</li>
         <li><span style="color:var(--green);font-weight:900;">✓</span> PDF / 簡報 prompt 模板</li>
+        <li><span style="color:var(--green);font-weight:900;">✓</span> 裝 skill 先讀再裝</li>
         <li><span style="color:var(--green);font-weight:900;">✓</span> 4 種 IDE 工具認知</li>
       </ul>
     </div>
@@ -1445,6 +1567,342 @@ p,li{font-size:1.1rem;line-height:1.8;}
   </div>
 </div>
 
+<!-- ════════════════════════════════════════
+     彩蛋 補充教材: agy × clasp 接手 GAS（不列入大綱與章節）
+     ════════════════════════════════════════ -->
+
+<!-- ══ 彩蛋 Poster ══ -->
+<div class="slide poster" data-bonus="彩蛋 補充教材" style="background:linear-gradient(135deg,#1a1a2e 0%,#4c1d95 45%,#7C3AED 100%);">
+  <p style="font-size:1.1rem;color:rgba(255,255,255,.45);letter-spacing:.15em;margin-bottom:.8rem;">彩蛋 · 補充教材</p>
+  <h1 style="color:#fff;font-size:2.8rem;">彩蛋<br><span style="color:#c4b5fd;">agy 接手你的 GAS 專案</span></h1>
+  <p class="poster-subtitle" style="margin-top:.8rem;">用 clasp 把 M1 做的 GAS 抓下來 盤點 修改 推回雲端</p>
+</div>
+
+<!-- ══ 彩蛋 b 概念: M1 貼上 vs agy 直接改 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>agy 直接改雲端上的 GAS</h2>
+  <div class="compare-two">
+    <div class="compare-col bad">
+      <div class="col-label">M1 的做法</div>
+      <p>跟 AI 說需求 它給你一段程式碼<br>你打開 script.google.com 找到專案<br>全選 貼上取代 存檔<br>哪個專案做什麼 全靠自己記</p>
+    </div>
+    <div class="compare-col good">
+      <div class="col-label">今天的做法</div>
+      <p>跟 agy 說需求<br>agy 用 clasp 把專案抓到本機<br>讀懂程式碼 直接改<br>改完推回雲端</p>
+    </div>
+  </div>
+  <div class="info-box blue">
+    <div class="label">clasp 是什麼</div>
+    <p>Google 官方的 GAS 搬運工具<br>把雲端的專案抓下來（clone） 改完再推回去（push）</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 c 操作指令 1: 開 Apps Script API ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:.6rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">第一步 打開 Apps Script API 開關<br>這一步 agy 做不到 要你自己按</p>
+  </div>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="background:#fff;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">script.google.com/home/usersettings</span></div>
+      <div style="background:#fff;padding:1rem 1.5rem;display:flex;flex-direction:column;gap:.6rem;">
+        <div style="font-size:1.1rem;font-weight:700;color:var(--g900);">設定</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--g100);padding-top:.6rem;">
+          <div style="font-size:.85rem;color:var(--g800);">Google Apps Script API</div>
+          <div style="display:flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--blue);font-weight:700;">開啟 <span style="display:inline-block;width:38px;height:20px;border-radius:10px;background:var(--blue);position:relative;"><span style="position:absolute;right:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;"></span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <div class="label">電腦要先有 Node.js</div>
+    <p>clasp 靠它執行　沒裝的話到 nodejs.org 下載 LTS 版安裝</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 d 操作指令 2: clasp 登入 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:.6rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">第二步 請 agy 用 clasp 登入你的 Google 帳號</p>
+  </div>
+  <div class="code-block" style="max-width:1100px;">
+    <div class="code-label">在 agy Chat 區輸入</div>
+    <pre>用 npx 執行 Google 的 clasp 登入我的 Google 帳號
+不要全域安裝 每個指令執行前先跟我說它在做什麼</pre>
+  </div>
+  <div class="mockup-center" style="max-width:920px;">
+    <div class="ide-frame" style="height:220px;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ gas-projects/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar">
+          <div class="section">EXPLORER</div>
+          <div class="folder">▾ gas-projects</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab active">TERMINAL</div></div>
+          <div class="ide-code">
+            <div class="line"><span class="ln">$</span>&nbsp;<span class="txt">npx -y @google/clasp login</span></div>
+          </div>
+        </div>
+        <div class="ide-chat" style="width:42%;">
+          <div class="chat-header">▸ Chat</div>
+          <div class="chat-msg ai">要執行 npx -y @google/clasp login<span class="meta">用途 登入 Google 帳號 等你按允許</span></div>
+          <div class="chat-msg user">允許</div>
+          <div class="chat-msg ai">瀏覽器授權完成<span class="meta">✓ 已登入你的 Google 帳號</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box warning" style="max-width:1100px;">
+    <div class="label">瀏覽器跳出 Google 授權</div>
+    <p>選你做 M1 專案的那個 Gmail　選錯帳號 等一下會看不到你的專案</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 e 安全守則 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>登入之後 agy 能改你所有的 GAS 專案</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:1180px;width:100%;margin-top:.6rem;">
+    <div class="card accent-top-red" style="max-width:none;">
+      <h3>指令看清楚再允許</h3>
+      <p>push 會覆蓋雲端<br>delete 會刪整個專案<br>出現這兩個字先停下來</p>
+    </div>
+    <div class="card accent-top-blue" style="max-width:none;">
+      <h3>資料夾分開放</h3>
+      <p>gas-projects 獨立放<br>不要放進 my-first-page<br>下一堂推 GitHub 才不會帶到</p>
+    </div>
+    <div class="card accent-top-gold" style="max-width:none;">
+      <h3>寫死的 key 搬進保險箱</h3>
+      <p>清單表抓到寫死的 key<br>改放 Script Properties<br>M1-4 教過的那招</p>
+    </div>
+  </div>
+  <div class="bottom-line">
+    <h3>方便跟風險是同一件事</h3>
+    <p>agy 能做的越多 你越要看清楚它要執行什麼</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 f 操作指令 3: 盤點 GAS 專案 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:.6rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">第三步 開一個新資料夾 gas-projects<br>請 agy 盤點你所有的 GAS 專案</p>
+  </div>
+  <div class="code-block" style="max-width:1100px;">
+    <div class="code-label">在 agy Chat 區輸入</div>
+    <pre>列出我所有的 GAS 專案 每個都 clone 到 gas-projects/
+讀完程式碼做成清單表 存成 gas-list.md
+欄位 專案名稱 主要函式 功能一句話 有沒有寫死的 key</pre>
+  </div>
+  <div class="info-box note" style="max-width:1100px;">
+    <div class="label">clasp 只給名字 功能要靠 AI 讀</div>
+    <p>clasp 列得出專案名稱跟網址<br>每個專案在做什麼 是 agy 讀完程式碼寫出來的</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 g 補強版: 盤點結果 mockup ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>盤點完會看到這樣</h2>
+  <div class="mockup-center" style="max-width:1000px;">
+    <div class="ide-frame lv4" style="height:340px;">
+      <div class="ide-titlebar lv4"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ gas-projects/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar" style="width:24%;">
+          <div class="section">EXPLORER</div>
+          <div class="folder">▾ gas-projects</div>
+          <div class="file">▸ 個人網站</div>
+          <div class="file">▸ 飲料點單</div>
+          <div class="file">▸ 意見回饋</div>
+          <div class="file">▸ 未命名的專案</div>
+          <div class="file new active">gas-list.md ●</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab active">gas-list.md</div></div>
+          <div class="ide-code">
+            <div class="line added"><span class="ln">1</span>&nbsp;<span class="tag"># 我的 GAS 專案清單</span></div>
+            <div class="line added"><span class="ln">2</span>&nbsp;<span class="txt">| 專案 | 主要函式 | 功能 | 寫死 key |</span></div>
+            <div class="line added"><span class="ln">3</span>&nbsp;<span class="txt">| 個人網站 | doGet | 個人頁 + 聯絡表單 | 無 |</span></div>
+            <div class="line added"><span class="ln">4</span>&nbsp;<span class="txt">| 飲料點單 | onFormSubmit | 點單統計 寄通知 | 無 |</span></div>
+            <div class="line added"><span class="ln">5</span>&nbsp;<span class="txt">| 意見回饋 | doPost | AI 分類 推 TG | <span class="str">有 1 個</span> |</span></div>
+            <div class="line added"><span class="ln">6</span>&nbsp;<span class="txt">| 未命名的專案 | myFunction | 空白專案 | 無 |</span></div>
+          </div>
+        </div>
+        <div class="ide-chat" style="width:32%;">
+          <div class="chat-header">▸ Chat</div>
+          <div class="chat-msg user">盤點我所有的 GAS 專案 做成清單表</div>
+          <div class="chat-msg ai">clasp 找到 4 個專案<span class="meta">✓ 已 clone 到 gas-projects/</span><span class="meta">✓ gas-list.md 已產生</span><span class="meta warn">✗ 意見回饋 有 1 個寫死的 key</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box success">
+    <p style="font-size:1.1rem;">你在 M1 做過的專案 一張表全部攤開<br>忘記在做什麼的「未命名的專案」也一起現形</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 h 操作指令 4: 改一處 + push ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>操作指令</h2>
+  <div style="text-align:center;margin:.6rem 0;">
+    <p style="font-size:1.3rem;font-weight:700;color:var(--green);line-height:1.6;">第四步 挑一個專案改一個小地方<br>推回雲端 再到網頁編輯器確認</p>
+  </div>
+  <div class="code-block" style="max-width:1100px;">
+    <div class="code-label">在 agy Chat 區輸入</div>
+    <pre>先 pull 飲料點單 拿雲端最新版
+把通知信的主旨改成 新訂單通知
+改完 push 回雲端 告訴我改了哪一行</pre>
+  </div>
+  <div class="info-box warning" style="max-width:1100px;">
+    <div class="label">push 會整份覆蓋雲端</div>
+    <p>網頁編輯器同時開著改的東西 會被蓋掉<br>所以改之前先 pull 一次</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 i 補強版: push 後兩邊都看得到 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>推回雲端後 兩邊都看得到</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:1180px;width:100%;background:#f7fafc;padding:1rem;border-radius:14px;">
+    <div class="ide-frame lv4" style="height:280px;">
+      <div class="ide-titlebar lv4"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">agy ・ gas-projects/飲料點單/</span></div>
+      <div class="ide-body">
+        <div class="ide-sidebar" style="width:32%;">
+          <div class="section">EXPLORER</div>
+          <div class="folder">▾ 飲料點單</div>
+          <div class="file">.clasp.json</div>
+          <div class="file">appsscript.json</div>
+          <div class="file active">Code.js ●</div>
+        </div>
+        <div class="ide-main">
+          <div class="ide-tabs"><div class="ide-tab active">Code.js</div></div>
+          <div class="ide-code">
+            <div class="line"><span class="ln">11</span>&nbsp;<span class="tag">function</span>&nbsp;<span class="txt">notifyOwner(order) {</span></div>
+            <div class="line"><span class="ln">12</span>&nbsp;&nbsp;<span class="txt">MailApp.sendEmail(OWNER,</span></div>
+            <div class="line added"><span class="ln">13</span>&nbsp;&nbsp;&nbsp;<span class="str">'新訂單通知'</span><span class="txt">,</span></div>
+            <div class="line"><span class="ln">14</span>&nbsp;&nbsp;&nbsp;<span class="txt">order.summary);</span></div>
+            <div class="line"><span class="ln">15</span>&nbsp;<span class="txt">}</span></div>
+          </div>
+        </div>
+        <div class="ide-chat">
+          <div class="chat-header">▸ Chat</div>
+          <div class="chat-msg ai">已修改 Code.js line 13<span class="meta">✓ clasp push 完成</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ide-frame" style="height:280px;background:#fff;">
+      <div class="ide-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">script.google.com ・ 飲料點單</span></div>
+      <div style="display:flex;flex:1;min-height:0;font-family:'Fira Code',monospace;">
+        <div style="width:30%;background:#f8f9fa;border-right:1px solid var(--g100);padding:.4rem;font-size:.5rem;color:var(--g700);">
+          <div style="font-weight:700;margin-bottom:.2rem;">檔案</div>
+          <div style="background:var(--blue-lt);color:var(--blue);padding:.1rem .3rem;border-radius:3px;">Code.gs</div>
+        </div>
+        <div style="flex:1;padding:.4rem;font-size:.5rem;line-height:1.7;color:var(--g800);">
+          <div><span style="color:var(--g400);">11</span>&nbsp;<span style="color:#1a73e8;">function</span> notifyOwner(order) {</div>
+          <div><span style="color:var(--g400);">12</span>&nbsp;&nbsp;MailApp.sendEmail(OWNER,</div>
+          <div style="background:rgba(15,157,138,.15);"><span style="color:var(--g400);">13</span>&nbsp;&nbsp;&nbsp;<span style="color:#c5221f;">'新訂單通知'</span>,</div>
+          <div><span style="color:var(--g400);">14</span>&nbsp;&nbsp;&nbsp;order.summary);</div>
+          <div><span style="color:var(--g400);">15</span>&nbsp;}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <div class="label">網頁的網址不會馬上變</div>
+    <p>/exec 網址跑的是部署的版本 push 只換了程式碼<br>要讓網址也更新 到編輯器 部署 → 管理部署作業 建新版本</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 j 換你操作 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;">
+    <span style="background:var(--orange);color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:.1em;border-radius:100px;padding:.3rem 1.2rem;">換你操作</span>
+    <span style="background:var(--orange-lt);color:var(--orange);border:2px solid var(--orange);font-size:1.1rem;font-weight:700;border-radius:100px;padding:.25rem 1.2rem;">25 分鐘</span>
+  </div>
+  <h2 style="margin-bottom:.6rem;">agy 盤點並修改你的 GAS 專案</h2>
+  <div class="step-list" style="max-width:780px;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>打開 API 開關 請 agy 用 clasp 登入</strong><p style="font-size:1.1rem;">登入的 Gmail 要跟做 M1 專案的同一個</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>盤點所有專案 產出 gas-list.md</strong><p style="font-size:1.1rem;">每個專案做什麼 一句話講得清楚</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>挑一個專案改一個小地方 push 回去</strong><p style="font-size:1.1rem;">到 script.google.com 打開專案 看得到那一行</p></div>
+    </div>
+  </div>
+  <div class="info-box success" style="margin-top:.5rem;padding:.7rem 1.4rem;">
+    <div class="label" style="font-size:1.1rem;">完成判準</div>
+    <p style="font-size:1.1rem;">gas-list.md 有清單 網頁編輯器看得到 AI 改的那一行 = 完成</p>
+  </div>
+  <div class="info-box note" style="margin-top:.5rem;padding:.6rem 1.4rem;">
+    <p style="font-size:1.1rem;"><strong>卡住了</strong> — 舉手，或看下一頁四種常見卡關<br>沒有 M1 專案的人 請 agy 用 clasp 建一個新專案練習</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 k 踩坑預告: clasp 常見卡關 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <span class="pitfall-badge">預期會踩坑</span>
+  <h2>clasp 有 4 種常見卡關</h2>
+  <div class="pitfall-card">
+    <div class="pitfall-row" style="grid-template-columns:repeat(2,1fr);">
+      <div class="pitfall-item">
+        <div class="ptitle">找不到 node 或 npx</div>
+        <div class="pdesc">電腦還沒裝 Node.js<br><span style="color:var(--green);font-weight:600;">解 到 nodejs.org 裝 LTS 版 再重開 agy</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">錯誤說 Apps Script API 沒啟用</div>
+        <div class="pdesc">第一步的開關沒打開<br><span style="color:var(--green);font-weight:600;">解 回設定頁把開關打開 等一兩分鐘再試</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">清單少了某個專案</div>
+        <div class="pdesc">從試算表 擴充功能 開的 GAS 不會列出來<br><span style="color:var(--green);font-weight:600;">解 抄專案設定裡的指令碼 ID<br>請 agy 用這個 ID clone</span></div>
+      </div>
+      <div class="pitfall-item">
+        <div class="ptitle">改完網址沒變</div>
+        <div class="pdesc">/exec 跑的是部署的版本<br><span style="color:var(--green);font-weight:600;">解 部署 → 管理部署作業 建新版本</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <p style="font-size:1.1rem;">其他錯誤 把錯誤訊息整段貼給 agy　它看得懂 clasp 的錯誤</p>
+  </div>
+</div>
+
+<!-- ══ 彩蛋 l 分享觀察 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>分享與觀察</h2>
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content"><strong>你有幾個 GAS 專案</strong><p>清單表裡 有沒有忘記在做什麼的專案</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content"><strong>有人抓到寫死的 key 嗎</strong><p>說說 AI 怎麼找到的 你打算怎麼處理</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content"><strong>同樣是改 GAS</strong><p>M1 複製貼上 跟今天 agy 直接改 差在哪</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 彩蛋小結 ══ -->
+<div class="slide dataviz" data-bonus="彩蛋 補充教材">
+  <h2>彩蛋小結</h2>
+  <div class="quote-box">
+    <div class="quote-text">AI 不只改你電腦裡的檔案<br>放在雲端的專案 它也能接手</div>
+  </div>
+  <div class="info-box success">
+    <div class="label">這一輪你拿到</div>
+    <p>clasp 連線 ・ GAS 專案清單表 ・ 一次雲端修改 ・ 第一次 push 體驗</p>
+  </div>
+</div>
+
 </div>
 
 <!-- Chapter Menu -->
@@ -1458,7 +1916,7 @@ p,li{font-size:1.1rem;line-height:1.8;}
 </div>
 
 <div class="progress-bar" id="progress"></div>
-<div class="slide-counter"><span id="cur">1</span> / <span id="total">54</span></div>
+<div class="slide-counter"><span id="cur">1</span> / <span id="total">71</span></div>
 <div class="controls">
   <button onclick="prev()">◂</button>
   <button onclick="next()">▸</button>
@@ -1495,12 +1953,13 @@ function show(){
   for(let i = chapters.length-1; i >= 0; i--){
     if(idx >= chapters[i].idx){ curAct = chapters[i].act; break; }
   }
-  document.getElementById('chapterLabel').textContent = curAct || '章節';
+  const bonus = slides[idx].dataset.bonus || '';
+  document.getElementById('chapterLabel').textContent = bonus || curAct || '章節';
   document.querySelectorAll('.chapter-item').forEach(item => {
     const ci = +item.dataset.idx;
     let end = total;
     for(let c of chapters){ if(c.idx > ci){ end = c.idx; break; } }
-    item.classList.toggle('active', idx >= ci && idx < end);
+    item.classList.toggle('active', !bonus && idx >= ci && idx < end);
   });
 }
 function next(){ if(idx<total-1){idx++;show();} }
